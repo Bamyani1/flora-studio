@@ -91,8 +91,7 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
   return (
     <TransitionLink
       href={`/work/${album.slug.current}`}
-      transitionType="morph"
-      flipId={album.slug.current}
+      transitionType="wipe"
       className="block"
     >
       <div
@@ -105,7 +104,6 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
         {/* Image container */}
         <div
           className={`relative overflow-hidden ${large ? "aspect-[3/4]" : "aspect-video"}`}
-          data-flip-id={album.slug.current}
         >
           <div ref={imageRef} className="h-full w-full">
             {coverUrl !== null ? (
