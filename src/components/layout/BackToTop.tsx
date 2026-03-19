@@ -35,7 +35,7 @@ export function BackToTop() {
       type="button"
       onClick={handleClick}
       aria-label="Back to top"
-      className="fixed right-8 bottom-8 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-surface-elevated text-text transition-colors hover:bg-primary hover:text-background"
+      className="fixed right-4 bottom-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-surface-elevated text-text transition-colors hover:bg-primary hover:text-background md:right-8 md:bottom-8"
       style={{ opacity: 0, visibility: "hidden" }}
     >
       <svg
