@@ -237,6 +237,25 @@ export const heroSequence = {
 };
 
 // --------------------------------------------------
+// withWillChange — Managed will-change via GSAP callbacks
+// Sets will-change on animation start, resets to "auto" on complete.
+// --------------------------------------------------
+export function withWillChange(props = "transform, opacity") {
+  return {
+    onStart(this: gsap.core.Tween) {
+      for (const el of this.targets() as HTMLElement[]) {
+        el.style.willChange = props;
+      }
+    },
+    onComplete(this: gsap.core.Tween) {
+      for (const el of this.targets() as HTMLElement[]) {
+        el.style.willChange = "auto";
+      }
+    },
+  };
+}
+
+// --------------------------------------------------
 // reducedMotionFallbacks — prefers-reduced-motion: reduce behavior
 // --------------------------------------------------
 export const reducedMotionFallbacks = {

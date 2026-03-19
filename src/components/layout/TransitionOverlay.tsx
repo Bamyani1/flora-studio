@@ -46,7 +46,7 @@ export function TransitionOverlay() {
       data-transition-overlay
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-100 bg-overlay-solid"
-      style={{ transform: "scaleX(0)", transformOrigin: "left center" }}
+      style={{ transform: "scaleX(0)", transformOrigin: "left center", willChange: "transform" }}
     />
   );
 }
