@@ -13,7 +13,7 @@ export const fadeUp = {
 // textRevealLines — Masked line-by-line reveal via SplitText
 // --------------------------------------------------
 export const textRevealLines = {
-  splitConfig: { type: "lines", mask: "lines", autoSplit: true },
+  splitConfig: { type: "lines", mask: "lines", autoSplit: true } as const,
   from: { yPercent: 100 },
   to: { yPercent: 0, duration: 1.0, ease: easings.smooth, stagger: 0.12 },
   scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
@@ -23,7 +23,7 @@ export const textRevealLines = {
 // textRevealWords — Word-by-word opacity scrub (for scroll-driven narrative)
 // --------------------------------------------------
 export const textRevealWords = {
-  splitConfig: { type: "words" },
+  splitConfig: { type: "words" } as const,
   from: { opacity: 0.15 },
   to: { opacity: 1, stagger: 0.05 },
   scrollTrigger: { start: "top 80%", end: "bottom 20%", scrub: 1 },
