@@ -113,6 +113,19 @@
   --header-height: 5rem;    /* 80px */
 }
 
+/* --- Responsive Layout Token Overrides --- */
+:root {
+  --container-padding-x: 1rem;
+  --section-padding-y: 4rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-padding-x: 2rem;
+    --section-padding-y: 8rem;
+  }
+}
+
 /* --- Film Grain Overlay --- */
 .grain-overlay::after {
   content: "";
