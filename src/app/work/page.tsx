@@ -1,14 +1,40 @@
-import { TransitionLink } from "@/components/layout/TransitionLink";
+import type { Metadata } from "next";
+import { client } from "@/sanity/client";
+import { ALBUMS_QUERY } from "@/sanity/queries";
+import { PLACEHOLDER_ALL_ALBUMS } from "@/lib/placeholder-data";
+import { TextReveal } from "@/components/animations/TextReveal";
+import { FilterableGrid } from "@/components/sections/FilterableGrid";
+import type { AlbumMeta } from "@/types/project";
 
-export default function WorkPage() {
+export const metadata: Metadata = {
+  title: "Work — Bamyan Storyworks",
+  description:
+    "Browse photography albums by Bamyan Storyworks. Personal, event, sports, and solo portrait collections.",
+};
+
+async function getAllAlbums(): Promise<AlbumMeta[]> {
+  try {
+    return await client.fetch(ALBUMS_QUERY);
+  } catch {
+    return PLACEHOLDER_ALL_ALBUMS;
+  }
+}
+
+export default async function WorkPage() {
+  const albums = await getAllAlbums();
+
   return (
-    <main className="min-h-[200vh] px-[--container-padding-x] pt-[--header-height]">
-      <section className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="font-display text-text-heading text-6xl tracking-tight">Work</h1>
-        <p className="mt-4 text-lg text-muted">Selected projects and albums.</p>
-        <TransitionLink href="/" className="mt-12 text-lg text-muted transition-colors hover:text-text">
-          &larr; Back to Home
-        </TransitionLink>
+    <main className="min-h-screen px-[--container-padding-x] pt-[--header-height]">
+      <section className="py-[--section-padding-y]">
+        <TextReveal
+          variant="lines"
+          as="h1"
+          className="mb-[--space-16] font-display text-[length:var(--text-6xl)] text-text-heading"
+        >
+          Work
+        </TextReveal>
+
+        <FilterableGrid albums={albums} />
       </section>
     </main>
   );
