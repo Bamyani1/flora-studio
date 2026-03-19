@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { instrumentSerif, satoshi, jetbrainsMono } from "@/lib/fonts";
 import { Providers } from "@/providers/Providers";
+import { Header } from "@/components/layout/Header";
 import { TransitionOverlay } from "@/components/layout/TransitionOverlay";
 import "@/styles/globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="grain-overlay bg-background font-body text-text antialiased">
         <Providers>
+          <Header />
           {children}
           <TransitionOverlay />
         </Providers>
