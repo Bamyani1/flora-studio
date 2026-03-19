@@ -9,6 +9,7 @@ import {
   PLACEHOLDER_ALL_ALBUMS,
   PLACEHOLDER_ALBUM_MAP,
 } from "@/lib/placeholder-data";
+import { imageGalleryJsonLd } from "@/lib/metadata";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
 import { HorizontalScrollGallery } from "@/components/sections/HorizontalScrollGallery";
@@ -71,16 +72,22 @@ export async function generateMetadata({
   const { slug } = await params;
 
   let title = "Album";
+  let description: string | undefined;
   try {
     const album = await client.fetch(ALBUM_BY_SLUG_QUERY, { slug });
     if (album?.title) title = album.title;
+    if (album?.description) description = album.description;
   } catch {
     const placeholder = PLACEHOLDER_ALBUM_MAP[slug];
-    if (placeholder) title = placeholder.title;
+    if (placeholder) {
+      title = placeholder.title;
+      description = placeholder.description;
+    }
   }
 
   return {
-    title: `${title} — Bamyan Storyworks`,
+    title,
+    description: description ?? `${title} — a photography album by Bamyan Storyworks.`,
   };
 }
 
@@ -102,8 +109,19 @@ export default async function AlbumPage({
 
   const heroUrl = album.heroImage?.asset?._ref ? undefined : null;
 
+  const jsonLd = imageGalleryJsonLd({
+    title: album.title,
+    description: album.description,
+    slug,
+    imageCount: album.images?.length ?? 0,
+  });
+
   return (
-    <main>
+    <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <AlbumHero
         title={album.title}
         category={album.category}

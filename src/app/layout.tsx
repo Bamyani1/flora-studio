@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { instrumentSerif, satoshi, jetbrainsMono } from "@/lib/fonts";
+import { baseMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/Providers";
 import { Header } from "@/components/layout/Header";
 import { MobileMenu } from "@/components/layout/MobileMenu";
@@ -9,10 +10,12 @@ import { TransitionOverlay } from "@/components/layout/TransitionOverlay";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Bamyan Storyworks — Photography for moments that matter",
-  description:
-    "Cinematic photography studio specializing in personal, event, sports, and solo photography.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bamyanstoryworks.com"),
+  ...baseMetadata,
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,6 +26,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="grain-overlay bg-background font-body text-text antialiased">
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-primary focus:px-4 focus:py-2 focus:text-background focus:outline-none"
+          >
+            Skip to content
+          </a>
           <Header />
           <MobileMenu />
           {children}

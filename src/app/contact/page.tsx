@@ -5,12 +5,13 @@ import { FadeIn } from "@/components/animations/FadeIn";
 import { ContactForm } from "@/components/ui/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Bamyan Storyworks",
+  title: "Contact",
+  description: "Get in touch with Bamyan Storyworks. Available for personal, event, sports, and solo photography projects.",
 };
 
 export default function ContactPage() {
   return (
-    <main>
+    <main id="main-content">
       {/* Heading */}
       <section className="px-[--container-padding-x] pt-[--header-height]">
         <div className="mx-auto max-w-[--max-width-content] py-[--section-padding-y]">

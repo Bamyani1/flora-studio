@@ -1,6 +1,7 @@
 import { client } from "@/sanity/client";
 import { FEATURED_ALBUMS_QUERY, ABOUT_QUERY } from "@/sanity/queries";
 import { PLACEHOLDER_FEATURED_ALBUMS, PLACEHOLDER_ABOUT } from "@/lib/placeholder-data";
+import { localBusinessJsonLd } from "@/lib/metadata";
 import type { AlbumMeta } from "@/types/project";
 import { Hero } from "@/components/sections/Hero";
 import { ProjectGrid } from "@/components/sections/ProjectGrid";
@@ -29,7 +30,11 @@ export default async function HomePage() {
   const [albums, about] = await Promise.all([getFeaturedAlbums(), getAbout()]);
 
   return (
-    <main>
+    <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
+      />
       <Hero />
 
       <ProjectGrid>

@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { client } from "@/sanity/client";
 import { ABOUT_QUERY } from "@/sanity/queries";
 import { PLACEHOLDER_ABOUT } from "@/lib/placeholder-data";
+import { personJsonLd } from "@/lib/metadata";
 import { SOCIAL_LINKS } from "@/lib/navigation";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { ImageReveal } from "@/components/animations/ImageReveal";
 import { FadeIn } from "@/components/animations/FadeIn";
 
 export const metadata: Metadata = {
-  title: "About — Bamyan Storyworks",
+  title: "About",
+  description: "Photographer & visual storyteller based in Bamyan, Afghanistan. Learn about the vision and services behind Bamyan Storyworks.",
 };
 
 async function getAbout() {
@@ -26,7 +28,11 @@ export default async function AboutPage() {
   const services = about?.services ?? PLACEHOLDER_ABOUT.services;
 
   return (
-    <main>
+    <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+      />
       {/* Hero */}
       <section className="px-[--container-padding-x] pt-[--header-height]">
         <div className="mx-auto grid max-w-[--max-width-content] grid-cols-1 items-center gap-[--grid-gap] py-[--section-padding-y] md:grid-cols-5">

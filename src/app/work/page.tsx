@@ -7,7 +7,7 @@ import { FilterableGrid } from "@/components/sections/FilterableGrid";
 import type { AlbumMeta } from "@/types/project";
 
 export const metadata: Metadata = {
-  title: "Work — Bamyan Storyworks",
+  title: "Work",
   description:
     "Browse photography albums by Bamyan Storyworks. Personal, event, sports, and solo portrait collections.",
 };
@@ -24,7 +24,7 @@ export default async function WorkPage() {
   const albums = await getAllAlbums();
 
   return (
-    <main className="min-h-screen px-[--container-padding-x] pt-[--header-height]">
+    <main id="main-content" className="min-h-screen px-[--container-padding-x] pt-[--header-height]">
       <section className="py-[--section-padding-y]">
         <TextReveal
           variant="lines"
