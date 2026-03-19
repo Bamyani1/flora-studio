@@ -78,7 +78,11 @@ export function ContactForm() {
   if (submitted) {
     return (
       <FadeIn>
-        <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+        <div
+          className="flex min-h-[400px] flex-col items-center justify-center text-center"
+          role="status"
+          aria-live="polite"
+        >
           <h2 className="font-display text-3xl text-text-heading md:text-4xl">
             Thank you
           </h2>
