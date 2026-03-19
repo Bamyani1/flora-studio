@@ -35,6 +35,7 @@ export function AlbumHero({
             fill
             priority
             className="object-cover"
+            sizes="100vw"
             placeholder={heroBlur ? "blur" : undefined}
             blurDataURL={heroBlur}
           />
@@ -52,7 +53,7 @@ export function AlbumHero({
           variant="lines"
           as="h1"
           delay={0.3}
-          className="font-display text-[length:var(--text-5xl)] leading-tight text-text-heading"
+          className="font-display text-[length:var(--text-3xl)] leading-tight text-text-heading md:text-[length:var(--text-5xl)]"
         >
           {title}
         </TextReveal>

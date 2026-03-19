@@ -29,7 +29,7 @@ export default async function WorkPage() {
         <TextReveal
           variant="lines"
           as="h1"
-          className="mb-[--space-16] font-display text-[length:var(--text-6xl)] text-text-heading"
+          className="mb-[--space-16] font-display text-[length:var(--text-4xl)] text-text-heading md:text-[length:var(--text-6xl)]"
         >
           Work
         </TextReveal>

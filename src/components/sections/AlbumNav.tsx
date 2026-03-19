@@ -22,7 +22,7 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
             <span className="font-mono text-xs uppercase tracking-wider text-muted">
               Previous
             </span>
-            <span className="mt-[--space-2] block font-display text-xl text-text-heading transition-colors group-hover:text-primary">
+            <span className="mt-[--space-2] block font-display text-lg text-text-heading transition-colors group-hover:text-primary md:text-xl">
               {previous.title}
             </span>
           </TransitionLink>
@@ -41,7 +41,7 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
             <span className="font-mono text-xs uppercase tracking-wider text-muted">
               Next
             </span>
-            <span className="mt-[--space-2] block font-display text-xl text-text-heading transition-colors group-hover:text-primary">
+            <span className="mt-[--space-2] block font-display text-lg text-text-heading transition-colors group-hover:text-primary md:text-xl">
               {next.title}
             </span>
           </TransitionLink>
