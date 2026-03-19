@@ -4,6 +4,7 @@ import { Providers } from "@/providers/Providers";
 import { Header } from "@/components/layout/Header";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Footer } from "@/components/layout/Footer";
+import { BackToTop } from "@/components/layout/BackToTop";
 import { TransitionOverlay } from "@/components/layout/TransitionOverlay";
 import "@/styles/globals.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <MobileMenu />
           {children}
           <Footer />
+          <BackToTop />
           <TransitionOverlay />
         </Providers>
       </body>
