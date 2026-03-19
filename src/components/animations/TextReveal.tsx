@@ -10,6 +10,7 @@ interface TextRevealProps {
   children: React.ReactNode;
   variant?: "lines" | "words";
   stagger?: number;
+  delay?: number;
   scrub?: boolean;
   className?: string;
   as?: React.ElementType;
@@ -19,6 +20,7 @@ export function TextReveal({
   children,
   variant = "lines",
   stagger,
+  delay,
   scrub = false,
   className,
   as: Tag = "div",
@@ -41,6 +43,7 @@ export function TextReveal({
         gsap.fromTo(split.lines, textRevealLines.from, {
           ...textRevealLines.to,
           ...(stagger !== undefined && { stagger }),
+          ...(delay !== undefined && { delay }),
           scrollTrigger: {
             trigger: ref.current,
             ...textRevealLines.scrollTrigger,
@@ -56,6 +59,7 @@ export function TextReveal({
       gsap.fromTo(split.words, textRevealWords.from, {
         ...textRevealWords.to,
         ...(stagger !== undefined && { stagger }),
+        ...(delay !== undefined && { delay }),
         scrollTrigger: {
           trigger: ref.current,
           ...textRevealWords.scrollTrigger,
@@ -65,7 +69,7 @@ export function TextReveal({
 
       return () => split.revert();
     },
-    { scope: ref, dependencies: [reduced, variant, stagger, scrub] },
+    { scope: ref, dependencies: [reduced, variant, stagger, delay, scrub] },
   );
 
   return (
