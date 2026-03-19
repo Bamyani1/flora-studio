@@ -151,4 +151,33 @@ export const PLACEHOLDER_ABOUT = {
   bio: "A visual storyteller drawn to the quiet drama of light, shadow, and human presence. Every frame is a search for the cinematic in the everyday.",
   portrait: null,
   portraitBlur: null,
+  approach:
+    "I believe photography is an act of witnessing. My work lives in the space between stillness and motion — finding the extraordinary tension in ordinary moments. Light is not just illumination; it is language, and every shadow tells the other half of the story.",
+  services: [
+    {
+      title: "Personal",
+      description:
+        "Intimate portraits and personal projects that reveal character through light, environment, and unguarded moments.",
+    },
+    {
+      title: "Event",
+      description:
+        "Immersive coverage of cultural gatherings, performances, and celebrations — capturing the energy and emotion of shared experience.",
+    },
+    {
+      title: "Sports",
+      description:
+        "High-intensity sports photography that freezes peak action and the raw emotion of competition into lasting images.",
+    },
+    {
+      title: "Solo",
+      description:
+        "Solitary subjects in contemplative settings — exploring identity, stillness, and the quiet power of being seen.",
+    },
+  ],
+  socialLinks: [
+    { platform: "Instagram", url: "https://instagram.com/bamyanstoryworks" },
+    { platform: "Behance", url: "https://behance.net/bamyanstoryworks" },
+    { platform: "LinkedIn", url: "https://linkedin.com/company/bamyanstoryworks" },
+  ],
 };
