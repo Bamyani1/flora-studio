@@ -24,7 +24,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
         <input
           id={id}
           className={cn(
-            "peer w-full border-b bg-transparent pb-3 pt-1 text-text outline-none transition-colors duration-normal placeholder:text-muted/50",
+            "peer w-full border-b bg-transparent pb-3 pt-1 text-text outline-none transition-colors duration-normal placeholder:text-muted/50 min-h-[44px]",
             error ? "border-red-400" : "border-border",
           )}
           aria-invalid={error ? true : undefined}

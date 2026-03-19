@@ -4,7 +4,7 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={[
-        "flex flex-col items-center gap-12 px-[--container-padding-x] py-[--section-padding-y] md:py-[--section-padding-y]",
+        "flex flex-col items-center gap-12 px-[--container-padding-x] py-[--section-padding-y]",
         className,
       ]
         .filter(Boolean)
@@ -35,7 +35,7 @@ export function Footer({ className }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
-            className="font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-text"
+            className="min-h-[44px] inline-flex items-center font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-text"
           >
             {link.label}
           </a>

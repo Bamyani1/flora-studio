@@ -35,7 +35,7 @@ export function Select({
         <select
           id={id}
           className={cn(
-            "peer w-full appearance-none border-b bg-transparent pb-3 pt-1 pr-8 text-text outline-none transition-colors duration-normal",
+            "peer w-full appearance-none border-b bg-transparent pb-3 pt-1 pr-8 text-text outline-none transition-colors duration-normal min-h-[44px]",
             error ? "border-red-400" : "border-border",
           )}
           style={{

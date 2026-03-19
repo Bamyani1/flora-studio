@@ -51,12 +51,12 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
     <div>
       {/* Filter tabs */}
       <FadeIn>
-        <div className="mb-[--space-12] flex gap-[--space-6]">
+        <div className="mb-[--space-12] flex flex-wrap gap-[--space-6]">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => handleFilter(cat)}
-              className={`font-mono text-xs uppercase tracking-wider transition-colors ${
+              className={`min-h-[44px] inline-flex items-center font-mono text-xs uppercase tracking-wider transition-colors ${
                 activeFilter === cat
                   ? "border-b-2 border-primary text-text-heading"
                   : "text-muted hover:text-text"

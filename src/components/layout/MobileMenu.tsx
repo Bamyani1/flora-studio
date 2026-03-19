@@ -61,6 +61,9 @@ export function MobileMenu() {
       // Show container
       gsap.set(containerRef.current, { autoAlpha: 1, pointerEvents: "auto" });
 
+      // Enable will-change for animation performance
+      if (backdropRef.current) backdropRef.current.style.willChange = "transform, opacity";
+
       const tl = gsap.timeline();
 
       // Backdrop fade in
@@ -82,6 +85,8 @@ export function MobileMenu() {
           if (containerRef.current) {
             gsap.set(containerRef.current, { autoAlpha: 0, pointerEvents: "none" });
           }
+          // Reset will-change
+          if (backdropRef.current) backdropRef.current.style.willChange = "auto";
           // Unlock scroll
           lenis?.start();
         },
@@ -162,7 +167,7 @@ export function MobileMenu() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.label}
-              className="font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-text"
+              className="min-h-[44px] inline-flex items-center font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-text"
             >
               {link.label}
             </a>

@@ -59,7 +59,7 @@ export function Header({ className }: { className?: string }) {
       {/* Mobile hamburger */}
       <button
         type="button"
-        className="flex flex-col gap-1.5 md:hidden"
+        className="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-1.5 md:hidden"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-expanded={menuOpen}
         aria-controls="mobile-menu"
