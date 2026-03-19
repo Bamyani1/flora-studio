@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { client } from "@/sanity/client";
 import {
   ALBUM_BY_SLUG_QUERY,
@@ -12,16 +11,9 @@ import {
 } from "@/lib/placeholder-data";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
+import { HorizontalScrollGallery } from "@/components/sections/HorizontalScrollGallery";
 import { TextReveal } from "@/components/animations/TextReveal";
 import type { Album, AlbumMeta } from "@/types/project";
-
-const HorizontalScrollGallery = dynamic(
-  () =>
-    import("@/components/sections/HorizontalScrollGallery").then(
-      (m) => m.HorizontalScrollGallery,
-    ),
-  { ssr: false },
-);
 
 async function getAlbumWithNav(slug: string) {
   let album: Album | null = null;
@@ -139,7 +131,7 @@ export default async function AlbumPage({
         <HorizontalScrollGallery images={album.images} />
       )}
 
-      <AlbumNav previous={previous} next={next} />
+      <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>
   );
 }
