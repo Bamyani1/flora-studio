@@ -10,7 +10,9 @@ export function CategoriesStrip() {
         {CATEGORIES.map((label, i) => (
           <div key={label} className="flex items-center gap-0">
             {i > 0 && (
-              <ClipReveal direction="left" className="hidden h-12 w-[1px] bg-border md:block" />
+              <ClipReveal direction="left" className="hidden md:block">
+                <div className="h-12 w-[1px] bg-border" />
+              </ClipReveal>
             )}
             <FadeIn delay={i * 0.1} className="flex-1 text-center">
               <span className="font-mono text-xs uppercase tracking-widest text-muted">
