@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { instrumentSerif, satoshi, jetbrainsMono } from "@/lib/fonts";
 import { Providers } from "@/providers/Providers";
+import { TransitionOverlay } from "@/components/layout/TransitionOverlay";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${instrumentSerif.variable} ${satoshi.variable} ${jetbrainsMono.variable}`}
     >
       <body className="grain-overlay bg-background font-body text-text antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <TransitionOverlay />
+        </Providers>
       </body>
     </html>
   );
