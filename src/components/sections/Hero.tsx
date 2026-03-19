@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
-import { heroSequence } from "@/lib/animations";
+import { heroSequence, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ScrollIndicator } from "@/components/layout/ScrollIndicator";
 
@@ -43,7 +43,7 @@ export function Hero({
       // Set initial hidden states before timeline builds
       if (scrollIndicator) gsap.set(scrollIndicator, { autoAlpha: 0 });
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline(withWillChange());
       let split: SplitText | null = null;
 
       // Step 1 (pos 0.2): Rule line
@@ -100,7 +100,7 @@ export function Hero({
       {/* Background image */}
       <div className="hero-image absolute inset-0" style={{ opacity: 0, visibility: "hidden" }}>
         {imageUrl ? (
-          <Image src={imageUrl} alt="" fill priority className="object-cover" />
+          <Image src={imageUrl} alt="" fill priority className="object-cover" sizes="100vw" />
         ) : (
           <div className="h-full w-full bg-gradient-to-b from-surface via-background to-background" />
         )}

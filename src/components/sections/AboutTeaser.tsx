@@ -13,7 +13,7 @@ interface AboutTeaserProps {
 
 export function AboutTeaser({ bio, portraitUrl, portraitBlur }: AboutTeaserProps) {
   return (
-    <section className="px-[--container-padding-x] py-[--section-padding-y] md:py-[--section-padding-y]">
+    <section className="px-[--container-padding-x] py-[--section-padding-y]">
       <div className="mx-auto grid max-w-[--max-width-content] grid-cols-1 gap-12 md:grid-cols-2 md:gap-[--grid-gap]">
         {/* Left: Portrait */}
         <ParallaxSection speed={0.08}>
@@ -24,6 +24,7 @@ export function AboutTeaser({ bio, portraitUrl, portraitBlur }: AboutTeaserProps
                 alt="Portrait"
                 fill
                 className="object-cover"
+                sizes="(min-width: 768px) 50vw, 100vw"
                 placeholder={portraitBlur ? "blur" : undefined}
                 blurDataURL={portraitBlur ?? undefined}
               />

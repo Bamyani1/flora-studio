@@ -37,6 +37,10 @@ export function HorizontalScrollGallery({
             scrub: 1,
             end: () => "+=" + track.scrollWidth,
             invalidateOnRefresh: true,
+            onEnter: () => { track.style.willChange = "transform"; },
+            onLeaveBack: () => { track.style.willChange = "auto"; },
+            onLeave: () => { track.style.willChange = "auto"; },
+            onEnterBack: () => { track.style.willChange = "transform"; },
           },
         });
       });
@@ -64,6 +68,7 @@ export function HorizontalScrollGallery({
                   width={1200}
                   height={800}
                   className="h-auto w-full object-cover md:h-full md:w-auto"
+                  sizes="(min-width: 768px) 60vw, 90vw"
                   placeholder={img.blurDataURL ? "blur" : undefined}
                   blurDataURL={img.blurDataURL}
                 />
