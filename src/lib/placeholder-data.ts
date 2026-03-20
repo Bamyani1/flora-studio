@@ -221,8 +221,8 @@ export const PLACEHOLDER_ABOUT = {
     },
   ],
   socialLinks: [
-    { platform: "Instagram", url: "https://instagram.com/silkstudio" },
-    { platform: "Behance", url: "https://behance.net/silkstudio" },
-    { platform: "LinkedIn", url: "https://linkedin.com/company/silkstudio" },
+    { platform: "Instagram", url: "https://instagram.com/silkroadstudio" },
+    { platform: "Behance", url: "https://behance.net/silkroadstudio" },
+    { platform: "LinkedIn", url: "https://linkedin.com/company/silkroadstudio" },
   ],
 };

@@ -15,7 +15,7 @@ export function isNavItemActive(pathname: string, href: string) {
 }
 
 export const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://instagram.com/silkstudio", icon: "instagram" },
-  { label: "Behance", href: "https://behance.net/silkstudio", icon: "behance" },
-  { label: "LinkedIn", href: "https://linkedin.com/company/silkstudio", icon: "linkedin" },
+  { label: "Instagram", href: "https://instagram.com/silkroadstudio", icon: "instagram" },
+  { label: "Behance", href: "https://behance.net/silkroadstudio", icon: "behance" },
+  { label: "LinkedIn", href: "https://linkedin.com/company/silkroadstudio", icon: "linkedin" },
 ] as const;

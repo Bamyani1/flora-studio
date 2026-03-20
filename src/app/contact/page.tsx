@@ -9,7 +9,7 @@ import { InlineContactForm } from "@/components/ui/InlineContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Silk Studio. Available for landscape, night sky, sports, portrait, and travel photography projects.",
+    "Get in touch with Silk Road Studio. Available for landscape, night sky, sports, portrait, and travel photography projects.",
 };
 
 function SocialIcon({ icon }: { icon: string }) {
@@ -100,7 +100,7 @@ export default function ContactPage() {
                 <span className="block font-label text-[10px] uppercase tracking-[0.4em] text-primary mb-8">
                   Location
                 </span>
-                <h3 className="font-display text-2xl text-text mb-3">Silk Studio</h3>
+                <h3 className="font-display text-2xl text-text mb-3">Silk Road Studio</h3>
                 <p className="text-sm text-muted leading-relaxed tracking-wide">
                   Dayton, Ohio
                   <br />
@@ -122,10 +122,10 @@ export default function ContactPage() {
                   +93 70 000 0000
                 </a>
                 <a
-                  href="mailto:hello@silkstudio.com"
+                  href="mailto:hello@silkroadstudio.com"
                   className="block text-sm text-text-heading transition-colors duration-300 hover:text-primary mb-4"
                 >
-                  hello@silkstudio.com
+                  hello@silkroadstudio.com
                 </a>
                 <div className="mt-12 flex space-x-6">
                   {SOCIAL_LINKS.map((link) => (

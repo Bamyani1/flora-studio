@@ -28,7 +28,7 @@ export function QuoteBlock() {
         {/* Attribution */}
         <FadeIn delay={0.4}>
           <cite className="mt-8 block font-label text-sm not-italic tracking-wider text-muted">
-            — SILK STUDIO
+            — SILK ROAD STUDIO
           </cite>
         </FadeIn>
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-const SITE_NAME = "Silk Studio";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkstudio.com";
+const SITE_NAME = "Silk Road Studio";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkroadstudio.com";
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -36,9 +36,9 @@ export function localBusinessJsonLd() {
     url: SITE_URL,
     image: `${SITE_URL}/opengraph-image`,
     sameAs: [
-      "https://instagram.com/silkstudio",
-      "https://behance.net/silkstudio",
-      "https://linkedin.com/company/silkstudio",
+      "https://instagram.com/silkroadstudio",
+      "https://behance.net/silkroadstudio",
+      "https://linkedin.com/company/silkroadstudio",
     ],
   };
 }
@@ -69,13 +69,13 @@ export function personJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Silk Studio",
+    name: "Silk Road Studio",
     jobTitle: "Photographer & Visual Storyteller",
     url: `${SITE_URL}/about`,
     sameAs: [
-      "https://instagram.com/silkstudio",
-      "https://behance.net/silkstudio",
-      "https://linkedin.com/company/silkstudio",
+      "https://instagram.com/silkroadstudio",
+      "https://behance.net/silkroadstudio",
+      "https://linkedin.com/company/silkroadstudio",
     ],
   };
 }

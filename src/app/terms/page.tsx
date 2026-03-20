@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Interim terms for Silk Studio while the full legal language is being finalized.",
+  description: "Interim terms for Silk Road Studio while the full legal language is being finalized.",
 };
 
 const TERMS = [
   {
     title: "Portfolio Use",
     body:
-      "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Silk Studio and may not be reused without written permission.",
+      "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Silk Road Studio and may not be reused without written permission.",
   },
   {
     title: "Inquiry Expectations",
@@ -19,7 +19,7 @@ const TERMS = [
   {
     title: "Site Availability",
     body:
-      "Silk Studio may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
+      "Silk Road Studio may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
   },
   {
     title: "Interim Status",

@@ -6,7 +6,7 @@ import type { ProcessStep } from "@/components/process-reference/types";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "From ideation to curation — discover the methodology behind Silk Studio. Four phases that transform fleeting moments into deliberate, exhibition-grade compositions.",
+    "From ideation to curation — discover the methodology behind Silk Road Studio. Four phases that transform fleeting moments into deliberate, exhibition-grade compositions.",
 };
 
 const STEPS: ProcessStep[] = [
@@ -96,12 +96,12 @@ export default function ProcessPage() {
     <ProcessExperience
       heroImage={{
         src: "/images/out-west/hero.jpg",
-        alt: "Cinematic mountain landscape hero image for Silk Studio",
+        alt: "Cinematic mountain landscape hero image for Silk Road Studio",
         blurDataURL: getLocalBlur("/images/out-west/hero.jpg"),
       }}
       portraitImage={{
         src: "/images/portrait.jpg",
-        alt: "Portrait of the Silk Studio photographer",
+        alt: "Portrait of the Silk Road Studio photographer",
         blurDataURL: getLocalBlur("/images/portrait.jpg"),
       }}
       steps={STEPS}

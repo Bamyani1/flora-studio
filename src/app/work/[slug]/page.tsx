@@ -89,7 +89,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — a photography album by Silk Studio.`,
+    description: description ?? `${title} — a photography album by Silk Road Studio.`,
   };
 }
 

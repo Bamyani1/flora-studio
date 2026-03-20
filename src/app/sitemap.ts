@@ -3,7 +3,7 @@ import { client } from "@/sanity/client";
 import { ALBUM_SLUGS_QUERY } from "@/sanity/queries";
 import { PLACEHOLDER_ALL_ALBUMS } from "@/lib/placeholder-data";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkstudio.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkroadstudio.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let slugs: { slug: string }[] = [];

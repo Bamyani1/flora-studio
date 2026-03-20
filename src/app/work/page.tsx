@@ -9,7 +9,7 @@ import type { AlbumMeta } from "@/types/project";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Browse photography albums by Silk Studio. Landscape, night sky, sports, portrait, and travel photography.",
+    "Browse photography albums by Silk Road Studio. Landscape, night sky, sports, portrait, and travel photography.",
 };
 
 async function getAllAlbums(): Promise<AlbumMeta[]> {

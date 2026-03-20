@@ -13,7 +13,7 @@ export function Footer({ className }: { className?: string }) {
     >
       {/* Logo */}
       <span className="font-display text-[length:var(--text-logo)] font-normal uppercase tracking-[var(--tracking-hero)] text-text-heading">
-        Silk Studio
+        Silk Road Studio
       </span>
 
       {/* Links row */}
@@ -46,7 +46,7 @@ export function Footer({ className }: { className?: string }) {
 
       {/* Copyright */}
       <p className="font-label text-xs text-muted">
-        &copy; {new Date().getFullYear()} Silk Studio
+        &copy; {new Date().getFullYear()} Silk Road Studio
       </p>
     </footer>
   );

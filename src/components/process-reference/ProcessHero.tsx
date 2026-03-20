@@ -76,7 +76,7 @@ export function ProcessHero({ image }: ProcessHeroProps) {
           }}
           className="mb-6 block font-label text-xs uppercase tracking-[0.4em] text-[var(--process-primary)]"
         >
-          Silk Studio Process
+          Silk Road Studio Process
         </m.span>
         <m.h1
           variants={{

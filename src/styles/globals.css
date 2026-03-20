@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /* ============================================
-   SILK STUDIO — Design Token System
+   SILK ROAD STUDIO — Design Token System
    ============================================ */
 
 @theme {
-  /* --- Colors: Silk Studio Palette --- */
+  /* --- Colors: Silk Road Studio Palette --- */
   --color-background: #121212;
   --color-surface: #1a1a1a;
   --color-surface-elevated: #222222;
@@ -59,7 +59,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
-  --tracking-hero: 0.12em; /* SILK STUDIO wordmark spacing (brand guidelines: 0.12em) */
+  --tracking-hero: 0.12em; /* SILK ROAD STUDIO wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
   --leading-none: 1;

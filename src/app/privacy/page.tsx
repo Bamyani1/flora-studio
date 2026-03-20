@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "Interim privacy details for Silk Studio while the full policy is being finalized.",
+  description: "Interim privacy details for Silk Road Studio while the full policy is being finalized.",
 };
 
 const SECTIONS = [
   {
     title: "What We Collect",
     body:
-      "Silk Studio currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
+      "Silk Road Studio currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
   },
   {
     title: "How It Is Used",

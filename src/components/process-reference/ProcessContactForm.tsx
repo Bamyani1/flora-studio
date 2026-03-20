@@ -90,7 +90,7 @@ export function ProcessContactForm() {
           Session initiated
         </h3>
         <p className="mt-4 font-body leading-relaxed text-neutral-400">
-          Your inquiry is in. Silk Studio will follow up shortly with next steps.
+          Your inquiry is in. Silk Road Studio will follow up shortly with next steps.
         </p>
         <button
           ref={resetRef}

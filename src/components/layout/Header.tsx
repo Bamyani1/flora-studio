@@ -41,7 +41,7 @@ export function Header({ className }: { className?: string }) {
         href="/"
         className="font-display text-[length:var(--text-logo)] font-light uppercase tracking-[var(--tracking-logo-process)] text-[var(--color-header-link-active)]"
       >
-        Silk Studio
+        Silk Road Studio
       </TransitionLink>
 
       {/* Desktop nav */}
