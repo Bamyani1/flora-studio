@@ -26,7 +26,7 @@ export const textRevealWords = {
   splitConfig: { type: "words" } as const,
   from: { opacity: 0.15 },
   to: { opacity: 1, stagger: 0.05 },
-  scrollTrigger: { start: "top 80%", end: "bottom 20%", scrub: 1 },
+  scrollTrigger: { start: "top 80%", end: "bottom 20%", scrub: 0.3 },
 };
 
 // --------------------------------------------------
@@ -59,7 +59,7 @@ export const imageReveal = {
     from: { scale: 1.3 },
     to: { scale: 1, duration: 1.2, ease: easings.smooth },
   },
-  overlayColor: "#7B93B0",
+  overlayColor: "#ff4d00",
   scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
 };
 
@@ -187,7 +187,7 @@ export const sharedElementMorph = {
 };
 
 // --------------------------------------------------
-// heroSequence — Homepage hero load-in choreography (~3.5s)
+// heroSequence — (legacy) Homepage hero load-in choreography (~3.5s)
 // --------------------------------------------------
 export const heroSequence = {
   steps: [
@@ -237,19 +237,131 @@ export const heroSequence = {
 };
 
 // --------------------------------------------------
+// heroArchiveSequence — Brutalist hero choreography (~3.5s)
+// --------------------------------------------------
+export const heroArchiveSequence = {
+  steps: [
+    {
+      target: ".hero-image",
+      from: { autoAlpha: 0, scale: 1.1 },
+      to: { autoAlpha: 1, scale: 1, duration: 1.2, ease: "power2.out" },
+      position: 0,
+    },
+    {
+      target: ".hero-label",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
+      position: 0.4,
+    },
+    {
+      target: ".hero-title-line",
+      animation: "textRevealLines" as const,
+      stagger: 0.12,
+      position: 0.7,
+    },
+    {
+      target: ".hero-title-stroke",
+      animation: "textRevealLines" as const,
+      stagger: 0.12,
+      position: 0.9,
+    },
+    {
+      target: ".hero-description",
+      from: { autoAlpha: 0, y: 20 },
+      to: { autoAlpha: 1, y: 0, duration: 0.6, ease: easings.smooth },
+      position: 1.8,
+    },
+    {
+      target: ".hero-cta",
+      from: { autoAlpha: 0, y: 20 },
+      to: { autoAlpha: 1, y: 0, duration: 0.5, ease: easings.smooth },
+      position: 2.2,
+    },
+    {
+      target: ".scroll-indicator",
+      animation: "scrollIndicatorPulse" as const,
+      position: 2.8,
+    },
+  ],
+  totalDuration: 3.5,
+};
+
+// --------------------------------------------------
+// collectionCardReveal — Orange overlay wipe + clip-path reveal + label fade
+// --------------------------------------------------
+export const collectionCardReveal = {
+  overlay: {
+    from: { scaleX: 1, transformOrigin: "left center" },
+    to: { scaleX: 0, transformOrigin: "right center", duration: 0.8, ease: easings.smoothInOut },
+  },
+  image: {
+    from: { clipPath: "inset(0% 100% 0% 0%)" },
+    to: { clipPath: "inset(0% 0% 0% 0%)", duration: 1.0, ease: easings.smooth },
+  },
+  label: {
+    from: { y: 15, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 0.6, ease: easings.smooth },
+  },
+  stagger: 0.15,
+  labelDelay: 0.6,
+  overlayColor: "#ff4d00",
+  scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
+};
+
+// --------------------------------------------------
+// exhibitionParallax — Scroll-driven image scale for exhibition section
+// --------------------------------------------------
+export const exhibitionParallax = {
+  from: { scale: 1.1 },
+  to: { scale: 1, ease: "none" },
+  scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
+};
+
+// --------------------------------------------------
+// timelinePhaseReveal — Process page timeline phase entrance
+// --------------------------------------------------
+export const timelinePhaseReveal = {
+  // Individual text children fade+rise (replaces whole-block x-slide)
+  textChild: {
+    from: { autoAlpha: 0, y: 20 },
+    to: { autoAlpha: 1, y: 0, duration: 0.6, ease: easings.smooth },
+  },
+  textStagger: 0.2,
+  // Badge: spring-like elastic entrance
+  badge: {
+    from: { scale: 0, autoAlpha: 0 },
+    to: { scale: 1, autoAlpha: 1, duration: 0.6, ease: "elastic.out(1, 0.5)" },
+  },
+  // Image: opacity + x-slide from the side (not clip-path)
+  image: {
+    from: { autoAlpha: 0, x: 50 },
+    to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
+  },
+  imageReverse: {
+    from: { autoAlpha: 0, x: -50 },
+    to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
+  },
+  scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
+};
+
+// --------------------------------------------------
 // withWillChange — Managed will-change via GSAP callbacks
 // Sets will-change on animation start, resets to "auto" on complete.
 // --------------------------------------------------
 export function withWillChange(props = "transform, opacity") {
   return {
-    onStart(this: gsap.core.Tween) {
-      for (const el of this.targets() as HTMLElement[]) {
-        el.style.willChange = props;
+    onStart(this: gsap.core.Tween | gsap.core.Timeline) {
+      if (typeof (this as gsap.core.Tween).targets === "function") {
+        for (const el of (this as gsap.core.Tween).targets() as HTMLElement[]) {
+          el.style.willChange = props;
+        }
       }
     },
-    onComplete(this: gsap.core.Tween) {
-      for (const el of this.targets() as HTMLElement[]) {
-        el.style.willChange = "auto";
+    onComplete(this: gsap.core.Tween | gsap.core.Timeline) {
+      if (typeof (this as gsap.core.Tween).targets === "function") {
+        for (const el of (this as gsap.core.Tween).targets() as HTMLElement[]) {
+          el.style.willChange = "auto";
+        }
       }
     },
   };
@@ -277,5 +389,8 @@ export const reducedMotionFallbacks = {
   pageTransitionEnter: "instant opacity 1, no overlay reveal",
   sharedElementMorph: "disabled — standard instant transition",
   heroSequence: "all elements visible immediately, no choreography",
-  horizontalScrollGallery: "converted to vertical flowing gallery, no pin",
+  heroArchiveSequence: "all elements visible immediately, no choreography",
+  collectionCardReveal: "overlay scaleX: 0, clip-path fully open, labels visible immediately",
+  exhibitionParallax: "disabled — no scroll-driven scale",
+  timelinePhaseReveal: "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
 } as const;

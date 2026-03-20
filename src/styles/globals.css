@@ -1,45 +1,47 @@
 @import "tailwindcss";
 
 /* ============================================
-   BAMYAN STORYWORKS — Design Token System
+   SILK STUDIO — Design Token System
    ============================================ */
 
 @theme {
-  /* --- Colors: "Fog" Palette --- */
-  --color-background: #0C0F14;
-  --color-surface: #161B24;
-  --color-surface-elevated: #1C2230;
-  --color-primary: #7B93B0;
-  --color-primary-muted: #5A7091;
-  --color-accent: #7B93B0;
-  --color-text: #D4D4D8;
-  --color-text-heading: #E8E8EC;
-  --color-muted: #64748B;
-  --color-border: #1E2736;
-  --color-border-hover: #2A3548;
-  --color-overlay: rgba(12, 15, 20, 0.85);
-  --color-overlay-solid: #0C0F14;
+  /* --- Colors: Silk Studio Palette --- */
+  --color-background: #121212;
+  --color-surface: #1a1a1a;
+  --color-surface-elevated: #222222;
+  --color-surface-lowest: #050505;
+  --color-primary: #c4973b;
+  --color-primary-muted: #a07830;
+  --color-accent: #c4973b;
+  --color-text: #f5f0eb;
+  --color-text-heading: #f5f0eb;
+  --color-muted: #8b7355;
+  --color-border: #2e2e2e;
+  --color-border-hover: #3a3a3a;
+  --color-overlay: rgba(18, 18, 18, 0.85);
+  --color-overlay-solid: #121212;
 
   /* --- Typography: Font Families --- */
-  --font-display: "Instrument Serif", "Georgia", "Times New Roman", serif;
-  --font-body: "Satoshi", "system-ui", "-apple-system", "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  --font-display: "Berlingske Serif", "Georgia", serif;
+  --font-body: "Inter", "system-ui", "-apple-system", sans-serif;
+  --font-label: "Inter", "system-ui", "-apple-system", sans-serif;
 
   /* --- Typography: Type Scale (Major Third — 1.25 ratio) --- */
-  --text-xs: 0.75rem;       /* 12px */
-  --text-sm: 0.875rem;      /* 14px */
-  --text-base: 1rem;         /* 16px */
-  --text-lg: 1.125rem;       /* 18px */
-  --text-xl: 1.25rem;        /* 20px */
-  --text-2xl: 1.5rem;        /* 24px */
-  --text-3xl: 2rem;          /* 32px */
-  --text-4xl: 2.5rem;        /* 40px */
-  --text-5xl: 3.5rem;        /* 56px */
-  --text-6xl: 4.5rem;        /* 72px */
-  --text-7xl: 6rem;          /* 96px */
-  --text-hero: 8rem;         /* 128px — hero display size */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 2rem; /* 32px */
+  --text-4xl: 2.5rem; /* 40px */
+  --text-5xl: 3.5rem; /* 56px */
+  --text-6xl: 4.5rem; /* 72px */
+  --text-7xl: 6rem; /* 96px */
+  --text-hero: 8rem; /* 128px — hero display size */
   --text-hero-mobile: 3.5rem; /* 56px — hero on mobile */
-  --text-footer-cta: 5rem;   /* 80px — footer CTA */
+  --text-hero-display: clamp(3rem, 13vw, 12rem); /* THE ARCHIVE size */
+  --text-footer-cta: 5rem; /* 80px — footer CTA */
 
   /* --- Typography: Font Weights --- */
   --font-thin: 200;
@@ -57,7 +59,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
-  --tracking-hero: 0.06em;   /* BAMYAN wordmark spacing */
+  --tracking-hero: 0.12em; /* SILK STUDIO wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
   --leading-none: 1;
@@ -67,18 +69,18 @@
   --leading-relaxed: 1.75;
 
   /* --- Spacing: Base unit 4px × multiplier --- */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-24: 6rem;     /* 96px */
-  --space-32: 8rem;     /* 128px */
-  --space-48: 12rem;    /* 192px */
-  --space-64: 16rem;    /* 256px */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-24: 6rem; /* 96px */
+  --space-32: 8rem; /* 128px */
+  --space-48: 12rem; /* 192px */
+  --space-64: 16rem; /* 256px */
 
   /* --- Motion: Duration Tokens --- */
   --duration-instant: 100ms;
@@ -89,28 +91,57 @@
   --duration-hero: 3500ms;
 
   /* --- Motion: Easing Tokens (CSS cubic-bezier + GSAP equivalents in comments) --- */
-  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);             /* GSAP: power3.out */
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);          /* GSAP: power2.inOut */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);         /* GSAP: expo.out */
-  --ease-out-circ: cubic-bezier(0, 0.55, 0.45, 1);        /* GSAP: circ.out */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* GSAP: power3.out */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* GSAP: power2.inOut */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* GSAP: expo.out */
+  --ease-out-circ: cubic-bezier(0, 0.55, 0.45, 1); /* GSAP: circ.out */
 
   /* --- Borders --- */
   --radius-none: 0;
-  --radius-sm: 0.25rem;    /* 4px */
-  --radius-md: 0.5rem;     /* 8px */
-  --radius-lg: 0.75rem;    /* 12px */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
   --radius-full: 9999px;
 
   /* --- Layout --- */
-  --max-width: 90rem;       /* 1440px */
+  --max-width: 90rem; /* 1440px */
   --max-width-content: 72rem; /* 1152px */
-  --max-width-narrow: 48rem;  /* 768px */
-  --grid-gap: 1.5rem;       /* 24px */
+  --max-width-narrow: 48rem; /* 768px */
+  --grid-gap: 1.5rem; /* 24px */
   --section-padding-y: 8rem; /* 128px vertical section spacing */
   --section-padding-y-mobile: 4rem; /* 64px on mobile */
   --container-padding-x: 2rem; /* 32px horizontal page padding */
   --container-padding-x-mobile: 1rem; /* 16px on mobile */
-  --header-height: 5rem;    /* 80px */
+  --header-height: 3.5rem; /* 56px */
+
+  /* --- Material Design Color Tokens (About page) --- */
+  --color-surface-container-lowest: #0e0e0e;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #d1c5b4;
+  --color-outline-variant: #4e4639;
+  --color-on-primary: #412d00;
+
+  /* --- Header --- */
+  --color-header-bg: rgba(18, 18, 18, 0.85);
+  --color-header-bg-strong: rgba(18, 18, 18, 0.7);
+  --color-header-border: rgba(255, 255, 255, 0.12);
+  --color-header-border-soft: rgba(255, 255, 255, 0.05);
+  --color-header-link-active: #e5e2e1;
+  --color-header-link-muted: #d1c5b4;
+  --color-header-cta-bg: #e9c176;
+  --color-header-cta-bg-hover: #c5a059;
+  --color-header-cta-text: #412d00;
+  --text-logo: 1.25rem;
+  --text-nav: 0.8125rem;
+  --tracking-logo-process: 0.2em;
+  --tracking-nav-process: 0.06em;
+}
+
+/* Runtime alias: font-label uses the same loaded font as font-body */
+@layer base {
+  html {
+    --font-label: var(--font-body);
+  }
 }
 
 /* --- Responsive Layout Token Overrides --- */
@@ -126,17 +157,46 @@
   }
 }
 
+/* --- About Page Scoped Theme --- */
+.about-theme {
+  --color-primary: #e9c176;
+}
+
+/* --- Film Reel Border Effect --- */
+.film-reel-border {
+  border-left: 1px solid rgba(78, 70, 57, 0.1);
+  border-right: 1px solid rgba(78, 70, 57, 0.1);
+}
+
+/* --- Scene Divider --- */
+.scene-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-primary-muted) 20%,
+    var(--color-primary-muted) 80%,
+    transparent
+  );
+  opacity: 0.15;
+}
+
+/* --- Team Card Cinematic Shift --- */
+.team-card-shift {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* --- Film Grain Overlay --- */
 .grain-overlay::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: -1;
   pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  background-image: url("/images/grain.png");
   background-repeat: repeat;
-  mix-blend-mode: overlay;
+  background-size: 256px 256px;
 }
 
 /* --- Reduced Motion Preferences --- */
@@ -155,6 +215,7 @@
 html {
   background-color: var(--color-background);
   color: var(--color-text);
+  position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -182,30 +243,10 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* --- Header --- */
-.header-scrolled {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: rgba(12, 15, 20, 0.6);
-}
-
-/* --- Nav Link Hover Underline --- */
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background-color: var(--color-primary);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.3s var(--ease-out);
-}
-
-.nav-link:hover::after,
-.nav-link:focus-visible::after {
-  transform: scaleX(1);
+/* --- Text Stroke Utility --- */
+.text-stroke {
+  -webkit-text-stroke: 2px rgba(245, 240, 235, 0.4);
+  -webkit-text-fill-color: transparent;
 }
 
 /* --- Focus Visible — consistent keyboard focus ring --- */
@@ -213,4 +254,38 @@ a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 4px;
+}
+
+/* --- Cinematic Vignette Overlay --- */
+.cinematic-vignette {
+  background: radial-gradient(circle, transparent 20%, rgba(18, 18, 18, 0.8) 100%);
+}
+
+/* --- Timeline Vertical Rule --- */
+.timeline-rule {
+  position: relative;
+}
+
+.timeline-rule::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-primary-muted) 10%,
+    var(--color-primary-muted) 90%,
+    transparent
+  );
+  opacity: 0.3;
+  z-index: 0;
+}
+
+@media (min-width: 768px) {
+  .timeline-rule::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }

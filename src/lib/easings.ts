@@ -7,5 +7,3 @@ export const easings = {
   exit: "power2.in",
   stateChange: "power2.inOut",
 } as const;
-
-export type EasingToken = keyof typeof easings;
