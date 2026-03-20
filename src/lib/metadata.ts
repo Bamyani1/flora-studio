@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
-const SITE_NAME = "Bamyan Storyworks";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bamyanstoryworks.com";
+const SITE_NAME = "Silk Studio";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkstudio.com";
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Photography for moments that matter`,
+    default: `${SITE_NAME} — Cinematic photography for the stories that matter`,
     template: `%s — ${SITE_NAME}`,
   },
   description:
-    "Cinematic photography studio specializing in personal, event, sports, and solo photography. Based in Bamyan, Afghanistan.",
+    "Cinematic photography studio specializing in landscape, night sky, sports, portrait, and travel photography.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -32,18 +32,13 @@ export function localBusinessJsonLd() {
     "@type": "LocalBusiness",
     name: SITE_NAME,
     description:
-      "Cinematic photography studio specializing in personal, event, sports, and solo photography.",
+      "Cinematic photography studio specializing in landscape, night sky, sports, portrait, and travel photography.",
     url: SITE_URL,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bamyan",
-      addressCountry: "AF",
-    },
     image: `${SITE_URL}/opengraph-image`,
     sameAs: [
-      "https://instagram.com/bamyanstoryworks",
-      "https://behance.net/bamyanstoryworks",
-      "https://linkedin.com/company/bamyanstoryworks",
+      "https://instagram.com/silkstudio",
+      "https://behance.net/silkstudio",
+      "https://linkedin.com/company/silkstudio",
     ],
   };
 }
@@ -74,13 +69,13 @@ export function personJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Bamyan Storyworks",
+    name: "Silk Studio",
     jobTitle: "Photographer & Visual Storyteller",
     url: `${SITE_URL}/about`,
     sameAs: [
-      "https://instagram.com/bamyanstoryworks",
-      "https://behance.net/bamyanstoryworks",
-      "https://linkedin.com/company/bamyanstoryworks",
+      "https://instagram.com/silkstudio",
+      "https://behance.net/silkstudio",
+      "https://linkedin.com/company/silkstudio",
     ],
   };
 }

@@ -10,7 +10,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   placeholder?: string;
 }
 
-const chevronSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`;
+const chevronSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A8E84' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`;
 
 export function Select({
   label,
@@ -27,7 +27,7 @@ export function Select({
     <div className={cn("relative", className)}>
       <label
         htmlFor={id}
-        className="mb-2 block font-mono text-xs uppercase tracking-wider text-muted"
+        className="mb-2 block font-label text-xs uppercase tracking-wider text-muted"
       >
         {label}
       </label>
@@ -35,8 +35,8 @@ export function Select({
         <select
           id={id}
           className={cn(
-            "peer w-full appearance-none border-b bg-transparent pb-3 pt-1 pr-8 text-text outline-none transition-colors duration-normal min-h-[44px]",
-            error ? "border-red-400" : "border-border",
+            "peer w-full appearance-none border border-border rounded-lg bg-surface-elevated px-4 pb-3 pt-3 pr-8 text-text outline-none transition-colors duration-normal min-h-[44px]",
+            error ? "border-error" : "border-border-hover",
           )}
           style={{
             backgroundImage: chevronSvg,
@@ -60,14 +60,14 @@ export function Select({
         <span
           className={cn(
             "absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-normal ease-out",
-            error ? "bg-red-400" : "bg-primary",
+            error ? "bg-error" : "bg-primary",
             "peer-focus:scale-x-100",
           )}
           aria-hidden="true"
         />
       </div>
       {error && (
-        <p id={errorId} className="mt-2 text-sm text-red-400" role="alert">
+        <p id={errorId} className="mt-2 text-sm text-error" role="alert">
           {error}
         </p>
       )}

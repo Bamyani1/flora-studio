@@ -3,17 +3,19 @@ export interface SanityImage {
   asset: {
     _ref: string;
     _type: "reference";
+    url?: string;
   };
   alt?: string;
   caption?: string;
   blurDataURL?: string;
+  url?: string;
 }
 
 export interface AlbumMeta {
   _id: string;
   title: string;
   slug: { current: string };
-  category: "personal" | "event" | "sports" | "solo";
+  category: "landscapes" | "nightsky" | "sports" | "portraits" | "stories";
   year?: number;
   location?: string;
   coverImage: SanityImage;

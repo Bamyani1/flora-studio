@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ImageReveal } from "@/components/animations/ImageReveal";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { CATEGORY_META } from "@/lib/categories";
 
 interface AlbumHeroProps {
   title: string;
@@ -22,7 +23,8 @@ export function AlbumHero({
   heroUrl,
   heroBlur,
 }: AlbumHeroProps) {
-  const metaParts = [category, year, location].filter(Boolean);
+  const categoryLabel = category ? (CATEGORY_META[category]?.label ?? category) : undefined;
+  const metaParts = [categoryLabel, year, location].filter(Boolean);
 
   return (
     <section className="relative h-screen overflow-hidden">
@@ -48,7 +50,7 @@ export function AlbumHero({
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
       {/* Content overlay */}
-      <div className="absolute inset-x-0 bottom-0 px-[--container-padding-x] pb-[--space-16]">
+      <div className="absolute inset-x-0 bottom-0 px-[var(--container-padding-x)] pb-[var(--space-16)]">
         <TextReveal
           variant="lines"
           as="h1"
@@ -60,7 +62,7 @@ export function AlbumHero({
 
         {metaParts.length > 0 && (
           <FadeIn delay={0.5}>
-            <p className="mt-[--space-4] font-mono text-sm uppercase tracking-wider text-muted">
+            <p className="mt-[var(--space-4)] font-label text-sm uppercase tracking-wider text-muted">
               {metaParts.join(" \u2022 ")}
             </p>
           </FadeIn>

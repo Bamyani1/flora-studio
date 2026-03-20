@@ -3,31 +3,33 @@ import { SOCIAL_LINKS } from "@/lib/navigation";
 export function Footer({ className }: { className?: string }) {
   return (
     <footer
+      data-footer
       className={[
-        "flex flex-col items-center gap-12 px-[--container-padding-x] py-[--section-padding-y]",
+        "flex flex-col items-center gap-8 px-[var(--container-padding-x)] py-[var(--section-padding-y)]",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      {/* CTA */}
-      <a
-        href="mailto:hello@bamyanstoryworks.com"
-        className="text-center font-display text-3xl text-text-heading transition-colors duration-300 hover:text-primary md:text-[length:var(--text-footer-cta)]"
-      >
-        Let&apos;s work together
-      </a>
+      {/* Logo */}
+      <span className="font-display text-[length:var(--text-logo)] font-normal uppercase tracking-[var(--tracking-hero)] text-text-heading">
+        Silk Studio
+      </span>
 
-      {/* Email */}
-      <a
-        href="mailto:hello@bamyanstoryworks.com"
-        className="font-body text-lg text-muted transition-colors hover:text-text"
-      >
-        hello@bamyanstoryworks.com
-      </a>
-
-      {/* Social links */}
-      <div className="flex gap-6">
+      {/* Links row */}
+      <div className="flex flex-wrap items-center justify-center gap-6">
+        <a
+          href="/privacy"
+          className="font-label text-xs text-muted transition-colors hover:text-text"
+        >
+          Privacy
+        </a>
+        <a
+          href="/terms"
+          className="font-label text-xs text-muted transition-colors hover:text-text"
+        >
+          Terms
+        </a>
         {SOCIAL_LINKS.map((link) => (
           <a
             key={link.label}
@@ -35,7 +37,7 @@ export function Footer({ className }: { className?: string }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
-            className="min-h-[44px] inline-flex items-center font-mono text-xs uppercase tracking-wider text-muted transition-colors hover:text-text"
+            className="font-label text-xs text-muted transition-colors hover:text-text"
           >
             {link.label}
           </a>
@@ -43,8 +45,8 @@ export function Footer({ className }: { className?: string }) {
       </div>
 
       {/* Copyright */}
-      <p className="font-mono text-xs text-muted">
-        &copy; {new Date().getFullYear()} Bamyan Storyworks. All rights reserved.
+      <p className="font-label text-xs text-muted">
+        &copy; {new Date().getFullYear()} Silk Studio
       </p>
     </footer>
   );

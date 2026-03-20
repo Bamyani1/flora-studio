@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { client } from "@/sanity/client";
 import {
   ALBUM_BY_SLUG_QUERY,
@@ -9,6 +10,7 @@ import {
   PLACEHOLDER_ALL_ALBUMS,
   PLACEHOLDER_ALBUM_MAP,
 } from "@/lib/placeholder-data";
+import { resolveImageUrl } from "@/lib/image-url";
 import { imageGalleryJsonLd } from "@/lib/metadata";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
@@ -87,7 +89,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — a photography album by Bamyan Storyworks.`,
+    description: description ?? `${title} — a photography album by Silk Studio.`,
   };
 }
 
@@ -99,15 +101,9 @@ export default async function AlbumPage({
   const { slug } = await params;
   const { album, previous, next } = await getAlbumWithNav(slug);
 
-  if (!album) {
-    return (
-      <main className="flex min-h-screen items-center justify-center">
-        <p className="text-muted">Album not found.</p>
-      </main>
-    );
-  }
+  if (!album) notFound();
 
-  const heroUrl = album.heroImage?.asset?._ref ? undefined : null;
+  const heroUrl = resolveImageUrl(album.heroImage);
 
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
@@ -132,8 +128,8 @@ export default async function AlbumPage({
       />
 
       {album.narrative && (
-        <section className="px-[--container-padding-x] py-[--section-padding-y]">
-          <div className="mx-auto max-w-[--max-width-narrow]">
+        <section className="px-[var(--container-padding-x)] py-[var(--section-padding-y)]">
+          <div className="mx-auto max-w-[var(--max-width-narrow)]">
             <TextReveal
               variant="words"
               scrub

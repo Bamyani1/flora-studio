@@ -1,0 +1,58 @@
+.page {
+  --process-surface: #131313;
+  --process-primary: #e9c176;
+  --process-primary-container: #c5a059;
+  --process-on-primary: #412d00;
+  --process-on-surface: #e5e2e1;
+  --process-on-surface-variant: #d1c5b4;
+  --process-outline-variant: #4e4639;
+  --process-surface-container: #201f1f;
+  --process-surface-container-low: #1c1b1b;
+  --process-surface-container-lowest: #0e0e0e;
+  position: relative;
+  overflow-x: hidden;
+  background: var(--process-surface);
+  color: var(--process-on-surface);
+}
+
+.page :global(*) {
+  box-sizing: border-box;
+}
+
+.cinematicVignette {
+  background: radial-gradient(circle, transparent 20%, rgba(14, 14, 14, 0.8) 100%);
+}
+
+.timelineRule {
+  position: relative;
+}
+
+.timelineRule::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(233, 193, 118, 0.3) 10%,
+    rgba(233, 193, 118, 0.3) 90%,
+    transparent
+  );
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  .timelineRule::before {
+    left: 20px;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    scroll-behavior: auto;
+  }
+}

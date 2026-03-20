@@ -1,11 +1,11 @@
 {
-  "name": "Bamyan Storyworks",
-  "short_name": "Bamyan",
-  "description": "Cinematic photography studio specializing in personal, event, sports, and solo photography.",
+  "name": "Silk Studio",
+  "short_name": "Silk Studio",
+  "description": "Cinematic photography studio specializing in landscape, night sky, sports, portrait, and travel photography.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0C0F14",
-  "theme_color": "#0C0F14",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "icons": [
     {
       "src": "/icon-192.png",

@@ -32,6 +32,7 @@ export function BackToTop() {
   return (
     <button
       ref={buttonRef}
+      data-back-to-top
       type="button"
       onClick={handleClick}
       aria-label="Back to top"

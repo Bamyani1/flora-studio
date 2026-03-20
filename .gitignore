@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# image optimization cache
+scripts/.image-cache.json
+
+# Non-source asset/work directories
+/pictures/
+/audit/
+/contact/
+/process/
+
+# Editor tooling
+

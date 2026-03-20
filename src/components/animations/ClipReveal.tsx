@@ -32,6 +32,9 @@ export function ClipReveal({
         return;
       }
 
+      // Set initial hidden state via GSAP so content is visible if JS hasn't run
+      gsap.set(ref.current, { clipPath: preset.from.clipPath });
+
       gsap.fromTo(ref.current, preset.from, {
         ...preset.to,
         scrollTrigger: {
@@ -44,7 +47,7 @@ export function ClipReveal({
   );
 
   return (
-    <Tag ref={ref} className={className} style={{ clipPath: preset.from.clipPath }}>
+    <Tag ref={ref} className={className}>
       {children}
     </Tag>
   );

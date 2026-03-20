@@ -4,19 +4,17 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
-import { heroSequence, withWillChange } from "@/lib/animations";
+import { heroArchiveSequence, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { TransitionLink } from "@/components/layout/TransitionLink";
 import { ScrollIndicator } from "@/components/layout/ScrollIndicator";
 
 interface HeroProps {
   imageUrl?: string | null;
-  tagline?: string;
+  blurDataURL?: string | null;
 }
 
-export function Hero({
-  imageUrl,
-  tagline = "Cinematic photography for the stories that matter",
-}: HeroProps) {
+export function Hero({ imageUrl, blurDataURL }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
@@ -25,37 +23,49 @@ export function Hero({
       const el = containerRef.current;
       if (!el) return;
 
-      const heroTitle = el.querySelector(".hero-title");
-      const heroRule = el.querySelector(".hero-rule");
-      const heroSubtitle = el.querySelector(".hero-subtitle-brand");
       const heroImage = el.querySelector(".hero-image");
-      const heroTagline = el.querySelector(".hero-tagline");
+      const heroLabel = el.querySelector(".hero-label");
+      const heroTitleLine = el.querySelector(".hero-title-line");
+      const heroTitleStroke = el.querySelector(".hero-title-stroke");
+      const heroDescription = el.querySelector(".hero-description");
+      const heroCta = el.querySelector(".hero-cta");
       const scrollIndicator = el.querySelector(".scroll-indicator");
 
       if (reduced) {
-        gsap.set([heroTitle, heroRule, heroSubtitle, heroImage, heroTagline, scrollIndicator].filter(Boolean), {
-          autoAlpha: 1,
-        });
-        if (heroRule) gsap.set(heroRule, { scaleX: 1 });
+        gsap.set(
+          [heroImage, heroLabel, heroTitleLine, heroTitleStroke, heroDescription, heroCta, scrollIndicator].filter(Boolean),
+          { autoAlpha: 1 },
+        );
         return;
       }
 
-      // Set initial hidden states before timeline builds
+      // Set initial hidden states
+      if (heroImage) gsap.set(heroImage, { autoAlpha: 0, scale: 1.1 });
+      if (heroLabel) gsap.set(heroLabel, { autoAlpha: 0 });
+      if (heroDescription) gsap.set(heroDescription, { autoAlpha: 0, y: 20 });
+      if (heroCta) gsap.set(heroCta, { autoAlpha: 0, y: 20 });
       if (scrollIndicator) gsap.set(scrollIndicator, { autoAlpha: 0 });
 
       const tl = gsap.timeline(withWillChange());
-      let split: SplitText | null = null;
+      const splits: SplitText[] = [];
 
-      // Step 1 (pos 0.2): Rule line
-      if (heroRule) {
-        const step = heroSequence.steps[1];
-        tl.fromTo(heroRule, step.from!, step.to!, step.position);
+      // Step 0: Hero image
+      if (heroImage) {
+        const step = heroArchiveSequence.steps[0];
+        tl.fromTo(heroImage, step.from!, step.to!, step.position);
       }
 
-      // Step 2 (pos 0.5): Title — SplitText lines
-      if (heroTitle) {
-        const step = heroSequence.steps[2];
-        split = new SplitText(heroTitle, { type: "lines", mask: "lines", autoSplit: true });
+      // Step 1: Label
+      if (heroLabel) {
+        const step = heroArchiveSequence.steps[1];
+        tl.fromTo(heroLabel, step.from!, step.to!, step.position);
+      }
+
+      // Step 2: Title line ("THE")
+      if (heroTitleLine) {
+        const step = heroArchiveSequence.steps[2];
+        const split = new SplitText(heroTitleLine, { type: "lines", mask: "lines", autoSplit: true });
+        splits.push(split);
         tl.fromTo(
           split.lines,
           { yPercent: 100 },
@@ -64,32 +74,39 @@ export function Hero({
         );
       }
 
-      // Step 3 (pos 1.2): Subtitle brand
-      if (heroSubtitle) {
-        const step = heroSequence.steps[3];
-        tl.fromTo(heroSubtitle, step.from!, step.to!, step.position);
+      // Step 3: Stroke text ("ARCHIVE")
+      if (heroTitleStroke) {
+        const step = heroArchiveSequence.steps[3];
+        const split = new SplitText(heroTitleStroke, { type: "lines", mask: "lines", autoSplit: true });
+        splits.push(split);
+        tl.fromTo(
+          split.lines,
+          { yPercent: 100 },
+          { yPercent: 0, duration: 1.0, ease: "power3.out", stagger: step.stagger ?? 0.12 },
+          step.position,
+        );
       }
 
-      // Step 4 (pos 1.4): Hero image
-      if (heroImage) {
-        const step = heroSequence.steps[4];
-        tl.fromTo(heroImage, step.from!, step.to!, step.position);
+      // Step 4: Description
+      if (heroDescription) {
+        const step = heroArchiveSequence.steps[4];
+        tl.fromTo(heroDescription, step.from!, step.to!, step.position);
       }
 
-      // Step 5 (pos 2.2): Tagline
-      if (heroTagline) {
-        const step = heroSequence.steps[5];
-        tl.fromTo(heroTagline, step.from!, step.to!, step.position);
+      // Step 5: CTA button
+      if (heroCta) {
+        const step = heroArchiveSequence.steps[5];
+        tl.fromTo(heroCta, step.from!, step.to!, step.position);
       }
 
-      // Step 6 (pos 2.8): Scroll indicator reveal
+      // Step 6: Scroll indicator
       if (scrollIndicator) {
-        const step = heroSequence.steps[6];
+        const step = heroArchiveSequence.steps[6];
         tl.to(scrollIndicator, { autoAlpha: 1, duration: 0.5, ease: "power3.out" }, step.position);
       }
 
       return () => {
-        split?.revert();
+        splits.forEach((s) => s.revert());
       };
     },
     { scope: containerRef, dependencies: [reduced] },
@@ -98,40 +115,59 @@ export function Hero({
   return (
     <section ref={containerRef} className="relative h-screen overflow-hidden">
       {/* Background image */}
-      <div className="hero-image absolute inset-0" style={{ opacity: 0, visibility: "hidden" }}>
+      <div className="hero-image absolute inset-0" style={{ visibility: "hidden" }}>
         {imageUrl ? (
-          <Image src={imageUrl} alt="" fill priority className="object-cover" sizes="100vw" />
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            priority
+            className="object-cover grayscale brightness-50"
+            sizes="100vw"
+            placeholder={blurDataURL ? "blur" : undefined}
+            blurDataURL={blurDataURL ?? undefined}
+          />
         ) : (
           <div className="h-full w-full bg-gradient-to-b from-surface via-background to-background" />
         )}
-        {/* Darken overlay for text legibility */}
-        <div className="absolute inset-0 bg-background/60" />
+        {/* Bottom gradient for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </div>
 
-      {/* Content overlay */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-[--container-padding-x]">
-        <div
-          className="hero-rule mb-6 h-[1px] w-24 bg-primary"
-          style={{ transform: "scaleX(0)" }}
-        />
+      {/* Content — bottom-aligned */}
+      <div className="relative z-10 flex h-full flex-col justify-end px-[var(--container-padding-x)] pb-24 md:pb-32">
+        {/* Label */}
+        <span
+          className="hero-label mb-6 font-label text-xs uppercase tracking-wider text-primary"
+          style={{ visibility: "hidden" }}
+        >
+          [ CINEMATIC PHOTOGRAPHY ]
+        </span>
 
-        <h1 className="hero-title font-display text-[length:var(--text-hero-mobile)] leading-none tracking-[--tracking-hero] text-text-heading md:text-[length:var(--text-hero)]">
-          BAMYAN
+        {/* Title */}
+        <h1 className="font-display font-light uppercase leading-[0.8] text-text-heading" style={{ fontSize: "var(--text-hero-display)" }}>
+          <span className="hero-title-line block">SILK</span>
+          <span className="hero-title-stroke text-stroke block">STUDIO</span>
         </h1>
 
+        {/* Description */}
         <p
-          className="hero-subtitle-brand mt-4 font-body text-[length:var(--text-2xl)] uppercase tracking-[0.3em] text-text-heading"
-          style={{ opacity: 0, visibility: "hidden" }}
+          className="hero-description mt-8 max-w-md font-body text-base leading-relaxed text-muted md:text-lg"
+          style={{ visibility: "hidden" }}
         >
-          STORYWORKS
+          Every frame, a story that travels. Cinematic photography
+          for light, shadow, and the human presence.
         </p>
 
-        <p
-          className="hero-tagline mt-6 max-w-md text-center font-body text-[length:var(--text-lg)] text-muted"
-          style={{ opacity: 0, visibility: "hidden" }}
-        >
-          {tagline}
-        </p>
+        {/* CTA */}
+        <div className="hero-cta mt-8" style={{ visibility: "hidden" }}>
+          <TransitionLink
+            href="/work"
+            className="inline-flex items-center justify-center bg-primary px-8 py-3 font-label text-sm uppercase tracking-wider text-background transition-colors duration-300 hover:bg-primary-muted"
+          >
+            View Work
+          </TransitionLink>
+        </div>
       </div>
 
       {/* Scroll indicator */}

@@ -6,7 +6,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { staggerGrid } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { CATEGORY_META } from "@/lib/categories";
 import type { AlbumMeta } from "@/types/project";
 
 interface ProjectCardProps {
@@ -23,7 +25,7 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
   const hoverTl = useRef<gsap.core.Timeline | null>(null);
   const reduced = useReducedMotion();
 
-  const coverUrl = album.coverImage?.asset?._ref ? undefined : null;
+  const coverUrl = resolveImageUrl(album.coverImage);
 
   // Scroll entrance + hover timeline
   useGSAP(
@@ -34,6 +36,9 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
         gsap.set(cardRef.current, { autoAlpha: 1, y: 0 });
         return;
       }
+
+      // Set initial hidden state via GSAP so content is visible if JS hasn't run
+      gsap.set(cardRef.current, { autoAlpha: 0, y: staggerGrid.from.y });
 
       // Staggered scroll entrance
       gsap.fromTo(
@@ -91,24 +96,22 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
   return (
     <TransitionLink
       href={`/work/${album.slug.current}`}
-      transitionType="wipe"
-      className="block"
+      className={`block ${large ? "md:row-span-2" : ""}`}
     >
       <div
         ref={cardRef}
-        className="group cursor-pointer"
-        style={{ opacity: 0, visibility: "hidden" }}
+        className={`group cursor-pointer ${large ? "md:flex md:h-full md:flex-col" : ""}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Image container */}
         <div
-          className={`relative overflow-hidden ${large ? "aspect-[3/4]" : "aspect-video"}`}
+          className={`relative overflow-hidden ${large ? "aspect-[3/4] md:aspect-auto md:flex-1" : "aspect-video"}`}
         >
-          <div ref={imageRef} className="h-full w-full">
-            {coverUrl !== null ? (
+          <div ref={imageRef} className="relative h-full w-full">
+            {coverUrl ? (
               <Image
-                src={coverUrl!}
+                src={coverUrl}
                 alt={album.title}
                 fill
                 className="object-cover"
@@ -124,9 +127,8 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
           {/* Hover overlay */}
           <div
             ref={overlayRef}
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center bg-primary/30"
             style={{
-              backgroundColor: "rgba(123, 147, 176, 0.3)",
               clipPath: "inset(100% 0% 0% 0%)",
             }}
             aria-hidden="true"
@@ -144,8 +146,8 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
         {/* Card info */}
         <div className="mt-4 flex items-baseline justify-between">
           <h3 className="font-display text-xl text-text-heading">{album.title}</h3>
-          <span className="font-mono text-xs uppercase tracking-wider text-muted">
-            {album.category}
+          <span className="font-label text-xs uppercase tracking-wider text-muted">
+            {CATEGORY_META[album.category]?.label ?? album.category}
           </span>
         </div>
       </div>

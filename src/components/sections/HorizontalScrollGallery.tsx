@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { resolveImageUrl } from "@/lib/image-url";
 import type { SanityImage } from "@/types/project";
 
 interface HorizontalScrollGalleryProps {
@@ -34,7 +35,7 @@ export function HorizontalScrollGallery({
           scrollTrigger: {
             trigger: sectionRef.current,
             pin: true,
-            scrub: 1,
+            scrub: true,
             end: () => "+=" + track.scrollWidth,
             invalidateOnRefresh: true,
             onEnter: () => { track.style.willChange = "transform"; },
@@ -52,18 +53,18 @@ export function HorizontalScrollGallery({
     <section ref={sectionRef} className="overflow-hidden" aria-label="Photo gallery">
       <div
         ref={trackRef}
-        className="flex flex-col gap-[--space-8] px-[--container-padding-x] py-[--section-padding-y] md:flex-row md:h-screen md:items-center md:gap-[--space-4] md:py-0"
+        className="flex flex-col gap-[var(--space-8)] px-[var(--container-padding-x)] py-[var(--section-padding-y)] md:flex-row md:h-screen md:items-center md:gap-[var(--space-4)] md:py-0"
       >
         {images.map((img, i) => {
-          const hasRef = img.asset?._ref && img.asset._ref !== "";
+          const imgUrl = resolveImageUrl(img);
           return (
             <div
               key={i}
               className="w-full md:h-screen md:w-auto md:flex-shrink-0"
             >
-              {hasRef ? (
+              {imgUrl ? (
                 <Image
-                  src={`https://cdn.sanity.io/images/placeholder/production/${img.asset._ref}`}
+                  src={imgUrl}
                   alt={img.alt || `Album photograph ${i + 1}`}
                   width={1200}
                   height={800}

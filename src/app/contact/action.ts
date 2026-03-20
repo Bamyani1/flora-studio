@@ -28,7 +28,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ActionRe
     const resend = new Resend(apiKey);
 
     await resend.emails.send({
-      from: "Bamyan Storyworks <onboarding@resend.dev>",
+      from: "Silk Studio <onboarding@resend.dev>",
       to: contactEmail,
       replyTo: parsed.data.email,
       subject: `New inquiry from ${parsed.data.name} — ${parsed.data.photographyType}`,

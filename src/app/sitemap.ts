@@ -3,7 +3,7 @@ import { client } from "@/sanity/client";
 import { ALBUM_SLUGS_QUERY } from "@/sanity/queries";
 import { PLACEHOLDER_ALL_ALBUMS } from "@/lib/placeholder-data";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bamyanstoryworks.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://silkstudio.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let slugs: { slug: string }[] = [];
@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/work`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/process`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     ...albumRoutes,
   ];
 }

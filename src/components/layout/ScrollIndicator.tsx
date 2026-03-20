@@ -4,15 +4,24 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { scrollIndicatorPulse } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export function ScrollIndicator({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
+  const reduced = useReducedMotion();
 
   useGSAP(
     () => {
       if (!lineRef.current || !textRef.current || !containerRef.current) return;
+
+      if (reduced) {
+        gsap.set(containerRef.current, { autoAlpha: 1 });
+        gsap.set(textRef.current, { opacity: 1 });
+        gsap.set(lineRef.current, { scaleY: 1 });
+        return;
+      }
 
       // Text fade in
       gsap.fromTo(textRef.current, scrollIndicatorPulse.text.from, scrollIndicatorPulse.text.to);
@@ -28,7 +37,7 @@ export function ScrollIndicator({ className }: { className?: string }) {
         onLeaveBack: () => gsap.to(containerRef.current, { autoAlpha: 1, duration: 0.3 }),
       });
     },
-    { scope: containerRef },
+    { scope: containerRef, dependencies: [reduced] },
   );
 
   return (
@@ -41,10 +50,11 @@ export function ScrollIndicator({ className }: { className?: string }) {
       ]
         .filter(Boolean)
         .join(" ")}
+      style={{ visibility: "hidden" }}
     >
       <span
         ref={textRef}
-        className="font-mono text-xs uppercase tracking-widest text-muted"
+        className="font-label text-xs uppercase tracking-widest text-muted"
         style={{ writingMode: "vertical-rl", opacity: 0 }}
       >
         Scroll

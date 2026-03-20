@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { ProjectCard } from "@/components/sections/ProjectCard";
 import type { AlbumMeta } from "@/types/project";
 
-const CATEGORIES = ["all", "personal", "event", "sports", "solo"] as const;
+import { CATEGORY_META } from "@/lib/categories";
+
+const CATEGORIES = ["all", "landscapes", "nightsky", "sports", "portraits", "stories"] as const;
 
 interface FilterableGridProps {
   albums: AlbumMeta[];
@@ -26,43 +28,40 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
       if (category === activeFilter || isAnimating) return;
       setIsAnimating(true);
 
-      if (gridRef.current) {
-        gridRef.current.style.opacity = "0";
-      }
+      const grid = gridRef.current;
+      if (!grid) return;
 
-      setTimeout(() => {
+      grid.style.opacity = "0";
+      const onEnd = (e: TransitionEvent) => {
+        if (e.target !== grid) return;
+        grid.removeEventListener("transitionend", onEnd);
         setActiveFilter(category);
         setIsAnimating(false);
-      }, 300);
+        requestAnimationFrame(() => {
+          if (gridRef.current) gridRef.current.style.opacity = "1";
+        });
+      };
+      grid.addEventListener("transitionend", onEnd);
     },
     [activeFilter, isAnimating],
   );
-
-  useEffect(() => {
-    if (!gridRef.current) return;
-    requestAnimationFrame(() => {
-      if (gridRef.current) {
-        gridRef.current.style.opacity = "1";
-      }
-    });
-  }, [activeFilter]);
 
   return (
     <div>
       {/* Filter tabs */}
       <FadeIn>
-        <div className="mb-[--space-12] flex flex-wrap gap-[--space-6]">
+        <div className="mb-[var(--space-12)] flex flex-wrap gap-[var(--space-6)]">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => handleFilter(cat)}
-              className={`min-h-[44px] inline-flex items-center font-mono text-xs uppercase tracking-wider transition-colors ${
+              className={`min-h-[44px] inline-flex items-center border px-4 py-2 font-label text-xs uppercase tracking-wider transition-colors ${
                 activeFilter === cat
-                  ? "border-b-2 border-primary text-text-heading"
-                  : "text-muted hover:text-text"
+                  ? "border-primary bg-primary/10 text-text-heading"
+                  : "border-border text-muted hover:text-text"
               }`}
             >
-              {cat}
+              {cat === "all" ? "All" : CATEGORY_META[cat]?.label ?? cat}
             </button>
           ))}
         </div>
@@ -71,8 +70,8 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
       {/* Album grid */}
       <div
         ref={gridRef}
-        className="grid grid-cols-1 gap-[--grid-gap] md:grid-cols-2"
-        style={{ transition: "opacity 300ms ease", opacity: 1 }}
+        className="grid grid-cols-1 gap-[var(--grid-gap)] md:grid-cols-2"
+        style={{ transition: "opacity 400ms var(--ease-out)", opacity: 1 }}
       >
         {filtered.map((album, i) => (
           <ProjectCard

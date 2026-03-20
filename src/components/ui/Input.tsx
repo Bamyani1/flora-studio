@@ -16,7 +16,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
     <div className={cn("relative", className)}>
       <label
         htmlFor={id}
-        className="mb-2 block font-mono text-xs uppercase tracking-wider text-muted"
+        className="mb-2 block font-label text-xs uppercase tracking-wider text-muted"
       >
         {label}
       </label>
@@ -24,8 +24,8 @@ export function Input({ label, error, className, ...props }: InputProps) {
         <input
           id={id}
           className={cn(
-            "peer w-full border-b bg-transparent pb-3 pt-1 text-text outline-none transition-colors duration-normal placeholder:text-muted/50 min-h-[44px]",
-            error ? "border-red-400" : "border-border",
+            "peer w-full border border-border rounded-lg bg-surface-elevated px-4 pb-3 pt-3 text-text outline-none transition-colors duration-normal placeholder:text-muted/50 min-h-[44px]",
+            error ? "border-error" : "border-border-hover",
           )}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
@@ -34,14 +34,14 @@ export function Input({ label, error, className, ...props }: InputProps) {
         <span
           className={cn(
             "absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-normal ease-out",
-            error ? "bg-red-400" : "bg-primary",
+            error ? "bg-error" : "bg-primary",
             "peer-focus:scale-x-100",
           )}
           aria-hidden="true"
         />
       </div>
       {error && (
-        <p id={errorId} className="mt-2 text-sm text-red-400" role="alert">
+        <p id={errorId} className="mt-2 text-sm text-error" role="alert">
           {error}
         </p>
       )}

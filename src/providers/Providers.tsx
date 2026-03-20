@@ -18,7 +18,6 @@ function LenisGsapSync() {
     };
 
     gsap.ticker.add(callback);
-    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(callback);
@@ -30,7 +29,7 @@ function LenisGsapSync() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ReactLenis root options={{ lerp: 0.06, duration: 1.4, autoRaf: false }}>
+    <ReactLenis root options={{ duration: 1.2, autoRaf: false }}>
       <LenisGsapSync />
       <LazyMotion features={features} strict>
         {children}

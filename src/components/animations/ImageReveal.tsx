@@ -32,6 +32,10 @@ export function ImageReveal({
         return;
       }
 
+      // Set initial states via GSAP so content is visible if JS hasn't run
+      gsap.set(overlayRef.current, { scaleX: 1, transformOrigin: "left center" });
+      gsap.set(imageWrapRef.current, { scale: 1.3 });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -46,16 +50,18 @@ export function ImageReveal({
   );
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${className ?? ""}`}>
-      <div ref={imageWrapRef} style={{ scale: reduced ? 1 : 1.3 }}>
-        {children}
+    <div ref={containerRef} className={`overflow-hidden ${className ?? ""}`}>
+      <div className="relative h-full w-full">
+        <div ref={imageWrapRef} className="relative h-full w-full">
+          {children}
+        </div>
+        <div
+          ref={overlayRef}
+          className="absolute inset-0"
+          style={{ backgroundColor: overlayColor, transformOrigin: "left center" }}
+          aria-hidden="true"
+        />
       </div>
-      <div
-        ref={overlayRef}
-        className="absolute inset-0"
-        style={{ backgroundColor: overlayColor, transformOrigin: "left center" }}
-        aria-hidden="true"
-      />
     </div>
   );
 }

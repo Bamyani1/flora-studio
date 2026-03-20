@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
-import { instrumentSerif, satoshi, jetbrainsMono } from "@/lib/fonts";
+import { berlingskeSerif, inter } from "@/lib/fonts";
 import { baseMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/Providers";
-import { Header } from "@/components/layout/Header";
-import { MobileMenu } from "@/components/layout/MobileMenu";
-import { Footer } from "@/components/layout/Footer";
-import { BackToTop } from "@/components/layout/BackToTop";
-import { TransitionOverlay } from "@/components/layout/TransitionOverlay";
+import { RouteChrome } from "@/components/layout/RouteChrome";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -20,10 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${instrumentSerif.variable} ${satoshi.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" className={`${berlingskeSerif.variable} ${inter.variable}`}>
       <body className="grain-overlay bg-background font-body text-text antialiased">
         <Providers>
           <a
@@ -32,12 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             Skip to content
           </a>
-          <Header />
-          <MobileMenu />
-          {children}
-          <Footer />
-          <BackToTop />
-          <TransitionOverlay />
+          <RouteChrome>{children}</RouteChrome>
         </Providers>
       </body>
     </html>

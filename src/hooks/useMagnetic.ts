@@ -38,6 +38,7 @@ export function useMagnetic(
           y: dy * strength,
           duration: 0.3,
           ease: magneticPull.ease,
+          overwrite: true,
         });
       }
     };
@@ -48,11 +49,13 @@ export function useMagnetic(
         y: 0,
         duration: magneticPull.returnDuration,
         ease: magneticPull.returnEase,
+        overwrite: true,
       });
     };
 
     el.addEventListener("mousemove", handleMouseMove);
     el.addEventListener("mouseleave", handleMouseLeave);
+
     return () => {
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);

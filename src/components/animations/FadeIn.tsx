@@ -35,6 +35,9 @@ export function FadeIn({
         return;
       }
 
+      // Set initial hidden state via GSAP (not inline styles) so content is visible if JS hasn't run
+      gsap.set(ref.current, { autoAlpha: 0, y: y ?? fadeUp.from.y });
+
       gsap.fromTo(
         ref.current,
         { ...fadeUp.from, ...(y !== undefined && { y }) },
@@ -57,7 +60,6 @@ export function FadeIn({
     <Tag
       ref={ref}
       className={className}
-      style={{ opacity: 0, visibility: "hidden" }}
     >
       {children}
     </Tag>

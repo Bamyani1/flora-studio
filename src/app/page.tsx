@@ -1,14 +1,14 @@
 import { client } from "@/sanity/client";
-import { FEATURED_ALBUMS_QUERY, ABOUT_QUERY } from "@/sanity/queries";
-import { PLACEHOLDER_FEATURED_ALBUMS, PLACEHOLDER_ABOUT } from "@/lib/placeholder-data";
+import { FEATURED_ALBUMS_QUERY } from "@/sanity/queries";
+import { PLACEHOLDER_FEATURED_ALBUMS } from "@/lib/placeholder-data";
+import { getLocalBlur } from "@/lib/image-manifest";
 import { localBusinessJsonLd } from "@/lib/metadata";
 import type { AlbumMeta } from "@/types/project";
 import { Hero } from "@/components/sections/Hero";
-import { ProjectGrid } from "@/components/sections/ProjectGrid";
-import { ProjectCard } from "@/components/sections/ProjectCard";
-import { AboutTeaser } from "@/components/sections/AboutTeaser";
-import { CategoriesStrip } from "@/components/sections/CategoriesStrip";
-import { ContactCTA } from "@/components/sections/ContactCTA";
+import { CuratedCollections } from "@/components/sections/CuratedCollections";
+import { QuoteBlock } from "@/components/sections/QuoteBlock";
+import { ExhibitionFeature } from "@/components/sections/ExhibitionFeature";
+import { StartAStory } from "@/components/sections/StartAStory";
 
 async function getFeaturedAlbums(): Promise<AlbumMeta[]> {
   try {
@@ -18,16 +18,8 @@ async function getFeaturedAlbums(): Promise<AlbumMeta[]> {
   }
 }
 
-async function getAbout() {
-  try {
-    return await client.fetch(ABOUT_QUERY);
-  } catch {
-    return PLACEHOLDER_ABOUT;
-  }
-}
-
 export default async function HomePage() {
-  const [albums, about] = await Promise.all([getFeaturedAlbums(), getAbout()]);
+  const albums = await getFeaturedAlbums();
 
   return (
     <main id="main-content">
@@ -35,23 +27,11 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
       />
-      <Hero />
-
-      <ProjectGrid>
-        {albums.map((album, i) => (
-          <ProjectCard key={album._id} album={album} index={i} large={i === 0} />
-        ))}
-      </ProjectGrid>
-
-      <AboutTeaser
-        bio={about?.bio ?? PLACEHOLDER_ABOUT.bio}
-        portraitUrl={about?.portrait?.asset?._ref ? undefined : null}
-        portraitBlur={about?.portraitBlur}
-      />
-
-      <CategoriesStrip />
-
-      <ContactCTA />
+      <Hero imageUrl="/images/hero.jpg" blurDataURL={getLocalBlur("/images/hero.jpg")} />
+      <CuratedCollections albums={albums} />
+      <QuoteBlock />
+      <ExhibitionFeature blurDataURL={getLocalBlur("/images/high-country/hero.jpg")} />
+      <StartAStory />
     </main>
   );
 }
