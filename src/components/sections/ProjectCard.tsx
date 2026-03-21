@@ -3,7 +3,7 @@
 import { useRef, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { staggerGrid } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { resolveImageUrl } from "@/lib/image-url";

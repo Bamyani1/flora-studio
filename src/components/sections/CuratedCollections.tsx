@@ -153,7 +153,8 @@ export function CuratedCollections({ albums }: CuratedCollectionsProps) {
                 {/* Label */}
                 <div className="collection-label mt-3 flex items-baseline justify-between">
                   <span className="font-label text-xs uppercase tracking-wider text-primary">
-                    {String(i + 1).padStart(2, "0")} // COLLECTION
+                    {String(i + 1).padStart(2, "0")}
+                    {" // COLLECTION"}
                   </span>
                   <h3 className="font-display text-lg font-normal uppercase text-text-heading">
                     {album.title}

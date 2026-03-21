@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { imageReveal } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 

@@ -17,7 +17,6 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, 
     const container = containerRef.current;
     const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
     const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
 
     // Focus the first element
     firstFocusable?.focus();

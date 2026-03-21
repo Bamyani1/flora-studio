@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, SplitText, ScrollTrigger } from "@/lib/gsap";
+import { gsap, SplitText } from "@/lib/gsap";
 import { textRevealLines, textRevealWords } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
