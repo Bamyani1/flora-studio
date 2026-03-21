@@ -79,6 +79,7 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
             album={album}
             index={i}
             large={i === 0}
+            eagerImage={i === 0}
           />
         ))}
       </div>

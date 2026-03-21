@@ -15,9 +15,15 @@ interface ProjectCardProps {
   album: AlbumMeta;
   index: number;
   large?: boolean;
+  eagerImage?: boolean;
 }
 
-export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
+export function ProjectCard({
+  album,
+  index,
+  large = false,
+  eagerImage = false,
+}: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -114,6 +120,7 @@ export function ProjectCard({ album, index, large = false }: ProjectCardProps) {
                 src={coverUrl}
                 alt={album.title}
                 fill
+                loading={eagerImage ? "eager" : undefined}
                 className="object-cover"
                 sizes="(min-width: 768px) 50vw, 100vw"
                 placeholder={album.blurDataURL ? "blur" : undefined}
