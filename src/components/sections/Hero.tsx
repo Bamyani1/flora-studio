@@ -115,7 +115,7 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
   return (
     <section ref={containerRef} className="relative h-screen overflow-hidden">
       {/* Background image */}
-      <div className="hero-image absolute inset-0" style={{ visibility: "hidden" }}>
+      <div className="hero-image absolute inset-0">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -139,7 +139,6 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
         {/* Label */}
         <span
           className="hero-label mb-6 font-label text-xs uppercase tracking-wider text-primary"
-          style={{ visibility: "hidden" }}
         >
           [ CINEMATIC PHOTOGRAPHY ]
         </span>
@@ -153,14 +152,13 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
         {/* Description */}
         <p
           className="hero-description mt-8 max-w-md font-body text-base leading-relaxed text-muted md:text-lg"
-          style={{ visibility: "hidden" }}
         >
           Every frame, a story that travels. Cinematic photography
           for light, shadow, and the human presence.
         </p>
 
         {/* CTA */}
-        <div className="hero-cta mt-8" style={{ visibility: "hidden" }}>
+        <div className="hero-cta mt-8">
           <TransitionLink
             href="/work"
             className="inline-flex items-center justify-center bg-primary px-8 py-3 font-label text-sm uppercase tracking-wider text-background transition-colors duration-300 hover:bg-primary-muted"

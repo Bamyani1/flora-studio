@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'motion/react';
+import { m, AnimatePresence } from 'motion/react';
 import { ChevronRight, Camera } from 'lucide-react';
 import { useState } from 'react';
 import { TransitionLink } from "@/components/layout/TransitionLink";
@@ -29,7 +29,7 @@ const StaggeredText = ({ text, className }: { text: string, className?: string }
   const words = text.split(" ");
 
   return (
-    <motion.div
+    <m.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
@@ -41,7 +41,7 @@ const StaggeredText = ({ text, className }: { text: string, className?: string }
     >
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden mr-[0.25em] pb-2">
-          <motion.span
+          <m.span
             className="inline-block"
             variants={{
               hidden: { y: "120%", opacity: 0, rotate: 5 },
@@ -49,10 +49,10 @@ const StaggeredText = ({ text, className }: { text: string, className?: string }
             }}
           >
             {word}
-          </motion.span>
+          </m.span>
         </span>
       ))}
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -70,7 +70,7 @@ export default function AboutPage() {
         {/* Hero */}
         <section className="min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: 1, width: "100%" }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -79,28 +79,28 @@ export default function AboutPage() {
               <span className="w-12 h-px bg-primary/40"></span>
               <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">Sequence 01: Vision</span>
               <span className="w-12 h-px bg-primary/40"></span>
-            </motion.div>
+            </m.div>
 
             <h1 className="font-display text-5xl md:text-[8rem] text-on-surface leading-[0.9] tracking-tighter mb-10">
               <StaggeredText text="The Art of" />
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, filter: "blur(10px)" }}
                 animate={{ opacity: 1, filter: "blur(0px)" }}
                 transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                 className="italic text-primary block mt-4"
               >
                 Visual Silence.
-              </motion.span>
+              </m.span>
             </h1>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
               className="font-body text-xl md:text-2xl text-on-surface-variant/60 max-w-2xl leading-relaxed font-light"
             >
               Every frame is a dialogue between light and void. We capture the stillness that defines the narrative of the modern era.
-            </motion.p>
+            </m.p>
           </div>
         </section>
 
@@ -109,7 +109,7 @@ export default function AboutPage() {
 
         {/* Manifesto */}
         <section className="py-48 md:py-64 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 0.03, scale: 1 }}
             viewport={{ once: true }}
@@ -117,10 +117,10 @@ export default function AboutPage() {
             className="absolute inset-0 pointer-events-none flex items-center justify-center"
           >
             <span className="font-display text-[30vw] select-none italic text-on-surface">Manifesto</span>
-          </motion.div>
+          </m.div>
 
           <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -130,20 +130,20 @@ export default function AboutPage() {
               <span className="w-12 h-[1px] bg-primary/40"></span>
               <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px]">Sequence 02: Essence</span>
               <span className="w-12 h-[1px] bg-primary/40"></span>
-            </motion.div>
+            </m.div>
 
             <blockquote className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.2] text-center text-on-surface max-w-5xl mx-auto relative z-10 tracking-tight">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               >
                 We don&apos;t just photograph life; we <span className="text-primary italic font-light">sculpt</span> the shadows to reveal the hidden architecture of the soul.
-              </motion.div>
+              </m.div>
             </blockquote>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -156,7 +156,7 @@ export default function AboutPage() {
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
@@ -169,7 +169,7 @@ export default function AboutPage() {
 
             {/* Left Column: Sticky Image & Header */}
             <div className="lg:sticky lg:top-32 h-fit flex flex-col gap-12">
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -180,12 +180,12 @@ export default function AboutPage() {
                 <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-md text-base font-light">
                   A symposium of creators, visionaries, and technologists dedicated to the perfection of the image.
                 </p>
-              </motion.div>
+              </m.div>
 
               {/* Dynamic Image Container */}
               <div className="hidden lg:block w-full aspect-[4/5] relative rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10 shadow-2xl">
                 <AnimatePresence mode="wait">
-                  <motion.div
+                  <m.div
                     key={hoveredMember !== null ? hoveredMember : 'default'}
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -206,7 +206,7 @@ export default function AboutPage() {
                         <Camera className="w-12 h-12 text-outline-variant/20" />
                       </div>
                     )}
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center pt-12 lg:pt-32">
               <div className="border-t border-outline-variant/20">
                 {TEAM_MEMBERS.map((member, index) => (
-                  <motion.div
+                  <m.div
                     key={member.name}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -255,7 +255,7 @@ export default function AboutPage() {
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </div>
@@ -271,7 +271,7 @@ export default function AboutPage() {
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
             <div className="order-2 md:order-1 space-y-20">
               <div className="space-y-8">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -279,11 +279,11 @@ export default function AboutPage() {
                   className="flex items-center gap-4"
                 >
                   <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">Sequence 04: Process</span>
-                </motion.div>
+                </m.div>
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
                   <StaggeredText text="Technical Mastery." />
                 </h2>
-                <motion.p
+                <m.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -291,10 +291,10 @@ export default function AboutPage() {
                   className="font-body text-2xl text-on-surface-variant font-light leading-relaxed max-w-xl"
                 >
                   Merging archival 35mm film aesthetics with high-fidelity digital precision. We obsess over the grain structure and tonal depth.
-                </motion.p>
+                </m.p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 border-t border-outline-variant/10 pt-16">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -303,8 +303,8 @@ export default function AboutPage() {
                 >
                   <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">Curation Phase</h4>
                   <p className="font-body text-sm text-on-surface-variant/50 leading-loose">A rigorous elimination process. We seek the frames that hold tension in their silence.</p>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -313,10 +313,10 @@ export default function AboutPage() {
                 >
                   <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">Darkroom Logic</h4>
                   <p className="font-body text-sm text-on-surface-variant/50 leading-loose">Digital grading inspired by the photochemical response of 1960s French cinematic stock.</p>
-                </motion.div>
+                </m.div>
               </div>
             </div>
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95, filter: "brightness(0.5)" }}
               whileInView={{ opacity: 1, scale: 1, filter: "brightness(1)" }}
               viewport={{ once: true }}
@@ -331,7 +331,7 @@ export default function AboutPage() {
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 group-hover:border-[12px]"></div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
 
@@ -341,7 +341,7 @@ export default function AboutPage() {
         {/* End Scene */}
         <section className="py-72 px-12 bg-surface text-center film-reel-border relative overflow-hidden">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
-            <motion.span
+            <m.span
               initial={{ opacity: 0, letterSpacing: "0em" }}
               whileInView={{ opacity: 1, letterSpacing: "0.8em" }}
               viewport={{ once: true }}
@@ -349,10 +349,10 @@ export default function AboutPage() {
               className="font-label uppercase text-primary/40 text-[11px] block"
             >
               End Scene
-            </motion.span>
+            </m.span>
             <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text="Write Your" />
-              <motion.span
+              <m.span
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -360,9 +360,9 @@ export default function AboutPage() {
                 className="italic text-primary block mt-4"
               >
                 History.
-              </motion.span>
+              </m.span>
             </h2>
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -376,9 +376,9 @@ export default function AboutPage() {
                   <ChevronRight className="w-4 h-4 -ml-2 group-hover:ml-0 transition-all duration-700" />
                 </div>
               </TransitionLink>
-            </motion.div>
+            </m.div>
           </div>
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 0.03, scale: 1 }}
             viewport={{ once: true }}
@@ -386,7 +386,7 @@ export default function AboutPage() {
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
           >
             <span className="font-display text-[35vw] tracking-tighter">FIN</span>
-          </motion.div>
+          </m.div>
         </section>
       </main>
     </div>

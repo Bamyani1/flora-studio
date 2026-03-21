@@ -50,19 +50,18 @@ export function ScrollIndicator({ className }: { className?: string }) {
       ]
         .filter(Boolean)
         .join(" ")}
-      style={{ visibility: "hidden" }}
     >
       <span
         ref={textRef}
         className="font-label text-xs uppercase tracking-widest text-muted"
-        style={{ writingMode: "vertical-rl", opacity: 0 }}
+        style={{ writingMode: "vertical-rl" }}
       >
         Scroll
       </span>
       <div
         ref={lineRef}
         className="h-12 w-[1px] bg-muted"
-        style={{ transform: "scaleY(0)", transformOrigin: "top center" }}
+        style={{ transformOrigin: "top center" }}
       />
     </div>
   );
