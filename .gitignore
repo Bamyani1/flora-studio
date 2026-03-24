@@ -44,5 +44,21 @@ scripts/.image-cache.json
 /contact/
 /process/
 
+# Experimental / prototype directories
+/newest-landing/
+/new-landing/
+/new-contact-form/
+/landing-hero -section/
+/gallery/
+/color-variations/
+
+# Root-level design screenshots
+/*.png
+/*.jpg
+
+# Playwright MCP
+.playwright-mcp/
+
 # Editor tooling
+
 
