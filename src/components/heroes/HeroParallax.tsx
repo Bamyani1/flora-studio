@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, SplitText, ScrollTrigger } from "@/lib/gsap";
+import { gsap, SplitText } from "@/lib/gsap";
 import { heroParallaxSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
