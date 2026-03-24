@@ -112,7 +112,7 @@ export default async function HeroPage({
   const { Component, fonts } = hero;
 
   return (
-    <div className={fonts || undefined}>
+    <main id="main-content" className={fonts || undefined}>
       <Component />
 
       {/* Back link — fades in after hero animation */}
@@ -136,6 +136,6 @@ export default async function HeroPage({
           to { opacity: 1; }
         }
       `}</style>
-    </div>
+    </main>
   );
 }

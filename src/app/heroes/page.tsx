@@ -111,7 +111,8 @@ const fontClasses = [
 
 export default function HeroesPage() {
   return (
-    <div
+    <main
+      id="main-content"
       className={`${fontClasses} min-h-screen flex flex-col items-center justify-center px-6 py-16`}
       style={{ backgroundColor: "var(--color-surface-deep)" }}
     >
@@ -213,6 +214,6 @@ export default function HeroesPage() {
       >
         &larr; BACK TO SITE
       </Link>
-    </div>
+    </main>
   );
 }

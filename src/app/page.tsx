@@ -1,37 +1,28 @@
-import { client } from "@/sanity/client";
-import { FEATURED_ALBUMS_QUERY } from "@/sanity/queries";
-import { PLACEHOLDER_FEATURED_ALBUMS } from "@/lib/placeholder-data";
-import { getLocalBlur } from "@/lib/image-manifest";
 import { localBusinessJsonLd } from "@/lib/metadata";
-import type { AlbumMeta } from "@/types/project";
-import { Hero } from "@/components/sections/Hero";
-import { CuratedCollections } from "@/components/sections/CuratedCollections";
-import { QuoteBlock } from "@/components/sections/QuoteBlock";
-import { ExhibitionFeature } from "@/components/sections/ExhibitionFeature";
-import { StartAStory } from "@/components/sections/StartAStory";
+import { LandingHero } from "@/components/landing/LandingHero";
+import { LandingEditorial } from "@/components/landing/LandingEditorial";
+import { LandingExhibition } from "@/components/landing/LandingExhibition";
+import { LandingStudio } from "@/components/landing/LandingStudio";
 
-async function getFeaturedAlbums(): Promise<AlbumMeta[]> {
-  try {
-    return await client.fetch(FEATURED_ALBUMS_QUERY);
-  } catch {
-    return PLACEHOLDER_FEATURED_ALBUMS;
-  }
-}
+import { LandingFooter } from "@/components/landing/LandingFooter";
 
-export default async function HomePage() {
-  const albums = await getFeaturedAlbums();
-
+export default function HomePage() {
   return (
-    <main id="main-content">
+    <div className="bg-surface-deep text-text font-body selection:bg-primary/30">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
       />
-      <Hero imageUrl="/images/hero.jpg" blurDataURL={getLocalBlur("/images/hero.jpg")} />
-      <CuratedCollections albums={albums} />
-      <QuoteBlock />
-      <ExhibitionFeature blurDataURL={getLocalBlur("/images/high-country/hero.jpg")} />
-      <StartAStory />
-    </main>
+      <main id="main-content">
+        <LandingHero />
+        <div className="flex flex-col bg-surface-deep relative z-20" id="editorial-start">
+          <LandingEditorial />
+          <LandingExhibition />
+          <LandingStudio />
+
+        </div>
+      </main>
+      <LandingFooter />
+    </div>
   );
 }
