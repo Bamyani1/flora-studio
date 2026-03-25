@@ -9,7 +9,7 @@ export const ALBUMS_QUERY = defineQuery(
 
 export const FEATURED_ALBUMS_QUERY = defineQuery(
   `*[_type == "album" && featured == true] | order(order asc)[0...4] {
-    _id, title, slug, category, coverImage,
+    _id, title, slug, category, description, coverImage,
     "blurDataURL": coverImage.asset->metadata.lqip
   }`,
 );
@@ -23,9 +23,7 @@ export const ALBUM_BY_SLUG_QUERY = defineQuery(
   }`,
 );
 
-export const ALBUM_SLUGS_QUERY = defineQuery(
-  `*[_type == "album"] { "slug": slug.current }`,
-);
+export const ALBUM_SLUGS_QUERY = defineQuery(`*[_type == "album"] { "slug": slug.current }`);
 
 export const ABOUT_QUERY = defineQuery(
   `*[_type == "about"][0] {

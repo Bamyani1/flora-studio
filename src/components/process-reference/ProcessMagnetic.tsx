@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { m } from "motion/react";
+import { useRef } from "react";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
 export function ProcessMagnetic({
   children,
@@ -11,27 +11,11 @@ export function ProcessMagnetic({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouse = (event: React.MouseEvent<HTMLDivElement>) => {
-    const bounds = ref.current?.getBoundingClientRect();
-    if (!bounds) return;
-
-    const middleX = event.clientX - (bounds.left + bounds.width / 2);
-    const middleY = event.clientY - (bounds.top + bounds.height / 2);
-    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
-  };
+  useMagnetic(ref, { strength: 0.2 });
 
   return (
-    <m.div
-      ref={ref}
-      className={className}
-      onMouseMove={handleMouse}
-      onMouseLeave={() => setPosition({ x: 0, y: 0 })}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </m.div>
+    </div>
   );
 }

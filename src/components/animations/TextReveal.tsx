@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
-import { textRevealLines, textRevealWords } from "@/lib/animations";
+import { textRevealLines, textRevealWords, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface TextRevealProps {
@@ -42,6 +42,7 @@ export function TextReveal({
 
         gsap.fromTo(split.lines, textRevealLines.from, {
           ...textRevealLines.to,
+          ...withWillChange(),
           ...(stagger !== undefined && { stagger }),
           ...(delay !== undefined && { delay }),
           scrollTrigger: {
@@ -58,6 +59,7 @@ export function TextReveal({
 
       gsap.fromTo(split.words, textRevealWords.from, {
         ...textRevealWords.to,
+        ...withWillChange("opacity"),
         ...(stagger !== undefined && { stagger }),
         ...(delay !== undefined && { delay }),
         scrollTrigger: {

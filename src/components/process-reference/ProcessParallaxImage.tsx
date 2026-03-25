@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { m, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ProcessParallaxImageProps {
   src: string;
@@ -21,22 +23,39 @@ export function ProcessParallaxImage({
   imageClassName = "",
   priority = false,
 }: ProcessParallaxImageProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0%", "0%"] : ["-15%", "15%"],
+  useGSAP(
+    () => {
+      if (!containerRef.current || !innerRef.current || reduced) return;
+
+      gsap.fromTo(
+        innerRef.current,
+        { yPercent: -15 },
+        {
+          yPercent: 15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            onEnter: () => { if (innerRef.current) innerRef.current.style.willChange = "transform"; },
+            onLeave: () => { if (innerRef.current) innerRef.current.style.willChange = "auto"; },
+            onEnterBack: () => { if (innerRef.current) innerRef.current.style.willChange = "transform"; },
+            onLeaveBack: () => { if (innerRef.current) innerRef.current.style.willChange = "auto"; },
+          },
+        },
+      );
+    },
+    { scope: containerRef, dependencies: [reduced] },
   );
 
   return (
-    <div ref={ref} className={`relative overflow-hidden ${className}`}>
-      <m.div style={{ y }} className="absolute inset-0 h-[130%] w-full -top-[15%]">
+    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+      <div ref={innerRef} className="absolute inset-0 h-[130%] w-full -top-[15%]">
         <Image
           src={src}
           alt={alt}
@@ -47,7 +66,7 @@ export function ProcessParallaxImage({
           blurDataURL={blurDataURL ?? undefined}
           sizes="(min-width: 768px) 50vw, 100vw"
         />
-      </m.div>
+      </div>
     </div>
   );
 }

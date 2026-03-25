@@ -1,14 +1,32 @@
 "use client";
 
-import { m, useScroll } from "motion/react";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "@/lib/gsap";
 
 export function ProcessScrollProgress() {
-  const { scrollYProgress } = useScroll();
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!barRef.current) return;
+
+    const bar = barRef.current;
+    bar.style.willChange = "transform";
+
+    ScrollTrigger.create({
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        bar.style.transform = `scaleX(${self.progress})`;
+      },
+    });
+  });
 
   return (
-    <m.div
+    <div
+      ref={barRef}
       className="fixed left-0 right-0 top-0 z-[100] h-1 origin-left bg-[var(--process-primary)]"
-      style={{ scaleX: scrollYProgress }}
+      style={{ transform: "scaleX(0)" }}
     />
   );
 }

@@ -30,11 +30,14 @@ export function GalleryBentoSplit({ album, reversed = false, priority = false }:
 
       if (reduced) {
         gsap.set(el.querySelectorAll(".bento-img-wrapper"), {
-          autoAlpha: 1, scale: 1, yPercent: 0,
+          autoAlpha: 1,
+          scale: 1,
+          yPercent: 0,
         });
         gsap.set(el.querySelectorAll(".bento-img-color"), { opacity: 1 });
         gsap.set(el.querySelectorAll(".bento-text > *"), {
-          autoAlpha: 1, y: 0,
+          autoAlpha: 1,
+          y: 0,
         });
         return;
       }
@@ -48,14 +51,27 @@ export function GalleryBentoSplit({ album, reversed = false, priority = false }:
           scrollTrigger: {
             trigger: el,
             ...bentoSplitReveal.scrollTrigger,
-            onEnter: () => { wrapper.style.willChange = "transform"; },
-            onLeave: () => { wrapper.style.willChange = "auto"; },
-            onEnterBack: () => { wrapper.style.willChange = "transform"; },
-            onLeaveBack: () => { wrapper.style.willChange = "auto"; },
+            onEnter: () => {
+              wrapper.style.willChange = "transform";
+            },
+            onLeave: () => {
+              wrapper.style.willChange = "auto";
+            },
+            onEnterBack: () => {
+              wrapper.style.willChange = "transform";
+            },
+            onLeaveBack: () => {
+              wrapper.style.willChange = "auto";
+            },
           },
         });
         tl.fromTo(wrapper, bentoSplitReveal.imageWrapper.from, bentoSplitReveal.imageWrapper.to, 0);
-        tl.fromTo(colorLayer, bentoSplitReveal.colorReveal.from, bentoSplitReveal.colorReveal.to, 0);
+        tl.fromTo(
+          colorLayer,
+          bentoSplitReveal.colorReveal.from,
+          bentoSplitReveal.colorReveal.to,
+          0,
+        );
       }
 
       // Text stagger
@@ -75,7 +91,9 @@ export function GalleryBentoSplit({ album, reversed = false, priority = false }:
   );
 
   const imageCol = (
-    <div className={`md:col-span-8 relative overflow-hidden min-h-[50vh] md:min-h-screen group/bento ${reversed ? "md:order-2" : ""} ${reversed ? "" : "border-r border-[var(--color-outline-variant)]/10"}`}>
+    <div
+      className={`md:col-span-8 relative overflow-hidden min-h-[50vh] md:min-h-screen group/bento ${reversed ? "md:order-2" : ""} ${reversed ? "" : "border-r border-[var(--color-outline-variant)]/10"}`}
+    >
       <div className="absolute inset-0 transition-transform duration-[2s] ease-out group-hover/bento:scale-105">
         <div className="bento-img-wrapper absolute inset-0">
           {/* Base layer: static grayscale (filter applied once, never animated) */}
@@ -125,7 +143,9 @@ export function GalleryBentoSplit({ album, reversed = false, priority = false }:
   );
 
   const textCol = (
-    <div className={`md:col-span-4 flex flex-col bg-[var(--color-surface)] p-12 justify-center bento-text ${reversed ? "md:order-1 border-r border-[var(--color-outline-variant)]/10" : ""}`}>
+    <div
+      className={`md:col-span-4 flex flex-col bg-[var(--color-surface)] p-12 justify-center bento-text ${reversed ? "md:order-1 border-r border-[var(--color-outline-variant)]/10" : ""}`}
+    >
       <h3 className="font-display text-[length:var(--text-3xl)] text-text-heading leading-tight">
         {album.title}
       </h3>
@@ -151,6 +171,7 @@ export function GalleryBentoSplit({ album, reversed = false, priority = false }:
       className="relative min-h-screen w-full bg-surface grid grid-cols-1 md:grid-cols-12 overflow-hidden"
       aria-label={`${album.title} — album showcase`}
     >
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       {imageCol}
       {textCol}
     </section>

@@ -76,6 +76,7 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
       className="relative min-h-screen w-full grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--color-outline-variant)]/10"
       aria-label="Album pair"
     >
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       {albums.map((album) => {
         const coverUrl = resolveImageUrl(album.coverImage);
         const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;

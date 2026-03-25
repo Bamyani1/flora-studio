@@ -5,14 +5,15 @@ import { gsap } from "@/lib/gsap";
 
 export function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const bladesRef = useRef<SVGGElement>(null);
   const quickToRefs = useRef<{
-    dotX: gsap.QuickToFunc | null;
-    dotY: gsap.QuickToFunc | null;
-    ringX: gsap.QuickToFunc | null;
-    ringY: gsap.QuickToFunc | null;
-  }>({ dotX: null, dotY: null, ringX: null, ringY: null });
+    x: gsap.QuickToFunc | null;
+    y: gsap.QuickToFunc | null;
+    rot: gsap.QuickToFunc | null;
+  }>({ x: null, y: null, rot: null });
+  const prevMouse = useRef({ x: 0, y: 0 });
+  const angle = useRef(0);
 
   useEffect(() => {
     const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -33,28 +34,36 @@ export function CustomCursor() {
   }, []);
 
   useEffect(() => {
-    if (!enabled || !dotRef.current || !ringRef.current) return;
+    if (!enabled || !cursorRef.current || !bladesRef.current) return;
 
-    const dot = dotRef.current;
-    const ring = ringRef.current;
+    const cursor = cursorRef.current;
+    const blades = bladesRef.current;
 
-    // gsap.quickTo: purpose-built for high-frequency updates (cursor tracking)
-    // Inner dot: tight follow (short duration)
-    quickToRefs.current.dotX = gsap.quickTo(dot, "x", { duration: 0.12, ease: "back.out(1.7)" });
-    quickToRefs.current.dotY = gsap.quickTo(dot, "y", { duration: 0.12, ease: "back.out(1.7)" });
-    // Outer ring: lazy follow with gentle overshoot for trailing effect
-    quickToRefs.current.ringX = gsap.quickTo(ring, "x", { duration: 0.35, ease: "back.out(1.4)" });
-    quickToRefs.current.ringY = gsap.quickTo(ring, "y", { duration: 0.35, ease: "back.out(1.4)" });
+    quickToRefs.current.x = gsap.quickTo(cursor, "x", { duration: 0.15, ease: "back.out(1.7)" });
+    quickToRefs.current.y = gsap.quickTo(cursor, "y", { duration: 0.15, ease: "back.out(1.7)" });
+    gsap.set(blades, { transformOrigin: "50% 50%" });
+    quickToRefs.current.rot = gsap.quickTo(blades, "rotation", {
+      duration: 0.3,
+      ease: "power2.out",
+    });
 
-    const previousCursor = document.body.style.cursor;
-    document.body.style.cursor = "none";
+    const style = document.createElement("style");
+    style.textContent = "* { cursor: none !important; }";
+    document.head.appendChild(style);
 
     const handleMouseMove = (event: MouseEvent) => {
-      const { dotX, dotY, ringX, ringY } = quickToRefs.current;
-      dotX?.(event.clientX - 8);
-      dotY?.(event.clientY - 8);
-      ringX?.(event.clientX - 20);
-      ringY?.(event.clientY - 20);
+      const { x, y, rot } = quickToRefs.current;
+      x?.(event.clientX - 20);
+      y?.(event.clientY - 20);
+
+      const dx = event.clientX - prevMouse.current.x;
+      const dy = event.clientY - prevMouse.current.y;
+      const dist = Math.hypot(dx, dy);
+      angle.current += dist * 0.5;
+      rot?.(angle.current);
+
+      prevMouse.current.x = event.clientX;
+      prevMouse.current.y = event.clientY;
     };
 
     const handleMouseOver = (event: MouseEvent) => {
@@ -62,24 +71,13 @@ export function CustomCursor() {
       if (!target) return;
 
       const interactive =
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.tagName.toLowerCase() === "input" ||
-        target.tagName.toLowerCase() === "textarea" ||
-        target.tagName.toLowerCase() === "select" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.closest("input") ||
-        target.closest("textarea") ||
-        target.closest("select") ||
+        target.closest("a, button, input, textarea, select") ||
         target.classList.contains("interactive");
 
       if (interactive) {
-        gsap.to(dot, { scale: 2.5, duration: 0.25, ease: "back.out(2)" });
-        gsap.to(ring, { scale: 1.5, opacity: 0, duration: 0.25, ease: "back.out(2)" });
+        gsap.to(cursor, { scale: 1.3, duration: 0.25, ease: "back.out(2)" });
       } else {
-        gsap.to(dot, { scale: 1, duration: 0.25, ease: "back.out(2)" });
-        gsap.to(ring, { scale: 1, opacity: 1, duration: 0.25, ease: "back.out(2)" });
+        gsap.to(cursor, { scale: 1, duration: 0.25, ease: "back.out(2)" });
       }
     };
 
@@ -87,11 +85,11 @@ export function CustomCursor() {
     window.addEventListener("mouseover", handleMouseOver);
 
     return () => {
-      document.body.style.cursor = previousCursor;
+      style.remove();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
-      gsap.killTweensOf(dot);
-      gsap.killTweensOf(ring);
+      gsap.killTweensOf(cursor);
+      gsap.killTweensOf(blades);
     };
   }, [enabled]);
 
@@ -100,17 +98,48 @@ export function CustomCursor() {
   }
 
   return (
-    <>
-      <div
-        ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-4 w-4 rounded-full bg-[var(--color-primary)] mix-blend-difference"
-        style={{ willChange: "transform" }}
-      />
-      <div
-        ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[99] h-10 w-10 rounded-full border border-[var(--color-primary-muted)]"
-        style={{ willChange: "transform" }}
-      />
-    </>
+    <div
+      ref={cursorRef}
+      className="pointer-events-none fixed left-0 top-0 z-[100] text-[var(--color-primary)]"
+      style={{ willChange: "transform", width: 40, height: 40 }}
+    >
+      <svg viewBox="0 0 32 32" width="40" height="40" fill="none">
+        <g ref={bladesRef} transform="translate(16,16) scale(0.1077)">
+          <circle cx="0" cy="0" r="130" stroke="currentColor" strokeWidth="2" />
+          <circle cx="0" cy="0" r="48" stroke="currentColor" strokeWidth="1.5" />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="54.34,-13.55 118.02,-30.89 94,77.77 48.5,28 54.34,-13.55"
+          />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="38.9,40.28 85.76,86.77 -20.35,120.29 0,56 38.9,40.28"
+          />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="-15.44,53.83 -32.26,117.66 -114.35,42.53 -48.5,28 -15.44,53.83"
+          />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="-54.34,13.55 -118.02,30.89 -94,-77.77 -48.5,-28 -54.34,13.55"
+          />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="-38.9,-40.28 -85.76,-86.77 20.35,-120.29 0,-56 -38.9,-40.28"
+          />
+          <polygon
+            fill="currentColor"
+            fillOpacity="0.85"
+            points="15.44,-53.83 32.26,-117.66 114.35,-42.53 48.5,-28 15.44,-53.83"
+          />
+          <circle cx="0" cy="0" r="5" fill="currentColor" />
+        </g>
+      </svg>
+    </div>
   );
 }

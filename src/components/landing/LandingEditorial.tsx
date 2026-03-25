@@ -43,7 +43,8 @@ export function LandingEditorial() {
   }, [reducedMotion]);
 
   return (
-    <section className="py-32 md:py-52 px-6 md:px-24">
+    <section className="relative py-32 md:py-52 px-6 md:px-24">
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <CinematicImageReveal
           src="/images/golden-hour/hero.jpg"

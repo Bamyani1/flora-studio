@@ -55,6 +55,7 @@ export function LandingHero() {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-background">
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       {/* Vertical divider */}
       <div
         ref={dividerRef}

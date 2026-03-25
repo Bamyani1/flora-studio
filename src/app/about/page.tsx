@@ -313,7 +313,8 @@ export default function AboutPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdContent }} />
 
         {/* Hero */}
-        <section className="min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
+          <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
             <div
               data-about-animate="hero-divider"

@@ -21,31 +21,25 @@ export function LandingExhibition() {
       return;
     }
 
-    gsap.fromTo(
-      textColRef.current,
-      fadeLeft.from,
-      {
-        ...fadeLeft.to,
-        duration: 1.5,
-        ...withWillChange(),
-        scrollTrigger: {
-          trigger: textColRef.current,
-          start: "top 75%",
-        },
+    gsap.fromTo(textColRef.current, fadeLeft.from, {
+      ...fadeLeft.to,
+      duration: 1.5,
+      ...withWillChange(),
+      scrollTrigger: {
+        trigger: textColRef.current,
+        start: "top 75%",
       },
-    );
+    });
   }, [reducedMotion]);
 
   return (
     <section className="py-32 md:py-40 relative">
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       <div className="absolute inset-0 bg-background transform -skew-y-3 origin-top-left z-0"></div>
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-center">
-          <div
-            ref={textColRef}
-            className="order-2 md:order-1 w-full md:w-1/2"
-          >
+          <div ref={textColRef} className="order-2 md:order-1 w-full md:w-1/2">
             <span className="text-primary font-label text-[10px] tracking-[0.5em] mb-6 block">
               EXHIBITION 01
             </span>
@@ -55,8 +49,8 @@ export function LandingExhibition() {
               Series
             </h3>
             <p className="font-body text-white/60 text-lg leading-relaxed mb-12 max-w-md">
-              A study of scale and isolation. Documenting the monolithic
-              structures of the northern ranges during the twilight hours.
+              A study of scale and isolation. Documenting the monolithic structures of the northern
+              ranges during the twilight hours.
             </p>
             <TransitionLink
               href="/work"

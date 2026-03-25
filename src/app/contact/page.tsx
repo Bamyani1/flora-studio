@@ -34,7 +34,7 @@ export default function ContactPage() {
       className="relative flex h-screen flex-col overflow-hidden bg-background px-[10%] pt-[100px] pb-20"
     >
       {/* Grain overlay */}
-      <div className="grain-overlay pointer-events-none fixed inset-0 z-50" />
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
 
       {/* Floating two-panel card */}
       <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">

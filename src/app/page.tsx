@@ -19,7 +19,6 @@ export default function HomePage() {
           <LandingEditorial />
           <LandingExhibition />
           <LandingStudio />
-
         </div>
       </main>
       <LandingFooter />

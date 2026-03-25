@@ -77,6 +77,7 @@ export function GalleryFullBleed({ album }: GallerySectionProps) {
       className="relative h-dvh w-full flex items-center justify-center bg-[var(--color-surface-lowest)] overflow-hidden group/bleed"
       aria-label={`${album.title} — featured`}
     >
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-video opacity-40 blur-3xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 transition-opacity duration-1000 group-hover/bleed:opacity-60"

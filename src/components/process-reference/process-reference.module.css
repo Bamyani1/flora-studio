@@ -1,14 +1,14 @@
 .page {
-  --process-surface: #131313;
-  --process-primary: #e9c176;
-  --process-primary-container: #c5a059;
-  --process-on-primary: #412d00;
-  --process-on-surface: #e5e2e1;
-  --process-on-surface-variant: #d1c5b4;
-  --process-outline-variant: #4e4639;
-  --process-surface-container: #201f1f;
-  --process-surface-container-low: #1c1b1b;
-  --process-surface-container-lowest: #0e0e0e;
+  --process-surface: var(--color-background);
+  --process-primary: var(--color-primary);
+  --process-primary-container: var(--color-primary-muted);
+  --process-on-primary: var(--color-on-primary);
+  --process-on-surface: var(--color-on-surface);
+  --process-on-surface-variant: var(--color-on-surface-variant);
+  --process-outline-variant: var(--color-outline-variant);
+  --process-surface-container: #303528;
+  --process-surface-container-low: var(--color-surface);
+  --process-surface-container-lowest: var(--color-surface-lowest);
   position: relative;
   overflow-x: hidden;
   background: var(--process-surface);
@@ -20,7 +20,11 @@
 }
 
 .cinematicVignette {
-  background: radial-gradient(circle, transparent 20%, rgba(14, 14, 14, 0.8) 100%);
+  background: radial-gradient(
+    circle,
+    transparent 20%,
+    color-mix(in srgb, var(--color-surface-lowest) 80%, transparent) 100%
+  );
 }
 
 .timelineRule {
@@ -37,8 +41,8 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(233, 193, 118, 0.3) 10%,
-    rgba(233, 193, 118, 0.3) 90%,
+    color-mix(in srgb, var(--color-primary) 30%, transparent) 10%,
+    color-mix(in srgb, var(--color-primary) 30%, transparent) 90%,
     transparent
   );
   z-index: 0;
