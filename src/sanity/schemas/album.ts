@@ -24,11 +24,11 @@ export const album = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Landscapes", value: "landscapes" },
-          { title: "Night Sky", value: "nightsky" },
-          { title: "Sports", value: "sports" },
+          { title: "Milestones", value: "milestones" },
+          { title: "Gatherings", value: "gatherings" },
+          { title: "Motion", value: "motion" },
           { title: "Portraits", value: "portraits" },
-          { title: "Stories", value: "stories" },
+          { title: "Professional", value: "professional" },
         ],
       },
       validation: (rule) => rule.required(),

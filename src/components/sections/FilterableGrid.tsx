@@ -7,7 +7,14 @@ import type { AlbumMeta } from "@/types/project";
 
 import { CATEGORY_META } from "@/lib/categories";
 
-const CATEGORIES = ["all", "landscapes", "nightsky", "sports", "portraits", "stories"] as const;
+const CATEGORIES = [
+  "all",
+  "milestones",
+  "gatherings",
+  "motion",
+  "portraits",
+  "professional",
+] as const;
 
 interface FilterableGridProps {
   albums: AlbumMeta[];
@@ -19,9 +26,7 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   const filtered =
-    activeFilter === "all"
-      ? albums
-      : albums.filter((a) => a.category === activeFilter);
+    activeFilter === "all" ? albums : albums.filter((a) => a.category === activeFilter);
 
   const handleFilter = useCallback(
     (category: string) => {
@@ -61,7 +66,7 @@ export function FilterableGrid({ albums }: FilterableGridProps) {
                   : "border-border text-muted hover:text-text"
               }`}
             >
-              {cat === "all" ? "All" : CATEGORY_META[cat]?.label ?? cat}
+              {cat === "all" ? "All" : (CATEGORY_META[cat]?.label ?? cat)}
             </button>
           ))}
         </div>

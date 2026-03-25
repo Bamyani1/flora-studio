@@ -15,7 +15,8 @@ export interface AlbumMeta {
   _id: string;
   title: string;
   slug: { current: string };
-  category: "landscapes" | "nightsky" | "sports" | "portraits" | "stories";
+  category: "milestones" | "gatherings" | "motion" | "portraits" | "professional";
+  description?: string;
   year?: number;
   location?: string;
   coverImage: SanityImage;
@@ -24,7 +25,6 @@ export interface AlbumMeta {
 }
 
 export interface Album extends AlbumMeta {
-  description?: string;
   heroImage: SanityImage;
   heroBlur?: string;
   images: (SanityImage & { blurDataURL?: string })[];

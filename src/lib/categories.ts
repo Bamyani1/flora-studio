@@ -1,22 +1,22 @@
 export const CATEGORY_META: Record<string, { label: string; description: string }> = {
-  landscapes: {
-    label: "Landscapes",
-    description: "From granite cathedrals to fog-wrapped coastlines — the earth's quiet drama, framed in light.",
+  milestones: {
+    label: "Milestones",
+    description: "Caps, gowns, and the moments that mark a new beginning.",
   },
-  nightsky: {
-    label: "Night Sky",
-    description: "When the sun drops below the horizon, a different kind of light takes over.",
+  gatherings: {
+    label: "Gatherings",
+    description: "The energy of people coming together — game days, campus nights, celebrations.",
   },
-  sports: {
-    label: "Sports",
-    description: "The emotion of competition — from the tunnel to the press table, the moments between the moments.",
+  motion: {
+    label: "Motion",
+    description: "Fast breaks, final buzzers, and everything in between.",
   },
   portraits: {
     label: "Portraits",
-    description: "Every face carries a story. Portraits that find the extraordinary in stillness.",
+    description: "Everyone has something worth photographing.",
   },
-  stories: {
-    label: "Stories",
-    description: "The in-between places. Cities at midnight, cathedrals in shadow, roads with no destination.",
+  professional: {
+    label: "Professional",
+    description: "Clean, confident images for the work you do.",
   },
 };
