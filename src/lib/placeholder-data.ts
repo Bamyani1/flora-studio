@@ -17,7 +17,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     slug: { current: "the-graduate" },
     category: "milestones",
     description:
-      "Cap, gown, and the quiet confidence of crossing a threshold. A cinematic portrait session marking the moment everything changes.",
+      "Cap, gown, and the quiet confidence of crossing a threshold. A portrait session marking the moment everything changes.",
     coverImage: img("/images/graduation/cover.jpg"),
   },
   {
@@ -44,7 +44,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     slug: { current: "portraits" },
     category: "portraits",
     description:
-      "Every face carries a story. Mixed-session portraits that find the extraordinary in stillness and the light between expressions.",
+      "Every face carries something worth photographing. Mixed-session portraits that find the extraordinary in stillness and the light between expressions.",
     coverImage: img("/images/out-west/cover.jpg"),
   },
 ];
@@ -62,7 +62,7 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     coverImage: img("/images/graduation/cover.jpg"),
     heroImage: img("/images/graduation/hero.jpg"),
     description:
-      "Cap, gown, and the quiet confidence of crossing a threshold. A cinematic portrait session marking the moment everything changes.",
+      "Cap, gown, and the quiet confidence of crossing a threshold. A portrait session marking the moment everything changes.",
     narrative:
       "The morning light cut through campus like a curtain rising on a final act. Four years of late nights and early mornings led to this — a cap set straight, a gown carrying the weight of everything earned. In the stillness between poses, confidence surfaced. Not loud, not rehearsed — just the quiet certainty of someone stepping into what comes next.",
     images: albumImages("graduation", 5),
@@ -162,7 +162,7 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     description:
       "Tournament basketball at its peak. The press tables, the practice courts, and the tension that builds before every tip-off.",
     narrative:
-      "The arena breathes differently during tournament play — every possession weighted, every timeout charged with strategy. The press tables hum, cameras line the baseline, and the air carries the kind of tension that only March delivers. We capture the full arc: warm-ups, game faces, final buzzers, and the silence after the last whistle.",
+      "The arena breathes differently during tournament play — every possession weighted, every timeout charged with strategy. The press tables hum, cameras line the baseline, and the air carries the kind of tension that only March delivers. We photograph the full arc: warm-ups, game faces, final buzzers, and the silence after the last whistle.",
     images: albumImages("march-madness", 16),
   },
   {

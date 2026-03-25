@@ -310,7 +310,7 @@ export function HeroDiptych() {
             marginTop: "1.5rem",
           }}
         >
-          Where cinematic vision meets authentic storytelling
+          Where patience meets precision
         </p>
 
         {/* CTA */}

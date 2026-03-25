@@ -337,8 +337,8 @@ export default function AboutPage() {
               data-about-animate="hero-subtitle"
               className="font-body text-xl md:text-2xl text-on-surface-variant/60 max-w-2xl leading-relaxed font-light"
             >
-              A photography studio grounded in intention, craft, and the belief that every frame
-              should earn its place.
+              A photography studio built on patience, precision, and the belief that everyone has
+              something worth photographing.
             </p>
           </div>
         </section>

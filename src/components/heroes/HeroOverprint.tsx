@@ -161,7 +161,7 @@ export function HeroOverprint() {
             marginTop: "0.5rem",
           }}
         >
-          we craft your story.
+          we make it count.
         </p>
 
         {/* Decorative gold vertical rule */}

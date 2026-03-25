@@ -276,7 +276,7 @@ export function HeroContact() {
             lineHeight: 1.3,
           }}
         >
-          Every story starts
+          Every collection starts
         </p>
         <div className="cs-gold-word">
           <p

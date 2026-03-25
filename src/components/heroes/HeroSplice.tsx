@@ -444,7 +444,7 @@ export function HeroSplice() {
               lineHeight: 1.4,
             }}
           >
-            we find the story.
+            we find the frame.
           </p>
         </div>
       </div>

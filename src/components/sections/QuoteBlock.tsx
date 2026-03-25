@@ -21,7 +21,7 @@ export function QuoteBlock() {
         {/* Quote text */}
         <FadeIn delay={0.2}>
           <blockquote className="font-display text-4xl font-light uppercase leading-tight text-text-heading md:text-6xl">
-            One frame. The whole story.
+            One frame. Worth keeping.
           </blockquote>
         </FadeIn>
 

@@ -2,7 +2,7 @@ export const NAV_ITEMS = [
   { label: "Work", href: "/work", kind: "link" },
   { label: "Process", href: "/process", kind: "link" },
   { label: "About", href: "/about", kind: "link" },
-  { label: "Connect", href: "/contact", kind: "cta" },
+  { label: "Get in touch", href: "/contact", kind: "cta" },
 ] as const;
 
 export type NavItem = (typeof NAV_ITEMS)[number];

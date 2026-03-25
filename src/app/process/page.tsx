@@ -47,7 +47,7 @@ const STEPS: ProcessStep[] = [
     title: "Selection",
     description:
       "From every session, we select only the strongest images — where composition, expression, and light come together. Quality over quantity, always.",
-    meta: "Phase: Curation",
+    meta: "Phase: Selection",
     images: [
       {
         src: "/images/out-west/01.jpg",

@@ -6,6 +6,7 @@ import { TransitionLink } from "./TransitionLink";
 interface HeaderContactActionProps {
   className?: string;
   label?: string;
+  children?: React.ReactNode;
   onBeforeAction?: () => void;
   scrollDelayMs?: number;
 }
@@ -28,12 +29,14 @@ function scrollToProcessContact(scrollDelayMs: number) {
 
 export function HeaderContactAction({
   className,
-  label = "Connect",
+  label = "Get in touch",
+  children,
   onBeforeAction,
   scrollDelayMs = 0,
 }: HeaderContactActionProps) {
   const pathname = usePathname();
   const isProcessRoute = pathname === "/process";
+  const content = children ?? label;
 
   if (isProcessRoute) {
     return (
@@ -45,14 +48,14 @@ export function HeaderContactAction({
           scrollToProcessContact(scrollDelayMs);
         }}
       >
-        {label}
+        {content}
       </button>
     );
   }
 
   return (
     <TransitionLink href="/contact" onClick={onBeforeAction} className={className}>
-      {label}
+      {content}
     </TransitionLink>
   );
 }
