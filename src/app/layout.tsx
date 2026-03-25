@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { berlingskeSerif, inter } from "@/lib/fonts";
+import { cormorantGaramond, inter, notoSerif, spaceGrotesk, ebGaramond } from "@/lib/fonts";
 import { baseMetadata } from "@/lib/metadata";
 import { Providers } from "@/providers/Providers";
 import { RouteChrome } from "@/components/layout/RouteChrome";
@@ -16,7 +16,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${berlingskeSerif.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      className={`${cormorantGaramond.variable} ${inter.variable} ${notoSerif.variable} ${spaceGrotesk.variable} ${ebGaramond.variable}`}
+    >
       <body className="grain-overlay bg-background font-body text-text antialiased">
         <Providers>
           <a

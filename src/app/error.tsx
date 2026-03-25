@@ -7,10 +7,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <main
-      id="main-content"
-      className="flex min-h-screen flex-col items-center justify-center px-[var(--container-padding-x)]"
-    >
+    <main className="flex min-h-screen flex-col items-center justify-center px-[var(--container-padding-x)]">
       <p className="font-label text-sm uppercase tracking-widest text-muted">
         Error
       </p>

@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/client";
-import {
-  ALBUM_BY_SLUG_QUERY,
-  ALBUM_SLUGS_QUERY,
-  ALBUMS_QUERY,
-} from "@/sanity/queries";
-import {
-  PLACEHOLDER_ALL_ALBUMS,
-  PLACEHOLDER_ALBUM_MAP,
-} from "@/lib/placeholder-data";
+import { ALBUM_BY_SLUG_QUERY, ALBUM_SLUGS_QUERY, ALBUMS_QUERY } from "@/sanity/queries";
+import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
 import { resolveImageUrl } from "@/lib/image-url";
 import { imageGalleryJsonLd } from "@/lib/metadata";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
-import { HorizontalScrollGallery } from "@/components/sections/HorizontalScrollGallery";
+import { FolioGallery } from "@/components/sections/FolioGallery";
 import { TextReveal } from "@/components/animations/TextReveal";
 import type { Album, AlbumMeta } from "@/types/project";
 
@@ -37,13 +30,9 @@ async function getAlbumWithNav(slug: string) {
   }
 
   // Find prev/next with wrap-around
-  const currentIndex = allAlbums.findIndex(
-    (a) => a.slug.current === slug,
-  );
-  const prevIndex =
-    currentIndex <= 0 ? allAlbums.length - 1 : currentIndex - 1;
-  const nextIndex =
-    currentIndex >= allAlbums.length - 1 ? 0 : currentIndex + 1;
+  const currentIndex = allAlbums.findIndex((a) => a.slug.current === slug);
+  const prevIndex = currentIndex <= 0 ? allAlbums.length - 1 : currentIndex - 1;
+  const nextIndex = currentIndex >= allAlbums.length - 1 ? 0 : currentIndex + 1;
 
   const previous =
     allAlbums.length > 1
@@ -89,15 +78,11 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — a photography album by Silk Road Studio.`,
+    description: description ?? `${title} — a photography album by Saffron Studios.`,
   };
 }
 
-export default async function AlbumPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { album, previous, next } = await getAlbumWithNav(slug);
 
@@ -141,9 +126,7 @@ export default async function AlbumPage({
         </section>
       )}
 
-      {album.images?.length > 0 && (
-        <HorizontalScrollGallery images={album.images} />
-      )}
+      {album.images?.length > 0 && <FolioGallery images={album.images} title={album.title} />}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

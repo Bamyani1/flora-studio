@@ -1,12 +1,9 @@
 {
-  "name": "silk-road-studio",
+  "name": "saffron-studios",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/optimize-images.mjs",
     "dev": "next dev",
-    "optimize-images": "node scripts/optimize-images.mjs",
-    "prebuild": "node scripts/optimize-images.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

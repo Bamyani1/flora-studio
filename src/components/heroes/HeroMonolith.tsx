@@ -99,17 +99,13 @@ export function HeroMonolith() {
 
       // Image: scale 1.05 → 1 on scroll
       if (imageEl) {
-        gsap.fromTo(
-          imageEl,
-          seq.imageScale.from,
-          {
-            ...seq.imageScale.to,
-            scrollTrigger: {
-              trigger: root,
-              ...seq.imageScale.scrollTrigger,
-            },
+        gsap.fromTo(imageEl, seq.imageScale.from, {
+          ...seq.imageScale.to,
+          scrollTrigger: {
+            trigger: root,
+            ...seq.imageScale.scrollTrigger,
           },
-        );
+        });
       }
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
@@ -127,14 +123,12 @@ export function HeroMonolith() {
       <div className="mono-image absolute inset-0 z-[1]">
         <Image
           src="/images/hero.jpg"
-          alt="Silk Road Studio hero photograph"
+          alt="Saffron Studios hero photograph"
           fill
           sizes="100vw"
           priority
           className="object-cover"
-          {...(blurDataURL
-            ? { placeholder: "blur" as const, blurDataURL }
-            : {})}
+          {...(blurDataURL ? { placeholder: "blur" as const, blurDataURL } : {})}
         />
       </div>
 
@@ -173,10 +167,7 @@ export function HeroMonolith() {
         style={{ isolation: "isolate" }}
       >
         {/* Subtitle row — positioned ~60% from top */}
-        <div
-          className="absolute flex items-center justify-center gap-4"
-          style={{ top: "60%" }}
-        >
+        <div className="absolute flex items-center justify-center gap-4" style={{ top: "60%" }}>
           {/* Left gold line */}
           <div
             className="mono-gold-left"
@@ -200,7 +191,7 @@ export function HeroMonolith() {
               color: "var(--color-primary)",
             }}
           >
-            SILK ROAD STUDIO
+            SAFFRON STUDIOS
           </span>
 
           {/* Right gold line */}
@@ -227,13 +218,11 @@ export function HeroMonolith() {
             color: "color-mix(in srgb, var(--color-text-heading) 50%, transparent)",
           }}
         >
-          Cinematic photography that transcends the ordinary
+          Photography built on patience and craft
         </p>
 
         {/* CTA — anchored to bottom */}
-        <div
-          className="mono-cta absolute bottom-10 flex justify-center"
-        >
+        <div className="mono-cta absolute bottom-10 flex justify-center">
           <button
             type="button"
             className="group inline-flex items-center gap-2 bg-transparent border-none cursor-pointer transition-opacity duration-300 hover:opacity-70"

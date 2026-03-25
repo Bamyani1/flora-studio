@@ -20,11 +20,16 @@ export function ExhibitionFeature({ blurDataURL }: ExhibitionFeatureProps) {
     () => {
       if (!imageRef.current || reduced) return;
 
-      gsap.fromTo(imageRef.current, exhibitionParallax.from, {
+      const img = imageRef.current;
+      gsap.fromTo(img, exhibitionParallax.from, {
         ...exhibitionParallax.to,
         scrollTrigger: {
           trigger: sectionRef.current,
           ...exhibitionParallax.scrollTrigger,
+          onEnter: () => { img.style.willChange = "transform"; },
+          onLeave: () => { img.style.willChange = "auto"; },
+          onEnterBack: () => { img.style.willChange = "transform"; },
+          onLeaveBack: () => { img.style.willChange = "auto"; },
         },
       });
     },
@@ -56,16 +61,16 @@ export function ExhibitionFeature({ blurDataURL }: ExhibitionFeatureProps) {
           [ FEATURED COLLECTION ]
         </span>
         <p className="mt-3 font-body text-sm leading-relaxed text-muted">
-          From the Rockies to the Smokies — alpine drama where mist, light,
-          and granite converge.
+          The intensity of live basketball — fast breaks, contested shots,
+          and the energy that fills the arena from the opening whistle.
         </p>
       </div>
 
       {/* Bottom-left title */}
       <div className="absolute bottom-[var(--section-padding-y)] left-[var(--container-padding-x)] z-10">
         <h2 className="font-display text-5xl font-light uppercase leading-none text-text-heading md:text-7xl lg:text-[length:var(--text-hero)]">
-          High{" "}
-          <span className="text-primary">Country</span>
+          Tip-{" "}
+          <span className="text-primary">Off</span>
         </h2>
       </div>
     </section>

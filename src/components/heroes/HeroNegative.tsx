@@ -158,15 +158,21 @@ export function HeroNegative() {
           color: "var(--color-primary)",
         }}
       >
-        CINEMATIC PORTRAITURE
+        PORTRAITURE
       </span>
 
       {/* ---------- Film strip band ---------- */}
-      <div className="relative w-full overflow-hidden" style={{ height: "42vh", backgroundColor: "var(--color-surface-lowest)" }}>
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ height: "42vh", backgroundColor: "var(--color-surface-lowest)" }}
+      >
         {/* Inner content wrapper — animated via xPercent */}
         <div className="neg-strip-inner relative w-full h-full">
           {/* ---- Top perforation row ---- */}
-          <div className="absolute top-[6px] left-0 w-full flex justify-around px-8" style={{ zIndex: 20 }}>
+          <div
+            className="absolute top-[6px] left-0 w-full flex justify-around px-8"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`top-${i}`}
@@ -183,7 +189,10 @@ export function HeroNegative() {
           </div>
 
           {/* ---- Bottom perforation row ---- */}
-          <div className="absolute bottom-[6px] left-0 w-full flex justify-around px-8" style={{ zIndex: 20 }}>
+          <div
+            className="absolute bottom-[6px] left-0 w-full flex justify-around px-8"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`bottom-${i}`}
@@ -219,7 +228,7 @@ export function HeroNegative() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Silk Road Studio — cinematic portraiture"
+              alt="Saffron Studios — portraiture"
               fill
               sizes="100vw"
               priority
@@ -261,7 +270,7 @@ export function HeroNegative() {
               zIndex: 25,
             }}
           >
-            SILK ROAD STUDIO
+            SAFFRON STUDIOS
           </span>
         </div>
       </div>
@@ -277,7 +286,7 @@ export function HeroNegative() {
             lineHeight: 1.3,
           }}
         >
-          We tell stories
+          We see what matters
         </p>
         <div className="neg-gold-line">
           <p

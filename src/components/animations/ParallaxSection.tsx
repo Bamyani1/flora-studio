@@ -26,13 +26,18 @@ export function ParallaxSection({
 
       const preset = parallaxLayer(speed);
 
+      const el = ref.current;
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
-        gsap.to(ref.current, {
+        gsap.to(el, {
           ...preset.to,
           scrollTrigger: {
-            trigger: ref.current,
+            trigger: el,
             ...preset.scrollTrigger,
+            onEnter: () => { if (el) el.style.willChange = "transform"; },
+            onLeave: () => { if (el) el.style.willChange = "auto"; },
+            onEnterBack: () => { if (el) el.style.willChange = "transform"; },
+            onLeaveBack: () => { if (el) el.style.willChange = "auto"; },
           },
         });
       });

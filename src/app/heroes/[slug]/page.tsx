@@ -93,18 +93,12 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const hero = HERO_REGISTRY[slug];
     return {
-      title: hero
-        ? `${hero.title} — Hero Variations — Silk Road Studio`
-        : "Hero Variations",
+      title: hero ? `${hero.title} — Hero Variations — Saffron Studios` : "Hero Variations",
     };
   });
 }
 
-export default async function HeroPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function HeroPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const hero = HERO_REGISTRY[slug];
   if (!hero) notFound();
@@ -112,7 +106,7 @@ export default async function HeroPage({
   const { Component, fonts } = hero;
 
   return (
-    <main id="main-content" className={fonts || undefined}>
+    <div className={fonts || undefined}>
       <Component />
 
       {/* Back link — fades in after hero animation */}
@@ -136,6 +130,6 @@ export default async function HeroPage({
           to { opacity: 1; }
         }
       `}</style>
-    </main>
+    </div>
   );
 }

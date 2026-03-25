@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { LazyMotion } from "motion/react";
 import { ReactLenis, useLenis } from "lenis/react";
 import { gsap } from "@/lib/gsap";
-
-const features = () => import("@/lib/motion-features").then((mod) => mod.default);
+import { CustomCursor } from "@/components/ui/CustomCursor";
 
 function LenisGsapSync() {
   const lenis = useLenis();
@@ -29,11 +27,10 @@ function LenisGsapSync() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ReactLenis root options={{ duration: 1.2, autoRaf: false }}>
+    <ReactLenis root options={{ duration: 1.4, lerp: 0.06, autoRaf: false }}>
       <LenisGsapSync />
-      <LazyMotion features={features} strict>
-        {children}
-      </LazyMotion>
+      <CustomCursor />
+      {children}
     </ReactLenis>
   );
 }

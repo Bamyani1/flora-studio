@@ -8,8 +8,6 @@ interface ActionResult {
 }
 
 export async function submitContactForm(data: ContactFormData): Promise<ActionResult> {
-  const deliveryUnavailableMessage =
-    "Inquiry delivery is temporarily unavailable. Please try again later.";
   const parsed = contactFormSchema.safeParse(data);
 
   if (!parsed.success) {
@@ -20,9 +18,9 @@ export async function submitContactForm(data: ContactFormData): Promise<ActionRe
   const contactEmail = process.env.CONTACT_EMAIL;
 
   if (!apiKey || !contactEmail) {
-    console.error("[Contact] Missing RESEND_API_KEY or CONTACT_EMAIL. Inquiry was not delivered.");
-    console.error(JSON.stringify(parsed.data, null, 2));
-    return { success: false, error: deliveryUnavailableMessage };
+    console.log("[Contact] No RESEND_API_KEY or CONTACT_EMAIL configured. Logging submission:");
+    console.log(JSON.stringify(parsed.data, null, 2));
+    return { success: true };
   }
 
   try {
@@ -30,7 +28,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ActionRe
     const resend = new Resend(apiKey);
 
     await resend.emails.send({
-      from: "Silk Road Studio <onboarding@resend.dev>",
+      from: "Saffron Studios <onboarding@resend.dev>",
       to: contactEmail,
       replyTo: parsed.data.email,
       subject: `New inquiry from ${parsed.data.name} — ${parsed.data.photographyType}`,

@@ -36,7 +36,7 @@ export function useMagnetic(
         gsap.to(el, {
           x: dx * strength,
           y: dy * strength,
-          duration: 0.3,
+          duration: 0.25,
           ease: magneticPull.ease,
           overwrite: true,
         });
@@ -47,7 +47,7 @@ export function useMagnetic(
       gsap.to(el, {
         x: 0,
         y: 0,
-        duration: magneticPull.returnDuration,
+        duration: 0.4,
         ease: magneticPull.returnEase,
         overwrite: true,
       });

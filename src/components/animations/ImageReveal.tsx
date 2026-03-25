@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { imageReveal } from "@/lib/animations";
+import { imageReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ImageRevealProps {
@@ -37,6 +37,7 @@ export function ImageReveal({
       gsap.set(imageWrapRef.current, { scale: 1.3 });
 
       const tl = gsap.timeline({
+        ...withWillChange(),
         scrollTrigger: {
           trigger: containerRef.current,
           ...imageReveal.scrollTrigger,

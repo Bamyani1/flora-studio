@@ -33,7 +33,15 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
 
       if (reduced) {
         gsap.set(
-          [heroImage, heroLabel, heroTitleLine, heroTitleStroke, heroDescription, heroCta, scrollIndicator].filter(Boolean),
+          [
+            heroImage,
+            heroLabel,
+            heroTitleLine,
+            heroTitleStroke,
+            heroDescription,
+            heroCta,
+            scrollIndicator,
+          ].filter(Boolean),
           { autoAlpha: 1 },
         );
         return;
@@ -64,7 +72,11 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
       // Step 2: Title line ("THE")
       if (heroTitleLine) {
         const step = heroArchiveSequence.steps[2];
-        const split = new SplitText(heroTitleLine, { type: "lines", mask: "lines", autoSplit: true });
+        const split = new SplitText(heroTitleLine, {
+          type: "lines",
+          mask: "lines",
+          autoSplit: true,
+        });
         splits.push(split);
         tl.fromTo(
           split.lines,
@@ -77,7 +89,11 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
       // Step 3: Stroke text ("ARCHIVE")
       if (heroTitleStroke) {
         const step = heroArchiveSequence.steps[3];
-        const split = new SplitText(heroTitleStroke, { type: "lines", mask: "lines", autoSplit: true });
+        const split = new SplitText(heroTitleStroke, {
+          type: "lines",
+          mask: "lines",
+          autoSplit: true,
+        });
         splits.push(split);
         tl.fromTo(
           split.lines,
@@ -137,24 +153,22 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
       {/* Content — bottom-aligned */}
       <div className="relative z-10 flex h-full flex-col justify-end px-[var(--container-padding-x)] pb-24 md:pb-32">
         {/* Label */}
-        <span
-          className="hero-label mb-6 font-label text-xs uppercase tracking-wider text-primary"
-        >
-          [ CINEMATIC PHOTOGRAPHY ]
+        <span className="hero-label mb-6 font-label text-xs uppercase tracking-wider text-primary">
+          [ PHOTOGRAPHY WITH INTENTION ]
         </span>
 
         {/* Title */}
-        <h1 className="font-display font-light uppercase leading-[0.8] text-text-heading" style={{ fontSize: "var(--text-hero-display)" }}>
+        <h1
+          className="font-display font-light uppercase leading-[0.8] text-text-heading"
+          style={{ fontSize: "var(--text-hero-display)" }}
+        >
           <span className="hero-title-line block">SILK</span>
           <span className="hero-title-stroke text-stroke block">STUDIO</span>
         </h1>
 
         {/* Description */}
-        <p
-          className="hero-description mt-8 max-w-md font-body text-base leading-relaxed text-muted md:text-lg"
-        >
-          Every frame, a story that travels. Cinematic photography
-          for light, shadow, and the human presence.
+        <p className="hero-description mt-8 max-w-md font-body text-base leading-relaxed text-muted md:text-lg">
+          Every frame, earned. Photography built on light, shadow, and the moments that define you.
         </p>
 
         {/* CTA */}

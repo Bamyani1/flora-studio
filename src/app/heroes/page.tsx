@@ -13,7 +13,7 @@ import {
 } from "@/lib/fonts";
 
 export const metadata = {
-  title: "Hero Variations — Silk Road Studio",
+  title: "Hero Variations — Saffron Studios",
 };
 
 const HEROES = [
@@ -111,8 +111,7 @@ const fontClasses = [
 
 export default function HeroesPage() {
   return (
-    <main
-      id="main-content"
+    <div
       className={`${fontClasses} min-h-screen flex flex-col items-center justify-center px-6 py-16`}
       style={{ backgroundColor: "var(--color-surface-deep)" }}
     >
@@ -139,7 +138,7 @@ export default function HeroesPage() {
           color: "color-mix(in srgb, var(--color-text) 40%, transparent)",
         }}
       >
-        Eleven approaches to the Silk Road Studio landing
+        Eleven approaches to the Saffron Studios landing
       </p>
 
       {/* Grid */}
@@ -214,6 +213,6 @@ export default function HeroesPage() {
       >
         &larr; BACK TO SITE
       </Link>
-    </main>
+    </div>
   );
 }

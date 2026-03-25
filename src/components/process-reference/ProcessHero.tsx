@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
-import { m, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
+import { withWillChange } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import styles from "./process-reference.module.css";
 import type { ProcessImage } from "./types";
 import { ProcessMagnetic } from "./ProcessMagnetic";
@@ -13,32 +16,87 @@ interface ProcessHeroProps {
 }
 
 export function ProcessHero({ image }: ProcessHeroProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const chevronRef = useRef<HTMLAnchorElement>(null);
+  const reduced = useReducedMotion();
 
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0%", "0%"] : ["0%", "50%"],
+  useGSAP(
+    () => {
+      if (!sectionRef.current || !bgRef.current || !imageWrapperRef.current || !contentRef.current)
+        return;
+
+      if (reduced) {
+        gsap.set([bgRef.current, contentRef.current], { autoAlpha: 1 });
+        gsap.set(imageWrapperRef.current, { scale: 1 });
+        return;
+      }
+
+      // Parallax: scroll-linked y + opacity fade on background (single ScrollTrigger to prevent desync)
+      gsap.to(bgRef.current, {
+        yPercent: 50,
+        autoAlpha: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+          onEnter: () => {
+            if (bgRef.current) bgRef.current.style.willChange = "transform, opacity";
+          },
+          onLeave: () => {
+            if (bgRef.current) bgRef.current.style.willChange = "auto";
+          },
+          onEnterBack: () => {
+            if (bgRef.current) bgRef.current.style.willChange = "transform, opacity";
+          },
+          onLeaveBack: () => {
+            if (bgRef.current) bgRef.current.style.willChange = "auto";
+          },
+        },
+      });
+
+      // Image scale entrance
+      gsap.from(imageWrapperRef.current, {
+        scale: 1.1,
+        duration: 2,
+        ease: "power2.out",
+      });
+
+      // Staggered text content entrance
+      const children = contentRef.current.querySelectorAll("[data-hero-child]");
+      const tl = gsap.timeline({ ...withWillChange(), delay: 0.2 });
+
+      tl.fromTo(
+        children,
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power3.out" },
+      );
+
+      // Bouncing chevron
+      if (chevronRef.current) {
+        gsap.to(chevronRef.current, {
+          y: 16,
+          duration: 0.8,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
+      }
+    },
+    { scope: sectionRef, dependencies: [reduced] },
   );
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   return (
     <section
-      ref={ref}
+      ref={sectionRef}
       className="relative flex h-screen w-full items-center justify-center overflow-hidden"
     >
-      <m.div style={{ y, opacity }} className="absolute inset-0 z-0">
-        <m.div
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="relative h-full w-full"
-        >
+      <div ref={bgRef} className="absolute inset-0 z-0">
+        <div ref={imageWrapperRef} className="relative h-full w-full">
           <Image
             src={image.src}
             alt={image.alt}
@@ -49,55 +107,30 @@ export function ProcessHero({ image }: ProcessHeroProps) {
             blurDataURL={image.blurDataURL ?? undefined}
             sizes="100vw"
           />
-        </m.div>
-      </m.div>
+        </div>
+      </div>
 
       <div className={`pointer-events-none absolute inset-0 z-0 ${styles.cinematicVignette}`} />
 
-      <m.div
-        initial="hidden"
-        animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.2,
-              delayChildren: 0.2,
-            },
-          },
-        }}
-        className="relative z-10 px-4 text-center"
-      >
-        <m.span
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-          }}
+      <div ref={contentRef} className="relative z-10 px-4 text-center">
+        <span
+          data-hero-child
           className="mb-6 block font-label text-xs uppercase tracking-[0.4em] text-[var(--process-primary)]"
         >
-          Silk Road Studio Process
-        </m.span>
-        <m.h1
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 1 } },
-          }}
+          Saffron Studios Process
+        </span>
+        <h1
+          data-hero-child
           className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-8xl"
         >
-          The Film Still: <br />
-          <span className="italic font-light">A Narrative Pursuit</span>
-        </m.h1>
-        <m.div
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { duration: 1 } },
-          }}
-          className="mt-12 flex items-center justify-center gap-8"
-        >
+          Our Process: <br />
+          <span className="italic font-light">Frame by Frame</span>
+        </h1>
+        <div data-hero-child className="mt-12 flex items-center justify-center gap-8">
           <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-[var(--process-outline-variant)] to-transparent" />
           <ProcessMagnetic>
-            <m.a
+            <a
+              ref={chevronRef}
               href="#process"
               onClick={(event) => {
                 event.preventDefault();
@@ -105,20 +138,14 @@ export function ProcessHero({ image }: ProcessHeroProps) {
                   .getElementById("process")
                   ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              animate={prefersReducedMotion ? undefined : { y: [0, 10, 0] }}
-              transition={
-                prefersReducedMotion
-                  ? undefined
-                  : { repeat: Number.POSITIVE_INFINITY, duration: 2, ease: "easeInOut" }
-              }
               className="interactive cursor-pointer"
             >
               <ChevronDown className="h-8 w-8 text-[var(--process-primary)]" />
-            </m.a>
+            </a>
           </ProcessMagnetic>
           <div className="h-[1px] w-24 bg-gradient-to-r from-[var(--process-outline-variant)] via-[var(--process-outline-variant)] to-transparent" />
-        </m.div>
-      </m.div>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,24 +1,23 @@
 "use client";
 
-import { m } from "motion/react";
 import { useCallback, useRef, useState } from "react";
 import { submitContactForm } from "@/app/contact/action";
 import { type ContactFormData, contactFormSchema } from "@/lib/validations";
 import { ProcessMagnetic } from "./ProcessMagnetic";
 
 const photographyOptions = [
-  { value: "", label: "Commission Focus" },
-  { value: "landscapes", label: "Landscapes" },
-  { value: "nightsky", label: "Night Sky" },
-  { value: "sports", label: "Sports" },
+  { value: "", label: "Session type" },
+  { value: "milestones", label: "Milestones" },
+  { value: "gatherings", label: "Gatherings" },
+  { value: "motion", label: "Motion" },
   { value: "portraits", label: "Portraits" },
-  { value: "stories", label: "Stories" },
+  { value: "professional", label: "Professional" },
 ] as const;
 
 type FieldName = keyof ContactFormData;
 
 const fieldClassName =
-  "peer w-full border-0 border-b border-[rgba(78,70,57,0.35)] bg-transparent py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-on-surface)] outline-none transition-all placeholder:text-neutral-700 focus:border-[var(--process-primary)]";
+  "peer w-full border-0 border-b border-outline-variant/35 bg-transparent py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-on-surface)] outline-none transition-all placeholder:text-neutral-700 focus:border-[var(--process-primary)]";
 
 export function ProcessContactForm() {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldName, string>>>({});
@@ -82,15 +81,15 @@ export function ProcessContactForm() {
   if (submitted) {
     return (
       <div
-        className="rounded border border-[rgba(233,193,118,0.18)] bg-black/20 p-8 text-left"
+        className="rounded border border-primary/18 bg-black/20 p-8 text-left"
         role="status"
         aria-live="polite"
       >
         <h3 className="font-display text-3xl italic font-light text-[var(--process-on-surface-variant)]">
-          Session initiated
+          Message received
         </h3>
         <p className="mt-4 font-body leading-relaxed text-neutral-400">
-          Your inquiry is in. Silk Road Studio will follow up shortly with next steps.
+          Thanks for reaching out &mdash; we&apos;ll get back to you within 24 hours.
         </p>
         <button
           ref={resetRef}
@@ -98,7 +97,7 @@ export function ProcessContactForm() {
           onClick={() => setSubmitted(false)}
           className="mt-8 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-primary)] transition-colors hover:text-[var(--process-on-surface)]"
         >
-          Send another inquiry
+          Send another message
         </button>
       </div>
     );
@@ -123,7 +122,7 @@ export function ProcessContactForm() {
           id="process-name"
           name="name"
           type="text"
-          placeholder="Identity"
+          placeholder="Your name"
           className={fieldClassName}
           onBlur={(event) => validateField("name", event.target.value)}
           required
@@ -144,7 +143,7 @@ export function ProcessContactForm() {
           id="process-email"
           name="email"
           type="email"
-          placeholder="Communication Channel"
+          placeholder="Your email"
           className={fieldClassName}
           onBlur={(event) => validateField("email", event.target.value)}
           required
@@ -191,7 +190,7 @@ export function ProcessContactForm() {
           id="process-message"
           name="message"
           rows={3}
-          placeholder="The Inquiry"
+          placeholder="Your message"
           className={`${fieldClassName} resize-none`}
           onBlur={(event) => validateField("message", event.target.value)}
           required
@@ -205,15 +204,13 @@ export function ProcessContactForm() {
       </div>
 
       <ProcessMagnetic className="mt-8">
-        <m.button
+        <button
           type="submit"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
           disabled={isPending}
-          className="w-full rounded bg-[var(--process-primary)] py-5 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-on-primary)] shadow-[0_20px_60px_rgba(233,193,118,0.12)] transition-colors hover:bg-[var(--process-primary-container)] disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded bg-[var(--process-primary)] py-5 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-on-primary)] shadow-[0_20px_60px_color-mix(in_srgb,var(--color-primary)_12%,transparent)] transition-all duration-200 ease-out hover:scale-[1.02] hover:bg-[var(--process-primary-container)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isPending ? "Initiating..." : "Initiate Session"}
-        </m.button>
+          {isPending ? "Sending..." : "Send Message"}
+        </button>
       </ProcessMagnetic>
     </form>
   );

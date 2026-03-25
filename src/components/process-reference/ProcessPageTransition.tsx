@@ -1,21 +1,31 @@
 "use client";
 
-import { m, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
+import { blurReveal, withWillChange } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export function ProcessPageTransition({ children }: { children: React.ReactNode }) {
-  const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
-  if (prefersReducedMotion) {
-    return <>{children}</>;
-  }
+  useGSAP(
+    () => {
+      if (!ref.current) return;
 
-  return (
-    <m.div
-      initial={{ opacity: 0, filter: "blur(10px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1, ease: "easeOut" }}
-    >
-      {children}
-    </m.div>
+      if (reduced) {
+        gsap.set(ref.current, { autoAlpha: 1, filter: "none" });
+        return;
+      }
+
+      gsap.fromTo(ref.current, blurReveal.from, {
+        ...blurReveal.to,
+        ...withWillChange("opacity, filter"),
+      });
+    },
+    { scope: ref, dependencies: [reduced] },
   );
+
+  return <div ref={ref}>{children}</div>;
 }

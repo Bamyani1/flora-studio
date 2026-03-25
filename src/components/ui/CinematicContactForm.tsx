@@ -2,28 +2,25 @@
 
 import { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { gsap } from "@/lib/gsap";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { submitContactForm } from "@/app/contact/action";
 import { contactFormReveal } from "@/lib/animations";
-import { useMagnetic } from "@/hooks/useMagnetic";
 
 const photographyOptions = [
-  { value: "", label: "Select session type..." },
-  { value: "graduation", label: "Graduation" },
-  { value: "events", label: "Events" },
-  { value: "sports", label: "Sports" },
-  { value: "personal", label: "Personal" },
-  { value: "family", label: "Family" },
-  { value: "corporate", label: "Corporate / Headshot" },
+  { value: "", label: "What are we making together?" },
+  { value: "milestones", label: "Milestones" },
+  { value: "gatherings", label: "Gatherings" },
+  { value: "motion", label: "Motion" },
+  { value: "portraits", label: "Portraits" },
+  { value: "professional", label: "Professional" },
 ];
 
 type FieldName = keyof ContactFormData;
 
-const labelClass =
-  "block font-label text-[9px] uppercase tracking-[0.35em] text-muted/60 group-focus-within:text-primary transition-colors duration-500 mb-1";
+const labelClass = "block font-label text-xs uppercase tracking-wider text-primary/70 mb-2";
 const inputClass =
-  "w-full bg-transparent border-0 border-b border-border/30 py-3 font-body text-text tracking-wider uppercase text-xs focus:border-primary focus:outline-none focus:ring-0 transition-all duration-500 placeholder:text-muted/30 placeholder:tracking-wider placeholder:uppercase placeholder:text-xs";
+  "w-full bg-transparent border border-border/30 rounded-sm px-4 py-3 font-body text-text tracking-wider uppercase text-sm focus:border-primary/40 focus:outline-none focus:ring-0 transition-colors duration-300 placeholder:text-muted/40 placeholder:tracking-wider placeholder:uppercase placeholder:text-sm";
 
 export function CinematicContactForm() {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldName, string>>>({});
@@ -31,8 +28,6 @@ export function CinematicContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const submitRef = useRef<HTMLDivElement>(null);
-  useMagnetic(submitRef);
 
   useGSAP(
     () => {
@@ -57,8 +52,8 @@ export function CinematicContactForm() {
       // Heading
       tl.fromTo(
         "[data-form-heading]",
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 1.0, ease: contactFormReveal.heading.to.ease },
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: contactFormReveal.heading.to.ease },
         positions.heading,
       );
 
@@ -142,15 +137,15 @@ export function CinematicContactForm() {
         aria-live="polite"
       >
         <h2 className="font-display text-3xl italic text-text-heading md:text-4xl">
-          Thank you
+          Message received
         </h2>
         <p className="mt-4 text-sm uppercase tracking-widest text-muted">
-          We&apos;ll be in touch soon.
+          We&apos;ll get back to you within 24 hours.
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-8 font-label text-[10px] uppercase tracking-[0.3em] text-primary transition-colors hover:text-text"
+          className="mt-8 font-label text-xs uppercase tracking-wider text-primary transition-colors hover:text-text"
         >
           Send another message
         </button>
@@ -159,158 +154,170 @@ export function CinematicContactForm() {
   }
 
   return (
-    <div ref={containerRef}>
-      <div className="mb-12">
+    <div ref={containerRef} className="flex h-full flex-col">
+      {/* Form content — grows to fill */}
+      <div className="flex-1">
+        {/* Label */}
         <span
           data-form-animate
           data-form-label
-          className="mb-4 block font-label text-[10px] uppercase tracking-[0.5em] text-primary"
+          className="mb-4 block font-label text-xs uppercase tracking-wider text-primary"
           style={{ opacity: 0 }}
         >
-          Get In Touch
+          Book a Session
         </span>
-        <h1
+
+        {/* Heading with bottom border */}
+        <h2
           data-form-animate
           data-form-heading
-          className="font-display text-5xl italic leading-none tracking-tight text-text-heading md:text-7xl"
+          className="mb-10 font-display text-3xl font-light leading-tight text-text-heading md:text-4xl"
           style={{ opacity: 0 }}
         >
-          Start your <span className="not-italic font-bold">story.</span>
-        </h1>
-      </div>
+          Tell us about your project
+        </h2>
 
-      <form onSubmit={handleSubmit} noValidate className="space-y-10">
-        {formError && (
+        <form onSubmit={handleSubmit} noValidate className="max-w-[540px] space-y-7">
+          {formError && (
+            <div
+              className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"
+              role="alert"
+            >
+              {formError}
+            </div>
+          )}
+
+          {/* Row 1: Name + Email */}
           <div
-            className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"
-            role="alert"
+            data-form-animate
+            data-form-field
+            className="grid grid-cols-1 gap-6 md:grid-cols-2"
+            style={{ opacity: 0 }}
           >
-            {formError}
+            <div className="group">
+              <label htmlFor="sender" className={labelClass}>
+                Full Name
+              </label>
+              <input
+                id="sender"
+                name="sender"
+                type="text"
+                required
+                autoComplete="off"
+                placeholder="YOUR NAME"
+                className={inputClass}
+                onBlur={handleBlur("name")}
+              />
+              {fieldErrors.name && (
+                <p className="mt-2 text-xs text-error" role="alert">
+                  {fieldErrors.name}
+                </p>
+              )}
+            </div>
+            <div className="group">
+              <label htmlFor="reply_to" className={labelClass}>
+                Email
+              </label>
+              <input
+                id="reply_to"
+                name="reply_to"
+                type="email"
+                required
+                autoComplete="off"
+                placeholder="YOUR EMAIL ADDRESS"
+                className={inputClass}
+                onBlur={handleBlur("email")}
+              />
+              {fieldErrors.email && (
+                <p className="mt-2 text-xs text-error" role="alert">
+                  {fieldErrors.email}
+                </p>
+              )}
+            </div>
           </div>
-        )}
 
-        <div
-          data-form-animate
-          data-form-field
-          className="grid grid-cols-1 gap-10 md:grid-cols-2"
-          style={{ opacity: 0 }}
-        >
-          <div className="group relative">
-            <label htmlFor="sender" className={labelClass}>
-              Identity
+          {/* Row 2: Session Type */}
+          <div data-form-animate data-form-field className="group" style={{ opacity: 0 }}>
+            <label htmlFor="photographyType" className={labelClass}>
+              Session Type
             </label>
-            <input
-              id="sender"
-              name="sender"
-              type="text"
-              required
-              placeholder="NAME / BRAND"
-              className={inputClass}
-              onBlur={handleBlur("name")}
-            />
-            {fieldErrors.name && (
+            <div className="relative">
+              <select
+                id="photographyType"
+                name="photographyType"
+                required
+                className={`${inputClass} cursor-pointer appearance-none pr-10`}
+                defaultValue=""
+                onBlur={handleBlur("photographyType")}
+              >
+                {photographyOptions.map((opt) => (
+                  <option
+                    key={opt.value}
+                    value={opt.value}
+                    disabled={opt.value === ""}
+                    className="bg-surface"
+                  >
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <svg
+                className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted/50"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M5 8l5 5 5-5" />
+              </svg>
+            </div>
+            {fieldErrors.photographyType && (
               <p className="mt-2 text-xs text-error" role="alert">
-                {fieldErrors.name}
+                {fieldErrors.photographyType}
               </p>
             )}
           </div>
-          <div className="group relative">
-            <label htmlFor="reply_to" className={labelClass}>
-              Digital Correspondence
+
+          {/* Row 3: Vision Brief */}
+          <div data-form-animate data-form-field className="group" style={{ opacity: 0 }}>
+            <label htmlFor="message" className={labelClass}>
+              Message
             </label>
-            <input
-              id="reply_to"
-              name="reply_to"
-              type="email"
+            <textarea
+              id="message"
+              name="message"
+              rows={4}
               required
-              placeholder="EMAIL ADDRESS"
-              className={inputClass}
-              onBlur={handleBlur("email")}
+              placeholder="TELL US ABOUT YOUR EVENT, TIMELINE, OR ANY IDEAS..."
+              className={`${inputClass} resize-none`}
+              onBlur={handleBlur("message")}
             />
-            {fieldErrors.email && (
+            {fieldErrors.message && (
               <p className="mt-2 text-xs text-error" role="alert">
-                {fieldErrors.email}
+                {fieldErrors.message}
               </p>
             )}
           </div>
-        </div>
 
-        <div data-form-animate data-form-field className="group relative" style={{ opacity: 0 }}>
-          <label htmlFor="photographyType" className={labelClass}>
-            Engagement Type
-          </label>
-          <div className="relative">
-            <select
-              id="photographyType"
-              name="photographyType"
-              required
-              className={`${inputClass} cursor-pointer appearance-none pr-10`}
-              defaultValue=""
-              onBlur={handleBlur("photographyType")}
-            >
-              {photographyOptions.map((opt) => (
-                <option
-                  key={opt.value}
-                  value={opt.value}
-                  disabled={opt.value === ""}
-                  className="bg-surface"
-                >
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <svg
-              className="pointer-events-none absolute right-2 bottom-4 h-4 w-4 text-muted"
-              viewBox="0 0 20 20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <path d="M5 8l5 5 5-5" />
-            </svg>
-          </div>
-          {fieldErrors.photographyType && (
-            <p className="mt-2 text-xs text-error" role="alert">
-              {fieldErrors.photographyType}
-            </p>
-          )}
-        </div>
-
-        <div data-form-animate data-form-field className="group relative" style={{ opacity: 0 }}>
-          <label htmlFor="message" className={labelClass}>
-            Creative Intent
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            rows={3}
-            required
-            placeholder="TELL US ABOUT THE VISION..."
-            className={`${inputClass} resize-none`}
-            onBlur={handleBlur("message")}
-          />
-          {fieldErrors.message && (
-            <p className="mt-2 text-xs text-error" role="alert">
-              {fieldErrors.message}
-            </p>
-          )}
-        </div>
-
-        <div data-form-animate data-form-submit className="pt-4" style={{ opacity: 0 }}>
-          <div ref={submitRef}>
+          {/* Submit button — spinning gradient border effect */}
+          <div data-form-animate data-form-submit className="pt-2" style={{ opacity: 0 }}>
             <button
               type="submit"
               disabled={isPending}
-              className="group relative overflow-hidden bg-primary/90 px-12 py-5 font-label text-[10px] uppercase tracking-[0.4em] font-bold text-surface-deep transition-all duration-500 hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+              className="group relative w-full overflow-hidden p-[3px] bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <span className="relative z-10">
-                {isPending ? "Sending..." : "Transmit Inquiry"}
+              {/* Outer spinning gradient glow */}
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,rgba(255,255,255,0.4)_95%,rgba(255,255,255,0.7)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+              {/* Inner spinning gradient */}
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,rgba(255,255,255,0.3)_95%,rgba(255,255,255,0.6)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Button face */}
+              <span className="relative z-10 flex w-full items-center justify-center bg-primary/80 py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 group-hover:bg-primary">
+                {isPending ? "Sending..." : "Send Message"}
               </span>
-              <div className="absolute inset-0 translate-y-full bg-white/20 transition-transform duration-500 group-hover:translate-y-0" />
             </button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

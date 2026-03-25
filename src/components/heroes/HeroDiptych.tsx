@@ -54,7 +54,8 @@ export function HeroDiptych() {
       if (cornerHEl) gsap.set(cornerHEl, { scaleX: 0, transformOrigin: "left top" });
       if (cornerVEl) gsap.set(cornerVEl, { scaleY: 0, transformOrigin: "left top" });
       if (studioEl) gsap.set(studioEl, seq.studioClip.from);
-      if (goldRuleEl) gsap.set(goldRuleEl, { ...seq.goldRule.from, transformOrigin: "left center" });
+      if (goldRuleEl)
+        gsap.set(goldRuleEl, { ...seq.goldRule.from, transformOrigin: "left center" });
       if (taglineEl) gsap.set(taglineEl, seq.tagline.from);
       if (ctaEl) gsap.set(ctaEl, seq.cta.from);
       if (pageIndicatorEl) gsap.set(pageIndicatorEl, seq.cta.from);
@@ -151,24 +152,19 @@ export function HeroDiptych() {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative flex min-h-screen overflow-hidden"
-    >
+    <section ref={sectionRef} className="relative flex min-h-screen overflow-hidden">
       {/* ─── Left Panel: Atmospheric Image ─── */}
       <div className="relative h-screen w-[58%] overflow-hidden">
         {/* Hero image */}
         <div className="dipt-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Silk Road Studio — cinematic landscape"
+            alt="Saffron Studios — landscape"
             fill
             priority
             sizes="58vw"
             className="object-cover"
-            {...(blurDataURL
-              ? { placeholder: "blur" as const, blurDataURL }
-              : {})}
+            {...(blurDataURL ? { placeholder: "blur" as const, blurDataURL } : {})}
           />
         </div>
 
@@ -176,7 +172,8 @@ export function HeroDiptych() {
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background: "linear-gradient(to right, transparent 50%, var(--color-surface-deep) 100%)",
+            background:
+              "linear-gradient(to right, transparent 50%, var(--color-surface-deep) 100%)",
           }}
         />
 
@@ -237,7 +234,7 @@ export function HeroDiptych() {
         className="flex h-screen w-[42%] flex-col justify-center pl-12 pr-8 lg:pl-16"
         style={{ backgroundColor: "var(--color-surface-deep)" }}
       >
-        {/* "SILK" */}
+        {/* "SAFFRON" */}
         <div style={{ overflow: "hidden" }}>
           <div
             className="dipt-silk"
@@ -250,11 +247,11 @@ export function HeroDiptych() {
               lineHeight: 0.85,
             }}
           >
-            SILK
+            SAFFRON
           </div>
         </div>
 
-        {/* "ROAD" */}
+        {/* "STUDIOS" */}
         <div style={{ overflow: "hidden" }}>
           <div
             className="dipt-road"
@@ -268,7 +265,7 @@ export function HeroDiptych() {
               marginTop: "-0.1em",
             }}
           >
-            ROAD
+            STUDIOS
           </div>
         </div>
 
@@ -313,14 +310,11 @@ export function HeroDiptych() {
             marginTop: "1.5rem",
           }}
         >
-          Where cinematic vision meets authentic storytelling
+          Where patience meets precision
         </p>
 
         {/* CTA */}
-        <div
-          className="dipt-cta"
-          style={{ marginTop: "2.5rem" }}
-        >
+        <div className="dipt-cta" style={{ marginTop: "2.5rem" }}>
           <a
             href="#portfolio"
             className="group inline-flex items-center gap-2"

@@ -128,17 +128,12 @@ export function HeroFrame() {
           sizes="100vw"
           priority
           className="object-cover"
-          {...(blurDataURL
-            ? { placeholder: "blur" as const, blurDataURL }
-            : {})}
+          {...(blurDataURL ? { placeholder: "blur" as const, blurDataURL } : {})}
         />
       </div>
 
       {/* Layer 2 — Diagonal gold line (z-20) */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ zIndex: 20 }}
-      >
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 20 }}>
         <div
           className="frame-diagonal absolute"
           style={{
@@ -153,7 +148,7 @@ export function HeroFrame() {
         />
       </div>
 
-      {/* Layer 3 — Title "SILK ROAD" (z-30, behind the foreground frame) */}
+      {/* Layer 3 — Title "SAFFRON" (z-30, behind the foreground frame) */}
       <h1
         className="frame-title absolute overflow-hidden px-12 lg:px-24"
         style={{
@@ -167,7 +162,7 @@ export function HeroFrame() {
           lineHeight: 0.85,
         }}
       >
-        SILK ROAD
+        SAFFRON
       </h1>
 
       {/* Layer 4 — Foreground image frame (z-40, above the title) */}
@@ -185,19 +180,17 @@ export function HeroFrame() {
       >
         <Image
           src="/images/hero.jpg"
-          alt="Silk Road Studio — cinematic portraiture"
+          alt="Saffron Studios — portraiture"
           fill
           sizes="50vw"
           priority
           className="object-cover"
           style={{ filter: "saturate(1.1) contrast(1.05)" }}
-          {...(blurDataURL
-            ? { placeholder: "blur" as const, blurDataURL }
-            : {})}
+          {...(blurDataURL ? { placeholder: "blur" as const, blurDataURL } : {})}
         />
       </div>
 
-      {/* "STUDIO" label (z-50) */}
+      {/* "STUDIOS" label (z-50) */}
       <span
         className="frame-label absolute px-12 lg:px-24"
         style={{
@@ -211,7 +204,7 @@ export function HeroFrame() {
           color: "var(--color-primary)",
         }}
       >
-        STUDIO
+        STUDIOS
       </span>
 
       {/* Bottom metadata bar (z-50) */}
@@ -230,7 +223,7 @@ export function HeroFrame() {
             color: "color-mix(in srgb, var(--color-text-heading) 35%, transparent)",
           }}
         >
-          CINEMATIC PORTRAITURE
+          PORTRAITURE
         </span>
         <span
           className="frame-meta-right"

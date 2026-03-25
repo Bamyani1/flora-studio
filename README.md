@@ -1,11 +1,12 @@
 <div align="center">
 
-# SILK ROAD STUDIO
+# SAFFRON STUDIOS
 
-*Exhibition-grade cinematic photography — where light meets shadow, there is always a story.*
+_Photography that's worth keeping._
 
 <!-- Replace with a full-width screenshot of the homepage -->
-![Silk Road Studio](screenshots/hero.png)
+
+![Saffron Studios](screenshots/hero.png)
 
 ![Next.js 16](https://img.shields.io/badge/Next.js-16.2-0B0C0E?style=flat-square&logo=next.js)
 ![React 19](https://img.shields.io/badge/React-19.2-0B0C0E?style=flat-square&logo=react)
@@ -22,17 +23,15 @@
 
 ## The Vision
 
-Silk Road Studio emerges from the Silk Road heritage of Bamyan, Afghanistan — a region of extraordinary visual richness where ancient trade routes connected civilizations, cultures, and countless stories. The portfolio draws on this legacy: a commitment to visual storytelling that transcends borders, honors light and shadow in their purest forms, and celebrates the cinematic power of stillness.
+A photography studio built on patience and craft. We believe the best images aren't found — they're cultivated. Every frame is composed with intention, selected with care, and refined by hand.
 
-Every frame is a meditation on light, form, and human narrative. The work speaks through restraint — chiaroscuro lighting, meticulous composition, and a distinctive visual language rooted in cinema and fine art. What we exclude is as important as what we include.
-
-[View the live site &rarr;](https://silkroadstudio.com)
+[View the live site &rarr;](https://saffronstudios.com)
 
 ---
 
 ## The Copper Coast Palette
 
-*Rooted in place, not trends — the weathered metals of trade routes, Atlantic stone, and desert light.*
+_Rooted in place, not trends — the weathered metals of trade routes, Atlantic stone, and desert light._
 
 ![Tar](https://img.shields.io/badge/Tar-0B0C0E?style=flat-square&color=0B0C0E)
 ![Gunmetal](https://img.shields.io/badge/Gunmetal-181A1E?style=flat-square&color=181A1E)
@@ -43,25 +42,25 @@ Every frame is a meditation on light, form, and human narrative. The work speaks
 
 #### Core Colors
 
-| Color | Hex | Role |
-|-------|-----|------|
-| **Tar** | `#0B0C0E` | Primary background, depth |
-| **Gunmetal** | `#181A1E` | Secondary background, panels, cards |
-| **Sandbar** | `#E8E2D8` | Primary text on dark, body copy |
-| **Salt Air** | `#7C8088` | Muted text, captions, metadata |
-| **Verdigris Copper** | `#BA7038` | Warm accent, emphasis, calls-to-action |
-| **North Sea** | `#5C90A4` | Cool accent, links, secondary interactive |
+| Color                | Hex       | Role                                      |
+| -------------------- | --------- | ----------------------------------------- |
+| **Tar**              | `#0B0C0E` | Primary background, depth                 |
+| **Gunmetal**         | `#181A1E` | Secondary background, panels, cards       |
+| **Sandbar**          | `#E8E2D8` | Primary text on dark, body copy           |
+| **Salt Air**         | `#7C8088` | Muted text, captions, metadata            |
+| **Verdigris Copper** | `#BA7038` | Warm accent, emphasis, calls-to-action    |
+| **North Sea**        | `#5C90A4` | Cool accent, links, secondary interactive |
 
 #### Extended Tones
 
-| Color | Hex | Role |
-|-------|-----|------|
-| **Deep Tar** | `#070809` | Deepest background, maximum contrast |
-| **Mid Dark** | `#12141A` | Borders, dividers |
-| **Warm Sand** | `#D4C8B8` | Secondary text, subtle elements |
-| **Ivory** | `#F2EDE6` | Light backgrounds, print contexts |
+| Color         | Hex       | Role                                 |
+| ------------- | --------- | ------------------------------------ |
+| **Deep Tar**  | `#070809` | Deepest background, maximum contrast |
+| **Mid Dark**  | `#12141A` | Borders, dividers                    |
+| **Warm Sand** | `#D4C8B8` | Secondary text, subtle elements      |
+| **Ivory**     | `#F2EDE6` | Light backgrounds, print contexts    |
 
-*Every color references a place — the depth of ancient trade routes, grey of Atlantic stone, warmth of desert light.*
+_Every color references a place — the depth of ancient trade routes, grey of Atlantic stone, warmth of desert light._
 
 > Source: `src/styles/globals.css` — CSS custom properties implement these as `--color-tar`, `--color-gunmetal`, etc.
 
@@ -73,23 +72,23 @@ Every frame is a meditation on light, form, and human narrative. The work speaks
 
 The studio's display typeface. A serif with quiet authority — used for headlines, the wordmark, and navigation. Locally loaded in Light (300) and Regular (400) weights.
 
-*Commercial license, Playtype.*
+_Commercial license, Playtype._
 
 ### Inter — Body
 
 Variable-weight sans-serif (100–900) for body text, UI, metadata, and captions. Loaded as a single variable font file for optimal performance.
 
-*Open source, Google Fonts.*
+_Open source, Google Fonts._
 
 #### Type Scale
 
-| Element | Size | Weight | Line-Height |
-|---------|------|--------|-------------|
-| H1 | 96px | Regular (400) | 1.1 |
-| H2 | 64px | Regular (400) | 1.15 |
-| H3 | 48px | Medium (500) | 1.2 |
-| Body | 18px | Regular (400) | 1.6 |
-| Caption | 14px | Regular (400) | 1.5 |
+| Element | Size | Weight        | Line-Height |
+| ------- | ---- | ------------- | ----------- |
+| H1      | 96px | Regular (400) | 1.1         |
+| H2      | 64px | Regular (400) | 1.15        |
+| H3      | 48px | Medium (500)  | 1.2         |
+| Body    | 18px | Regular (400) | 1.6         |
+| Caption | 14px | Regular (400) | 1.5         |
 
 > Source: `src/lib/fonts.ts`
 
@@ -97,7 +96,7 @@ Variable-weight sans-serif (100–900) for body text, UI, metadata, and captions
 
 ## Design Tokens
 
-*All visual values flow from CSS custom properties — a single source of truth.*
+_All visual values flow from CSS custom properties — a single source of truth._
 
 <details>
 <summary>View design tokens</summary>
@@ -120,21 +119,21 @@ Variable-weight sans-serif (100–900) for body text, UI, metadata, and captions
 ```css
 --font-display: "Berlingske Serif", "Georgia", serif;
 --font-body: "Inter", "system-ui", "-apple-system", sans-serif;
---text-hero: 8rem;          /* 128px */
+--text-hero: 8rem; /* 128px */
 --text-hero-mobile: 3.5rem; /* 56px */
---text-body: 1rem;           /* 16px */
+--text-body: 1rem; /* 16px */
 ```
 
 **Spacing** — base unit 4px
 
 ```css
---space-1: 0.25rem;   /* 4px */
---space-2: 0.5rem;    /* 8px */
---space-4: 1rem;      /* 16px */
---space-8: 2rem;      /* 32px */
---space-16: 4rem;     /* 64px */
---space-32: 8rem;     /* 128px */
---space-64: 16rem;    /* 256px */
+--space-1: 0.25rem; /* 4px */
+--space-2: 0.5rem; /* 8px */
+--space-4: 1rem; /* 16px */
+--space-8: 2rem; /* 32px */
+--space-16: 4rem; /* 64px */
+--space-32: 8rem; /* 128px */
+--space-64: 16rem; /* 256px */
 --section-padding-y: 8rem;
 --container-padding-x: 2rem;
 ```
@@ -183,17 +182,18 @@ Cinematic quality extends to code. The architecture prioritizes clarity, perform
 
 ## Pages
 
-| Page | Route | Description |
-|------|-------|-------------|
-| Home | `/` | Choreographed hero sequence, curated collections grid, exhibition feature |
-| Work | `/work` | Filterable archive of collections across categories |
-| Album | `/work/[slug]` | Individual collection — hero, narrative, horizontal scroll gallery |
-| About | `/about` | Brand manifesto, team, creative approach |
-| Process | `/process` | Multi-phase creative timeline |
-| Contact | `/contact` | Portrait, form with Zod validation, studio details |
-| Studio | `/studio` | Embedded Sanity CMS |
+| Page    | Route          | Description                                                               |
+| ------- | -------------- | ------------------------------------------------------------------------- |
+| Home    | `/`            | Choreographed hero sequence, curated collections grid, exhibition feature |
+| Work    | `/work`        | Filterable archive of collections across categories                       |
+| Album   | `/work/[slug]` | Individual collection — hero, narrative, horizontal scroll gallery        |
+| About   | `/about`       | Brand manifesto, team, creative approach                                  |
+| Process | `/process`     | Multi-phase creative timeline                                             |
+| Contact | `/contact`     | Portrait, form with Zod validation, studio details                        |
+| Studio  | `/studio`      | Embedded Sanity CMS                                                       |
 
 <!-- Replace with screenshots of key pages -->
+
 ![Home](screenshots/home.png)
 ![Work](screenshots/work.png)
 ![About](screenshots/about.png)
@@ -225,8 +225,8 @@ Zod 3.24 (validation) · Resend 4.0 (email) · Sharp 0.34 (image optimization) �
 ## Getting Started
 
 ```bash
-git clone https://github.com/Bamyani1/silk-road-studio.git
-cd silk-road-studio
+git clone https://github.com/Bamyani1/saffron-studios.git
+cd saffron-studios
 npm install
 ```
 
@@ -245,10 +245,10 @@ SANITY_API_READ_TOKEN=your_read_token
 
 # Email (Resend)
 RESEND_API_KEY=re_your_api_key
-CONTACT_EMAIL=hello@silkroadstudio.com
+CONTACT_EMAIL=hello@saffronstudios.com
 
 # Site
-NEXT_PUBLIC_SITE_URL=https://silkroadstudio.com
+NEXT_PUBLIC_SITE_URL=https://saffronstudios.com
 ```
 
 ```bash
@@ -257,8 +257,8 @@ npm run dev
 
 ---
 
-> *Crafted with intention. Every pixel, every frame.*
+> _Crafted with intention. Every pixel, every frame._
 
 ---
 
-&copy; 2026 Silk Road Studio
+&copy; 2026 Saffron Studios

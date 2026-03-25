@@ -1,103 +1,207 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { usePathname } from "next/navigation";
-import { PRIMARY_NAV_ITEMS, NAV_CTA, isNavItemActive } from "@/lib/navigation";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { landingHeaderEntrance, headerShrink } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { HEADER_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
 import { TransitionLink } from "./TransitionLink";
-import { useUIStore } from "@/stores/ui-store";
 import { HeaderContactAction } from "./HeaderContactAction";
+import { useUIStore } from "@/stores/ui-store";
+import { ThreeThreadsMark, type ThreeThreadsMarkHandle } from "@/components/ui/ThreeThreadsMark";
 
-export function Header({ className }: { className?: string }) {
+export function Header() {
+  const headerRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLSpanElement>(null);
+  const iconRef = useRef<ThreeThreadsMarkHandle>(null);
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const menuOpen = useUIStore((s) => s.menuOpen);
-  const setMenuOpen = useUIStore((s) => s.setMenuOpen);
+  const reducedMotion = useReducedMotion();
+  const isHomePage = pathname === "/";
+  const isContactPage = pathname === "/contact";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+  // Homepage entrance animation
+  useGSAP(() => {
+    if (!headerRef.current) return;
 
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    if (!isHomePage || reducedMotion) {
+      gsap.set(headerRef.current, { autoAlpha: 1 });
+      return;
+    }
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    gsap.fromTo(headerRef.current, landingHeaderEntrance.from, landingHeaderEntrance.to);
+  }, [reducedMotion, isHomePage]);
+
+  // Scroll-scrub morphing — continuous interpolation over 0-150px
+  useGSAP(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    if (reducedMotion || isContactPage) {
+      gsap.set(header, {
+        ...headerShrink.to,
+        backdropFilter: `blur(${headerShrink.blur.to}px)`,
+        webkitBackdropFilter: `blur(${headerShrink.blur.to}px)`,
+      });
+      return;
+    }
+
+    const blur = { value: headerShrink.blur.from };
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        ...headerShrink.scrollTrigger,
+        onUpdate: () => {
+          header.style.backdropFilter = `blur(${blur.value}px)`;
+          (
+            header.style as CSSStyleDeclaration & { webkitBackdropFilter: string }
+          ).webkitBackdropFilter = `blur(${blur.value}px)`;
+        },
+      },
+    });
+
+    // Header: height, padding, background, border, shadow, borderRadius
+    tl.fromTo(header, headerShrink.from, { ...headerShrink.to, ease: "none" }, 0);
+
+    // Blur via proxy object
+    tl.fromTo(
+      blur,
+      { value: headerShrink.blur.from },
+      { value: headerShrink.blur.to, ease: "none" },
+      0,
+    );
+
+    // Desktop-only: logo, width, opacity, logo morph
+    const logo = logoRef.current;
+    const icon = iconRef.current?.root;
+    ScrollTrigger.matchMedia({
+      "(min-width: 768px)": () => {
+        if (logo) {
+          tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
+          // Crossfade: text fades out
+          tl.fromTo(
+            logo,
+            headerShrink.logoMorph.text.from,
+            { ...headerShrink.logoMorph.text.to, ease: "none" },
+            0,
+          );
+        }
+        if (icon) {
+          // Crossfade: icon fades in
+          tl.fromTo(
+            icon,
+            headerShrink.logoMorph.icon.from,
+            { ...headerShrink.logoMorph.icon.to, ease: "none" },
+            0,
+          );
+        }
+      },
+    });
+  }, [reducedMotion, isContactPage]);
+
+  // Contact page: set logo to compact morph state (icon visible, text hidden)
+  useGSAP(() => {
+    if (!isContactPage) return;
+    const logo = logoRef.current;
+    const icon = iconRef.current?.root;
+    if (logo) gsap.set(logo, { ...headerShrink.logoMorph.text.to });
+    if (icon) gsap.set(icon, { ...headerShrink.logoMorph.icon.to });
+  }, [isContactPage]);
 
   return (
-    <header
-      data-header
-      className={[
-        "fixed top-0 left-0 z-40 flex h-[var(--header-height)] w-full items-center justify-between px-[var(--container-padding-x)] transition-all duration-500",
-        scrolled
-          ? "border-b border-[var(--color-header-border-soft)] bg-[var(--color-header-bg-strong)] shadow-2xl shadow-black/40 backdrop-blur-lg"
-          : "bg-transparent",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      <TransitionLink
-        href="/"
-        className="font-display text-[length:var(--text-logo)] font-light uppercase tracking-[var(--tracking-logo-process)] text-[var(--color-header-link-active)]"
+    <div className="fixed top-0 w-full z-50 flex justify-center pointer-events-none">
+      <header
+        ref={headerRef}
+        className="w-full border-b px-6 md:px-12 flex items-center justify-between pointer-events-auto"
+        style={{
+          visibility: isHomePage ? "hidden" : undefined,
+          height: "5rem",
+          paddingTop: "1.25rem",
+          paddingBottom: "1.25rem",
+          backgroundColor: "#111210",
+          borderColor: "rgba(255,255,255,0.15)",
+          borderRadius: "0px",
+        }}
       >
-        Silk Road Studio
-      </TransitionLink>
+        {/* Left nav — desktop only */}
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-8 w-1/3">
+          {HEADER_NAV_ITEMS.map((item) => (
+            <TransitionLink key={item.href} href={item.href} className="relative group">
+              <span
+                className={`text-[10px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
+                  isNavItemActive(pathname, item.href)
+                    ? "text-white"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </span>
+              <span
+                className={`absolute -bottom-2 left-0 w-full h-[1px] bg-white transition-transform duration-500 origin-left ${
+                  isNavItemActive(pathname, item.href)
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover:scale-x-100"
+                }`}
+              />
+            </TransitionLink>
+          ))}
+        </nav>
 
-      {/* Desktop nav */}
-      <nav aria-label="Main navigation" className="hidden items-center gap-10 md:flex">
-        {PRIMARY_NAV_ITEMS.map((item) => (
-          <TransitionLink
-            key={item.href}
-            href={item.href}
-            className={`group relative font-display text-[length:var(--text-nav)] uppercase tracking-[var(--tracking-nav-process)] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              isNavItemActive(pathname, item.href)
-                ? "text-[var(--color-header-link-active)]"
-                : "text-[var(--color-header-link-muted)] hover:text-[var(--color-header-cta-bg)]"
-            }`}
-          >
-            {item.label}
+        {/* Center logo — wordmark crossfades to aperture icon on scroll */}
+        <div className="w-1/2 flex justify-start md:w-1/3 md:justify-center">
+          <TransitionLink href="/" className="relative flex items-center justify-center">
             <span
-              className={`absolute -bottom-1 left-0 h-[1px] w-full origin-left bg-[var(--color-header-cta-bg)] transition-transform duration-500 ease-out ${
-                isNavItemActive(pathname, item.href)
-                  ? "scale-x-100"
-                  : "scale-x-0 group-hover:scale-x-100"
-              }`}
+              ref={logoRef}
+              className="text-lg md:text-2xl font-headline uppercase tracking-[0.3em] font-light whitespace-nowrap text-primary"
+            >
+              SAFFRON STUDIOS
+            </span>
+            <ThreeThreadsMark
+              ref={iconRef}
+              size={28}
+              className="absolute text-primary"
+              style={{ visibility: "hidden" }}
             />
           </TransitionLink>
-        ))}
-      </nav>
+        </div>
 
-      <HeaderContactAction
-        label={NAV_CTA.label}
-        className="hidden rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-6 py-2 font-label text-xs uppercase tracking-widest text-[var(--color-header-cta-text)] transition-transform hover:scale-[1.03] md:inline-flex"
-      />
+        {/* Right section — desktop CTA */}
+        <div className="hidden md:flex items-center justify-end w-1/3">
+          <HeaderContactAction
+            label="Get in touch"
+            className="relative group p-[3px] bg-white font-label text-[10px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
+          >
+            {/* Outer spinning gradient glow */}
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#a3a3a3_95%,#e5e5e5_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+            {/* Inner spinning gradient */}
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#d4d4d4_95%,#737373_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Button content */}
+            <span className="relative z-10 w-full h-full bg-white text-black px-6 py-2.5 flex items-center justify-center gap-2">
+              Get in touch
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                className="transform transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+            </span>
+          </HeaderContactAction>
+        </div>
 
-      {/* Mobile hamburger */}
-      <button
-        type="button"
-        className="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-1.5 md:hidden"
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-expanded={menuOpen}
-        aria-controls="mobile-menu"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-      >
-        <span
-          className={`block h-[2px] w-6 origin-center bg-[var(--color-header-link-active)] transition-transform ${
-            menuOpen ? "translate-y-[7px] rotate-45" : ""
-          }`}
-        />
-        <span
-          className={`block h-[2px] w-6 bg-[var(--color-header-link-active)] transition-opacity ${
-            menuOpen ? "opacity-0" : ""
-          }`}
-        />
-        <span
-          className={`block h-[2px] w-6 origin-center bg-[var(--color-header-link-active)] transition-transform ${
-            menuOpen ? "-translate-y-[7px] -rotate-45" : ""
-          }`}
-        />
-      </button>
-    </header>
+        {/* Mobile toggle */}
+        <button
+          type="button"
+          className="md:hidden text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
+          onClick={() => useUIStore.getState().setMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          Menu
+        </button>
+      </header>
+    </div>
   );
 }

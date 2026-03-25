@@ -136,31 +136,6 @@ export const scrollIndicatorPulse = {
 };
 
 // --------------------------------------------------
-// pageTransitionLeave — Overlay wipe exit
-// --------------------------------------------------
-export const pageTransitionLeave = {
-  overlay: {
-    from: { scaleX: 0, transformOrigin: "left center" },
-    to: { scaleX: 1, duration: 0.5, ease: easings.smoothInOut },
-  },
-  content: {
-    to: { autoAlpha: 0, y: -20, duration: 0.3, ease: easings.smooth },
-  },
-  totalDuration: 0.5,
-};
-
-// --------------------------------------------------
-// pageTransitionEnter — Overlay wipe reveal + content entrance
-// --------------------------------------------------
-export const pageTransitionEnter = {
-  overlay: {
-    from: { scaleX: 1, transformOrigin: "right center" },
-    to: { scaleX: 0, duration: 0.5, ease: easings.smoothInOut, delay: 0.1 },
-  },
-  totalDuration: 0.6,
-};
-
-// --------------------------------------------------
 // heroArchiveSequence — Brutalist hero choreography (~3.5s)
 // --------------------------------------------------
 export const heroArchiveSequence = {
@@ -381,21 +356,16 @@ export const cinematicHeroReveal = {
 // Two-layer approach: static grayscale base + GPU-compositable opacity reveal.
 // --------------------------------------------------
 // --------------------------------------------------
-// contactFormReveal — Cinematic contact form entrance (~2.5s)
+// contactFormReveal — Contact form entrance (~2s)
 // --------------------------------------------------
 export const contactFormReveal = {
-  background: {
-    from: { scale: 1.1, autoAlpha: 0 },
-    to: { scale: 1, autoAlpha: 1, duration: 2.0, ease: "power2.out" },
-  },
   label: {
     from: { autoAlpha: 0, y: 10 },
     to: { autoAlpha: 1, y: 0, duration: 0.6, ease: easings.smooth },
   },
   heading: {
-    splitConfig: { type: "lines", mask: "lines", autoSplit: true } as const,
-    from: { yPercent: 100 },
-    to: { yPercent: 0, duration: 1.0, ease: easings.smooth, stagger: 0.12 },
+    from: { autoAlpha: 0, y: 20 },
+    to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
   },
   field: {
     from: { autoAlpha: 0, y: 20 },
@@ -406,20 +376,13 @@ export const contactFormReveal = {
     from: { autoAlpha: 0, y: 20 },
     to: { autoAlpha: 1, y: 0, duration: 0.6, ease: easings.smooth },
   },
-  sidebar: {
-    from: { autoAlpha: 0, x: 30 },
-    to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
-  },
-  sidebarStagger: 0.15,
   positions: {
-    background: 0,
-    label: 0.3,
-    heading: 0.5,
-    fields: 1.2,
-    submit: 1.8,
-    sidebar: 0.6,
+    label: 0.1,
+    heading: 0.2,
+    fields: 0.5,
+    submit: 0.9,
   },
-  totalDuration: 2.5,
+  totalDuration: 1.6,
 };
 
 export const bentoSplitReveal = {
@@ -497,22 +460,29 @@ export const headerShrink = {
     height: "5rem",
     paddingTop: "1.25rem",
     paddingBottom: "1.25rem",
-    backgroundColor: "#111210",
+    backgroundColor: "#161a12",
     borderColor: "rgba(255,255,255,0.15)",
     boxShadow: "0 0 0 rgba(0,0,0,0)",
+    borderRadius: "0px",
   },
   to: {
     height: "3.5rem",
     paddingTop: "0.625rem",
     paddingBottom: "0.625rem",
-    backgroundColor: "rgba(17,18,16,0.85)",
+    backgroundColor: "rgba(17,18,16,0.35)",
     borderColor: "rgba(255,255,255,0.2)",
     boxShadow: "0 4px 30px rgba(0,0,0,0.3)",
+    borderRadius: "2px",
   },
-  blur: { from: 0, to: 12 },
+  blur: { from: 0, to: 0 },
   logo: {
     from: { fontSize: "1.5rem" },
     to: { fontSize: "1.25rem" },
+  },
+  /** Crossfade: wordmark text fades out, aperture icon fades in */
+  logoMorph: {
+    text: { from: { autoAlpha: 1 }, to: { autoAlpha: 0 } },
+    icon: { from: { autoAlpha: 0, scale: 0.8 }, to: { autoAlpha: 1, scale: 1 } },
   },
 };
 
@@ -533,7 +503,14 @@ export const landingHeroParallax = {
 export const landingWordReveal = {
   splitConfig: { type: "words", mask: "words", autoSplit: true } as const,
   from: { yPercent: 120, rotation: 4, autoAlpha: 0 },
-  to: { yPercent: 0, rotation: 0, autoAlpha: 1, duration: 1.2, ease: easings.smooth, stagger: 0.04 },
+  to: {
+    yPercent: 0,
+    rotation: 0,
+    autoAlpha: 1,
+    duration: 1.2,
+    ease: easings.smooth,
+    stagger: 0.04,
+  },
   scrollTrigger: { start: "top 90%", toggleActions: "play none none none" },
 };
 
@@ -558,13 +535,48 @@ export const cinematicImageReveal = {
 // --------------------------------------------------
 export const landingHeroGridSequence = {
   steps: [
-    { target: "divider",     from: { autoAlpha: 0 },         to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },          position: 0.3 },
-    { target: "bgImage",     from: { autoAlpha: 0 },         to: { autoAlpha: 1, duration: 1.5, ease: easings.smooth },          position: 0.3 },
-    { target: "eyebrow",     from: { autoAlpha: 0, y: 15 },  to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },   position: 0.6 },
-    { target: "headline",    from: { autoAlpha: 0, y: 15 },  to: { autoAlpha: 1, y: 0, duration: 1.0, ease: "back.out(1.4)" },  position: 0.8 },
-    { target: "description", from: { autoAlpha: 0, y: 15 },  to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },   position: 1.2 },
-    { target: "curves",      from: { autoAlpha: 0 },         to: { autoAlpha: 1, duration: 1.0, ease: easings.smooth },          position: 1.6 },
-    { target: "dash",        from: { autoAlpha: 0 },         to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },          position: 1.8 },
+    {
+      target: "divider",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
+      position: 0.3,
+    },
+    {
+      target: "bgImage",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 1.5, ease: easings.smooth },
+      position: 0.3,
+    },
+    {
+      target: "eyebrow",
+      from: { autoAlpha: 0, y: 15 },
+      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
+      position: 0.6,
+    },
+    {
+      target: "headline",
+      from: { autoAlpha: 0, y: 15 },
+      to: { autoAlpha: 1, y: 0, duration: 1.0, ease: "back.out(1.4)" },
+      position: 0.8,
+    },
+    {
+      target: "description",
+      from: { autoAlpha: 0, y: 15 },
+      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
+      position: 1.2,
+    },
+    {
+      target: "curves",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 1.0, ease: easings.smooth },
+      position: 1.6,
+    },
+    {
+      target: "dash",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
+      position: 1.8,
+    },
   ],
   totalDuration: 2.4,
 };
@@ -716,7 +728,11 @@ export const heroNegativeSequence = {
   },
   negativeToPositive: {
     from: { filter: "invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.9)" },
-    to: { filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)", duration: 1.8, ease: "power2.inOut" },
+    to: {
+      filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)",
+      duration: 1.8,
+      ease: "power2.inOut",
+    },
   },
   perforations: {
     from: { autoAlpha: 0 },
@@ -797,7 +813,11 @@ export const heroExposureSequence = {
   },
   negativeToPositive: {
     from: { filter: "invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.9)" },
-    to: { filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)", duration: 1.5, ease: "power2.inOut" },
+    to: {
+      filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)",
+      duration: 1.5,
+      ease: "power2.inOut",
+    },
   },
   ghostOverlay: {
     from: { autoAlpha: 0 },
@@ -876,7 +896,11 @@ export const heroProjectionSequence = {
   },
   beam: {
     from: { clipPath: "polygon(5% 95%, 5% 95%, 5% 95%, 5% 95%)" },
-    to: { clipPath: "polygon(5% 85%, 95% 10%, 100% 60%, 15% 100%)", duration: 1.5, ease: "power2.out" },
+    to: {
+      clipPath: "polygon(5% 85%, 95% 10%, 100% 60%, 15% 100%)",
+      duration: 1.5,
+      ease: "power2.out",
+    },
   },
   image: {
     from: { autoAlpha: 0 },
@@ -962,7 +986,11 @@ export const heroSpliceSequence = {
   },
   negativeToPositive: {
     from: { filter: "invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.9)" },
-    to: { filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)", duration: 1.5, ease: "power2.inOut" },
+    to: {
+      filter: "invert(0) hue-rotate(0deg) saturate(1) brightness(1)",
+      duration: 1.5,
+      ease: "power2.inOut",
+    },
   },
   perforations: {
     from: { autoAlpha: 0 },
@@ -1002,6 +1030,34 @@ export const heroSpliceSequence = {
 };
 
 // --------------------------------------------------
+// scrollApertureProgress — Scroll-linked aperture blade rotation
+// --------------------------------------------------
+export const scrollApertureProgress = {
+  bladeRotation: { from: 15, to: 0 },
+  ringOpacity: { from: 0.3, to: 0.8 },
+  scrollTrigger: { start: "top top", end: "bottom bottom", scrub: 0.3 },
+};
+
+// --------------------------------------------------
+// irisTransition — Vertical blinds page transition (~0.7s)
+// 8 strips cascade closed then open like turning blinds
+// --------------------------------------------------
+export const irisTransition = {
+  blade: {
+    close: {
+      from: { scaleX: 0 },
+      to: { scaleX: 1, ease: easings.smoothInOut, stagger: 0.03 },
+    },
+    open: {
+      from: { scaleX: 1 },
+      to: { scaleX: 0, ease: easings.smooth, stagger: 0.03 },
+    },
+  },
+  durations: { close: 0.28, hold: 0.08, open: 0.28 },
+  totalDuration: 0.7,
+};
+
+// --------------------------------------------------
 // reducedMotionFallbacks — prefers-reduced-motion: reduce behavior
 // --------------------------------------------------
 export const reducedMotionFallbacks = {
@@ -1009,43 +1065,51 @@ export const reducedMotionFallbacks = {
   fadeLeft: "instant autoAlpha: 1, no X translation",
   fadeRight: "instant autoAlpha: 1, no X translation",
   blurReveal: "instant autoAlpha: 1, no blur dissolve",
-textRevealLines: "instant autoAlpha: 1, no SplitText, no mask animation",
+  textRevealLines: "instant autoAlpha: 1, no SplitText, no mask animation",
   textRevealWords: "all words at full opacity, no scrub",
   clipRevealUp: "instant clip-path: inset(0%), no animation",
   clipRevealLeft: "instant clip-path: inset(0%), no animation",
   imageReveal: "no overlay animation, image visible immediately at scale 1",
-parallaxLayer: "disabled — no Y translation",
+  parallaxLayer: "disabled — no Y translation",
   magneticPull: "disabled — no cursor following",
   staggerGrid: "instant autoAlpha: 1, no stagger delay",
-navOverlayOpen: "instant visibility toggle, no stagger",
+  navOverlayOpen: "instant visibility toggle, no stagger",
   navOverlayClose: "instant visibility toggle",
   scrollIndicatorPulse: "visible but static, no pulse animation",
-  pageTransitionLeave: "instant opacity 0, no overlay wipe",
-  pageTransitionEnter: "instant opacity 1, no overlay reveal",
-heroArchiveSequence: "all elements visible immediately, no choreography",
+  heroArchiveSequence: "all elements visible immediately, no choreography",
   collectionCardReveal: "overlay scaleX: 0, clip-path fully open, labels visible immediately",
   exhibitionParallax: "disabled — no scroll-driven scale",
-  timelinePhaseReveal: "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
-  folioReveal: "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
-  cinematicHeroReveal: "image visible immediately at scale 1, no blur/brightness transition, no parallax, all text visible",
-bentoSplitReveal: "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
+  timelinePhaseReveal:
+    "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
+  folioReveal:
+    "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
+  cinematicHeroReveal:
+    "image visible immediately at scale 1, no blur/brightness transition, no parallax, all text visible",
+  bentoSplitReveal:
+    "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
   fullBleedShowcase: "image visible at scale 1, no parallax, text visible immediately",
   textureCardReveal: "cards visible immediately, no parallax, no stagger",
-landingHeaderEntrance: "header visible immediately, no slide-down",
+  landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
   landingHeroParallax: "disabled — no scroll-driven parallax on hero",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
-heroOverprintSequence: "all elements visible immediately, ghost text at final opacity, no choreography",
-  heroFrameSequence: "all elements visible immediately, both images visible, no clip-path, no stagger",
+  heroOverprintSequence:
+    "all elements visible immediately, ghost text at final opacity, no choreography",
+  heroFrameSequence:
+    "all elements visible immediately, both images visible, no clip-path, no stagger",
   heroMonolithSequence: "overlay at final opacity, text visible as window, no entrance animation",
   heroParallaxSequence: "all layers visible immediately, no blur/scale transition, no parallax",
   heroNegativeSequence: "film strip visible, image in positive, no negative filter, no slide",
   heroDiptychSequence: "both panels visible, no split animation, no blur, all text visible",
-  heroExposureSequence: "all elements visible, image positive, ghost overlay at final opacity, no animation",
+  heroExposureSequence:
+    "all elements visible, image positive, ghost overlay at final opacity, no animation",
   heroReelSequence: "strip visible, all frames revealed, ghost text at final opacity, no animation",
   heroProjectionSequence: "beam fully expanded, image visible, ghost text visible, no animation",
-  heroContactSequence: "all grid cells visible, selection circle visible, selected frame in color, no animation",
+  heroContactSequence:
+    "all grid cells visible, selection circle visible, selected frame in color, no animation",
   heroSpliceSequence: "both strips visible, images positive, text visible, no animation",
+  scrollApertureProgress: "blades at open position, no scroll-linked rotation",
+  irisTransition: "instant opacity toggle, no blade animation",
 } as const;

@@ -24,7 +24,9 @@ export function GalleryFullBleed({ album }: GallerySectionProps) {
 
       if (reduced) {
         gsap.set(el.querySelectorAll(".fullbleed-img, .fullbleed-text"), {
-          autoAlpha: 1, y: 0, scale: 1,
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
         });
         return;
       }
@@ -37,10 +39,18 @@ export function GalleryFullBleed({ album }: GallerySectionProps) {
           scrollTrigger: {
             trigger: el,
             ...fullBleedShowcase.image.scrollTrigger,
-            onEnter: () => { img.style.willChange = "transform"; },
-            onLeave: () => { img.style.willChange = "auto"; },
-            onEnterBack: () => { img.style.willChange = "transform"; },
-            onLeaveBack: () => { img.style.willChange = "auto"; },
+            onEnter: () => {
+              img.style.willChange = "transform";
+            },
+            onLeave: () => {
+              img.style.willChange = "auto";
+            },
+            onEnterBack: () => {
+              img.style.willChange = "transform";
+            },
+            onLeaveBack: () => {
+              img.style.willChange = "auto";
+            },
           },
         });
       }
@@ -67,8 +77,12 @@ export function GalleryFullBleed({ album }: GallerySectionProps) {
       className="relative h-dvh w-full flex items-center justify-center bg-[var(--color-surface-lowest)] overflow-hidden group/bleed"
       aria-label={`${album.title} — featured`}
     >
+      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-video opacity-40 blur-3xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 transition-opacity duration-1000 group-hover/bleed:opacity-60" aria-hidden="true" />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-video opacity-40 blur-3xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 transition-opacity duration-1000 group-hover/bleed:opacity-60"
+        aria-hidden="true"
+      />
 
       {/* Centered image */}
       <TransitionLink
@@ -109,7 +123,7 @@ export function GalleryFullBleed({ album }: GallerySectionProps) {
       {/* Vertical text branding */}
       <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:block">
         <span className="font-label text-[8px] tracking-[1em] text-[var(--color-on-surface-variant)]/30 uppercase [writing-mode:vertical-lr] rotate-180">
-          Silk Road Studio {album.year ?? ""}
+          Saffron Studios {album.year ?? ""}
         </span>
       </div>
     </section>

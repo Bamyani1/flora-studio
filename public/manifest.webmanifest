@@ -1,11 +1,11 @@
 {
-  "name": "Silk Road Studio",
-  "short_name": "Silk Road Studio",
-  "description": "Cinematic photography studio specializing in landscape, night sky, sports, portrait, and travel photography.",
+  "name": "Saffron Studios",
+  "short_name": "Saffron Studios",
+  "description": "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#121212",
+  "background_color": "#1e1f1c",
+  "theme_color": "#1e1f1c",
   "icons": [
     {
       "src": "/icon-192.png",
