@@ -59,7 +59,7 @@ scripts/.image-cache.json
 # Playwright MCP
 .playwright-mcp/
 
-# Editor tooling
+# Editor config
 
 
 
