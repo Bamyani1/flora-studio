@@ -2,29 +2,26 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms",
-  description: "Interim terms for Silk Road Studio while the full legal language is being finalized.",
+  description:
+    "Interim terms for Saffron Studios while the full legal language is being finalized.",
 };
 
 const TERMS = [
   {
     title: "Portfolio Use",
-    body:
-      "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Silk Road Studio and may not be reused without written permission.",
+    body: "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Saffron Studios and may not be reused without written permission.",
   },
   {
     title: "Inquiry Expectations",
-    body:
-      "Submitting an inquiry does not create a booking or contractual relationship on its own. Project scope, availability, fees, and deliverables are confirmed only after direct communication and written agreement.",
+    body: "Submitting an inquiry does not create a booking or contractual relationship on its own. Project scope, availability, fees, and deliverables are confirmed only after direct communication and written agreement.",
   },
   {
     title: "Site Availability",
-    body:
-      "Silk Road Studio may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
+    body: "Saffron Studios may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
   },
   {
     title: "Interim Status",
-    body:
-      "These terms are a placeholder for launch readiness. Full contract language, licensing details, and jurisdiction-specific provisions will replace this page before broader release.",
+    body: "These terms are a placeholder for launch readiness. Full contract language, licensing details, and jurisdiction-specific provisions will replace this page before broader release.",
   },
 ] as const;
 

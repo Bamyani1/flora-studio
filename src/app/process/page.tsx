@@ -6,21 +6,21 @@ import type { ProcessStep } from "@/components/process-reference/types";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "From ideation to curation — discover the methodology behind Silk Road Studio. Four phases that transform fleeting moments into deliberate, exhibition-grade compositions.",
+    "From conversation to delivery — how we work at Saffron Studios. Four phases, one standard: nothing leaves until it's worth keeping.",
 };
 
 const STEPS: ProcessStep[] = [
   {
     id: "01",
-    title: "Ideation & Scope",
+    title: "Conversation",
     description:
-      "Every project begins with deep listening. We immerse ourselves in the narrative — understanding the people, the space, the light — before a single frame is composed. Research, mood boards, and location scouting build the visual language.",
-    meta: "Phase: Narrative Design",
+      "Every project starts with a conversation. We learn about you, the occasion, the setting, and the feeling you want to walk away with. From there, we plan.",
+    meta: "Phase: Planning & Scope",
     images: [
       {
-        src: "/images/high-country/01.jpg",
-        alt: "Misty mountain landscape in the ideation phase",
-        blurDataURL: getLocalBlur("/images/high-country/01.jpg"),
+        src: "/images/graduation/01.jpg",
+        alt: "Planning and ideation phase for a photography session",
+        blurDataURL: getLocalBlur("/images/graduation/01.jpg"),
       },
     ],
     layout: "single",
@@ -28,15 +28,15 @@ const STEPS: ProcessStep[] = [
   },
   {
     id: "02",
-    title: "Light Architecture",
+    title: "Presence",
     description:
-      "Light is the medium. We design each scene's illumination with cinematic precision — whether chasing golden hour on location or building complex studio setups. Every shadow is intentional, every highlight placed.",
-    metaList: ["Volumetric Grading", "High-Contrast Scoping"],
+      "On the day, we work with intention — reading the light, directing when it helps, staying ready for the moments that can't be planned. Every frame is composed, not just taken.",
+    metaList: ["Phase: The Shoot"],
     images: [
       {
-        src: "/images/after-dark/01.jpg",
-        alt: "Night landscape used to illustrate light architecture",
-        blurDataURL: getLocalBlur("/images/after-dark/01.jpg"),
+        src: "/images/march-madness/01.jpg",
+        alt: "Live basketball photography during a game",
+        blurDataURL: getLocalBlur("/images/march-madness/01.jpg"),
       },
     ],
     layout: "bordered",
@@ -44,15 +44,15 @@ const STEPS: ProcessStep[] = [
   },
   {
     id: "03",
-    title: "The Decisive Moment",
+    title: "Selection",
     description:
-      "Preparation meets intuition. With the vision clear and the light set, we enter the space of pure attention — ready for the convergence of gesture, expression, and atmosphere that makes a photograph transcend documentation.",
-    meta: "The Lens Phase",
+      "From every session, we select only the strongest images — where composition, expression, and light come together. Quality over quantity, always.",
+    meta: "Phase: Curation",
     images: [
       {
-        src: "/images/wanderlust/02.jpg",
-        alt: "Wide cinematic frame capturing the decisive moment",
-        blurDataURL: getLocalBlur("/images/wanderlust/02.jpg"),
+        src: "/images/out-west/01.jpg",
+        alt: "Curated portrait from a personal session",
+        blurDataURL: getLocalBlur("/images/out-west/01.jpg"),
       },
     ],
     layout: "ultrawide",
@@ -60,34 +60,34 @@ const STEPS: ProcessStep[] = [
   },
   {
     id: "04",
-    title: "Curation",
+    title: "Refinement",
     description:
-      "From hundreds of exposures, we distill the essential. Each selected frame is developed with meticulous attention to tone, contrast, and mood — ensuring the final collection tells a cohesive, emotionally resonant story.",
+      "Each selected image is graded by hand for tone, mood, and consistency. The final collection is delivered as a cohesive set — something worth coming back to.",
     images: [
       {
         src: "/images/golden-hour/01.jpg",
-        alt: "Golden hour portrait selected during curation",
+        alt: "Final graded graduation portrait",
         blurDataURL: getLocalBlur("/images/golden-hour/01.jpg"),
       },
       {
         src: "/images/golden-hour/02.jpg",
-        alt: "Second golden hour portrait from the curated edit",
+        alt: "Final delivered portrait photograph",
         blurDataURL: getLocalBlur("/images/golden-hour/02.jpg"),
       },
       {
         src: "/images/graduation/01.jpg",
-        alt: "Graduation portrait from the final curated set",
+        alt: "Delivered graduation photograph",
         blurDataURL: getLocalBlur("/images/graduation/01.jpg"),
       },
       {
         src: "/images/graduation/02.jpg",
-        alt: "Additional graduation portrait from the curated edit",
+        alt: "Final portrait from graduation session",
         blurDataURL: getLocalBlur("/images/graduation/02.jpg"),
       },
     ],
     layout: "grid",
     align: "right",
-    action: { label: "View Journal", href: "/work" },
+    action: { label: "View Work", href: "/work" },
   },
 ];
 
@@ -95,17 +95,11 @@ export default function ProcessPage() {
   return (
     <ProcessExperience
       heroImage={{
-        src: "/images/out-west/hero.jpg",
-        alt: "Cinematic mountain landscape hero image for Silk Road Studio",
-        blurDataURL: getLocalBlur("/images/out-west/hero.jpg"),
-      }}
-      portraitImage={{
-        src: "/images/portrait.jpg",
-        alt: "Portrait of the Silk Road Studio photographer",
-        blurDataURL: getLocalBlur("/images/portrait.jpg"),
+        src: "/images/high-country/hero.jpg",
+        alt: "Photography hero image for Saffron Studios",
+        blurDataURL: getLocalBlur("/images/high-country/hero.jpg"),
       }}
       steps={STEPS}
-      quote="We don't chase images that only look beautiful. We build photographs with atmosphere, restraint, and narrative precision so they continue to resonate after the moment has passed."
     />
   );
 }

@@ -1,106 +1,345 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { m, AnimatePresence } from 'motion/react';
-import { ChevronRight, Camera } from 'lucide-react';
-import { useState } from 'react';
+import Image from "next/image";
+import { ChevronRight, Camera } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, SplitText } from "@/lib/gsap";
+import { withWillChange } from "@/lib/animations";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { personJsonLd } from "@/lib/metadata";
 
 const TEAM_MEMBERS = [
   {
-    role: "Creative Director",
-    name: "Julian Saint",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZxek1-WJMPyhTw8j9wdAU9dYDPFO6-dXY2uUPyRwuhCBfd0lzaV5YX2d1tnrKCrBM8y9EO2eGwuToSIRPs8uPP-cO73q0ei8V9esPZoE8ahhiDQvXJMj9NQgEsU3S8mcejDUuAtzix5EMdZMPXlfD_JqaTg6Bc6X9j5h_NOFrQfj8HNUXtFHdLqP5-re4PB_phE-GaeTz84O4Kup7Id2tNQo6L1JVqpCM-FshDZd-PY674brLxJ2kA0HsHR6plXxP_pW5jq5pgI0"
+    role: "Photographer & Designer",
+    name: "Mostafa Bamyani",
+    img: "/images/portrait.jpg",
   },
   {
-    role: "Lead Stylist",
-    name: "Elena Vrai",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWXZ5kBwBuq4sGbbPFz7TRKu5eI09Kx1-bsf0KxmZiMsHgSprYvNmnUVB6Z1-9Xapy20qu_4ovg8eGiN6Hd_344cWP7EfNNTw6UoVoxLTKztVF3vsZOlbkeWeP0nWMWHgd1EjNdQBJPSRoO_6z3KGWvwQhxJmERcd41sKlWqU6jPHQdlysbhUOwg1WaKejw4u0QSYc39WrNE5uG1csbZYzenyEpiIlUrMWm8aHuOPpwVX54wkIwaGbdfdO86Bu6lSnFDBmBj47umg"
+    role: "Photographer",
+    name: "Murtaza Anwari",
+    img: "/images/golden-hour/03.jpg",
   },
   {
-    role: "Archivist",
-    name: "Marcus Thorne",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAY0nU5WufwlcTiies0hi9bxqOi28oDBkpadynikYjzkIQ9jWRKDsjCBAJ40ifIt8OPEyWxJ4MRuxkRfGZT6OCbGAcPG5O6mWttATCyfqRHWOjn3ZyZwwy3bqaiXo9QDDGxaxYkgaxY25g-wldV6MH7lgrB_1Pelzu7ltzyi21m9jWi8l6TFwQcQQLHyulrADqAnCfqFG4wSEaCqhmwgEkWpqYUXSTxrfDJJc_3OuBVINsRWjKzlbWiknYqQiTGWGAYG4TsNhTd-HU"
-  }
+    role: "Photographer",
+    name: "Enayatullah Anwari",
+    img: "/images/golden-hour/05.jpg",
+  },
 ];
 
-const StaggeredText = ({ text, className }: { text: string, className?: string }) => {
-  const words = text.split(" ");
+function StaggeredText({ text, className }: { text: string; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  useGSAP(
+    () => {
+      if (!ref.current) return;
+
+      if (reduced) {
+        gsap.set(ref.current, { autoAlpha: 1 });
+        return;
+      }
+
+      const split = new SplitText(ref.current, { type: "words", mask: "words" });
+
+      gsap.fromTo(
+        split.words,
+        { yPercent: 120, opacity: 0, rotation: 5 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          rotation: 0,
+          duration: 1,
+          ease: "expo.out",
+          stagger: 0.08,
+          ...withWillChange(),
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+
+      return () => {
+        split.revert();
+      };
+    },
+    { scope: ref, dependencies: [reduced] },
+  );
 
   return (
-    <m.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      variants={{
-        visible: { transition: { staggerChildren: 0.08 } },
-        hidden: {},
-      }}
-      className={className}
-    >
-      {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em] pb-2">
-          <m.span
-            className="inline-block"
-            variants={{
-              hidden: { y: "120%", opacity: 0, rotate: 5 },
-              visible: { y: 0, opacity: 1, rotate: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
-            }}
-          >
-            {word}
-          </m.span>
-        </span>
-      ))}
-    </m.div>
+    <div ref={ref} className={className}>
+      {text}
+    </div>
   );
-};
+}
 
 export default function AboutPage() {
   const [hoveredMember, setHoveredMember] = useState<number | null>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const defaultImageRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  // Team image crossfade (replaces AnimatePresence)
+  const prevMember = useRef<number | null>(null);
+  useEffect(() => {
+    if (reduced) return;
+
+    // Fade out previous
+    if (prevMember.current !== null && imageRefs.current[prevMember.current]) {
+      gsap.to(imageRefs.current[prevMember.current], {
+        opacity: 0,
+        scale: 1.03,
+        duration: 0.4,
+        ease: "power2.inOut",
+      });
+    } else if (prevMember.current === null && defaultImageRef.current) {
+      gsap.to(defaultImageRef.current, {
+        opacity: 0,
+        scale: 1.03,
+        duration: 0.4,
+        ease: "power2.inOut",
+      });
+    }
+
+    // Fade in current
+    if (hoveredMember !== null && imageRefs.current[hoveredMember]) {
+      gsap.fromTo(
+        imageRefs.current[hoveredMember],
+        { opacity: 0, scale: 1.03 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" },
+      );
+    } else if (hoveredMember === null && defaultImageRef.current) {
+      gsap.fromTo(
+        defaultImageRef.current,
+        { opacity: 0, scale: 1.03 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" },
+      );
+    }
+
+    prevMember.current = hoveredMember;
+  }, [hoveredMember, reduced]);
+
+  useGSAP(
+    () => {
+      if (!pageRef.current) return;
+
+      if (reduced) {
+        const allElements = pageRef.current.querySelectorAll("[data-about-animate]");
+        gsap.set(allElements, { autoAlpha: 1, y: 0, x: 0, scale: 1, filter: "none" });
+        return;
+      }
+
+      const elements = pageRef.current.querySelectorAll("[data-about-animate]");
+      elements.forEach((el) => {
+        const htmlEl = el as HTMLElement;
+        const animType = htmlEl.dataset.aboutAnimate;
+
+        switch (animType) {
+          case "hero-divider":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, width: 0 },
+              { autoAlpha: 1, width: "100%", duration: 1.5, ease: "power2.inOut" },
+            );
+            break;
+
+          case "blur-in":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, filter: "blur(10px)" },
+              {
+                autoAlpha: 1,
+                filter: "blur(0px)",
+                duration: 1.5,
+                delay: 0.8,
+                ease: "power3.out",
+                ...withWillChange("opacity, filter"),
+              },
+            );
+            break;
+
+          case "hero-subtitle":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, y: 20 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.9,
+                ease: "power3.out",
+                ...withWillChange(),
+              },
+            );
+            break;
+
+          case "bg-text": {
+            const targetOpacity = htmlEl.dataset.targetOpacity ?? "0.03";
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, scale: parseFloat(htmlEl.dataset.fromScale ?? "0.9") },
+              {
+                autoAlpha: parseFloat(targetOpacity),
+                scale: 1,
+                duration: parseFloat(htmlEl.dataset.duration ?? "2"),
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: htmlEl,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+            break;
+          }
+
+          case "fade-up": {
+            const delay = parseFloat(htmlEl.dataset.delay ?? "0");
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, y: parseFloat(htmlEl.dataset.y ?? "20") },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: parseFloat(htmlEl.dataset.duration ?? "1"),
+                delay,
+                ease: "power3.out",
+                ...withWillChange(),
+                scrollTrigger: htmlEl.dataset.noScroll
+                  ? undefined
+                  : { trigger: htmlEl, start: "top 85%", toggleActions: "play none none none" },
+              },
+            );
+            break;
+          }
+
+          case "fade-left":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, x: -30 },
+              {
+                autoAlpha: 1,
+                x: 0,
+                duration: 0.8,
+                ease: "power3.out",
+                ...withWillChange(),
+                scrollTrigger: {
+                  trigger: htmlEl,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+            break;
+
+          case "team-item": {
+            const staggerDelay = parseFloat(htmlEl.dataset.delay ?? "0");
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, y: 20 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.8,
+                delay: staggerDelay,
+                ease: "power3.out",
+                ...withWillChange(),
+                scrollTrigger: {
+                  trigger: htmlEl,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+            break;
+          }
+
+          case "process-image":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, scale: 0.95, filter: "brightness(0.5)" },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                filter: "brightness(1)",
+                duration: 1.5,
+                ease: "power2.out",
+                ...withWillChange("opacity, transform, filter"),
+                scrollTrigger: {
+                  trigger: htmlEl,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+            break;
+
+          case "letter-spacing":
+            gsap.fromTo(
+              htmlEl,
+              { autoAlpha: 0, letterSpacing: "0em" },
+              {
+                autoAlpha: 1,
+                letterSpacing: "0.8em",
+                duration: 1.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: htmlEl,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+            break;
+
+          default:
+            break;
+        }
+      });
+    },
+    { scope: pageRef, dependencies: [reduced] },
+  );
+
+  // Safe JSON-LD content from our own metadata function
+  const jsonLdContent = JSON.stringify(personJsonLd());
 
   return (
-    <div className="about-theme">
+    <div ref={pageRef}>
       <main id="main-content" className="min-h-screen">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdContent }} />
 
         {/* Hero */}
         <section className="min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
-            <m.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+            <div
+              data-about-animate="hero-divider"
               className="flex items-center justify-center gap-4 mb-10"
             >
               <span className="w-12 h-px bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">Sequence 01: Vision</span>
+              <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
+                The Studio
+              </span>
               <span className="w-12 h-px bg-primary/40"></span>
-            </m.div>
+            </div>
 
             <h1 className="font-display text-5xl md:text-[8rem] text-on-surface leading-[0.9] tracking-tighter mb-10">
-              <StaggeredText text="The Art of" />
-              <m.span
-                initial={{ opacity: 0, filter: "blur(10px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-                className="italic text-primary block mt-4"
-              >
-                Visual Silence.
-              </m.span>
+              <StaggeredText text="Who We" />
+              <span data-about-animate="blur-in" className="italic text-primary block mt-4">
+                Are.
+              </span>
             </h1>
 
-            <m.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
+            <p
+              data-about-animate="hero-subtitle"
               className="font-body text-xl md:text-2xl text-on-surface-variant/60 max-w-2xl leading-relaxed font-light"
             >
-              Every frame is a dialogue between light and void. We capture the stillness that defines the narrative of the modern era.
-            </m.p>
+              A photography studio grounded in intention, craft, and the belief that every frame
+              should earn its place.
+            </p>
           </div>
         </section>
 
@@ -109,54 +348,48 @@ export default function AboutPage() {
 
         {/* Manifesto */}
         <section className="py-48 md:py-64 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
-          <m.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 0.03, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 2, ease: "easeOut" }}
+          <div
+            data-about-animate="bg-text"
+            data-target-opacity="0.03"
+            data-from-scale="0.9"
             className="absolute inset-0 pointer-events-none flex items-center justify-center"
           >
-            <span className="font-display text-[30vw] select-none italic text-on-surface">Manifesto</span>
-          </m.div>
+            <span className="font-display text-[30vw] select-none italic text-on-surface">
+              Manifesto
+            </span>
+          </div>
 
           <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
-            <m.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1 }}
-              className="flex items-center gap-6 mb-24"
-            >
+            <div data-about-animate="fade-up" className="flex items-center gap-6 mb-24">
               <span className="w-12 h-[1px] bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px]">Sequence 02: Essence</span>
+              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px]">
+                Our Approach
+              </span>
               <span className="w-12 h-[1px] bg-primary/40"></span>
-            </m.div>
+            </div>
 
             <blockquote className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.2] text-center text-on-surface max-w-5xl mx-auto relative z-10 tracking-tight">
-              <m.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              >
-                We don&apos;t just photograph life; we <span className="text-primary italic font-light">sculpt</span> the shadows to reveal the hidden architecture of the soul.
-              </m.div>
+              <div data-about-animate="fade-up" data-y="40" data-duration="1.2">
+                We show up prepared, stay present, and make every{" "}
+                <span className="text-primary italic font-light">frame</span> count. No shortcuts,
+                no templates — just intention behind everything we do.
+              </div>
             </blockquote>
 
-            <m.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.6 }}
+            <div
+              data-about-animate="fade-up"
+              data-delay="0.6"
               className="mt-24 flex flex-col items-center gap-6"
             >
-              <span className="font-label uppercase tracking-[0.4em] text-xs text-on-surface-variant/60">The Directors</span>
+              <span className="font-label uppercase tracking-[0.4em] text-xs text-on-surface-variant/60">
+                Our Approach
+              </span>
               <div className="flex gap-2">
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
               </div>
-            </m.div>
+            </div>
           </div>
         </section>
 
@@ -166,48 +399,49 @@ export default function AboutPage() {
         {/* Team */}
         <section className="py-32 md:py-48 px-6 md:px-12 lg:px-24 bg-surface film-reel-border relative">
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 relative z-20">
-
             {/* Left Column: Sticky Image & Header */}
             <div className="lg:sticky lg:top-32 h-fit flex flex-col gap-12">
-              <m.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-6">Sequence 03: The Collective</span>
-                <h2 className="font-display text-5xl md:text-7xl tracking-tighter mb-6 text-on-surface">Team Muse</h2>
+              <div data-about-animate="fade-left">
+                <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-6">
+                  The People
+                </span>
+                <h2 className="font-display text-5xl md:text-7xl tracking-tighter mb-6 text-on-surface">
+                  The Team
+                </h2>
                 <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-md text-base font-light">
-                  A symposium of creators, visionaries, and technologists dedicated to the perfection of the image.
+                  Three photographers with a shared commitment to craft and a habit of paying close
+                  attention.
                 </p>
-              </m.div>
+              </div>
 
-              {/* Dynamic Image Container */}
+              {/* Dynamic Image Container — stacked crossfade */}
               <div className="hidden lg:block w-full aspect-[4/5] relative rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10 shadow-2xl">
-                <AnimatePresence mode="wait">
-                  <m.div
-                    key={hoveredMember !== null ? hoveredMember : 'default'}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                <div
+                  ref={defaultImageRef}
+                  className="absolute inset-0 flex items-center justify-center bg-surface-container-lowest"
+                >
+                  <Camera className="w-12 h-12 text-outline-variant/20" />
+                </div>
+
+                {TEAM_MEMBERS.map((member, index) => (
+                  <div
+                    key={member.name}
+                    ref={(el) => {
+                      imageRefs.current[index] = el;
+                    }}
                     className="absolute inset-0"
+                    style={{ opacity: 0 }}
                   >
-                    {hoveredMember !== null ? (
-                      <Image
-                        src={TEAM_MEMBERS[hoveredMember].img}
-                        alt={TEAM_MEMBERS[hoveredMember].name}
-                        fill
-                        className="object-cover object-center"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-surface-container-lowest">
-                        <Camera className="w-12 h-12 text-outline-variant/20" />
-                      </div>
-                    )}
-                  </m.div>
-                </AnimatePresence>
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 0px"
+                      className="object-cover object-center"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -215,12 +449,10 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center pt-12 lg:pt-32">
               <div className="border-t border-outline-variant/20">
                 {TEAM_MEMBERS.map((member, index) => (
-                  <m.div
+                  <div
                     key={member.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    data-about-animate="team-item"
+                    data-delay={String(index * 0.1)}
                     onMouseEnter={() => setHoveredMember(index)}
                     onMouseLeave={() => setHoveredMember(null)}
                     className="group border-b border-outline-variant/20 py-10 md:py-16 cursor-pointer flex flex-col gap-6"
@@ -251,15 +483,15 @@ export default function AboutPage() {
                         src={member.img}
                         alt={member.name}
                         fill
+                        sizes="(max-width: 1023px) 100vw, 0px"
                         className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000"
                         referrerPolicy="no-referrer"
                       />
                     </div>
-                  </m.div>
+                  </div>
                 ))}
               </div>
             </div>
-
           </div>
         </section>
 
@@ -271,56 +503,56 @@ export default function AboutPage() {
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
             <div className="order-2 md:order-1 space-y-20">
               <div className="space-y-8">
-                <m.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1 }}
-                  className="flex items-center gap-4"
-                >
-                  <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">Sequence 04: Process</span>
-                </m.div>
+                <div data-about-animate="fade-left" className="flex items-center gap-4">
+                  <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
+                    How It Works
+                  </span>
+                </div>
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
-                  <StaggeredText text="Technical Mastery." />
+                  <StaggeredText text="How we work." />
                 </h2>
-                <m.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: 0.3 }}
+                <p
+                  data-about-animate="fade-up"
+                  data-delay="0.3"
                   className="font-body text-2xl text-on-surface-variant font-light leading-relaxed max-w-xl"
                 >
-                  Merging archival 35mm film aesthetics with high-fidelity digital precision. We obsess over the grain structure and tonal depth.
-                </m.p>
+                  We grade and refine every image by hand to get the tone, mood, and consistency
+                  right — not filtered, not batch-processed, not rushed.
+                </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 border-t border-outline-variant/10 pt-16">
-                <m.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                <div
+                  data-about-animate="fade-up"
+                  data-y="30"
+                  data-delay="0.4"
                   className="space-y-6"
                 >
-                  <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">Curation Phase</h4>
-                  <p className="font-body text-sm text-on-surface-variant/50 leading-loose">A rigorous elimination process. We seek the frames that hold tension in their silence.</p>
-                </m.div>
-                <m.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
+                  <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">
+                    Selection
+                  </h4>
+                  <p className="font-body text-sm text-on-surface-variant/50 leading-loose">
+                    From hundreds of frames, we keep only the ones where light, expression, and
+                    composition come together.
+                  </p>
+                </div>
+                <div
+                  data-about-animate="fade-up"
+                  data-y="30"
+                  data-delay="0.6"
                   className="space-y-6"
                 >
-                  <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">Darkroom Logic</h4>
-                  <p className="font-body text-sm text-on-surface-variant/50 leading-loose">Digital grading inspired by the photochemical response of 1960s French cinematic stock.</p>
-                </m.div>
+                  <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">
+                    Refinement
+                  </h4>
+                  <p className="font-body text-sm text-on-surface-variant/50 leading-loose">
+                    Each image is individually graded. We build a visual language specific to your
+                    project.
+                  </p>
+                </div>
               </div>
             </div>
-            <m.div
-              initial={{ opacity: 0, scale: 0.95, filter: "brightness(0.5)" }}
-              whileInView={{ opacity: 1, scale: 1, filter: "brightness(1)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+            <div
+              data-about-animate="process-image"
               className="order-1 md:order-2 aspect-square relative group overflow-hidden"
             >
               <Image
@@ -328,10 +560,11 @@ export default function AboutPage() {
                 className="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_rgba(0,0,0,0.8)]"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8-vfQCZEqIx1r12WDFxwKuTM4vqEbXPUi1I13AGkEb1NVd05Gz8nQoDf8EOvRK16q72r9ssnVRcaGRiZSEllnkWBiWsJVO1sEEFr9xBqk9TPuebv0-GjqSj-X2l2fdtksi15YGuSDW0n_JQFP8tGeyQ9EMZhf2cZMKlpyhWh2ejN19eaXluDjkFseShyLy1qw4NdgABQfxJ4L3CMWVpDaMIMgnEVvqai4Q9zGp1l-BBPCYRxGt2MfNJdOvTJPoQgJ8FOw0Li60vQ"
                 fill
+                sizes="(min-width: 768px) 50vw, 100vw"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 group-hover:border-[12px]"></div>
-            </m.div>
+            </div>
           </div>
         </section>
 
@@ -341,52 +574,44 @@ export default function AboutPage() {
         {/* End Scene */}
         <section className="py-72 px-12 bg-surface text-center film-reel-border relative overflow-hidden">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
-            <m.span
-              initial={{ opacity: 0, letterSpacing: "0em" }}
-              whileInView={{ opacity: 1, letterSpacing: "0.8em" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
+            <span
+              data-about-animate="letter-spacing"
               className="font-label uppercase text-primary/40 text-[11px] block"
             >
-              End Scene
-            </m.span>
+              What&apos;s next
+            </span>
             <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
-              <StaggeredText text="Write Your" />
-              <m.span
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.8 }}
+              <StaggeredText text="Let's make" />
+              <span
+                data-about-animate="fade-up"
+                data-delay="0.8"
                 className="italic text-primary block mt-4"
               >
-                History.
-              </m.span>
+                something.
+              </span>
             </h2>
-            <m.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 1.5 }}
-              className="pt-12"
-            >
-              <TransitionLink className="inline-flex items-center gap-6 group text-primary font-label uppercase tracking-[0.5em] text-sm font-semibold" href="/contact">
-                <span>Start the sequence</span>
+            <div data-about-animate="fade-up" data-delay="1.5" className="pt-12">
+              <TransitionLink
+                className="inline-flex items-center gap-6 group text-primary font-label uppercase tracking-[0.5em] text-sm font-semibold"
+                href="/contact"
+              >
+                <span>Get in touch</span>
                 <div className="relative flex items-center">
                   <span className="w-16 h-px bg-primary group-hover:w-32 transition-all duration-700"></span>
                   <ChevronRight className="w-4 h-4 -ml-2 group-hover:ml-0 transition-all duration-700" />
                 </div>
               </TransitionLink>
-            </m.div>
+            </div>
           </div>
-          <m.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 0.03, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 3, ease: "easeOut" }}
+          <div
+            data-about-animate="bg-text"
+            data-target-opacity="0.03"
+            data-from-scale="0.8"
+            data-duration="3"
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
           >
             <span className="font-display text-[35vw] tracking-tighter">FIN</span>
-          </m.div>
+          </div>
         </section>
       </main>
     </div>

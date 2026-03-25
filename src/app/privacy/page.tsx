@@ -2,29 +2,26 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "Interim privacy details for Silk Road Studio while the full policy is being finalized.",
+  description:
+    "Interim privacy details for Saffron Studios while the full policy is being finalized.",
 };
 
 const SECTIONS = [
   {
     title: "What We Collect",
-    body:
-      "Silk Road Studio currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
+    body: "Saffron Studios currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
   },
   {
     title: "How It Is Used",
-    body:
-      "Submitted information is used only to respond to inquiries, discuss projects, and prepare photography engagements. It is not sold, rented, or shared for advertising purposes.",
+    body: "Submitted information is used only to respond to inquiries, discuss projects, and prepare photography engagements. It is not sold, rented, or shared for advertising purposes.",
   },
   {
     title: "External Services",
-    body:
-      "This site may load media, forms, and third-party links such as Instagram, Behance, LinkedIn, or email providers. Those services operate under their own privacy terms once you leave this site or submit information through them.",
+    body: "This site may load media, forms, and third-party links such as Instagram, Behance, LinkedIn, or email providers. Those services operate under their own privacy terms once you leave this site or submit information through them.",
   },
   {
     title: "Interim Status",
-    body:
-      "This page is a placeholder policy for launch. Full legal copy, retention details, and any future analytics or platform-specific disclosures will be published here before broader promotion.",
+    body: "This page is a placeholder policy for launch. Full legal copy, retention details, and any future analytics or platform-specific disclosures will be published here before broader promotion.",
   },
 ] as const;
 
