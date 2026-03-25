@@ -218,7 +218,7 @@ export function HeroMonolith() {
             color: "color-mix(in srgb, var(--color-text-heading) 50%, transparent)",
           }}
         >
-          Cinematic photography that transcends the ordinary
+          Photography built on patience and craft
         </p>
 
         {/* CTA — anchored to bottom */}

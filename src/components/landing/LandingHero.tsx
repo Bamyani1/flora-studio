@@ -67,7 +67,7 @@ export function LandingHero() {
           <div ref={bgImageRef} className="absolute inset-0">
             <Image
               src="/images/landing-hero.jpg"
-              alt="Cinematic atmospheric photograph"
+              alt="Atmospheric photograph"
               fill
               className="object-cover"
               priority

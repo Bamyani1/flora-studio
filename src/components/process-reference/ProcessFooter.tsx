@@ -15,7 +15,7 @@ export function ProcessFooter() {
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
         <div className="font-display text-lg italic text-neutral-200">Saffron Studios</div>
         <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
-          © {new Date().getFullYear()} Saffron Studios. All rights reserved. Cinematic Lens Series.
+          © {new Date().getFullYear()} Saffron Studios. All rights reserved.
         </div>
       </div>
       <div className="flex flex-wrap gap-10">

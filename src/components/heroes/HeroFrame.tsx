@@ -223,7 +223,7 @@ export function HeroFrame() {
             color: "color-mix(in srgb, var(--color-text-heading) 35%, transparent)",
           }}
         >
-          CINEMATIC PORTRAITURE
+          PORTRAITURE
         </span>
         <span
           className="frame-meta-right"

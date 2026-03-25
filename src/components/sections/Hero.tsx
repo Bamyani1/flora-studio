@@ -154,7 +154,7 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
       <div className="relative z-10 flex h-full flex-col justify-end px-[var(--container-padding-x)] pb-24 md:pb-32">
         {/* Label */}
         <span className="hero-label mb-6 font-label text-xs uppercase tracking-wider text-primary">
-          [ CINEMATIC PHOTOGRAPHY ]
+          [ PHOTOGRAPHY WITH INTENTION ]
         </span>
 
         {/* Title */}

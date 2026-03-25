@@ -159,7 +159,7 @@ export function HeroReel() {
             whiteSpace: "nowrap",
           }}
         >
-          CINEMATIC
+          INTENTION
         </span>
       </div>
 
