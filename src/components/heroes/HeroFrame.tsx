@@ -180,7 +180,7 @@ export function HeroFrame() {
       >
         <Image
           src="/images/hero.jpg"
-          alt="Saffron Studios — cinematic portraiture"
+          alt="Saffron Studios — portraiture"
           fill
           sizes="50vw"
           priority

@@ -60,7 +60,7 @@ export function LandingCuratorsNotes() {
           ref={labelRef}
           className="font-label text-[10px] tracking-[0.6em] text-white/40 mb-16 block"
         >
-          CURATOR&apos;S NOTES
+          THE APPROACH
         </span>
 
         <blockquote className="font-headline text-4xl md:text-6xl lg:text-7xl text-white leading-[1.1] italic mb-20 flex flex-wrap justify-center gap-x-4 gap-y-2">

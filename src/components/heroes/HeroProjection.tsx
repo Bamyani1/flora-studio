@@ -169,7 +169,7 @@ export function HeroProjection() {
         <div className="proj-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Saffron Studios — cinematic portraiture"
+            alt="Saffron Studios — portraiture"
             fill
             sizes="100vw"
             priority

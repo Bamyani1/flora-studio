@@ -571,7 +571,7 @@ export default function AboutPage() {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        {/* End Scene */}
+        {/* CTA Section */}
         <section className="py-72 px-12 bg-surface text-center film-reel-border relative overflow-hidden">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
             <span

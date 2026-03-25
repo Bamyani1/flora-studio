@@ -158,7 +158,7 @@ export function HeroNegative() {
           color: "var(--color-primary)",
         }}
       >
-        CINEMATIC PORTRAITURE
+        PORTRAITURE
       </span>
 
       {/* ---------- Film strip band ---------- */}
@@ -228,7 +228,7 @@ export function HeroNegative() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — cinematic portraiture"
+              alt="Saffron Studios — portraiture"
               fill
               sizes="100vw"
               priority
@@ -286,7 +286,7 @@ export function HeroNegative() {
             lineHeight: 1.3,
           }}
         >
-          We tell stories
+          We see what matters
         </p>
         <div className="neg-gold-line">
           <p

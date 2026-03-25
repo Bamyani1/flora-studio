@@ -159,7 +159,7 @@ export function HeroDiptych() {
         <div className="dipt-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Saffron Studios — cinematic landscape"
+            alt="Saffron Studios — landscape"
             fill
             priority
             sizes="58vw"

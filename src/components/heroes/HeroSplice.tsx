@@ -287,7 +287,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — cinematic portraiture"
+              alt="Saffron Studios — portraiture"
               fill
               sizes="100vw"
               priority
@@ -515,7 +515,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — cinematic portraiture"
+              alt="Saffron Studios — portraiture"
               fill
               sizes="100vw"
               className="object-cover"

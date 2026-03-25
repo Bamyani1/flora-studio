@@ -6,7 +6,7 @@ export function StartAStory() {
     <section className="flex flex-col items-center px-[var(--container-padding-x)] py-[var(--section-padding-y)] text-center">
       <FadeIn>
         <h2 className="font-display text-4xl font-light text-text-heading md:text-6xl lg:text-7xl">
-          Start a Story.
+          Let's make something.
         </h2>
       </FadeIn>
 

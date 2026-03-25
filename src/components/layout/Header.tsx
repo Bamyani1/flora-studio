@@ -178,7 +178,7 @@ export function Header() {
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#d4d4d4_95%,#737373_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {/* Button content */}
             <span className="relative z-10 w-full h-full bg-white text-black px-6 py-2.5 flex items-center justify-center gap-2">
-              Connect
+              Get in touch
               <svg
                 width="10"
                 height="10"

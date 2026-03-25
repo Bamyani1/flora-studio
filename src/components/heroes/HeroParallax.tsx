@@ -230,7 +230,7 @@ export function HeroParallax() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — cinematic scene"
+              alt="Saffron Studios"
               fill
               sizes="48vw"
               priority

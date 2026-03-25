@@ -96,7 +96,7 @@ export function CuratedCollections({ albums }: CuratedCollectionsProps) {
           <FadeIn>
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-3xl font-light uppercase text-text-heading md:text-5xl">
-                Curated Collections
+                Featured Collections
               </h2>
               <span className="hidden font-label text-xs uppercase tracking-wider text-muted md:block">
                 SELECTED WORKS // 2026
@@ -120,9 +120,7 @@ export function CuratedCollections({ albums }: CuratedCollectionsProps) {
                 href={`/work/${album.slug.current}`}
                 className={`collection-card group block ${layout.colSpan} ${layout.offset}`}
               >
-                <div
-                  className={`relative overflow-hidden ${layout.aspect}`}
-                >
+                <div className={`relative overflow-hidden ${layout.aspect}`}>
                   {/* Image with clip-path reveal (z-0) */}
                   <div className="collection-image absolute inset-0">
                     {coverUrl ? (
