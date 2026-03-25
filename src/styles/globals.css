@@ -1,31 +1,40 @@
 @import "tailwindcss";
 
 /* ============================================
-   SILK ROAD STUDIO — Design Token System
+   SAFFRON STUDIOS — Design Token System
    ============================================ */
 
 @theme {
-  /* --- Colors: Silk Road Studio Palette --- */
-  --color-background: #121212;
-  --color-surface: #1a1a1a;
-  --color-surface-elevated: #222222;
-  --color-surface-lowest: #050505;
-  --color-primary: #c4973b;
-  --color-primary-muted: #a07830;
-  --color-accent: #c4973b;
-  --color-text: #f5f0eb;
-  --color-text-heading: #f5f0eb;
-  --color-muted: #8b7355;
-  --color-border: #2e2e2e;
-  --color-border-hover: #3a3a3a;
-  --color-overlay: rgba(18, 18, 18, 0.85);
-  --color-overlay-solid: #121212;
+  /* --- Colors: Darkroom Moss Palette --- */
+  --color-background: #242820;
+  --color-surface: #303528;
+  --color-surface-elevated: #3a4032;
+  --color-surface-lowest: #1c2018;
+  --color-surface-deep: #161a12;
+  --color-surface-abyss: #10130c;
+  --color-black: #000000;
+  --color-primary: #c97b2a;
+  --color-primary-muted: #a86520;
+  --color-accent: #c97b2a;
+  --color-text: #e8dfd4;
+  --color-text-heading: #e8dfd4;
+  --color-muted: #8a9878;
+  --color-border: #3a4034;
+  --color-border-hover: #4a5244;
+  --color-overlay: rgba(36, 40, 32, 0.85);
+  --color-overlay-solid: #242820;
+
+  /* --- Colors: Hero Grid Palette --- */
+  --color-hero-gold: #e09438;
+  --color-hero-divider: #505a48;
+  --color-hero-muted: #b4bca6;
+  --color-hero-dark: #283022;
 
   /* --- Typography: Font Families --- */
-  --font-display: "Berlingske Serif", "Georgia", serif;
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-headline: var(--font-display);
   --font-body: "Inter", "system-ui", "-apple-system", sans-serif;
   --font-label: "Inter", "system-ui", "-apple-system", sans-serif;
-
   /* --- Typography: Type Scale (Major Third — 1.25 ratio) --- */
   --text-xs: 0.75rem; /* 12px */
   --text-sm: 0.875rem; /* 14px */
@@ -59,7 +68,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
-  --tracking-hero: 0.12em; /* SILK ROAD STUDIO wordmark spacing (brand guidelines: 0.12em) */
+  --tracking-hero: 0.12em; /* SAFFRON STUDIOS wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
   --leading-none: 1;
@@ -112,35 +121,41 @@
   --section-padding-y-mobile: 4rem; /* 64px on mobile */
   --container-padding-x: 2rem; /* 32px horizontal page padding */
   --container-padding-x-mobile: 1rem; /* 16px on mobile */
-  --header-height: 3.5rem; /* 56px */
+  --header-height: 5rem; /* 80px — expanded at top */
+  --header-height-compact: 3.5rem; /* 56px — on scroll */
+  --header-py-expanded: 1.25rem; /* 20px */
+  --header-py-compact: 0.625rem; /* 10px */
 
   /* --- Material Design Color Tokens (About page) --- */
-  --color-surface-container-lowest: #0e0e0e;
-  --color-on-surface: #e5e2e1;
-  --color-on-surface-variant: #d1c5b4;
-  --color-outline-variant: #4e4639;
-  --color-on-primary: #412d00;
+  --color-surface-container-lowest: #1c2018;
+  --color-on-surface: #e8dfd4;
+  --color-on-surface-variant: #b4bca6;
+  --color-outline-variant: #404a36;
+  --color-on-primary: #242820;
 
   /* --- Header --- */
-  --color-header-bg: rgba(18, 18, 18, 0.85);
-  --color-header-bg-strong: rgba(18, 18, 18, 0.7);
-  --color-header-border: rgba(255, 255, 255, 0.12);
-  --color-header-border-soft: rgba(255, 255, 255, 0.05);
-  --color-header-link-active: #e5e2e1;
-  --color-header-link-muted: #d1c5b4;
-  --color-header-cta-bg: #e9c176;
-  --color-header-cta-bg-hover: #c5a059;
-  --color-header-cta-text: #412d00;
+  --color-header-bg: rgba(34, 38, 28, 0.85);
+  --color-header-bg-strong: rgba(34, 38, 28, 0.7);
+  --color-header-border: rgba(232, 223, 212, 0.12);
+  --color-header-border-soft: rgba(232, 223, 212, 0.05);
+  --color-header-link-active: #e8dfd4;
+  --color-header-link-muted: #b4bca6;
+  --color-header-cta-bg: #c97b2a;
+  --color-header-cta-bg-hover: #a86520;
+  --color-header-cta-text: #242820;
   --text-logo: 1.25rem;
   --text-nav: 0.8125rem;
   --tracking-logo-process: 0.2em;
   --tracking-nav-process: 0.06em;
 }
 
-/* Runtime alias: font-label uses the same loaded font as font-body */
+/* Runtime aliases — must be outside @theme so var() resolves at runtime,
+   not inlined at build time (Next.js registers fonts under generated names) */
 @layer base {
   html {
     --font-label: var(--font-body);
+    --font-headline-serif: var(--font-display);
+    --font-label-serif: var(--font-v2-display);
   }
 }
 
@@ -157,15 +172,10 @@
   }
 }
 
-/* --- About Page Scoped Theme --- */
-.about-theme {
-  --color-primary: #e9c176;
-}
-
 /* --- Film Reel Border Effect --- */
 .film-reel-border {
-  border-left: 1px solid rgba(78, 70, 57, 0.1);
-  border-right: 1px solid rgba(78, 70, 57, 0.1);
+  border-left: 1px solid color-mix(in srgb, var(--color-outline-variant) 10%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--color-outline-variant) 10%, transparent);
 }
 
 /* --- Scene Divider --- */
@@ -245,7 +255,7 @@ html.lenis body {
 
 /* --- Text Stroke Utility --- */
 .text-stroke {
-  -webkit-text-stroke: 2px rgba(245, 240, 235, 0.4);
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--color-text-heading) 40%, transparent);
   -webkit-text-fill-color: transparent;
 }
 
@@ -256,9 +266,21 @@ button:focus-visible {
   outline-offset: 4px;
 }
 
+/* --- Glass Card Overlay --- */
+.glass-card {
+  background: color-mix(in srgb, var(--color-background) 70%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
 /* --- Cinematic Vignette Overlay --- */
 .cinematic-vignette {
-  background: radial-gradient(circle, transparent 20%, rgba(18, 18, 18, 0.8) 100%);
+  background: radial-gradient(
+    circle,
+    transparent 20%,
+    color-mix(in srgb, var(--color-background) 80%, transparent) 100%
+  );
 }
 
 /* --- Timeline Vertical Rule --- */
@@ -287,5 +309,32 @@ button:focus-visible {
   .timeline-rule::before {
     left: 50%;
     transform: translateX(-50%);
+  }
+}
+
+/* --- Landing Page Utilities --- */
+.lens-flare {
+  background: radial-gradient(
+    circle at 70% 30%,
+    color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent) 30%,
+    transparent 60%
+  );
+}
+
+.text-shadow-subtle {
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
