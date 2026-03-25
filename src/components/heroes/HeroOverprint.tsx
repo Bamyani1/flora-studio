@@ -112,7 +112,7 @@ export function HeroOverprint() {
             whiteSpace: "nowrap",
           }}
         >
-          SILK ROAD
+          SAFFRON
         </span>
       </div>
 
@@ -179,9 +179,7 @@ export function HeroOverprint() {
       </div>
 
       {/* CTA at bottom */}
-      <div
-        className="hero-cta absolute bottom-0 left-0 w-full flex justify-center pb-12"
-      >
+      <div className="hero-cta absolute bottom-0 left-0 w-full flex justify-center pb-12">
         <button
           type="button"
           className="group inline-flex items-center gap-3 bg-transparent border-none cursor-pointer"

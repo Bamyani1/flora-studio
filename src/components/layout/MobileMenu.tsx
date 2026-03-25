@@ -146,7 +146,7 @@ export function MobileMenu() {
       {/* Backdrop */}
       <div
         ref={backdropRef}
-        className="absolute inset-0 bg-[rgba(18,18,18,0.96)] backdrop-blur-xl"
+        className="absolute inset-0 bg-background/95 backdrop-blur-xl"
         style={{ opacity: 0 }}
       />
 
@@ -158,7 +158,7 @@ export function MobileMenu() {
             onClick={handleLinkClick}
             className="font-display text-[length:var(--text-logo)] font-light uppercase tracking-[var(--tracking-logo-process)] text-[var(--color-header-link-active)]"
           >
-            Silk Road Studio
+            Saffron Studios
           </TransitionLink>
 
           <button

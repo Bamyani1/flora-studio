@@ -154,7 +154,7 @@ export function Hero({ imageUrl, blurDataURL }: HeroProps) {
           className="hero-description mt-8 max-w-md font-body text-base leading-relaxed text-muted md:text-lg"
         >
           Every frame, a story that travels. Cinematic photography
-          for light, shadow, and the human presence.
+          capturing light, shadow, and the moments that define you.
         </p>
 
         {/* CTA */}

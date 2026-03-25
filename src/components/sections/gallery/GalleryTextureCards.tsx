@@ -22,7 +22,9 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
 
       if (reduced) {
         gsap.set(el.querySelectorAll(".texture-card, .texture-img"), {
-          autoAlpha: 1, y: 0, scale: 1,
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
         });
         return;
       }
@@ -48,10 +50,18 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
             scrollTrigger: {
               trigger: card,
               ...textureCardReveal.image.scrollTrigger,
-              onEnter: () => { img.style.willChange = "transform"; },
-              onLeave: () => { img.style.willChange = "auto"; },
-              onEnterBack: () => { img.style.willChange = "transform"; },
-              onLeaveBack: () => { img.style.willChange = "auto"; },
+              onEnter: () => {
+                img.style.willChange = "transform";
+              },
+              onLeave: () => {
+                img.style.willChange = "auto";
+              },
+              onEnterBack: () => {
+                img.style.willChange = "transform";
+              },
+              onLeaveBack: () => {
+                img.style.willChange = "auto";
+              },
             },
           });
         }
@@ -92,7 +102,8 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
                 <div className="texture-img h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
               )}
             </div>
-            <div className="absolute inset-x-0 bottom-0 p-12 bg-gradient-to-t from-surface to-transparent transition-transform duration-500 group-hover/texture:translate-y-[-10px]">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-12 transition-transform duration-500 group-hover/texture:translate-y-[-10px]">
               <h5 className="font-display text-[length:var(--text-2xl)] text-text-heading mb-2 transition-colors duration-300 group-hover/texture:text-primary">
                 {album.title}
               </h5>

@@ -53,9 +53,27 @@ function toRoman(n: number): string {
 }
 
 const NUMBER_WORDS = [
-  "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
-  "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen",
-  "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty",
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen",
+  "Twenty",
 ];
 
 function imageCountLabel(count: number): string {
@@ -82,7 +100,12 @@ function buildFolioPages(images: ImageType[]): FolioPage[] {
   if (images.length <= 2) {
     // Small albums: all centered plates
     while (idx < images.length) {
-      pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+      pages.push({
+        layout: "centered-plate",
+        images: [images[idx]],
+        imageIndex: idx + 1,
+        pageNumber: pageNum++,
+      });
       idx++;
     }
   } else {
@@ -91,46 +114,136 @@ function buildFolioPages(images: ImageType[]): FolioPage[] {
 
       if (remaining >= 6) {
         // Full cycle: FB, CP, FB, DIP(2), DC
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "diptych", images: [images[idx], images[idx + 1]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "diptych",
+          images: [images[idx], images[idx + 1]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx += 2;
-        pages.push({ layout: "detail-crop", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "detail-crop",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
       } else if (remaining === 5) {
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "diptych", images: [images[idx], images[idx + 1]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "diptych",
+          images: [images[idx], images[idx + 1]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx += 2;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
       } else if (remaining === 4) {
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "diptych", images: [images[idx], images[idx + 1]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "diptych",
+          images: [images[idx], images[idx + 1]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx += 2;
       } else if (remaining === 3) {
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
       } else if (remaining === 2) {
-        pages.push({ layout: "full-bleed", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "full-bleed",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
       } else {
-        pages.push({ layout: "centered-plate", images: [images[idx]], imageIndex: idx + 1, pageNumber: pageNum++ });
+        pages.push({
+          layout: "centered-plate",
+          images: [images[idx]],
+          imageIndex: idx + 1,
+          pageNumber: pageNum++,
+        });
         idx++;
       }
     }
@@ -159,12 +272,9 @@ function TitleContent({ title, count }: { title: string; count: number }) {
       >
         {title}
       </h2>
-      <div
-        className="folio-reveal-label mt-10 h-px bg-primary"
-        style={{ width: 80 }}
-      />
+      <div className="folio-reveal-label mt-10 h-px bg-primary" style={{ width: 80 }} />
       <span className="folio-reveal-label mt-7 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        Silk Road Studio
+        Saffron Studios
       </span>
       <span className="folio-reveal-label mt-3 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
         {imageCountLabel(count)}
@@ -203,7 +313,10 @@ function FullBleedContent({
       {/* Bottom gradient */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--color-background) 80%, transparent) 0%, transparent 40%)" }}
+        style={{
+          background:
+            "linear-gradient(to top, color-mix(in srgb, var(--color-background) 80%, transparent) 0%, transparent 40%)",
+        }}
       />
       {/* Photo number */}
       <span className="folio-reveal-label absolute bottom-10 left-10 font-display text-sm font-light text-text opacity-50 md:bottom-10 md:left-10">
@@ -381,7 +494,7 @@ function ColophonContent() {
         Published by
       </span>
       <span className="folio-reveal-label mt-3 font-display text-2xl font-light italic text-text">
-        Silk Road Studio
+        Saffron Studios
       </span>
       <div className="folio-reveal-label mt-8 h-px w-[60px] bg-primary" />
       <span className="folio-reveal-label mt-5 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
@@ -449,7 +562,12 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
           tl.fromTo(labels, folioReveal.label.from, folioReveal.label.to, folioReveal.label.delay);
         }
         if (pageNums.length > 0) {
-          tl.fromTo(pageNums, folioReveal.pageNumber.from, folioReveal.pageNumber.to, folioReveal.pageNumber.delay);
+          tl.fromTo(
+            pageNums,
+            folioReveal.pageNumber.from,
+            folioReveal.pageNumber.to,
+            folioReveal.pageNumber.delay,
+          );
         }
 
         // Title clip-path reveal
@@ -491,11 +609,7 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-background"
-      aria-label="Photo gallery"
-    >
+    <section ref={sectionRef} className="relative bg-background" aria-label="Photo gallery">
       {/* Sticky overlays — persist while scrolling through gallery */}
       <div className="sticky top-0 z-50 h-0 overflow-visible pointer-events-none">
         <div className="h-screen w-full">
@@ -542,12 +656,13 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
           className="folio-page relative overflow-hidden"
           style={{
             minHeight: "100vh",
-            borderTop: i > 0 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)" : undefined,
+            borderTop:
+              i > 0
+                ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
+                : undefined,
           }}
         >
-          {page.layout === "title" && (
-            <TitleContent title={title} count={images.length} />
-          )}
+          {page.layout === "title" && <TitleContent title={title} count={images.length} />}
           {page.layout === "full-bleed" && (
             <FullBleedContent
               image={page.images[0]}

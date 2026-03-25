@@ -164,15 +164,12 @@ export function HeroProjection() {
       </div>
 
       {/* ---------- Layer 2 — Projector beam (clip-path animated) z-20 ---------- */}
-      <div
-        className="proj-beam absolute inset-0"
-        style={{ zIndex: 20 }}
-      >
+      <div className="proj-beam absolute inset-0" style={{ zIndex: 20 }}>
         {/* Hero image inside beam */}
         <div className="proj-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Silk Road Studio — cinematic portraiture"
+            alt="Saffron Studios — cinematic portraiture"
             fill
             sizes="100vw"
             priority
@@ -186,7 +183,8 @@ export function HeroProjection() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: "linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 5%, transparent) 0%, transparent 60%)",
+            background:
+              "linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 5%, transparent) 0%, transparent 60%)",
           }}
         />
       </div>
@@ -201,7 +199,8 @@ export function HeroProjection() {
           width: 80,
           height: 60,
           border: "1px solid var(--color-primary)",
-          boxShadow: "0 0 40px color-mix(in srgb, var(--color-primary) 20%, transparent), 0 0 80px color-mix(in srgb, var(--color-primary) 10%, transparent)",
+          boxShadow:
+            "0 0 40px color-mix(in srgb, var(--color-primary) 20%, transparent), 0 0 80px color-mix(in srgb, var(--color-primary) 10%, transparent)",
         }}
       >
         {/* Perforations (2 above, 2 below) */}
@@ -242,10 +241,7 @@ export function HeroProjection() {
       ))}
 
       {/* ---------- Layer 5 — Title text z-40 ---------- */}
-      <div
-        className="absolute text-right"
-        style={{ zIndex: 40, top: "15%", right: "8%" }}
-      >
+      <div className="absolute text-right" style={{ zIndex: 40, top: "15%", right: "8%" }}>
         <div className="proj-title-wrap">
           <p
             style={{
@@ -290,7 +286,7 @@ export function HeroProjection() {
             color: "var(--color-border)",
           }}
         >
-          16MM PROJECTION &middot; SILK ROAD STUDIO
+          16MM PROJECTION &middot; SAFFRON STUDIOS
         </span>
       </div>
     </section>

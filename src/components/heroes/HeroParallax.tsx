@@ -207,8 +207,7 @@ export function HeroParallax() {
           className="absolute inset-0 pointer-events-none"
           style={{
             opacity: 0.04,
-            background:
-              "repeating-conic-gradient(#fff 0 25%, transparent 0 50%) 0 0 / 3px 3px",
+            background: "repeating-conic-gradient(#fff 0 25%, transparent 0 50%) 0 0 / 3px 3px",
             zIndex: 10,
           }}
           aria-hidden="true"
@@ -231,15 +230,13 @@ export function HeroParallax() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Silk Road Studio — cinematic scene"
+              alt="Saffron Studios — cinematic scene"
               fill
               sizes="48vw"
               priority
               className="object-cover"
               style={{ filter: "saturate(0.85) contrast(1.1)" }}
-              {...(blurDataURL
-                ? { placeholder: "blur" as const, blurDataURL }
-                : {})}
+              {...(blurDataURL ? { placeholder: "blur" as const, blurDataURL } : {})}
             />
             {/* Vignette overlay */}
             <div
@@ -330,7 +327,7 @@ export function HeroParallax() {
               color: "var(--color-primary)",
             }}
           >
-            SILK ROAD STUDIO
+            SAFFRON STUDIOS
           </span>
         </div>
 

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { collectionCardReveal } from "@/lib/animations";
+import { collectionCardReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
@@ -50,6 +50,7 @@ export function CuratedCollections({ albums }: CuratedCollectionsProps) {
       gsap.set(labels, { autoAlpha: 0, y: collectionCardReveal.label.from.y });
 
       const tl = gsap.timeline({
+        ...withWillChange(),
         scrollTrigger: {
           trigger: gridRef.current,
           ...collectionCardReveal.scrollTrigger,
@@ -98,7 +99,7 @@ export function CuratedCollections({ albums }: CuratedCollectionsProps) {
                 Curated Collections
               </h2>
               <span className="hidden font-label text-xs uppercase tracking-wider text-muted md:block">
-                SELECTED WORKS // 2025
+                SELECTED WORKS // 2026
               </span>
             </div>
           </FadeIn>

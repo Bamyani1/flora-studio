@@ -21,14 +21,14 @@ export function QuoteBlock() {
         {/* Quote text */}
         <FadeIn delay={0.2}>
           <blockquote className="font-display text-4xl font-light uppercase leading-tight text-text-heading md:text-6xl">
-            Every frame, a story that travels
+            One frame. The whole story.
           </blockquote>
         </FadeIn>
 
         {/* Attribution */}
         <FadeIn delay={0.4}>
           <cite className="mt-8 block font-label text-sm not-italic tracking-wider text-muted">
-            — SILK ROAD STUDIO
+            — SAFFRON STUDIOS
           </cite>
         </FadeIn>
       </div>

@@ -4,7 +4,7 @@ import { useRef, useCallback } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { staggerGrid } from "@/lib/animations";
+import { staggerGrid, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
@@ -52,6 +52,7 @@ export function ProjectCard({
         staggerGrid.from,
         {
           ...staggerGrid.to,
+          ...withWillChange(),
           delay: index * 0.1,
           stagger: 0,
           scrollTrigger: {

@@ -134,7 +134,11 @@ export function HeroSplice() {
         tl.to(bottomPerfsTop, { ...seq.perforations.to, stagger: seq.perforations.stagger }, 1.2);
       }
       if (bottomPerfsBottom.length) {
-        tl.to(bottomPerfsBottom, { ...seq.perforations.to, stagger: seq.perforations.stagger }, 1.2);
+        tl.to(
+          bottomPerfsBottom,
+          { ...seq.perforations.to, stagger: seq.perforations.stagger },
+          1.2,
+        );
       }
 
       // t=1.5 — Gold gates clip-path reveal
@@ -224,7 +228,10 @@ export function HeroSplice() {
       >
         <div className="spl-strip-top-inner relative w-full h-full">
           {/* Top perforations */}
-          <div className="absolute top-[4px] left-0 w-full flex justify-around px-6" style={{ zIndex: 20 }}>
+          <div
+            className="absolute top-[4px] left-0 w-full flex justify-around px-6"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`tt-${i}`}
@@ -241,7 +248,10 @@ export function HeroSplice() {
           </div>
 
           {/* Bottom perforations */}
-          <div className="absolute bottom-[4px] left-0 w-full flex justify-around px-6" style={{ zIndex: 20 }}>
+          <div
+            className="absolute bottom-[4px] left-0 w-full flex justify-around px-6"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`tb-${i}`}
@@ -277,7 +287,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Silk Road Studio — cinematic portraiture"
+              alt="Saffron Studios — cinematic portraiture"
               fill
               sizes="100vw"
               priority
@@ -308,10 +318,7 @@ export function HeroSplice() {
       </div>
 
       {/* ========== GAP / SPLICE ZONE ========== */}
-      <div
-        className="relative w-full flex items-center justify-center"
-        style={{ height: "20vh" }}
-      >
+      <div className="relative w-full flex items-center justify-center" style={{ height: "20vh" }}>
         {/* Top gold rule */}
         <div
           className="spl-rule-top absolute top-0 left-0 w-full"
@@ -449,7 +456,10 @@ export function HeroSplice() {
       >
         <div className="spl-strip-bottom-inner relative w-full h-full">
           {/* Top perforations */}
-          <div className="absolute top-[4px] left-0 w-full flex justify-around px-6" style={{ zIndex: 20 }}>
+          <div
+            className="absolute top-[4px] left-0 w-full flex justify-around px-6"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`bt-${i}`}
@@ -466,7 +476,10 @@ export function HeroSplice() {
           </div>
 
           {/* Bottom perforations */}
-          <div className="absolute bottom-[4px] left-0 w-full flex justify-around px-6" style={{ zIndex: 20 }}>
+          <div
+            className="absolute bottom-[4px] left-0 w-full flex justify-around px-6"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`bb-${i}`}
@@ -502,7 +515,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Silk Road Studio — cinematic portraiture"
+              alt="Saffron Studios — cinematic portraiture"
               fill
               sizes="100vw"
               className="object-cover"
@@ -526,7 +539,7 @@ export function HeroSplice() {
               zIndex: 25,
             }}
           >
-            SILK ROAD
+            SAFFRON
           </span>
         </div>
       </div>
@@ -542,7 +555,7 @@ export function HeroSplice() {
             color: "var(--color-surface-elevated)",
           }}
         >
-          EDITED ON STEENBECK &middot; ROLL 014 &middot; SILK ROAD STUDIO
+          EDITED ON STEENBECK &middot; ROLL 014 &middot; SAFFRON STUDIOS
         </span>
         <button
           type="button"
@@ -556,7 +569,9 @@ export function HeroSplice() {
             color: "var(--color-primary)",
           }}
         >
-          <span className="transition-opacity duration-300 group-hover:opacity-70">WATCH THE CUT</span>
+          <span className="transition-opacity duration-300 group-hover:opacity-70">
+            WATCH THE CUT
+          </span>
           <span
             className="inline-block transition-all duration-300 group-hover:opacity-70 group-hover:translate-x-0.5"
             aria-hidden="true"

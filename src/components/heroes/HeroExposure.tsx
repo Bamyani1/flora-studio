@@ -179,7 +179,10 @@ export function HeroExposure() {
           }}
         >
           {/* ---- Top perforation row ---- */}
-          <div className="absolute top-[6px] left-0 w-full flex justify-around px-8" style={{ zIndex: 20 }}>
+          <div
+            className="absolute top-[6px] left-0 w-full flex justify-around px-8"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`top-${i}`}
@@ -196,7 +199,10 @@ export function HeroExposure() {
           </div>
 
           {/* ---- Bottom perforation row ---- */}
-          <div className="absolute bottom-[6px] left-0 w-full flex justify-around px-8" style={{ zIndex: 20 }}>
+          <div
+            className="absolute bottom-[6px] left-0 w-full flex justify-around px-8"
+            style={{ zIndex: 20 }}
+          >
             {perforations.map((_, i) => (
               <div
                 key={`bottom-${i}`}
@@ -232,7 +238,7 @@ export function HeroExposure() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Silk Road Studio — double exposure"
+              alt="Saffron Studios — double exposure"
               fill
               sizes="80vw"
               priority
@@ -261,7 +267,7 @@ export function HeroExposure() {
                 whiteSpace: "nowrap",
               }}
             >
-              SILK ROAD
+              SAFFRON
             </span>
           </div>
 
@@ -356,7 +362,7 @@ export function HeroExposure() {
           color: "var(--color-border)",
         }}
       >
-        SILK ROAD STUDIO
+        SAFFRON STUDIOS
       </span>
     </section>
   );

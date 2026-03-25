@@ -276,7 +276,7 @@ export function HeroContact() {
             lineHeight: 1.3,
           }}
         >
-          The eye
+          Every story starts
         </p>
         <div className="cs-gold-word">
           <p
@@ -288,8 +288,10 @@ export function HeroContact() {
               lineHeight: 1.2,
             }}
           >
-            selects{" "}
-            <span style={{ fontStyle: "italic", color: "var(--color-primary)" }}>truth.</span>
+            with a{" "}
+            <span style={{ fontStyle: "italic", color: "var(--color-primary)" }}>
+              conversation.
+            </span>
           </p>
         </div>
       </div>
@@ -319,7 +321,7 @@ export function HeroContact() {
           color: "var(--color-border)",
         }}
       >
-        SILK ROAD STUDIO &middot; PROCESSED C-41
+        SAFFRON STUDIOS &middot; PROCESSED C-41
       </span>
     </section>
   );

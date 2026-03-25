@@ -8,7 +8,6 @@ import { landingHeroGridSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { getLocalBlur } from "@/lib/image-manifest";
 
-
 const blurDataURL = getLocalBlur("/images/landing-hero.jpg");
 
 export function LandingHero() {
@@ -55,23 +54,17 @@ export function LandingHero() {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-screen overflow-hidden bg-background"
-    >
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-background">
       {/* Vertical divider */}
       <div
         ref={dividerRef}
-        className="fixed left-[44%] top-0 bottom-0 w-px bg-hero-divider z-[5]"
+        className="fixed left-[44%] top-0 bottom-0 w-px bg-hero-divider z-[5] hidden md:block"
       />
 
       <div className="relative min-h-screen grid grid-cols-1 md:grid-cols-[44%_56%]">
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
-          <div
-            ref={bgImageRef}
-            className="absolute inset-0"
-          >
+          <div ref={bgImageRef} className="absolute inset-0">
             <Image
               src="/images/landing-hero.jpg"
               alt="Cinematic atmospheric photograph"
@@ -87,47 +80,37 @@ export function LandingHero() {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(to right, transparent 60%, var(--color-background) 100%), linear-gradient(to bottom, var(--color-background) 0%, transparent 20%, transparent 80%, var(--color-background) 100%)",
-                opacity: 0.7,
+                  "linear-gradient(to right, transparent 60%, var(--color-background) 100%), linear-gradient(to bottom, var(--color-background) 0%, transparent 15%, transparent 60%, var(--color-background) 100%)",
               }}
             />
           </div>
-          <div className="relative flex items-end h-full px-6 md:px-12 pb-[30vh]">
-            <div
-              ref={dashRef}
-              className="w-20 h-px bg-hero-divider"
-            />
+          <div className="relative hidden md:flex items-end h-full px-6 md:px-12 pb-[30vh]">
+            <div ref={dashRef} className="w-20 h-px bg-hero-divider" />
           </div>
         </div>
 
         {/* Right column — content */}
-        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center px-6 md:px-12 py-12 md:py-0 md:pt-[8vh]">
+        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center items-center text-center md:items-start md:text-left px-6 md:px-12 py-12 md:py-0 md:pt-[8vh]">
           <span
             ref={eyebrowRef}
             className="font-label-serif text-[11px] tracking-[0.35em] uppercase mb-5 text-hero-gold"
           >
-            Cinematic Direction
+            Photography with intention
           </span>
 
           <h1
             ref={headlineRef}
             className="font-headline-serif font-bold leading-[0.95] tracking-tight mb-12"
           >
-            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-text">
-              Your Story
-            </span>
-            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-hero-gold">
-              Starts Here.
-            </span>
+            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-text">Every frame,</span>
+            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-hero-gold">earned.</span>
           </h1>
 
           <p
             ref={descRef}
-            className="font-headline-serif font-normal text-[clamp(1.1rem,1.8vw,1.4rem)] leading-relaxed max-w-[340px] mb-12 text-hero-muted"
+            className="font-headline-serif font-normal text-[clamp(1.1rem,1.8vw,1.4rem)] leading-relaxed max-w-[340px] mx-auto md:mx-0 mb-12 text-hero-muted"
           >
-            Vision, craft, and narrative &mdash;
-            <br />
-            three frames, one story.
+            Patience, craft, and an eye for what matters.
           </p>
 
           {/* Decorative curves */}
@@ -143,20 +126,19 @@ export function LandingHero() {
             >
               <path
                 d="M0 60 Q100 20 200 50 T400 30"
-                stroke="rgba(196,154,92,0.2)"
+                stroke="rgba(190,150,78,0.2)"
                 strokeWidth="1"
                 fill="none"
               />
               <path
                 d="M0 70 Q120 30 240 60 T400 40"
-                stroke="rgba(196,154,92,0.1)"
+                stroke="rgba(190,150,78,0.1)"
                 strokeWidth="1"
                 fill="none"
               />
             </svg>
           </div>
         </div>
-
       </div>
     </section>
   );

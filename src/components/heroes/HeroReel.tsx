@@ -164,10 +164,7 @@ export function HeroReel() {
       </div>
 
       {/* ---------- Title text (left side) ---------- */}
-      <div
-        className="absolute left-8 lg:left-16 top-1/2 -translate-y-1/2"
-        style={{ zIndex: 20 }}
-      >
+      <div className="absolute left-8 lg:left-16 top-1/2 -translate-y-1/2" style={{ zIndex: 20 }}>
         {/* "Every" */}
         <p
           className="reel-word-every"
@@ -316,7 +313,7 @@ export function HeroReel() {
           zIndex: 20,
         }}
       >
-        SILK ROAD STUDIO
+        SAFFRON STUDIOS
       </span>
 
       {/* ---------- Bottom-center label ---------- */}
