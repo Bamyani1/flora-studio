@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -21,18 +21,21 @@ type PageLayout =
   | "centered-plate"
   | "diptych"
   | "detail-crop"
+  | "video"
   | "colophon";
 
 interface FolioPage {
   layout: PageLayout;
   images: ImageType[];
-  imageIndex: number; // 1-based index of first image
-  pageNumber: number; // 1-based page number
+  imageIndex: number;
+  pageNumber: number;
+  videoUrl?: string;
 }
 
 interface FolioGalleryProps {
   images: ImageType[];
   title: string;
+  videoUrl?: string;
 }
 
 /* ──────────────────────────────────────────────
@@ -89,7 +92,7 @@ function padIndex(n: number): string {
    Layout algorithm — maps N images to page types
    ────────────────────────────────────────────── */
 
-function buildFolioPages(images: ImageType[]): FolioPage[] {
+function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
   const pages: FolioPage[] = [];
   let pageNum = 1;
   let idx = 0;
@@ -247,6 +250,17 @@ function buildFolioPages(images: ImageType[]): FolioPage[] {
         idx++;
       }
     }
+  }
+
+  // Video page (if provided) — inserted before colophon
+  if (videoUrl) {
+    pages.push({
+      layout: "video",
+      images: [],
+      imageIndex: 0,
+      pageNumber: pageNum++,
+      videoUrl,
+    });
   }
 
   // Colophon
@@ -486,6 +500,35 @@ function DetailCropContent({
   );
 }
 
+function VideoContent({ videoUrl, pageNumber }: { videoUrl: string; pageNumber: number }) {
+  return (
+    <div className="relative h-full min-h-screen">
+      <video
+        className="folio-reveal absolute inset-0 h-full w-full object-cover"
+        src={videoUrl}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      {/* Bottom gradient */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, color-mix(in srgb, var(--color-background) 80%, transparent) 0%, transparent 40%)",
+        }}
+      />
+      <span className="folio-reveal-label absolute bottom-10 left-10 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
+        [ FILM ]
+      </span>
+      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
+        {pageNumber}
+      </span>
+    </div>
+  );
+}
+
 function ColophonContent() {
   return (
     <div className="flex h-full min-h-screen flex-col items-center justify-center">
@@ -505,16 +548,70 @@ function ColophonContent() {
 }
 
 /* ──────────────────────────────────────────────
+   Virtualization hook
+   ────────────────────────────────────────────── */
+
+/**
+ * Tracks which page indices are near the viewport.
+ * Pages within rootMargin are "visible" and should mount their content.
+ */
+function useVisiblePages(
+  containerRef: React.RefObject<HTMLElement | null>,
+  pageCount: number,
+  eagerCount = 2,
+) {
+  const [visibleSet, setVisibleSet] = useState<Set<number>>(() => {
+    const initial = new Set<number>();
+    for (let i = 0; i < Math.min(eagerCount, pageCount); i++) initial.add(i);
+    return initial;
+  });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const pages = container.querySelectorAll<HTMLElement>(".folio-page");
+    if (!pages.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setVisibleSet((prev) => {
+          const next = new Set(prev);
+          entries.forEach((entry) => {
+            const idx = Number(entry.target.getAttribute("data-page-index"));
+            if (isNaN(idx)) return;
+            if (entry.isIntersecting) {
+              next.add(idx);
+            } else {
+              if (idx >= eagerCount) next.delete(idx);
+            }
+          });
+          return next;
+        });
+      },
+      { rootMargin: "100% 0px" },
+    );
+
+    pages.forEach((page) => observer.observe(page));
+
+    return () => observer.disconnect();
+  }, [containerRef, pageCount, eagerCount]);
+
+  return visibleSet;
+}
+
+/* ──────────────────────────────────────────────
    Main component
    ────────────────────────────────────────────── */
 
-export function FolioGallery({ images, title }: FolioGalleryProps) {
+export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
-  const pages = buildFolioPages(images);
+  const pages = buildFolioPages(images, videoUrl);
   const totalNumeral = toRoman(pages.length);
+  const visiblePages = useVisiblePages(sectionRef, pages.length, 2);
 
   useGSAP(
     () => {
@@ -653,6 +750,7 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
       {pages.map((page, i) => (
         <div
           key={i}
+          data-page-index={i}
           className="folio-page relative overflow-hidden"
           style={{
             minHeight: "100vh",
@@ -660,38 +758,48 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
               i > 0
                 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
                 : undefined,
+            ...(!visiblePages.has(i)
+              ? { contentVisibility: "auto", containIntrinsicSize: "auto 100vh" }
+              : {}),
           }}
         >
-          {page.layout === "title" && <TitleContent title={title} count={images.length} />}
-          {page.layout === "full-bleed" && (
-            <FullBleedContent
-              image={page.images[0]}
-              index={page.imageIndex}
-              pageNumber={page.pageNumber}
-            />
+          {visiblePages.has(i) && (
+            <>
+              {page.layout === "title" && <TitleContent title={title} count={images.length} />}
+              {page.layout === "full-bleed" && (
+                <FullBleedContent
+                  image={page.images[0]}
+                  index={page.imageIndex}
+                  pageNumber={page.pageNumber}
+                />
+              )}
+              {page.layout === "centered-plate" && (
+                <CenteredPlateContent
+                  image={page.images[0]}
+                  index={page.imageIndex}
+                  pageNumber={page.pageNumber}
+                />
+              )}
+              {page.layout === "diptych" && (
+                <DiptychContent
+                  images={page.images}
+                  startIndex={page.imageIndex}
+                  pageNumber={page.pageNumber}
+                />
+              )}
+              {page.layout === "detail-crop" && (
+                <DetailCropContent
+                  image={page.images[0]}
+                  index={page.imageIndex}
+                  pageNumber={page.pageNumber}
+                />
+              )}
+              {page.layout === "video" && page.videoUrl && (
+                <VideoContent videoUrl={page.videoUrl} pageNumber={page.pageNumber} />
+              )}
+              {page.layout === "colophon" && <ColophonContent />}
+            </>
           )}
-          {page.layout === "centered-plate" && (
-            <CenteredPlateContent
-              image={page.images[0]}
-              index={page.imageIndex}
-              pageNumber={page.pageNumber}
-            />
-          )}
-          {page.layout === "diptych" && (
-            <DiptychContent
-              images={page.images}
-              startIndex={page.imageIndex}
-              pageNumber={page.pageNumber}
-            />
-          )}
-          {page.layout === "detail-crop" && (
-            <DetailCropContent
-              image={page.images[0]}
-              index={page.imageIndex}
-              pageNumber={page.pageNumber}
-            />
-          )}
-          {page.layout === "colophon" && <ColophonContent />}
         </div>
       ))}
     </section>
