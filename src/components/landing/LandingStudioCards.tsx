@@ -80,7 +80,7 @@ export function LandingStudioCards({ featuredAlbum }: LandingStudioCardsProps) {
           <p className="font-label text-[10px] uppercase tracking-[0.3em] mb-6 opacity-70 group-hover:opacity-100 transition-opacity">
             Join the Studio
           </p>
-          <span className="font-headline text-4xl md:text-5xl border-b border-surface-deep/30 pb-2 group-hover:border-surface-deep transition-colors duration-500">
+          <span className="font-label text-xs uppercase tracking-[0.2em] font-semibold border border-surface-deep/35 px-8 py-3 group-hover:border-surface-deep transition-colors duration-500">
             Access
           </span>
         </TransitionLink>
