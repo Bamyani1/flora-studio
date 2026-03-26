@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { irisTransition } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useUIStore } from "@/stores/ui-store";
@@ -94,6 +94,11 @@ export function TransitionOverlay() {
     }
 
     scheduleFailsafe();
+
+    if (transitionPhase === "leaving") {
+      // Kill all ScrollTriggers to prevent orphans on the next page
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    }
 
     // Reduced motion: use simple opacity fade on fallback div
     if (reduced) {
