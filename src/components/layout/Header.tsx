@@ -38,48 +38,35 @@ export function Header() {
     const header = headerRef.current;
     if (!header) return;
 
+    const shadowEl = header.querySelector<HTMLElement>(".header-shadow-target");
+
     if (reducedMotion || isContactPage) {
-      gsap.set(header, {
-        ...headerShrink.to,
-        backdropFilter: `blur(${headerShrink.blur.to}px)`,
-        webkitBackdropFilter: `blur(${headerShrink.blur.to}px)`,
-      });
+      gsap.set(header, headerShrink.to);
+      if (shadowEl) gsap.set(shadowEl, headerShrink.shadow.to);
       return;
     }
-
-    const blur = { value: headerShrink.blur.from };
 
     const tl = gsap.timeline({
       scrollTrigger: {
         ...headerShrink.scrollTrigger,
-        onUpdate: () => {
-          header.style.backdropFilter = `blur(${blur.value}px)`;
-          (
-            header.style as CSSStyleDeclaration & { webkitBackdropFilter: string }
-          ).webkitBackdropFilter = `blur(${blur.value}px)`;
-        },
       },
     });
 
-    // Header: height, padding, background, border, shadow, borderRadius
+    // Header: height, padding, background, border, borderRadius
     tl.fromTo(header, headerShrink.from, { ...headerShrink.to, ease: "none" }, 0);
 
-    // Blur via proxy object
-    tl.fromTo(
-      blur,
-      { value: headerShrink.blur.from },
-      { value: headerShrink.blur.to, ease: "none" },
-      0,
-    );
+    // Shadow overlay: opacity 0 → 1
+    if (shadowEl) {
+      tl.fromTo(shadowEl, headerShrink.shadow.from, { ...headerShrink.shadow.to, ease: "none" }, 0);
+    }
 
-    // Desktop-only: logo, width, opacity, logo morph
+    // Desktop-only: logo width, opacity, logo morph
     const logo = logoRef.current;
     const icon = iconRef.current?.root;
     ScrollTrigger.matchMedia({
       "(min-width: 768px)": () => {
         if (logo) {
           tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
-          // Crossfade: text fades out
           tl.fromTo(
             logo,
             headerShrink.logoMorph.text.from,
@@ -88,7 +75,6 @@ export function Header() {
           );
         }
         if (icon) {
-          // Crossfade: icon fades in
           tl.fromTo(
             icon,
             headerShrink.logoMorph.icon.from,
@@ -113,7 +99,7 @@ export function Header() {
     <div className="fixed top-0 w-full z-50 flex justify-center pointer-events-none">
       <header
         ref={headerRef}
-        className="w-full border-b px-6 md:px-12 flex items-center justify-between pointer-events-auto"
+        className="relative w-full border-b px-6 md:px-12 flex items-center justify-between pointer-events-auto"
         style={{
           visibility: isHomePage ? "hidden" : undefined,
           height: "5rem",
@@ -124,6 +110,13 @@ export function Header() {
           borderRadius: "0px",
         }}
       >
+        {/* Shadow layer — opacity animated instead of per-frame boxShadow */}
+        <div
+          className="header-shadow-target absolute inset-0 rounded-[inherit] pointer-events-none"
+          style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.3)", opacity: 0 }}
+          aria-hidden="true"
+        />
+
         {/* Left nav — desktop only */}
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-8 w-1/3">
           {HEADER_NAV_ITEMS.map((item) => (
