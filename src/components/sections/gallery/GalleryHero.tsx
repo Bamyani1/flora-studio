@@ -77,20 +77,20 @@ export function GalleryHero({
         0,
       );
 
-      // Title emerges between layers (starts at 1s)
-      tl.fromTo(
-        el.querySelector(".layered-hero-title"),
-        layeredHeroReveal.title.from,
-        { ...layeredHeroReveal.title.to },
-        1.0,
-      );
-
-      // Subject fades in on top (starts at 1.5s)
+      // Subject appears early so title emerges "from behind" it
       tl.fromTo(
         el.querySelector(".layered-hero-subject"),
         layeredHeroReveal.subject.from,
         { ...layeredHeroReveal.subject.to },
-        1.5,
+        0.3,
+      );
+
+      // Title emerges between layers (after subject is mostly visible)
+      tl.fromTo(
+        el.querySelector(".layered-hero-title"),
+        layeredHeroReveal.title.from,
+        { ...layeredHeroReveal.title.to },
+        1.2,
       );
 
       // Bottom UI elements
@@ -276,14 +276,16 @@ export function GalleryHero({
 
         {!smoothMode && <div className="grain-medium absolute inset-0 z-[3]" aria-hidden="true" />}
 
-        {/* Layer 2: Title text (middle depth) */}
-        <div className="layered-hero-title absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
-          <h2
-            className="font-display text-[15vw] md:text-[12vw] text-text-heading leading-[0.85] tracking-tight text-center select-none"
-            style={{ textShadow: "0 4px 60px rgba(0,0,0,0.4)" }}
-          >
-            {album.title}
-          </h2>
+        {/* Layer 2: Title text (middle depth) — positioned behind subject's torso */}
+        <div className="layered-hero-title absolute inset-0 z-[5] flex items-end justify-center pb-[18vh] md:pb-[22vh] pointer-events-none">
+          <TransitionLink href={`/work/${album.slug.current}`} className="pointer-events-auto">
+            <h2
+              className="font-display text-[15vw] md:text-[12vw] text-text-heading leading-[0.85] tracking-tight text-center select-none"
+              style={{ textShadow: "0 4px 60px rgba(0,0,0,0.4)" }}
+            >
+              {album.title}
+            </h2>
+          </TransitionLink>
         </div>
 
         {/* Layer 3: Subject cutout (closest) */}
@@ -312,14 +314,6 @@ export function GalleryHero({
           <span className="gallery-hero-label font-label text-xs tracking-[0.3em] text-primary uppercase">
             Chapter {ROMAN[index - 1] ?? index}
           </span>
-
-          <TransitionLink href={`/work/${album.slug.current}`} className="block mt-4">
-            <h2 className="font-display text-[length:var(--text-5xl)] md:text-[length:var(--text-7xl)] text-text-heading leading-none -ml-1">
-              <div className="overflow-hidden">
-                <div className="gallery-hero-title-line">{album.title}</div>
-              </div>
-            </h2>
-          </TransitionLink>
 
           <p className="gallery-hero-desc max-w-md font-body text-[var(--color-on-surface-variant)]/70 text-sm leading-relaxed mt-4">
             {categoryLabel} {album.year ? `— ${album.year}` : ""}{" "}
