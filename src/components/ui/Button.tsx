@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentPropsWithoutRef, type ElementType, type ReactNode } from "react";
+import { type ComponentPropsWithRef, type ElementType, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
@@ -30,7 +30,7 @@ type ButtonOwnProps<T extends ElementType = "button"> = {
 };
 
 type ButtonProps<T extends ElementType = "button"> = ButtonOwnProps<T> &
-  Omit<ComponentPropsWithoutRef<T>, keyof ButtonOwnProps<T>>;
+  Omit<ComponentPropsWithRef<T>, keyof ButtonOwnProps<T>>;
 
 export function Button<T extends ElementType = "button">({
   as,
