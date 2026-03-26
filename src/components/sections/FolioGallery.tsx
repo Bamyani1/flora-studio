@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -548,59 +548,6 @@ function ColophonContent() {
 }
 
 /* ──────────────────────────────────────────────
-   Virtualization hook
-   ────────────────────────────────────────────── */
-
-/**
- * Tracks which page indices are near the viewport.
- * Pages within rootMargin are "visible" and should mount their content.
- */
-function useVisiblePages(
-  containerRef: React.RefObject<HTMLElement | null>,
-  pageCount: number,
-  eagerCount = 2,
-) {
-  const [visibleSet, setVisibleSet] = useState<Set<number>>(() => {
-    const initial = new Set<number>();
-    for (let i = 0; i < Math.min(eagerCount, pageCount); i++) initial.add(i);
-    return initial;
-  });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const pages = container.querySelectorAll<HTMLElement>(".folio-page");
-    if (!pages.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        setVisibleSet((prev) => {
-          const next = new Set(prev);
-          entries.forEach((entry) => {
-            const idx = Number(entry.target.getAttribute("data-page-index"));
-            if (isNaN(idx)) return;
-            if (entry.isIntersecting) {
-              next.add(idx);
-            } else {
-              if (idx >= eagerCount) next.delete(idx);
-            }
-          });
-          return next;
-        });
-      },
-      { rootMargin: "100% 0px" },
-    );
-
-    pages.forEach((page) => observer.observe(page));
-
-    return () => observer.disconnect();
-  }, [containerRef, pageCount, eagerCount]);
-
-  return visibleSet;
-}
-
-/* ──────────────────────────────────────────────
    Main component
    ────────────────────────────────────────────── */
 
@@ -611,7 +558,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
 
   const pages = buildFolioPages(images, videoUrl);
   const totalNumeral = toRoman(pages.length);
-  const visiblePages = useVisiblePages(sectionRef, pages.length, 2);
 
   useGSAP(
     () => {
@@ -750,7 +696,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
       {pages.map((page, i) => (
         <div
           key={i}
-          data-page-index={i}
           className="folio-page relative overflow-hidden"
           style={{
             minHeight: "100vh",
@@ -758,48 +703,42 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
               i > 0
                 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
                 : undefined,
-            ...(!visiblePages.has(i)
-              ? { contentVisibility: "auto", containIntrinsicSize: "auto 100vh" }
-              : {}),
+            ...(i > 1 ? { contentVisibility: "auto", containIntrinsicSize: "auto 100vh" } : {}),
           }}
         >
-          {visiblePages.has(i) && (
-            <>
-              {page.layout === "title" && <TitleContent title={title} count={images.length} />}
-              {page.layout === "full-bleed" && (
-                <FullBleedContent
-                  image={page.images[0]}
-                  index={page.imageIndex}
-                  pageNumber={page.pageNumber}
-                />
-              )}
-              {page.layout === "centered-plate" && (
-                <CenteredPlateContent
-                  image={page.images[0]}
-                  index={page.imageIndex}
-                  pageNumber={page.pageNumber}
-                />
-              )}
-              {page.layout === "diptych" && (
-                <DiptychContent
-                  images={page.images}
-                  startIndex={page.imageIndex}
-                  pageNumber={page.pageNumber}
-                />
-              )}
-              {page.layout === "detail-crop" && (
-                <DetailCropContent
-                  image={page.images[0]}
-                  index={page.imageIndex}
-                  pageNumber={page.pageNumber}
-                />
-              )}
-              {page.layout === "video" && page.videoUrl && (
-                <VideoContent videoUrl={page.videoUrl} pageNumber={page.pageNumber} />
-              )}
-              {page.layout === "colophon" && <ColophonContent />}
-            </>
+          {page.layout === "title" && <TitleContent title={title} count={images.length} />}
+          {page.layout === "full-bleed" && (
+            <FullBleedContent
+              image={page.images[0]}
+              index={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
           )}
+          {page.layout === "centered-plate" && (
+            <CenteredPlateContent
+              image={page.images[0]}
+              index={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
+          )}
+          {page.layout === "diptych" && (
+            <DiptychContent
+              images={page.images}
+              startIndex={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
+          )}
+          {page.layout === "detail-crop" && (
+            <DetailCropContent
+              image={page.images[0]}
+              index={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
+          )}
+          {page.layout === "video" && page.videoUrl && (
+            <VideoContent videoUrl={page.videoUrl} pageNumber={page.pageNumber} />
+          )}
+          {page.layout === "colophon" && <ColophonContent />}
         </div>
       ))}
     </section>
