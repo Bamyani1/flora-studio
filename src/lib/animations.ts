@@ -321,9 +321,20 @@ export const folioReveal = {
 // cinematicHeroReveal — Gallery hero: blur/brightness/scale entrance + parallax
 // --------------------------------------------------
 export const cinematicHeroReveal = {
+  /** Image only uses scale — filter work moves to overlay layers */
   image: {
-    from: { scale: 1.15, filter: "brightness(0.1) blur(20px)" },
-    to: { scale: 1, filter: "brightness(1) blur(0px)", duration: 3.5, ease: "power3.inOut" },
+    from: { scale: 1.15 },
+    to: { scale: 1, duration: 3.5, ease: "power3.inOut" },
+  },
+  /** Dark overlay: simulates brightness(0.1) → brightness(1) */
+  darkOverlay: {
+    from: { opacity: 0.9 },
+    to: { opacity: 0, duration: 3.5, ease: "power3.inOut" },
+  },
+  /** Blur overlay: static backdrop-filter, opacity fades out */
+  blurOverlay: {
+    from: { opacity: 1 },
+    to: { opacity: 0, duration: 3.5, ease: "power3.inOut" },
   },
   nav: {
     from: { y: -20, autoAlpha: 0 },

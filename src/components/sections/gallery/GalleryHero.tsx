@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -13,11 +13,25 @@ import type { GallerySectionProps } from "./types";
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
-export function GalleryHero({ album, index, priority = false }: GallerySectionProps) {
+export function GalleryHero({
+  album,
+  index,
+  priority = false,
+  performanceMode = "default",
+  deferOffscreen = false,
+}: GallerySectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const coverUrl = resolveImageUrl(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
+  const smoothMode = performanceMode === "smooth";
+  const sectionStyle: CSSProperties | undefined =
+    smoothMode && deferOffscreen
+      ? { contentVisibility: "auto", containIntrinsicSize: "100vh", contain: "layout paint" }
+      : undefined;
+  const imageShellStyle: CSSProperties | undefined = smoothMode
+    ? { contain: "layout paint" }
+    : undefined;
 
   useGSAP(
     () => {
@@ -29,22 +43,43 @@ export function GalleryHero({ album, index, priority = false }: GallerySectionPr
           el.querySelectorAll(
             ".gallery-hero-img, .gallery-hero-label, .gallery-hero-title-line, .gallery-hero-desc, .gallery-hero-scroll",
           ),
-          { autoAlpha: 1, y: 0, scale: 1, filter: "none", rotationX: 0 },
+          { autoAlpha: 1, y: 0, scale: 1, rotationX: 0 },
         );
+        // Hide overlays immediately in reduced motion
+        gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { opacity: 0 });
+        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { opacity: 0 });
         return;
       }
 
       const tl = gsap.timeline({ ...withWillChange() });
 
+      // Image scale only (no filter)
       tl.fromTo(el.querySelector(".gallery-hero-img"), cinematicHeroReveal.image.from, {
         ...cinematicHeroReveal.image.to,
-      })
-        .fromTo(
-          el.querySelector(".gallery-hero-label"),
-          cinematicHeroReveal.chapterLabel.from,
-          { ...cinematicHeroReveal.chapterLabel.to },
-          "-=1.5",
-        )
+      });
+
+      // Dark overlay fades out (simulates brightness reveal)
+      tl.fromTo(
+        el.querySelector(".gallery-hero-dark-overlay"),
+        cinematicHeroReveal.darkOverlay.from,
+        { ...cinematicHeroReveal.darkOverlay.to },
+        0,
+      );
+
+      // Blur overlay fades out (simulates blur dissolve)
+      tl.fromTo(
+        el.querySelector(".gallery-hero-blur-overlay"),
+        cinematicHeroReveal.blurOverlay.from,
+        { ...cinematicHeroReveal.blurOverlay.to },
+        0,
+      );
+
+      tl.fromTo(
+        el.querySelector(".gallery-hero-label"),
+        cinematicHeroReveal.chapterLabel.from,
+        { ...cinematicHeroReveal.chapterLabel.to },
+        "-=1.5",
+      )
         .fromTo(
           el.querySelectorAll(".gallery-hero-title-line"),
           cinematicHeroReveal.titleLine.from,
@@ -66,7 +101,7 @@ export function GalleryHero({ album, index, priority = false }: GallerySectionPr
 
       // Parallax on scroll
       const img = el.querySelector<HTMLElement>(".gallery-hero-img");
-      if (img) {
+      if (!smoothMode && img) {
         gsap.to(img, {
           ...cinematicHeroReveal.parallax.to,
           scrollTrigger: {
@@ -88,16 +123,17 @@ export function GalleryHero({ album, index, priority = false }: GallerySectionPr
         });
       }
     },
-    { scope: sectionRef, dependencies: [reduced] },
+    { scope: sectionRef, dependencies: [reduced, smoothMode] },
   );
 
   return (
     <section
       ref={sectionRef}
       className="relative h-dvh w-full overflow-hidden"
+      style={sectionStyle}
       aria-label={`${album.title} — featured album`}
     >
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
       {/* Background gradient */}
       <div
         className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[var(--color-surface-lowest)]/80"
@@ -105,7 +141,7 @@ export function GalleryHero({ album, index, priority = false }: GallerySectionPr
       />
 
       {/* Hero image */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden" style={imageShellStyle}>
         {coverUrl ? (
           <Image
             alt={album.title}
@@ -120,6 +156,13 @@ export function GalleryHero({ album, index, priority = false }: GallerySectionPr
         ) : (
           <div className="gallery-hero-img h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
         )}
+        {/* Cinematic overlays — replace per-frame filter animation */}
+        <div
+          className="gallery-hero-blur-overlay absolute inset-0"
+          style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
+          aria-hidden="true"
+        />
+        <div className="gallery-hero-dark-overlay absolute inset-0 bg-black" aria-hidden="true" />
       </div>
 
       {/* Content */}
