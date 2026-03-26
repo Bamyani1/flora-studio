@@ -24,10 +24,16 @@ export function useMagnetic(
     const el = ref.current;
     if (!el || !enabled) return;
 
+    let cachedRect: DOMRect | null = null;
+
+    const handleMouseEnter = () => {
+      cachedRect = el.getBoundingClientRect();
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      if (!cachedRect) cachedRect = el.getBoundingClientRect();
+      const centerX = cachedRect.left + cachedRect.width / 2;
+      const centerY = cachedRect.top + cachedRect.height / 2;
       const dx = e.clientX - centerX;
       const dy = e.clientY - centerY;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -44,6 +50,7 @@ export function useMagnetic(
     };
 
     const handleMouseLeave = () => {
+      cachedRect = null;
       gsap.to(el, {
         x: 0,
         y: 0,
@@ -53,12 +60,20 @@ export function useMagnetic(
       });
     };
 
+    const handleResize = () => {
+      cachedRect = null;
+    };
+
+    el.addEventListener("mouseenter", handleMouseEnter);
     el.addEventListener("mousemove", handleMouseMove);
     el.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("resize", handleResize);
 
     return () => {
+      el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("resize", handleResize);
       gsap.killTweensOf(el);
     };
   }, [ref, radius, strength, enabled]);

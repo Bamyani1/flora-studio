@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 
-export function CustomCursor() {
+interface CustomCursorProps {
+  disabled?: boolean;
+}
+
+export function CustomCursor({ disabled = false }: CustomCursorProps) {
   const [enabled, setEnabled] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
   const bladesRef = useRef<SVGGElement>(null);
@@ -14,13 +18,15 @@ export function CustomCursor() {
   }>({ x: null, y: null, rot: null });
   const prevMouse = useRef({ x: 0, y: 0 });
   const angle = useRef(0);
+  const latestMouse = useRef({ x: 0, y: 0 });
+  const frameId = useRef<number | null>(null);
 
   useEffect(() => {
     const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncEnabled = () => {
-      setEnabled(pointerQuery.matches && !motionQuery.matches);
+      setEnabled(!disabled && pointerQuery.matches && !motionQuery.matches);
     };
 
     syncEnabled();
@@ -31,7 +37,7 @@ export function CustomCursor() {
       pointerQuery.removeEventListener("change", syncEnabled);
       motionQuery.removeEventListener("change", syncEnabled);
     };
-  }, []);
+  }, [disabled]);
 
   useEffect(() => {
     if (!enabled || !cursorRef.current || !bladesRef.current) return;
@@ -51,19 +57,31 @@ export function CustomCursor() {
     style.textContent = "* { cursor: none !important; }";
     document.head.appendChild(style);
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const processMouseMove = () => {
       const { x, y, rot } = quickToRefs.current;
-      x?.(event.clientX - 20);
-      y?.(event.clientY - 20);
+      const mx = latestMouse.current.x;
+      const my = latestMouse.current.y;
 
-      const dx = event.clientX - prevMouse.current.x;
-      const dy = event.clientY - prevMouse.current.y;
+      x?.(mx - 20);
+      y?.(my - 20);
+
+      const dx = mx - prevMouse.current.x;
+      const dy = my - prevMouse.current.y;
       const dist = Math.hypot(dx, dy);
       angle.current += dist * 0.5;
       rot?.(angle.current);
 
-      prevMouse.current.x = event.clientX;
-      prevMouse.current.y = event.clientY;
+      prevMouse.current.x = mx;
+      prevMouse.current.y = my;
+      frameId.current = null;
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      latestMouse.current.x = event.clientX;
+      latestMouse.current.y = event.clientY;
+      if (frameId.current === null) {
+        frameId.current = requestAnimationFrame(processMouseMove);
+      }
     };
 
     const handleMouseOver = (event: MouseEvent) => {
@@ -85,6 +103,7 @@ export function CustomCursor() {
     window.addEventListener("mouseover", handleMouseOver);
 
     return () => {
+      if (frameId.current !== null) cancelAnimationFrame(frameId.current);
       style.remove();
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
