@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
@@ -11,9 +11,21 @@ import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { GalleryDualSectionProps } from "./types";
 
-export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
+export function GalleryTextureCards({
+  albums,
+  performanceMode = "default",
+  deferOffscreen = false,
+}: GalleryDualSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
+  const smoothMode = performanceMode === "smooth";
+  const sectionStyle: CSSProperties | undefined = deferOffscreen
+    ? {
+        contentVisibility: "auto",
+        containIntrinsicSize: "auto 100vh",
+        contain: "layout style paint",
+      }
+    : undefined;
 
   useGSAP(
     () => {
@@ -44,7 +56,7 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
 
         // Inner image parallax
         const img = card.querySelector<HTMLElement>(".texture-img");
-        if (img) {
+        if (!smoothMode && img) {
           gsap.fromTo(img, textureCardReveal.image.from, {
             ...textureCardReveal.image.to,
             scrollTrigger: {
@@ -67,16 +79,17 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
         }
       });
     },
-    { scope: sectionRef, dependencies: [reduced] },
+    { scope: sectionRef, dependencies: [reduced, smoothMode] },
   );
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen w-full grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--color-outline-variant)]/10"
+      style={sectionStyle}
       aria-label="Album pair"
     >
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
       {albums.map((album) => {
         const coverUrl = resolveImageUrl(album.coverImage);
         const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
@@ -86,6 +99,7 @@ export function GalleryTextureCards({ albums }: GalleryDualSectionProps) {
             key={album._id}
             href={`/work/${album.slug.current}`}
             className="texture-card relative bg-surface overflow-hidden min-h-[50vh] md:min-h-screen group/texture cursor-pointer block"
+            style={smoothMode ? { contain: "layout paint" } : undefined}
           >
             <div className="absolute inset-0 transition-transform duration-[2s] ease-out group-hover/texture:scale-105">
               {coverUrl ? (

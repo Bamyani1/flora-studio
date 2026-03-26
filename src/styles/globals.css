@@ -222,6 +222,11 @@
   opacity: var(--grain-opacity-medium);
 }
 
+/* Gallery section containment — isolates repaints between sections */
+.gallery-section-contained {
+  contain: layout style paint;
+}
+
 /* --- Reduced Motion Preferences --- */
 @media (prefers-reduced-motion: reduce) {
   *,
