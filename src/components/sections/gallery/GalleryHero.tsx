@@ -77,20 +77,20 @@ export function GalleryHero({
         0,
       );
 
-      // Subject appears early so title emerges "from behind" it
+      // Subject appears immediately — must be fully opaque before title shows
       tl.fromTo(
         el.querySelector(".layered-hero-subject"),
         layeredHeroReveal.subject.from,
         { ...layeredHeroReveal.subject.to },
-        0.3,
+        0,
       );
 
-      // Title emerges between layers (after subject is mostly visible)
+      // Title only starts after subject is opaque (subject is 1.5s, start title at 1.8s)
       tl.fromTo(
         el.querySelector(".layered-hero-title"),
         layeredHeroReveal.title.from,
         { ...layeredHeroReveal.title.to },
-        1.2,
+        1.8,
       );
 
       // Bottom UI elements

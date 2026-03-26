@@ -369,15 +369,15 @@ export const cinematicHeroReveal = {
 export const layeredHeroReveal = {
   /** Background layer (farthest) — same as cinematicHeroReveal */
   background: cinematicHeroReveal.image,
-  /** Title text appears between bg and subject */
+  /** Title text appears between bg and subject — only after subject is opaque */
   title: {
-    from: { y: 40, autoAlpha: 0, scale: 0.97 },
-    to: { y: 0, autoAlpha: 1, scale: 1, duration: 2, ease: "power3.out" },
+    from: { y: 30, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 2, ease: "power2.out" },
   },
-  /** Subject layer (closest) fades in over the title */
+  /** Subject layer (closest) — appears fast so it's opaque before title shows */
   subject: {
-    from: { autoAlpha: 0, scale: 1.03 },
-    to: { autoAlpha: 1, scale: 1, duration: 2.5, ease: "power3.out" },
+    from: { autoAlpha: 0, scale: 1.02 },
+    to: { autoAlpha: 1, scale: 1, duration: 1.5, ease: "power2.out" },
   },
   /** Differential parallax rates for depth illusion */
   parallax: {
