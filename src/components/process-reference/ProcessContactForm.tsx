@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { submitContactForm } from "@/app/contact/action";
+import { Button } from "@/components/ui/Button";
 import { type ContactFormData, contactFormSchema } from "@/lib/validations";
 import { ProcessMagnetic } from "./ProcessMagnetic";
 
@@ -10,6 +11,7 @@ const photographyOptions = [
   { value: "milestones", label: "Milestones" },
   { value: "gatherings", label: "Gatherings" },
   { value: "motion", label: "Motion" },
+  { value: "landscape", label: "Landscape" },
   { value: "portraits", label: "Portraits" },
   { value: "professional", label: "Professional" },
 ] as const;
@@ -91,14 +93,16 @@ export function ProcessContactForm() {
         <p className="mt-4 font-body leading-relaxed text-neutral-400">
           Thanks for reaching out &mdash; we&apos;ll get back to you within 24 hours.
         </p>
-        <button
+        <Button
           ref={resetRef}
           type="button"
+          variant="outline-accent"
+          size="sm"
+          className="mt-8 border-[var(--process-primary)] text-[var(--process-primary)] hover:bg-[var(--process-primary)]/10"
           onClick={() => setSubmitted(false)}
-          className="mt-8 font-label text-xs uppercase tracking-[0.2em] text-[var(--process-primary)] transition-colors hover:text-[var(--process-on-surface)]"
         >
           Send another message
-        </button>
+        </Button>
       </div>
     );
   }

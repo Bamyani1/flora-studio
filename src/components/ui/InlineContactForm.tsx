@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import { Button } from "@/components/ui/Button";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { submitContactForm } from "@/app/contact/action";
 import { FadeIn } from "@/components/animations/FadeIn";
@@ -11,6 +12,7 @@ const photographyOptions = [
   { value: "milestones", label: "Milestones" },
   { value: "gatherings", label: "Gatherings" },
   { value: "motion", label: "Motion" },
+  { value: "landscape", label: "Landscape" },
   { value: "portraits", label: "Portraits" },
   { value: "professional", label: "Professional" },
 ];
@@ -94,13 +96,15 @@ export function InlineContactForm() {
             Thank you
           </h2>
           <p className="mt-4 text-lg text-muted">We&apos;ll get back to you within 24 hours.</p>
-          <button
+          <Button
             type="button"
+            variant="outline-accent"
+            size="sm"
+            className="mt-8"
             onClick={() => setSubmitted(false)}
-            className="mt-8 font-label text-sm uppercase tracking-wider text-primary transition-colors hover:text-text"
           >
             Send another message
-          </button>
+          </Button>
         </div>
       </FadeIn>
     );

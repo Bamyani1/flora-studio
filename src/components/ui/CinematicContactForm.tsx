@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { Button } from "@/components/ui/Button";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { submitContactForm } from "@/app/contact/action";
 import { contactFormReveal } from "@/lib/animations";
@@ -12,6 +13,7 @@ const photographyOptions = [
   { value: "milestones", label: "Milestones" },
   { value: "gatherings", label: "Gatherings" },
   { value: "motion", label: "Motion" },
+  { value: "landscape", label: "Landscape" },
   { value: "portraits", label: "Portraits" },
   { value: "professional", label: "Professional" },
 ];
@@ -142,13 +144,15 @@ export function CinematicContactForm() {
         <p className="mt-4 text-sm uppercase tracking-widest text-muted">
           We&apos;ll get back to you within 24 hours.
         </p>
-        <button
+        <Button
           type="button"
+          variant="outline-accent"
+          size="sm"
+          className="mt-8"
           onClick={() => setSubmitted(false)}
-          className="mt-8 font-label text-xs uppercase tracking-wider text-primary transition-colors hover:text-text"
         >
           Send another message
-        </button>
+        </Button>
       </div>
     );
   }
