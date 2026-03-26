@@ -363,6 +363,40 @@ export const cinematicHeroReveal = {
 };
 
 // --------------------------------------------------
+// layeredHeroReveal — Text-behind-subject editorial effect
+// Three depth layers with differential parallax
+// --------------------------------------------------
+export const layeredHeroReveal = {
+  /** Background layer (farthest) — same as cinematicHeroReveal */
+  background: cinematicHeroReveal.image,
+  /** Title text appears between bg and subject */
+  title: {
+    from: { y: 40, autoAlpha: 0, scale: 0.97 },
+    to: { y: 0, autoAlpha: 1, scale: 1, duration: 2, ease: "power3.out" },
+  },
+  /** Subject layer (closest) fades in over the title */
+  subject: {
+    from: { autoAlpha: 0, scale: 1.03 },
+    to: { autoAlpha: 1, scale: 1, duration: 2.5, ease: "power3.out" },
+  },
+  /** Differential parallax rates for depth illusion */
+  parallax: {
+    background: {
+      to: { yPercent: 20, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
+    title: {
+      to: { yPercent: 12, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
+    subject: {
+      to: { yPercent: 5, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
+  },
+};
+
+// --------------------------------------------------
 // bentoSplitReveal — Gallery bento: grayscale→color crossfade + parallax + text
 // Two-layer approach: static grayscale base + GPU-compositable opacity reveal.
 // --------------------------------------------------
