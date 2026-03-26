@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { bentoSplitReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, getImageDimensions } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { GallerySectionProps } from "./types";
@@ -26,6 +26,7 @@ export function GalleryBentoSplit({
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const coverUrl = resolveImageUrl(album.coverImage);
+  const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const description = CATEGORY_META[album.category]?.description ?? "";
   const smoothMode = performanceMode === "smooth";
@@ -108,7 +109,8 @@ export function GalleryBentoSplit({
 
   const imageCol = (
     <div
-      className={`md:col-span-8 relative overflow-hidden min-h-[50vh] md:min-h-screen group/bento ${reversed ? "md:order-2" : ""} ${reversed ? "" : "border-r border-[var(--color-outline-variant)]/10"}`}
+      className={`md:col-span-8 relative overflow-hidden min-h-[40vh] md:self-center group/bento ${reversed ? "md:order-2" : ""} ${reversed ? "" : "border-r border-[var(--color-outline-variant)]/10"}`}
+      style={{ aspectRatio: dims ? `${dims.width}/${dims.height}` : undefined }}
     >
       <div className="absolute inset-0 transition-transform duration-[2s] ease-out group-hover/bento:scale-105">
         <div className="bento-img-wrapper absolute inset-0" style={imageShellStyle}>
@@ -194,12 +196,17 @@ export function GalleryBentoSplit({
       </p>
       <TransitionLink
         href={`/work/${album.slug.current}`}
-        className="inline-flex items-center gap-4 py-4 px-8 border border-[var(--color-outline-variant)]/20 hover:border-primary transition-all duration-500 group/btn w-fit"
+        className="relative group/btn inline-flex w-fit overflow-hidden p-[1px]"
       >
-        <span className="font-label text-xs tracking-widest uppercase text-text-heading">
-          View Series
+        {/* Traveling golden light — always visible */}
+        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_70%,var(--color-primary)_90%,transparent_100%)]" />
+        {/* Button face */}
+        <span className="relative z-10 inline-flex items-center gap-4 py-4 px-8 bg-[var(--color-surface)] transition-colors duration-500 group-hover/btn:bg-[var(--color-surface-elevated)]">
+          <span className="font-label text-xs tracking-widest uppercase text-text-heading">
+            View Series
+          </span>
+          <ArrowRight className="w-4 h-4 text-text-heading transition-transform duration-300 group-hover/btn:translate-x-2" />
         </span>
-        <ArrowRight className="w-4 h-4 text-text-heading transition-transform duration-300 group-hover/btn:translate-x-2" />
       </TransitionLink>
     </div>
   );
