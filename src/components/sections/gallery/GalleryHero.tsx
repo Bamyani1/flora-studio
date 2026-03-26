@@ -93,31 +93,35 @@ export function GalleryHero({
         1.8,
       );
 
-      // Bottom UI elements
-      tl.fromTo(
-        el.querySelector(".gallery-hero-label"),
-        cinematicHeroReveal.chapterLabel.from,
-        { ...cinematicHeroReveal.chapterLabel.to },
-        "-=1.0",
-      )
-        .fromTo(
-          el.querySelectorAll(".gallery-hero-title-line"),
-          cinematicHeroReveal.titleLine.from,
-          { ...cinematicHeroReveal.titleLine.to },
-          "-=1.2",
-        )
-        .fromTo(
-          el.querySelector(".gallery-hero-desc"),
+      // Bottom UI elements (layered mode has no .gallery-hero-title-line)
+      const label = el.querySelector(".gallery-hero-label");
+      const desc = el.querySelector(".gallery-hero-desc");
+      const scroll = el.querySelector(".gallery-hero-scroll");
+
+      if (label) {
+        tl.fromTo(
+          label,
+          cinematicHeroReveal.chapterLabel.from,
+          { ...cinematicHeroReveal.chapterLabel.to },
+          "-=1.0",
+        );
+      }
+      if (desc) {
+        tl.fromTo(
+          desc,
           cinematicHeroReveal.description.from,
           { ...cinematicHeroReveal.description.to },
           "-=1",
-        )
-        .fromTo(
-          el.querySelector(".gallery-hero-scroll"),
+        );
+      }
+      if (scroll) {
+        tl.fromTo(
+          scroll,
           cinematicHeroReveal.scrollCue.from,
           { ...cinematicHeroReveal.scrollCue.to },
           "-=0.5",
         );
+      }
 
       // Differential parallax for depth
       if (!smoothMode) {
