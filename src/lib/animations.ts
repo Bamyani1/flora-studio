@@ -390,7 +390,7 @@ export const layeredHeroReveal = {
       scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
     },
     subject: {
-      to: { yPercent: 5, scale: 1.12, ease: "none" },
+      to: { yPercent: -8, scale: 1.35, ease: "none" },
       scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
     },
   },
