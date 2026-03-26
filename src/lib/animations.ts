@@ -379,10 +379,10 @@ export const layeredHeroReveal = {
     from: { autoAlpha: 0, scale: 1.02 },
     to: { autoAlpha: 1, scale: 1, duration: 1.5, ease: "power2.out" },
   },
-  /** Differential parallax rates for depth illusion */
+  /** Dolly zoom + parallax: bg zooms out while subject zooms in on scroll */
   parallax: {
     background: {
-      to: { yPercent: 20, ease: "none" },
+      to: { yPercent: 20, scale: 0.85, ease: "none" },
       scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
     },
     title: {
@@ -390,7 +390,7 @@ export const layeredHeroReveal = {
       scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
     },
     subject: {
-      to: { yPercent: 5, ease: "none" },
+      to: { yPercent: 5, scale: 1.12, ease: "none" },
       scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
     },
   },
