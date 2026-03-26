@@ -7,6 +7,7 @@ import { heroDiptychSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
 import { getLocalBlur } from "@/lib/image-manifest";
+import { Button } from "@/components/ui/Button";
 
 const seq = heroDiptychSequence;
 const blurDataURL = getLocalBlur("/images/hero.jpg");
@@ -315,30 +316,9 @@ export function HeroDiptych() {
 
         {/* CTA */}
         <div className="dipt-cta" style={{ marginTop: "2.5rem" }}>
-          <a
-            href="#portfolio"
-            className="group inline-flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontWeight: 500,
-              fontSize: 11,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "var(--color-primary)",
-              textDecoration: "none",
-              transition: "opacity 0.3s ease",
-            }}
-          >
-            <span className="underline-offset-4 transition-all duration-300 group-hover:underline">
-              VIEW PORTFOLIO
-            </span>
-            <span
-              className="inline-block transition-transform duration-300 group-hover:translate-x-1"
-              aria-hidden="true"
-            >
-              &rarr;
-            </span>
-          </a>
+          <Button as="a" href="#portfolio" variant="outline-accent" size="xs" className="gap-2">
+            VIEW PORTFOLIO <span aria-hidden="true">&rarr;</span>
+          </Button>
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import { heroMonolithSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
 import { getLocalBlur } from "@/lib/image-manifest";
+import { Button } from "@/components/ui/Button";
 
 const seq = heroMonolithSequence;
 
@@ -223,21 +224,15 @@ export function HeroMonolith() {
 
         {/* CTA — anchored to bottom */}
         <div className="mono-cta absolute bottom-10 flex justify-center">
-          <button
+          <Button
             type="button"
-            className="group inline-flex items-center gap-2 bg-transparent border-none cursor-pointer transition-opacity duration-300 hover:opacity-70"
-            style={{
-              fontFamily: "var(--font-v3-body)",
-              fontWeight: 400,
-              fontSize: 11,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "var(--color-primary)",
-            }}
+            variant="outline-accent"
+            size="xs"
+            className="gap-2"
+            style={{ fontFamily: "var(--font-v3-body)" }}
           >
-            <span>ENTER THE STUDIO</span>
-            <span aria-hidden="true">&rarr;</span>
-          </button>
+            ENTER THE STUDIO <span aria-hidden="true">&rarr;</span>
+          </Button>
         </div>
       </div>
     </section>

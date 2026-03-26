@@ -7,6 +7,7 @@ import { heroSpliceSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
 import { getLocalBlur } from "@/lib/image-manifest";
+import { Button } from "@/components/ui/Button";
 
 const seq = heroSpliceSequence;
 const blurDataURL = getLocalBlur("/images/hero.jpg");
@@ -557,28 +558,17 @@ export function HeroSplice() {
         >
           EDITED ON STEENBECK &middot; ROLL 014 &middot; SAFFRON STUDIOS
         </span>
-        <button
-          type="button"
-          className="spl-meta-right group inline-flex items-center gap-2 bg-transparent border-none cursor-pointer"
-          style={{
-            fontFamily: "var(--font-v5-body)",
-            fontWeight: 500,
-            fontSize: 10,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "var(--color-primary)",
-          }}
-        >
-          <span className="transition-opacity duration-300 group-hover:opacity-70">
-            WATCH THE CUT
-          </span>
-          <span
-            className="inline-block transition-all duration-300 group-hover:opacity-70 group-hover:translate-x-0.5"
-            aria-hidden="true"
+        <div className="spl-meta-right">
+          <Button
+            type="button"
+            variant="outline-accent"
+            size="xs"
+            className="gap-2"
+            style={{ fontFamily: "var(--font-v5-body)" }}
           >
-            &rarr;
-          </span>
-        </button>
+            WATCH THE CUT <span aria-hidden="true">&rarr;</span>
+          </Button>
+        </div>
       </div>
     </section>
   );

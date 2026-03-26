@@ -7,6 +7,7 @@ import { heroNegativeSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import Image from "next/image";
 import { getLocalBlur } from "@/lib/image-manifest";
+import { Button } from "@/components/ui/Button";
 
 const seq = heroNegativeSequence;
 const blurDataURL = getLocalBlur("/images/hero.jpg");
@@ -318,26 +319,17 @@ export function HeroNegative() {
       </span>
 
       {/* ---------- CTA (bottom-right) ---------- */}
-      <button
-        type="button"
-        className="neg-cta absolute bottom-6 right-12 group inline-flex items-center gap-2 bg-transparent border-none cursor-pointer"
-        style={{
-          fontFamily: "var(--font-v5-body)",
-          fontWeight: 500,
-          fontSize: 10,
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: "var(--color-primary)",
-        }}
-      >
-        <span className="transition-opacity duration-300 group-hover:opacity-70">VIEW REEL</span>
-        <span
-          className="inline-block transition-all duration-300 group-hover:opacity-70 group-hover:translate-x-0.5"
-          aria-hidden="true"
+      <div className="neg-cta absolute bottom-6 right-12">
+        <Button
+          type="button"
+          variant="outline-accent"
+          size="xs"
+          className="gap-2"
+          style={{ fontFamily: "var(--font-v5-body)" }}
         >
-          &rarr;
-        </span>
-      </button>
+          VIEW REEL <span aria-hidden="true">&rarr;</span>
+        </Button>
+      </div>
     </section>
   );
 }
