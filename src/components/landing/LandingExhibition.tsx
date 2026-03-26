@@ -6,8 +6,11 @@ import { gsap } from "@/lib/gsap";
 import { fadeLeft, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
-import { getLocalBlur } from "@/lib/image-manifest";
+import { getLocalBlur, getLocalDimensions } from "@/lib/image-manifest";
+
+const exhibitionDims = getLocalDimensions("/images/exhibition-hero.jpg");
 
 export function LandingExhibition() {
   const textColRef = useRef<HTMLDivElement>(null);
@@ -44,29 +47,34 @@ export function LandingExhibition() {
               EXHIBITION 01
             </span>
             <h3 className="font-headline text-5xl md:text-7xl italic text-white mb-8 leading-tight">
-              The Alpinist
+              Before
               <br />
-              Series
+              the Game
             </h3>
             <p className="font-body text-white/60 text-lg leading-relaxed mb-12 max-w-md">
-              A study of scale and isolation. Documenting the monolithic structures of the northern
-              ranges during the twilight hours.
+              An empty arena holds every game it&apos;s ever seen. The silence before tip-off, the
+              geometry of the court, and the weight of what&apos;s about to happen.
             </p>
-            <TransitionLink
+            <Button
+              as={TransitionLink}
               href="/work"
-              className="font-label text-[10px] uppercase tracking-[0.2em] text-white border-b border-white/30 pb-1 hover:border-white transition-colors duration-500"
+              variant="outline-subtle"
+              size="xs"
+              className="gap-2"
             >
-              Explore Exhibition
-            </TransitionLink>
+              Explore Exhibition <span aria-hidden="true">&rarr;</span>
+            </Button>
           </div>
 
           <div className="order-1 md:order-2 w-full md:w-1/2">
             <CinematicImageReveal
-              src="/images/high-country/hero.jpg"
-              alt="High country mountain range"
-              className="w-full h-[70vh] md:h-[900px]"
+              src="/images/exhibition-hero.jpg"
+              alt="Empty basketball arena viewed from above"
+              className="w-full"
               sizes="(min-width: 768px) 50vw, 100vw"
-              blurDataURL={getLocalBlur("/images/high-country/hero.jpg")}
+              blurDataURL={getLocalBlur("/images/exhibition-hero.jpg")}
+              width={exhibitionDims?.width}
+              height={exhibitionDims?.height}
             />
           </div>
         </div>
