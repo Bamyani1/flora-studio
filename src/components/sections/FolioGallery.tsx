@@ -288,7 +288,7 @@ function TitleContent({ title, count }: { title: string; count: number }) {
       </h2>
       <div className="folio-reveal-label mt-10 h-px bg-primary" style={{ width: 80 }} />
       <span className="folio-reveal-label mt-7 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        Saffron Studios
+        Bahar Studio
       </span>
       <span className="folio-reveal-label mt-3 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
         {imageCountLabel(count)}
@@ -537,7 +537,7 @@ function ColophonContent() {
         Published by
       </span>
       <span className="folio-reveal-label mt-3 font-display text-2xl font-light italic text-text">
-        Saffron Studios
+        Bahar Studio
       </span>
       <div className="folio-reveal-label mt-8 h-px w-[60px] bg-primary" />
       <span className="folio-reveal-label mt-5 font-label text-[11px] uppercase tracking-[0.16em] text-muted">

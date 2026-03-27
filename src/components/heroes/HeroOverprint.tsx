@@ -113,7 +113,7 @@ export function HeroOverprint() {
             whiteSpace: "nowrap",
           }}
         >
-          SAFFRON
+          BAHAR
         </span>
       </div>
 

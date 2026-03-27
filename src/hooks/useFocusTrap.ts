@@ -12,7 +12,8 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, 
     if (!active || !containerRef.current) return;
 
     // Store the element that had focus before trap activated
-    previousFocusRef.current = document.activeElement as HTMLElement;
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const container = containerRef.current;
     const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
@@ -26,6 +27,11 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, 
 
       // Re-query in case DOM changed
       const currentFocusable = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      if (currentFocusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
       const first = currentFocusable[0];
       const last = currentFocusable[currentFocusable.length - 1];
 
@@ -47,7 +53,9 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       // Return focus to the element that had it before
-      previousFocusRef.current?.focus();
+      if (previousFocusRef.current?.isConnected) {
+        previousFocusRef.current.focus();
+      }
     };
   }, [active, containerRef]);
 }

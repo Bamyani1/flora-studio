@@ -323,7 +323,7 @@ export default function AboutPage() {
             >
               <span className="w-12 h-px bg-primary/40"></span>
               <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                The Studio
+                Bahar Studio
               </span>
               <span className="w-12 h-px bg-primary/40"></span>
             </div>

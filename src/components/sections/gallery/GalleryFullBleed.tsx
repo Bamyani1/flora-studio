@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { fullBleedShowcase, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, getImageDimensions } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { GallerySectionProps } from "./types";
@@ -19,6 +19,7 @@ export function GalleryFullBleed({
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const coverUrl = resolveImageUrl(album.coverImage);
+  const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const smoothMode = performanceMode === "smooth";
   const sectionStyle: CSSProperties | undefined = deferOffscreen
@@ -104,8 +105,12 @@ export function GalleryFullBleed({
       {/* Centered image */}
       <TransitionLink
         href={`/work/${album.slug.current}`}
-        className="relative z-10 w-4/5 md:w-2/3 aspect-[16/10] overflow-hidden block"
-        style={imageShellStyle}
+        className="relative z-10 w-4/5 md:w-2/3 overflow-hidden block"
+        style={{
+          ...imageShellStyle,
+          aspectRatio: dims ? `${dims.width}/${dims.height}` : "16/10",
+          maxHeight: "85dvh",
+        }}
       >
         <div className="absolute inset-0 transition-transform duration-[3s] ease-out group-hover/bleed:scale-110">
           {coverUrl ? (
@@ -147,7 +152,7 @@ export function GalleryFullBleed({
       {/* Vertical text branding */}
       <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:block">
         <span className="font-label text-[8px] tracking-[1em] text-[var(--color-on-surface-variant)]/30 uppercase [writing-mode:vertical-lr] rotate-180">
-          Saffron Studios {album.year ?? ""}
+          Bahar Studio {album.year ?? ""}
         </span>
       </div>
     </section>

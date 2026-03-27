@@ -288,7 +288,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — portraiture"
+              alt="Bahar Studio — portraiture"
               fill
               sizes="100vw"
               priority
@@ -516,7 +516,7 @@ export function HeroSplice() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — portraiture"
+              alt="Bahar Studio — portraiture"
               fill
               sizes="100vw"
               className="object-cover"
@@ -540,7 +540,7 @@ export function HeroSplice() {
               zIndex: 25,
             }}
           >
-            SAFFRON
+            BAHAR
           </span>
         </div>
       </div>
@@ -556,7 +556,7 @@ export function HeroSplice() {
             color: "var(--color-surface-elevated)",
           }}
         >
-          EDITED ON STEENBECK &middot; ROLL 014 &middot; SAFFRON STUDIOS
+          EDITED ON STEENBECK &middot; ROLL 014 &middot; BAHAR STUDIO
         </span>
         <div className="spl-meta-right">
           <Button

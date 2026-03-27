@@ -15,6 +15,7 @@ export function TransitionOverlay() {
   const fallbackRef = useRef<HTMLDivElement>(null);
   const previousPathnameRef = useRef(pathname);
   const fallbackTimeoutRef = useRef<number | null>(null);
+  const refreshTimeoutRef = useRef<number | null>(null);
   const transitionPhase = useUIStore((s) => s.transitionPhase);
   const transitionSource = useUIStore((s) => s.transitionSource);
   const startHistoryTransition = useUIStore((s) => s.startHistoryTransition);
@@ -28,6 +29,20 @@ export function TransitionOverlay() {
     fallbackTimeoutRef.current = null;
   }, []);
 
+  const clearRefresh = useCallback(() => {
+    if (!refreshTimeoutRef.current) return;
+    window.clearTimeout(refreshTimeoutRef.current);
+    refreshTimeoutRef.current = null;
+  }, []);
+
+  const scheduleRefresh = useCallback(() => {
+    clearRefresh();
+    refreshTimeoutRef.current = window.setTimeout(() => {
+      ScrollTrigger.refresh();
+      refreshTimeoutRef.current = null;
+    }, 0);
+  }, [clearRefresh]);
+
   const setHiddenState = useCallback(() => {
     irisRef.current?.reset();
     if (fallbackRef.current) gsap.set(fallbackRef.current, { autoAlpha: 0 });
@@ -37,7 +52,8 @@ export function TransitionOverlay() {
     clearFallback();
     setHiddenState();
     finishTransition();
-  }, [clearFallback, finishTransition, setHiddenState]);
+    scheduleRefresh();
+  }, [clearFallback, finishTransition, scheduleRefresh, setHiddenState]);
 
   const scheduleFailsafe = useCallback(() => {
     clearFallback();
@@ -53,8 +69,9 @@ export function TransitionOverlay() {
     setHiddenState();
     return () => {
       clearFallback();
+      clearRefresh();
     };
-  }, [clearFallback, setHiddenState]);
+  }, [clearFallback, clearRefresh, setHiddenState]);
 
   useEffect(() => {
     const previousPathname = previousPathnameRef.current;
@@ -70,8 +87,9 @@ export function TransitionOverlay() {
 
     if (state.transitionPhase === "idle") {
       setHiddenState();
+      scheduleRefresh();
     }
-  }, [beginEnterTransition, pathname, setHiddenState]);
+  }, [beginEnterTransition, pathname, scheduleRefresh, setHiddenState]);
 
   // Handle browser back/forward
   useEffect(() => {
@@ -94,11 +112,6 @@ export function TransitionOverlay() {
     }
 
     scheduleFailsafe();
-
-    if (transitionPhase === "leaving") {
-      // Kill all ScrollTriggers to prevent orphans on the next page
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    }
 
     // Reduced motion: use simple opacity fade on fallback div
     if (reduced) {

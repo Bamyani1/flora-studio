@@ -26,7 +26,12 @@ export function BackToTop() {
   );
 
   const handleClick = () => {
-    lenis?.scrollTo(0);
+    if (lenis) {
+      lenis.scrollTo(0);
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

@@ -169,7 +169,7 @@ export function HeroProjection() {
         <div className="proj-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Saffron Studios — portraiture"
+            alt="Bahar Studio — portraiture"
             fill
             sizes="100vw"
             priority
@@ -286,7 +286,7 @@ export function HeroProjection() {
             color: "var(--color-border)",
           }}
         >
-          16MM PROJECTION &middot; SAFFRON STUDIOS
+          16MM PROJECTION &middot; BAHAR STUDIO
         </span>
       </div>
     </section>

@@ -25,8 +25,8 @@ export function HeroDiptych() {
       const dividerEl = root.querySelector<HTMLElement>(".dipt-divider");
       const cornerHEl = root.querySelector<HTMLElement>(".dipt-corner-h");
       const cornerVEl = root.querySelector<HTMLElement>(".dipt-corner-v");
-      const silkEl = root.querySelector<HTMLElement>(".dipt-silk");
-      const roadEl = root.querySelector<HTMLElement>(".dipt-road");
+      const primaryTitleEl = root.querySelector<HTMLElement>(".dipt-title-primary");
+      const secondaryTitleEl = root.querySelector<HTMLElement>(".dipt-title-secondary");
       const studioEl = root.querySelector<HTMLElement>(".dipt-studio");
       const goldRuleEl = root.querySelector<HTMLElement>(".dipt-gold-rule");
       const taglineEl = root.querySelector<HTMLElement>(".dipt-tagline");
@@ -39,8 +39,8 @@ export function HeroDiptych() {
         if (dividerEl) gsap.set(dividerEl, { scaleY: 1 });
         if (cornerHEl) gsap.set(cornerHEl, { scaleX: 1 });
         if (cornerVEl) gsap.set(cornerVEl, { scaleY: 1 });
-        if (silkEl) gsap.set(silkEl, { autoAlpha: 1 });
-        if (roadEl) gsap.set(roadEl, { autoAlpha: 1 });
+        if (primaryTitleEl) gsap.set(primaryTitleEl, { autoAlpha: 1 });
+        if (secondaryTitleEl) gsap.set(secondaryTitleEl, { autoAlpha: 1 });
         if (studioEl) gsap.set(studioEl, { clipPath: "inset(0 0 0 0)", autoAlpha: 1 });
         if (goldRuleEl) gsap.set(goldRuleEl, { scaleX: 1 });
         if (taglineEl) gsap.set(taglineEl, { autoAlpha: 1, y: 0 });
@@ -61,17 +61,17 @@ export function HeroDiptych() {
       if (ctaEl) gsap.set(ctaEl, seq.cta.from);
       if (pageIndicatorEl) gsap.set(pageIndicatorEl, seq.cta.from);
 
-      // SplitText for SILK and ROAD chars
-      let splitSilk: SplitText | null = null;
-      let splitRoad: SplitText | null = null;
+      // SplitText for the two title lines
+      let splitPrimaryTitle: SplitText | null = null;
+      let splitSecondaryTitle: SplitText | null = null;
 
-      if (silkEl) {
-        splitSilk = new SplitText(silkEl, seq.titleChars.splitConfig);
-        gsap.set(splitSilk.chars, seq.titleChars.from);
+      if (primaryTitleEl) {
+        splitPrimaryTitle = new SplitText(primaryTitleEl, seq.titleChars.splitConfig);
+        gsap.set(splitPrimaryTitle.chars, seq.titleChars.from);
       }
-      if (roadEl) {
-        splitRoad = new SplitText(roadEl, seq.titleChars.splitConfig);
-        gsap.set(splitRoad.chars, seq.titleChars.from);
+      if (secondaryTitleEl) {
+        splitSecondaryTitle = new SplitText(secondaryTitleEl, seq.titleChars.splitConfig);
+        gsap.set(splitSecondaryTitle.chars, seq.titleChars.from);
       }
 
       // --- Build timeline ---
@@ -105,14 +105,14 @@ export function HeroDiptych() {
         );
       }
 
-      // t=0.8 — "SILK" chars reveal
-      if (splitSilk) {
-        tl.to(splitSilk.chars, seq.titleChars.to, 0.8);
+      // t=0.8 — primary title chars reveal
+      if (splitPrimaryTitle) {
+        tl.to(splitPrimaryTitle.chars, seq.titleChars.to, 0.8);
       }
 
-      // t=1.0 — "ROAD" chars reveal
-      if (splitRoad) {
-        tl.to(splitRoad.chars, seq.titleChars.to, 1.0);
+      // t=1.0 — secondary title chars reveal
+      if (splitSecondaryTitle) {
+        tl.to(splitSecondaryTitle.chars, seq.titleChars.to, 1.0);
       }
 
       // t=1.3 — "Studio" clip-path reveal
@@ -145,8 +145,8 @@ export function HeroDiptych() {
 
       // Cleanup SplitText on unmount
       return () => {
-        if (splitSilk) splitSilk.revert();
-        if (splitRoad) splitRoad.revert();
+        if (splitPrimaryTitle) splitPrimaryTitle.revert();
+        if (splitSecondaryTitle) splitSecondaryTitle.revert();
       };
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
@@ -160,7 +160,7 @@ export function HeroDiptych() {
         <div className="dipt-image absolute inset-0">
           <Image
             src="/images/hero.jpg"
-            alt="Saffron Studios — landscape"
+            alt="Bahar Studio — landscape"
             fill
             priority
             sizes="58vw"
@@ -235,10 +235,10 @@ export function HeroDiptych() {
         className="flex h-screen w-[42%] flex-col justify-center pl-12 pr-8 lg:pl-16"
         style={{ backgroundColor: "var(--color-surface-deep)" }}
       >
-        {/* "SAFFRON" */}
+        {/* "BAHAR" */}
         <div style={{ overflow: "hidden" }}>
           <div
-            className="dipt-silk"
+            className="dipt-title-primary"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
@@ -248,14 +248,14 @@ export function HeroDiptych() {
               lineHeight: 0.85,
             }}
           >
-            SAFFRON
+            BAHAR
           </div>
         </div>
 
-        {/* "STUDIOS" */}
+        {/* "STUDIO" */}
         <div style={{ overflow: "hidden" }}>
           <div
-            className="dipt-road"
+            className="dipt-title-secondary"
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 300,
@@ -266,7 +266,7 @@ export function HeroDiptych() {
               marginTop: "-0.1em",
             }}
           >
-            STUDIOS
+            STUDIO
           </div>
         </div>
 

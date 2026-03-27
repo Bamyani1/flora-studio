@@ -5,7 +5,6 @@ import { Header } from "./Header";
 import { MobileMenu } from "./MobileMenu";
 import { Footer } from "./Footer";
 import { BackToTop } from "./BackToTop";
-import { ScrollAperture } from "@/components/ui/ScrollAperture";
 import { TransitionOverlay } from "./TransitionOverlay";
 
 export function RouteChrome({ children }: { children: React.ReactNode }) {
@@ -21,7 +20,6 @@ export function RouteChrome({ children }: { children: React.ReactNode }) {
       {children}
       {!hideFooter && <Footer />}
       {!hideFooter && <BackToTop />}
-      {!hideFooter && <ScrollAperture />}
       <TransitionOverlay />
     </>
   );

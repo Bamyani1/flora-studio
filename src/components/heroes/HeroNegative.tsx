@@ -229,7 +229,7 @@ export function HeroNegative() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — portraiture"
+              alt="Bahar Studio — portraiture"
               fill
               sizes="100vw"
               priority
@@ -271,7 +271,7 @@ export function HeroNegative() {
               zIndex: 25,
             }}
           >
-            SAFFRON STUDIOS
+            BAHAR STUDIO
           </span>
         </div>
       </div>

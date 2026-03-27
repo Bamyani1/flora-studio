@@ -15,6 +15,8 @@ interface CinematicImageRevealProps {
   blurDataURL?: string | null;
   priority?: boolean;
   sizes?: string;
+  width?: number;
+  height?: number;
 }
 
 export function CinematicImageReveal({
@@ -25,6 +27,8 @@ export function CinematicImageReveal({
   blurDataURL,
   priority = false,
   sizes = "100vw",
+  width,
+  height,
 }: CinematicImageRevealProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -47,37 +51,33 @@ export function CinematicImageReveal({
       gsap.set(el, cinematicImageReveal.reveal.from);
 
       // Clip-path reveal on enter
-      gsap.fromTo(
-        el,
-        cinematicImageReveal.reveal.from,
-        {
-          ...cinematicImageReveal.reveal.to,
-          scrollTrigger: {
-            trigger: el,
-            ...cinematicImageReveal.reveal.scrollTrigger,
-          },
-          ...withWillChange("clip-path"),
+      gsap.fromTo(el, cinematicImageReveal.reveal.from, {
+        ...cinematicImageReveal.reveal.to,
+        scrollTrigger: {
+          trigger: el,
+          ...cinematicImageReveal.reveal.scrollTrigger,
         },
-      );
+        ...withWillChange("clip-path"),
+      });
 
       // Parallax on scroll
-      gsap.fromTo(
-        imageWrapper,
-        cinematicImageReveal.parallax.from,
-        {
-          ...cinematicImageReveal.parallax.to,
-          scrollTrigger: {
-            trigger: el,
-            ...cinematicImageReveal.parallax.scrollTrigger,
-          },
+      gsap.fromTo(imageWrapper, cinematicImageReveal.parallax.from, {
+        ...cinematicImageReveal.parallax.to,
+        scrollTrigger: {
+          trigger: el,
+          ...cinematicImageReveal.parallax.scrollTrigger,
         },
-      );
+      });
     },
     { scope: containerRef, dependencies: [reduced] },
   );
 
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative overflow-hidden ${className}`}
+      style={{ aspectRatio: width && height ? `${width}/${height}` : "3/2" }}
+    >
       <div className="cinematic-img-wrapper absolute inset-0 h-full w-full origin-bottom">
         <Image
           src={src}

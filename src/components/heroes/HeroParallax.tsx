@@ -230,7 +230,7 @@ export function HeroParallax() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios"
+              alt="Bahar Studio"
               fill
               sizes="48vw"
               priority
@@ -327,7 +327,7 @@ export function HeroParallax() {
               color: "var(--color-primary)",
             }}
           >
-            SAFFRON STUDIOS
+            BAHAR STUDIO
           </span>
         </div>
 

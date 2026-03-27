@@ -1,17 +1,11 @@
 import type { MetadataRoute } from "next";
-import { client } from "@/sanity/client";
-import { ALBUM_SLUGS_QUERY } from "@/sanity/queries";
-import { PLACEHOLDER_ALL_ALBUMS } from "@/lib/placeholder-data";
+import { getAlbumSlugs } from "@/lib/albums";
+import { publicEnv } from "@/lib/public-env";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://saffronstudios.com";
+const SITE_URL = publicEnv.siteUrl;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let slugs: { slug: string }[] = [];
-  try {
-    slugs = await client.fetch(ALBUM_SLUGS_QUERY);
-  } catch {
-    slugs = PLACEHOLDER_ALL_ALBUMS.map((a) => ({ slug: a.slug.current }));
-  }
+  const slugs = await getAlbumSlugs();
 
   const albumRoutes = slugs.map((s) => ({
     url: `${SITE_URL}/work/${s.slug}`,

@@ -148,7 +148,7 @@ export function HeroFrame() {
         />
       </div>
 
-      {/* Layer 3 — Title "SAFFRON" (z-30, behind the foreground frame) */}
+      {/* Layer 3 — Title "BAHAR" (z-30, behind the foreground frame) */}
       <h1
         className="frame-title absolute overflow-hidden px-12 lg:px-24"
         style={{
@@ -162,7 +162,7 @@ export function HeroFrame() {
           lineHeight: 0.85,
         }}
       >
-        SAFFRON
+        BAHAR
       </h1>
 
       {/* Layer 4 — Foreground image frame (z-40, above the title) */}
@@ -180,7 +180,7 @@ export function HeroFrame() {
       >
         <Image
           src="/images/hero.jpg"
-          alt="Saffron Studios — portraiture"
+          alt="Bahar Studio — portraiture"
           fill
           sizes="50vw"
           priority
@@ -190,7 +190,7 @@ export function HeroFrame() {
         />
       </div>
 
-      {/* "STUDIOS" label (z-50) */}
+      {/* "STUDIO" label (z-50) */}
       <span
         className="frame-label absolute px-12 lg:px-24"
         style={{
@@ -204,7 +204,7 @@ export function HeroFrame() {
           color: "var(--color-primary)",
         }}
       >
-        STUDIOS
+        STUDIO
       </span>
 
       {/* Bottom metadata bar (z-50) */}

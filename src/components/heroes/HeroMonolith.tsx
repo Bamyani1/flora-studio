@@ -124,7 +124,7 @@ export function HeroMonolith() {
       <div className="mono-image absolute inset-0 z-[1]">
         <Image
           src="/images/hero.jpg"
-          alt="Saffron Studios hero photograph"
+          alt="Bahar Studio hero photograph"
           fill
           sizes="100vw"
           priority
@@ -192,7 +192,7 @@ export function HeroMonolith() {
               color: "var(--color-primary)",
             }}
           >
-            SAFFRON STUDIOS
+            BAHAR STUDIO
           </span>
 
           {/* Right gold line */}

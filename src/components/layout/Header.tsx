@@ -10,16 +10,15 @@ import { HEADER_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
 import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
-import { ThreeThreadsMark, type ThreeThreadsMarkHandle } from "@/components/ui/ThreeThreadsMark";
+import { BaharStudioMark, type BaharStudioMarkHandle } from "@/components/ui/BaharStudioMark";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLSpanElement>(null);
-  const iconRef = useRef<ThreeThreadsMarkHandle>(null);
+  const iconRef = useRef<BaharStudioMarkHandle>(null);
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
   const isHomePage = pathname === "/";
-  const isContactPage = pathname === "/contact";
 
   // Homepage entrance animation
   useGSAP(() => {
@@ -40,7 +39,7 @@ export function Header() {
 
     const shadowEl = header.querySelector<HTMLElement>(".header-shadow-target");
 
-    if (reducedMotion || isContactPage) {
+    if (reducedMotion) {
       gsap.set(header, headerShrink.to);
       if (shadowEl) gsap.set(shadowEl, headerShrink.shadow.to);
       return;
@@ -84,16 +83,7 @@ export function Header() {
         }
       },
     });
-  }, [reducedMotion, isContactPage]);
-
-  // Contact page: set logo to compact morph state (icon visible, text hidden)
-  useGSAP(() => {
-    if (!isContactPage) return;
-    const logo = logoRef.current;
-    const icon = iconRef.current?.root;
-    if (logo) gsap.set(logo, { ...headerShrink.logoMorph.text.to });
-    if (icon) gsap.set(icon, { ...headerShrink.logoMorph.icon.to });
-  }, [isContactPage]);
+  }, [reducedMotion]);
 
   return (
     <div className="fixed top-0 w-full z-50 flex justify-center pointer-events-none">
@@ -143,14 +133,18 @@ export function Header() {
 
         {/* Center logo — wordmark crossfades to aperture icon on scroll */}
         <div className="w-1/2 flex justify-start md:w-1/3 md:justify-center">
-          <TransitionLink href="/" className="relative flex items-center justify-center">
+          <TransitionLink
+            href="/"
+            aria-label="Bahar Studio"
+            className="relative flex items-center justify-center"
+          >
             <span
               ref={logoRef}
               className="text-lg md:text-2xl font-headline uppercase tracking-[0.3em] font-light whitespace-nowrap text-primary"
             >
-              SAFFRON STUDIOS
+              BAHAR STUDIO
             </span>
-            <ThreeThreadsMark
+            <BaharStudioMark
               ref={iconRef}
               size={28}
               className="absolute text-primary"

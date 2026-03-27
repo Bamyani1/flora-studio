@@ -51,8 +51,8 @@ export function GalleryHero({
           ),
           { autoAlpha: 1, y: 0, scale: 1, rotationX: 0 },
         );
-        gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { opacity: 0 });
-        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { opacity: 0 });
+        gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { autoAlpha: 0 });
+        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { autoAlpha: 0 });
         return;
       }
 
@@ -77,7 +77,7 @@ export function GalleryHero({
         0,
       );
 
-      // Subject appears immediately — must be fully opaque before title shows
+      // Subject fades in over 1.5s; ~89% opaque by 1.0s when title begins
       tl.fromTo(
         el.querySelector(".layered-hero-subject"),
         layeredHeroReveal.subject.from,
@@ -85,12 +85,12 @@ export function GalleryHero({
         0,
       );
 
-      // Title only starts after subject is opaque (subject is 1.5s, start title at 1.8s)
+      // Title starts at 1.0s — subject nearly opaque, overlays still clearing
       tl.fromTo(
         el.querySelector(".layered-hero-title"),
         layeredHeroReveal.title.from,
         { ...layeredHeroReveal.title.to },
-        1.8,
+        1.0,
       );
 
       // Bottom UI elements (layered mode has no .gallery-hero-title-line)
@@ -103,7 +103,7 @@ export function GalleryHero({
           label,
           cinematicHeroReveal.chapterLabel.from,
           { ...cinematicHeroReveal.chapterLabel.to },
-          "-=1.0",
+          "-=1.5",
         );
       }
       if (desc) {
@@ -173,8 +173,8 @@ export function GalleryHero({
           ),
           { autoAlpha: 1, y: 0, scale: 1, rotationX: 0 },
         );
-        gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { opacity: 0 });
-        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { opacity: 0 });
+        gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { autoAlpha: 0 });
+        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { autoAlpha: 0 });
         return;
       }
 
@@ -201,25 +201,25 @@ export function GalleryHero({
         el.querySelector(".gallery-hero-label"),
         cinematicHeroReveal.chapterLabel.from,
         { ...cinematicHeroReveal.chapterLabel.to },
-        "-=1.5",
+        "-=2.3",
       )
         .fromTo(
           el.querySelectorAll(".gallery-hero-title-line"),
           cinematicHeroReveal.titleLine.from,
           { ...cinematicHeroReveal.titleLine.to },
-          "-=1.2",
+          "-=2.0",
         )
         .fromTo(
           el.querySelector(".gallery-hero-desc"),
           cinematicHeroReveal.description.from,
           { ...cinematicHeroReveal.description.to },
-          "-=1",
+          "-=1.5",
         )
         .fromTo(
           el.querySelector(".gallery-hero-scroll"),
           cinematicHeroReveal.scrollCue.from,
           { ...cinematicHeroReveal.scrollCue.to },
-          "-=0.5",
+          "-=1.0",
         );
 
       const img = el.querySelector<HTMLElement>(".gallery-hero-img");

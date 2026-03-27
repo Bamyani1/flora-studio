@@ -1,34 +1,32 @@
 "use server";
 
+import { getContactServerConfig } from "@/lib/contact-config.server";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 
-interface ActionResult {
-  success: boolean;
-  error?: string;
-}
+export type ContactActionResult =
+  | { success: true }
+  | { success: false; error: string };
 
-export async function submitContactForm(data: ContactFormData): Promise<ActionResult> {
+export async function submitContactForm(data: ContactFormData): Promise<ContactActionResult> {
   const parsed = contactFormSchema.safeParse(data);
 
   if (!parsed.success) {
     return { success: false, error: "Invalid form data. Please check your inputs." };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const contactEmail = process.env.CONTACT_EMAIL;
+  const { resendApiKey, contactEmail } = getContactServerConfig();
 
-  if (!apiKey || !contactEmail) {
-    console.log("[Contact] No RESEND_API_KEY or CONTACT_EMAIL configured. Logging submission:");
-    console.log(JSON.stringify(parsed.data, null, 2));
+  if (!resendApiKey || !contactEmail) {
+    console.log("[Contact] No RESEND_API_KEY or CONTACT_EMAIL configured. Skipping email send.");
     return { success: true };
   }
 
   try {
     const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
+    const resend = new Resend(resendApiKey);
 
-    await resend.emails.send({
-      from: "Saffron Studios <onboarding@resend.dev>",
+    const result = await resend.emails.send({
+      from: "Bahar Studio <onboarding@resend.dev>",
       to: contactEmail,
       replyTo: parsed.data.email,
       subject: `New inquiry from ${parsed.data.name} — ${parsed.data.photographyType}`,
@@ -42,6 +40,11 @@ export async function submitContactForm(data: ContactFormData): Promise<ActionRe
         .filter(Boolean)
         .join("\n"),
     });
+
+    if (result.error) {
+      console.error("[Contact] Failed to send email:", result.error);
+      return { success: false, error: "Failed to send message. Please try again later." };
+    }
 
     return { success: true };
   } catch (err) {

@@ -1,58 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/client";
-import { ALBUM_BY_SLUG_QUERY, ALBUM_SLUGS_QUERY, ALBUMS_QUERY } from "@/sanity/queries";
-import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
+import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
 import { resolveImageUrl } from "@/lib/image-url";
 import { imageGalleryJsonLd } from "@/lib/metadata";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
 import { FolioGallery } from "@/components/sections/FolioGallery";
 import { TextReveal } from "@/components/animations/TextReveal";
-import type { Album, AlbumMeta } from "@/types/project";
-
-async function getAlbumWithNav(slug: string) {
-  let album: Album | null = null;
-  let allAlbums: AlbumMeta[] = [];
-
-  try {
-    [album, allAlbums] = await Promise.all([
-      client.fetch(ALBUM_BY_SLUG_QUERY, { slug }),
-      client.fetch(ALBUMS_QUERY),
-    ]);
-  } catch {
-    album = PLACEHOLDER_ALBUM_MAP[slug] ?? null;
-    allAlbums = PLACEHOLDER_ALL_ALBUMS;
-  }
-
-  if (!album) {
-    return { album: null, previous: null, next: null };
-  }
-
-  // Find prev/next with wrap-around
-  const currentIndex = allAlbums.findIndex((a) => a.slug.current === slug);
-  const prevIndex = currentIndex <= 0 ? allAlbums.length - 1 : currentIndex - 1;
-  const nextIndex = currentIndex >= allAlbums.length - 1 ? 0 : currentIndex + 1;
-
-  const previous =
-    allAlbums.length > 1
-      ? { title: allAlbums[prevIndex].title, slug: allAlbums[prevIndex].slug.current }
-      : null;
-  const next =
-    allAlbums.length > 1
-      ? { title: allAlbums[nextIndex].title, slug: allAlbums[nextIndex].slug.current }
-      : null;
-
-  return { album, previous, next };
-}
-
 export async function generateStaticParams() {
-  try {
-    const slugs = await client.fetch(ALBUM_SLUGS_QUERY);
-    return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
-  } catch {
-    return PLACEHOLDER_ALL_ALBUMS.map((a) => ({ slug: a.slug.current }));
-  }
+  const slugs = await getAlbumSlugs();
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({
@@ -64,27 +21,23 @@ export async function generateMetadata({
 
   let title = "Album";
   let description: string | undefined;
-  try {
-    const album = await client.fetch(ALBUM_BY_SLUG_QUERY, { slug });
-    if (album?.title) title = album.title;
-    if (album?.description) description = album.description;
-  } catch {
-    const placeholder = PLACEHOLDER_ALBUM_MAP[slug];
-    if (placeholder) {
-      title = placeholder.title;
-      description = placeholder.description;
-    }
+  const album = await getAlbumBySlug(slug);
+  if (album?.title) {
+    title = album.title;
+  }
+  if (album?.description) {
+    description = album.description;
   }
 
   return {
     title,
-    description: description ?? `${title} — a photography album by Saffron Studios.`,
+    description: description ?? `${title} — a photography album by Bahar Studio.`,
   };
 }
 
 export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { album, previous, next } = await getAlbumWithNav(slug);
+  const { album, previous, next } = await getAlbumWithNavigation(slug);
 
   if (!album) notFound();
 
@@ -126,7 +79,9 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 && <FolioGallery images={album.images} title={album.title} />}
+      {album.images?.length > 0 && (
+        <FolioGallery images={album.images} title={album.title} videoUrl={album.videoUrl} />
+      )}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

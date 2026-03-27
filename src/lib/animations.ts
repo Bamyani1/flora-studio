@@ -328,13 +328,13 @@ export const cinematicHeroReveal = {
   },
   /** Dark overlay: simulates brightness(0.1) → brightness(1) */
   darkOverlay: {
-    from: { opacity: 0.9 },
-    to: { opacity: 0, duration: 3.5, ease: "power3.inOut" },
+    from: { autoAlpha: 0.9 },
+    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
   },
-  /** Blur overlay: static backdrop-filter, opacity fades out */
+  /** Blur overlay: backdrop-filter fades out, then hidden from compositor */
   blurOverlay: {
-    from: { opacity: 1 },
-    to: { opacity: 0, duration: 3.5, ease: "power3.inOut" },
+    from: { autoAlpha: 1 },
+    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
   },
   nav: {
     from: { y: -20, autoAlpha: 0 },
@@ -369,7 +369,7 @@ export const cinematicHeroReveal = {
 export const layeredHeroReveal = {
   /** Background layer (farthest) — same as cinematicHeroReveal */
   background: cinematicHeroReveal.image,
-  /** Title text appears between bg and subject — only after subject is opaque */
+  /** Title text appears between bg and subject — starts while subject is ~89% opaque */
   title: {
     from: { y: 30, autoAlpha: 0 },
     to: { y: 0, autoAlpha: 1, duration: 2, ease: "power2.out" },

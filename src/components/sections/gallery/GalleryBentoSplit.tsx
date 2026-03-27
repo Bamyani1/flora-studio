@@ -201,7 +201,7 @@ export function GalleryBentoSplit({
         {/* Traveling golden light — always visible */}
         <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_70%,var(--color-primary)_90%,transparent_100%)]" />
         {/* Button face */}
-        <span className="relative z-10 inline-flex items-center gap-4 py-4 px-8 bg-[var(--color-surface)] transition-colors duration-500 group-hover/btn:bg-[var(--color-surface-elevated)]">
+        <span className="relative z-10 inline-flex items-center gap-4 py-4 px-8 border border-primary/25 bg-[var(--color-surface)] transition-colors duration-500 group-hover/btn:bg-[var(--color-surface-elevated)]">
           <span className="font-label text-xs tracking-widest uppercase text-text-heading">
             View Series
           </span>

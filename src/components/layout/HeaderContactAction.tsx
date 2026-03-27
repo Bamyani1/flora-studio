@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { TransitionLink } from "./TransitionLink";
 
@@ -11,22 +12,6 @@ interface HeaderContactActionProps {
   scrollDelayMs?: number;
 }
 
-function scrollToProcessContact(scrollDelayMs: number) {
-  const performScroll = () => {
-    document.getElementById("contact")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
-  if (scrollDelayMs > 0) {
-    window.setTimeout(performScroll, scrollDelayMs);
-    return;
-  }
-
-  performScroll();
-}
-
 export function HeaderContactAction({
   className,
   label = "Get in touch",
@@ -35,8 +20,38 @@ export function HeaderContactAction({
   scrollDelayMs = 0,
 }: HeaderContactActionProps) {
   const pathname = usePathname();
+  const scrollTimeoutRef = useRef<number | null>(null);
   const isProcessRoute = pathname === "/process";
   const content = children ?? label;
+
+  const clearScrollTimeout = useCallback(() => {
+    if (!scrollTimeoutRef.current) return;
+    window.clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = null;
+  }, []);
+
+  const scrollToProcessContact = useCallback(() => {
+    const performScroll = () => {
+      document.getElementById("contact")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    clearScrollTimeout();
+
+    if (scrollDelayMs > 0) {
+      scrollTimeoutRef.current = window.setTimeout(() => {
+        scrollTimeoutRef.current = null;
+        performScroll();
+      }, scrollDelayMs);
+      return;
+    }
+
+    performScroll();
+  }, [clearScrollTimeout, scrollDelayMs]);
+
+  useEffect(() => clearScrollTimeout, [clearScrollTimeout]);
 
   if (isProcessRoute) {
     return (
@@ -45,7 +60,7 @@ export function HeaderContactAction({
         className={className}
         onClick={() => {
           onBeforeAction?.();
-          scrollToProcessContact(scrollDelayMs);
+          scrollToProcessContact();
         }}
       >
         {content}

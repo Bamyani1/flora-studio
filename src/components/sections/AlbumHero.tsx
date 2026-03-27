@@ -15,14 +15,7 @@ interface AlbumHeroProps {
   heroBlur?: string;
 }
 
-export function AlbumHero({
-  title,
-  category,
-  year,
-  location,
-  heroUrl,
-  heroBlur,
-}: AlbumHeroProps) {
+export function AlbumHero({ title, category, year, location, heroUrl, heroBlur }: AlbumHeroProps) {
   const categoryLabel = category ? (CATEGORY_META[category]?.label ?? category) : undefined;
   const metaParts = [categoryLabel, year, location].filter(Boolean);
 

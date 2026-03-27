@@ -9,16 +9,20 @@ interface TransitionLinkProps {
   href: string;
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   onClick?: () => void;
   prefetch?: boolean;
+  "aria-label"?: string;
 }
 
 export function TransitionLink({
   href,
   children,
   className,
+  style,
   onClick,
   prefetch = true,
+  "aria-label": ariaLabel,
 }: TransitionLinkProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -56,13 +60,16 @@ export function TransitionLink({
   );
 
   const handleMouseEnter = useCallback(() => {
+    if (prefetch === false) return;
     router.prefetch(href);
-  }, [router, href]);
+  }, [href, prefetch, router]);
 
   return (
     <Link
       href={href}
       className={className}
+      style={style}
+      aria-label={ariaLabel}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       prefetch={prefetch}

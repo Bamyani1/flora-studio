@@ -158,7 +158,7 @@ export function MobileMenu() {
             onClick={handleLinkClick}
             className="font-display text-[length:var(--text-logo)] font-light uppercase tracking-[var(--tracking-logo-process)] text-[var(--color-header-link-active)]"
           >
-            Saffron Studios
+            Bahar Studio
           </TransitionLink>
 
           <button

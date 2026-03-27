@@ -117,7 +117,7 @@ export function ProcessHero({ image }: ProcessHeroProps) {
           data-hero-child
           className="mb-6 block font-label text-xs uppercase tracking-[0.4em] text-[var(--process-primary)]"
         >
-          Saffron Studios Process
+          Bahar Studio Process
         </span>
         <h1
           data-hero-child

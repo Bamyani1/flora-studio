@@ -15,9 +15,9 @@ export function Footer({ className }: { className?: string }) {
     >
       {/* Brand + copyright */}
       <div className="flex flex-col gap-4">
-        <span className="font-display text-lg text-text-heading">Saffron Studios</span>
+        <span className="font-display text-lg text-text-heading">Bahar Studio</span>
         <p className="font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] opacity-80 hover:opacity-100 transition-opacity duration-300">
-          &copy; {new Date().getFullYear()} Saffron Studios. All rights reserved.
+          &copy; {new Date().getFullYear()} Bahar Studio. All rights reserved.
         </p>
       </div>
 

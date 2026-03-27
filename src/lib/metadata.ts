@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { publicEnv } from "@/lib/public-env";
 
-const SITE_NAME = "Saffron Studios";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://saffronstudios.com";
+const SITE_NAME = "Bahar Studio";
+const SITE_URL = publicEnv.siteUrl;
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
