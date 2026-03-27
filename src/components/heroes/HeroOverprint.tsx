@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
 import { heroOverprintSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Button } from "@/components/ui/Button";
 
 const seq = heroOverprintSequence;
 
@@ -112,7 +113,7 @@ export function HeroOverprint() {
             whiteSpace: "nowrap",
           }}
         >
-          SAFFRON
+          BAHAR
         </span>
       </div>
 
@@ -180,26 +181,15 @@ export function HeroOverprint() {
 
       {/* CTA at bottom */}
       <div className="hero-cta absolute bottom-0 left-0 w-full flex justify-center pb-12">
-        <button
+        <Button
           type="button"
-          className="group inline-flex items-center gap-3 bg-transparent border-none cursor-pointer"
-          style={{
-            fontFamily: "var(--font-v1-body)",
-            fontWeight: 500,
-            fontSize: 13,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "var(--color-primary)",
-          }}
+          variant="outline-accent"
+          size="xs"
+          className="gap-3"
+          style={{ fontFamily: "var(--font-v1-body)" }}
         >
-          <span>EXPLORE THE STUDIO</span>
-          <span
-            className="inline-block transition-transform duration-300 group-hover:translate-x-1"
-            aria-hidden="true"
-          >
-            &rarr;
-          </span>
-        </button>
+          EXPLORE THE STUDIO <span aria-hidden="true">&rarr;</span>
+        </Button>
       </div>
     </section>
   );

@@ -8,15 +8,11 @@ interface UIState {
   transitionPhase: TransitionPhase;
   transitionSource: TransitionSource;
   pendingHref: string | null;
-  scrollProgress: number;
-  activeSection: string;
   setMenuOpen: (open: boolean) => void;
   requestRouteTransition: (href: string) => void;
   startHistoryTransition: () => void;
   beginEnterTransition: () => void;
   finishTransition: () => void;
-  setScrollProgress: (progress: number) => void;
-  setActiveSection: (section: string) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -24,8 +20,6 @@ export const useUIStore = create<UIState>((set) => ({
   transitionPhase: "idle",
   transitionSource: null,
   pendingHref: null,
-  scrollProgress: 0,
-  activeSection: "hero",
   setMenuOpen: (open) => set({ menuOpen: open }),
   requestRouteTransition: (href) =>
     set((state) => {
@@ -60,6 +54,4 @@ export const useUIStore = create<UIState>((set) => ({
       transitionSource: null,
       pendingHref: null,
     }),
-  setScrollProgress: (progress) => set({ scrollProgress: progress }),
-  setActiveSection: (section) => set({ activeSection: section }),
 }));

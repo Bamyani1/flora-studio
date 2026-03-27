@@ -6,7 +6,7 @@ import type { ProcessStep } from "@/components/process-reference/types";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "From conversation to delivery — how we work at Saffron Studios. Four phases, one standard: nothing leaves until it's worth keeping.",
+    "From conversation to delivery — how we work at Bahar Studio. Four phases, one standard: nothing leaves until it's worth keeping.",
 };
 
 const STEPS: ProcessStep[] = [
@@ -18,9 +18,9 @@ const STEPS: ProcessStep[] = [
     meta: "Phase: Planning & Scope",
     images: [
       {
-        src: "/images/graduation/01.jpg",
-        alt: "Planning and ideation phase for a photography session",
-        blurDataURL: getLocalBlur("/images/graduation/01.jpg"),
+        src: "/images/process/01.jpg",
+        alt: "Graduate browsing books in the library stacks",
+        blurDataURL: getLocalBlur("/images/process/01.jpg"),
       },
     ],
     layout: "single",
@@ -34,9 +34,9 @@ const STEPS: ProcessStep[] = [
     metaList: ["Phase: The Shoot"],
     images: [
       {
-        src: "/images/march-madness/01.jpg",
-        alt: "Live basketball photography during a game",
-        blurDataURL: getLocalBlur("/images/march-madness/01.jpg"),
+        src: "/images/process/02.jpg",
+        alt: "Live basketball photography during March Madness",
+        blurDataURL: getLocalBlur("/images/process/02.jpg"),
       },
     ],
     layout: "bordered",
@@ -50,9 +50,9 @@ const STEPS: ProcessStep[] = [
     meta: "Phase: Selection",
     images: [
       {
-        src: "/images/out-west/01.jpg",
-        alt: "Curated portrait from a personal session",
-        blurDataURL: getLocalBlur("/images/out-west/01.jpg"),
+        src: "/images/process/03.jpg",
+        alt: "Portrait in golden light — a curated moment",
+        blurDataURL: getLocalBlur("/images/process/03.jpg"),
       },
     ],
     layout: "ultrawide",
@@ -65,24 +65,24 @@ const STEPS: ProcessStep[] = [
       "Each selected image is graded by hand for tone, mood, and consistency. The final collection is delivered as a cohesive set — something worth coming back to.",
     images: [
       {
-        src: "/images/golden-hour/01.jpg",
-        alt: "Final graded graduation portrait",
-        blurDataURL: getLocalBlur("/images/golden-hour/01.jpg"),
+        src: "/images/process/04a.jpg",
+        alt: "Graduate reaching for a book in cap and gown",
+        blurDataURL: getLocalBlur("/images/process/04a.jpg"),
       },
       {
-        src: "/images/golden-hour/02.jpg",
-        alt: "Final delivered portrait photograph",
-        blurDataURL: getLocalBlur("/images/golden-hour/02.jpg"),
+        src: "/images/process/04b.jpg",
+        alt: "Dense forest hillside landscape",
+        blurDataURL: getLocalBlur("/images/process/04b.jpg"),
       },
       {
-        src: "/images/graduation/01.jpg",
-        alt: "Delivered graduation photograph",
-        blurDataURL: getLocalBlur("/images/graduation/01.jpg"),
+        src: "/images/process/04c.jpg",
+        alt: "Graduate sitting on stone steps",
+        blurDataURL: getLocalBlur("/images/process/04c.jpg"),
       },
       {
-        src: "/images/graduation/02.jpg",
-        alt: "Final portrait from graduation session",
-        blurDataURL: getLocalBlur("/images/graduation/02.jpg"),
+        src: "/images/process/04d.jpg",
+        alt: "Mountain panorama with clouds and mist",
+        blurDataURL: getLocalBlur("/images/process/04d.jpg"),
       },
     ],
     layout: "grid",
@@ -95,9 +95,9 @@ export default function ProcessPage() {
   return (
     <ProcessExperience
       heroImage={{
-        src: "/images/high-country/hero.jpg",
-        alt: "Photography hero image for Saffron Studios",
-        blurDataURL: getLocalBlur("/images/high-country/hero.jpg"),
+        src: "/images/exhibition-hero.jpg",
+        alt: "Empty basketball arena — Bahar Studio",
+        blurDataURL: getLocalBlur("/images/exhibition-hero.jpg"),
       }}
       steps={STEPS}
     />

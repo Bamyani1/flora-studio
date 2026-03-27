@@ -1,33 +1,40 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { contactFormSchema, type ContactFormData } from "@/lib/validations";
-import { submitContactForm } from "@/app/contact/action";
+import { Button } from "@/components/ui/Button";
 import { contactFormReveal } from "@/lib/animations";
+import { useContactForm } from "@/hooks/useContactForm";
+import type { ContactFormData } from "@/lib/validations";
 
 const photographyOptions = [
   { value: "", label: "What are we making together?" },
   { value: "milestones", label: "Milestones" },
   { value: "gatherings", label: "Gatherings" },
   { value: "motion", label: "Motion" },
+  { value: "landscape", label: "Landscape" },
   { value: "portraits", label: "Portraits" },
   { value: "professional", label: "Professional" },
 ];
-
-type FieldName = keyof ContactFormData;
 
 const labelClass = "block font-label text-xs uppercase tracking-wider text-primary/70 mb-2";
 const inputClass =
   "w-full bg-transparent border border-border/30 rounded-sm px-4 py-3 font-body text-text tracking-wider uppercase text-sm focus:border-primary/40 focus:outline-none focus:ring-0 transition-colors duration-300 placeholder:text-muted/40 placeholder:tracking-wider placeholder:uppercase placeholder:text-sm";
 
 export function CinematicContactForm() {
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldName, string>>>({});
-  const [formError, setFormError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [isPending, setIsPending] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { fieldErrors, formError, submitted, isPending, handleBlur, handleSubmit, resetSubmitted } =
+    useContactForm({
+      getData: (formData) => ({
+        name: formData.get("sender") as string,
+        email: formData.get("reply_to") as string,
+        photographyType: formData.get(
+          "photographyType",
+        ) as ContactFormData["photographyType"],
+        message: formData.get("message") as string,
+      }),
+    });
 
   useGSAP(
     () => {
@@ -76,59 +83,6 @@ export function CinematicContactForm() {
     { scope: containerRef },
   );
 
-  const validateField = useCallback((name: FieldName, value: string) => {
-    const fieldSchema = contactFormSchema.shape[name];
-    const result = fieldSchema.safeParse(value);
-    setFieldErrors((prev) => ({
-      ...prev,
-      [name]: result.success ? undefined : result.error.errors[0]?.message,
-    }));
-  }, []);
-
-  const handleBlur =
-    (name: FieldName) =>
-    (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      validateField(name, e.target.value);
-    };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setFormError(null);
-
-    const formData = new FormData(e.currentTarget);
-    const data: ContactFormData = {
-      name: formData.get("sender") as string,
-      email: formData.get("reply_to") as string,
-      photographyType: formData.get("photographyType") as ContactFormData["photographyType"],
-      message: formData.get("message") as string,
-    };
-
-    const parsed = contactFormSchema.safeParse(data);
-    if (!parsed.success) {
-      const errors: Partial<Record<FieldName, string>> = {};
-      for (const issue of parsed.error.issues) {
-        const field = issue.path[0] as FieldName;
-        if (!errors[field]) errors[field] = issue.message;
-      }
-      setFieldErrors(errors);
-      return;
-    }
-
-    setIsPending(true);
-    try {
-      const result = await submitContactForm(parsed.data);
-      if (result.success) {
-        setSubmitted(true);
-      } else {
-        setFormError(result.error ?? "Something went wrong. Please try again.");
-      }
-    } catch {
-      setFormError("Something went wrong. Please try again.");
-    } finally {
-      setIsPending(false);
-    }
-  };
-
   if (submitted) {
     return (
       <div
@@ -142,13 +96,15 @@ export function CinematicContactForm() {
         <p className="mt-4 text-sm uppercase tracking-widest text-muted">
           We&apos;ll get back to you within 24 hours.
         </p>
-        <button
+        <Button
           type="button"
-          onClick={() => setSubmitted(false)}
-          className="mt-8 font-label text-xs uppercase tracking-wider text-primary transition-colors hover:text-text"
+          variant="outline-accent"
+          size="sm"
+          className="mt-8"
+          onClick={resetSubmitted}
         >
           Send another message
-        </button>
+        </Button>
       </div>
     );
   }

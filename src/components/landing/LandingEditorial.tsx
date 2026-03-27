@@ -6,9 +6,12 @@ import { gsap } from "@/lib/gsap";
 import { fadeUp, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
 import { RevealText } from "./RevealText";
-import { getLocalBlur } from "@/lib/image-manifest";
+import { getLocalBlur, getLocalDimensions } from "@/lib/image-manifest";
+
+const editorialDims = getLocalDimensions("/images/editorial-hero.jpg");
 
 export function LandingEditorial() {
   const descRef = useRef<HTMLParagraphElement>(null);
@@ -47,12 +50,14 @@ export function LandingEditorial() {
       <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <CinematicImageReveal
-          src="/images/golden-hour/hero.jpg"
-          alt="Golden hour landscape photography"
-          className="w-full h-[60vh] md:h-[800px] mb-24 md:mb-32"
+          src="/images/editorial-hero.jpg"
+          alt="Graduate sitting on stone steps in contemplation"
+          className="w-full mb-24 md:mb-32"
           overlay={true}
-          blurDataURL={getLocalBlur("/images/golden-hour/hero.jpg")}
+          blurDataURL={getLocalBlur("/images/editorial-hero.jpg")}
           sizes="(min-width: 1280px) 1280px, 100vw"
+          width={editorialDims?.width}
+          height={editorialDims?.height}
         />
 
         <div className="max-w-4xl text-center flex flex-col items-center">
@@ -79,13 +84,16 @@ export function LandingEditorial() {
           </p>
 
           <div ref={ctaRef}>
-            <TransitionLink
+            <Button
+              as={TransitionLink}
               href="/work"
-              className="group relative inline-block overflow-hidden border border-white/20 px-8 py-4 font-label text-[10px] uppercase tracking-[0.2em] text-white hover:border-white/60 transition-colors duration-500"
+              variant="outline-subtle"
+              size="xs"
+              className="group relative overflow-hidden"
             >
               <span className="relative z-10">See the work</span>
               <div className="absolute inset-0 bg-white/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"></div>
-            </TransitionLink>
+            </Button>
           </div>
         </div>
       </div>

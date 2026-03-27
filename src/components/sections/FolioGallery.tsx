@@ -21,18 +21,21 @@ type PageLayout =
   | "centered-plate"
   | "diptych"
   | "detail-crop"
+  | "video"
   | "colophon";
 
 interface FolioPage {
   layout: PageLayout;
   images: ImageType[];
-  imageIndex: number; // 1-based index of first image
-  pageNumber: number; // 1-based page number
+  imageIndex: number;
+  pageNumber: number;
+  videoUrl?: string;
 }
 
 interface FolioGalleryProps {
   images: ImageType[];
   title: string;
+  videoUrl?: string;
 }
 
 /* ──────────────────────────────────────────────
@@ -89,7 +92,7 @@ function padIndex(n: number): string {
    Layout algorithm — maps N images to page types
    ────────────────────────────────────────────── */
 
-function buildFolioPages(images: ImageType[]): FolioPage[] {
+function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
   const pages: FolioPage[] = [];
   let pageNum = 1;
   let idx = 0;
@@ -249,6 +252,17 @@ function buildFolioPages(images: ImageType[]): FolioPage[] {
     }
   }
 
+  // Video page (if provided) — inserted before colophon
+  if (videoUrl) {
+    pages.push({
+      layout: "video",
+      images: [],
+      imageIndex: 0,
+      pageNumber: pageNum++,
+      videoUrl,
+    });
+  }
+
   // Colophon
   pages.push({ layout: "colophon", images: [], imageIndex: 0, pageNumber: pageNum });
 
@@ -274,7 +288,7 @@ function TitleContent({ title, count }: { title: string; count: number }) {
       </h2>
       <div className="folio-reveal-label mt-10 h-px bg-primary" style={{ width: 80 }} />
       <span className="folio-reveal-label mt-7 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        Saffron Studios
+        Bahar Studio
       </span>
       <span className="folio-reveal-label mt-3 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
         {imageCountLabel(count)}
@@ -486,6 +500,35 @@ function DetailCropContent({
   );
 }
 
+function VideoContent({ videoUrl, pageNumber }: { videoUrl: string; pageNumber: number }) {
+  return (
+    <div className="relative h-full min-h-screen">
+      <video
+        className="folio-reveal absolute inset-0 h-full w-full object-cover"
+        src={videoUrl}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      {/* Bottom gradient */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, color-mix(in srgb, var(--color-background) 80%, transparent) 0%, transparent 40%)",
+        }}
+      />
+      <span className="folio-reveal-label absolute bottom-10 left-10 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
+        [ FILM ]
+      </span>
+      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
+        {pageNumber}
+      </span>
+    </div>
+  );
+}
+
 function ColophonContent() {
   return (
     <div className="flex h-full min-h-screen flex-col items-center justify-center">
@@ -494,7 +537,7 @@ function ColophonContent() {
         Published by
       </span>
       <span className="folio-reveal-label mt-3 font-display text-2xl font-light italic text-text">
-        Saffron Studios
+        Bahar Studio
       </span>
       <div className="folio-reveal-label mt-8 h-px w-[60px] bg-primary" />
       <span className="folio-reveal-label mt-5 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
@@ -508,12 +551,12 @@ function ColophonContent() {
    Main component
    ────────────────────────────────────────────── */
 
-export function FolioGallery({ images, title }: FolioGalleryProps) {
+export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
-  const pages = buildFolioPages(images);
+  const pages = buildFolioPages(images, videoUrl);
   const totalNumeral = toRoman(pages.length);
 
   useGSAP(
@@ -660,6 +703,7 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
               i > 0
                 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
                 : undefined,
+            ...(i > 1 ? { contentVisibility: "auto", containIntrinsicSize: "auto 100vh" } : {}),
           }}
         >
           {page.layout === "title" && <TitleContent title={title} count={images.length} />}
@@ -690,6 +734,9 @@ export function FolioGallery({ images, title }: FolioGalleryProps) {
               index={page.imageIndex}
               pageNumber={page.pageNumber}
             />
+          )}
+          {page.layout === "video" && page.videoUrl && (
+            <VideoContent videoUrl={page.videoUrl} pageNumber={page.pageNumber} />
           )}
           {page.layout === "colophon" && <ColophonContent />}
         </div>

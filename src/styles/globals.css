@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================
-   SAFFRON STUDIOS — Design Token System
+   BAHAR STUDIO — Design Token System
    ============================================ */
 
 @theme {
@@ -68,7 +68,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
-  --tracking-hero: 0.12em; /* SAFFRON STUDIOS wordmark spacing (brand guidelines: 0.12em) */
+  --tracking-hero: 0.12em; /* BAHAR STUDIO wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
   --leading-none: 1;
@@ -220,6 +220,11 @@
   background-repeat: repeat;
   background-size: 256px 256px;
   opacity: var(--grain-opacity-medium);
+}
+
+/* Gallery section containment — isolates repaints between sections */
+.gallery-section-contained {
+  contain: layout style paint;
 }
 
 /* --- Reduced Motion Preferences --- */

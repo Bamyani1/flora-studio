@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Privacy",
   description:
-    "Interim privacy details for Saffron Studios while the full policy is being finalized.",
+    "Interim privacy details for Bahar Studio while the full policy is being finalized.",
 };
 
 const SECTIONS = [
   {
     title: "What We Collect",
-    body: "Saffron Studios currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
+    body: "Bahar Studio currently collects only the information you choose to send through inquiry forms or direct email. This typically includes your name, email address, project details, and any scheduling or location notes you provide.",
   },
   {
     title: "How It Is Used",

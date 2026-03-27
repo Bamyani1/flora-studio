@@ -321,7 +321,7 @@ export function HeroContact() {
           color: "var(--color-border)",
         }}
       >
-        SAFFRON STUDIOS &middot; PROCESSED C-41
+        BAHAR STUDIO &middot; PROCESSED C-41
       </span>
     </section>
   );

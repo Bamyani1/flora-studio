@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { timelinePhaseReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Button } from "@/components/ui/Button";
 import styles from "./process-reference.module.css";
 import type { ProcessStep } from "./types";
 import { ProcessMagnetic } from "./ProcessMagnetic";
@@ -58,55 +59,44 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
 
         // Text children: staggered fade+rise
         if (textChildren.length > 0) {
-          gsap.fromTo(
-            textChildren,
-            timelinePhaseReveal.textChild.from,
-            {
-              ...timelinePhaseReveal.textChild.to,
-              stagger: timelinePhaseReveal.textStagger,
-              ...withWillChange(),
-              scrollTrigger: {
-                trigger: stepEl,
-                ...timelinePhaseReveal.scrollTrigger,
-              },
+          gsap.fromTo(textChildren, timelinePhaseReveal.textChild.from, {
+            ...timelinePhaseReveal.textChild.to,
+            stagger: timelinePhaseReveal.textStagger,
+            ...withWillChange(),
+            scrollTrigger: {
+              trigger: stepEl,
+              ...timelinePhaseReveal.scrollTrigger,
             },
-          );
+          });
         }
 
         // Badge: elastic scale entrance
         if (badge) {
-          gsap.fromTo(
-            badge,
-            timelinePhaseReveal.badge.from,
-            {
-              ...timelinePhaseReveal.badge.to,
-              ...withWillChange(),
-              scrollTrigger: {
-                trigger: stepEl,
-                ...timelinePhaseReveal.scrollTrigger,
-              },
+          gsap.fromTo(badge, timelinePhaseReveal.badge.from, {
+            ...timelinePhaseReveal.badge.to,
+            ...withWillChange(),
+            scrollTrigger: {
+              trigger: stepEl,
+              ...timelinePhaseReveal.scrollTrigger,
             },
-          );
+          });
         }
 
         // Image: directional slide
         if (imageBlock) {
           const align = stepEl.getAttribute("data-step-align");
-          const imagePreset = align === "left" ? timelinePhaseReveal.image : timelinePhaseReveal.imageReverse;
+          const imagePreset =
+            align === "left" ? timelinePhaseReveal.image : timelinePhaseReveal.imageReverse;
 
-          gsap.fromTo(
-            imageBlock,
-            imagePreset.from,
-            {
-              ...imagePreset.to,
-              delay: 0.2,
-              ...withWillChange(),
-              scrollTrigger: {
-                trigger: stepEl,
-                ...timelinePhaseReveal.scrollTrigger,
-              },
+          gsap.fromTo(imageBlock, imagePreset.from, {
+            ...imagePreset.to,
+            delay: 0.2,
+            ...withWillChange(),
+            scrollTrigger: {
+              trigger: stepEl,
+              ...timelinePhaseReveal.scrollTrigger,
             },
-          );
+          });
         }
       });
     },
@@ -190,12 +180,15 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                 {step.action && (
                   <div data-step-text data-timeline-animate className="mt-8 inline-block">
                     <ProcessMagnetic>
-                      <Link
+                      <Button
+                        as={Link}
                         href={step.action.href}
-                        className="inline-flex border border-outline-variant/45 px-8 py-3 font-label text-[10px] uppercase tracking-widest text-[var(--process-on-surface)] transition-all hover:border-[var(--process-primary)] hover:text-[var(--process-primary)]"
+                        variant="outline-subtle"
+                        size="xs"
+                        className="border-white/30 text-[var(--process-on-surface)] hover:border-[var(--process-primary)] hover:text-[var(--process-primary)]"
                       >
                         {step.action.label}
-                      </Link>
+                      </Button>
                     </ProcessMagnetic>
                   </div>
                 )}

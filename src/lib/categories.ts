@@ -19,4 +19,8 @@ export const CATEGORY_META: Record<string, { label: string; description: string 
     label: "Professional",
     description: "Clean, confident images for the work you do.",
   },
+  landscape: {
+    label: "Landscape",
+    description: "Mountains, forests, and the silence between peaks.",
+  },
 };

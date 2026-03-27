@@ -8,6 +8,7 @@ import { gsap, SplitText } from "@/lib/gsap";
 import { withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 import { personJsonLd } from "@/lib/metadata";
 
 const TEAM_MEMBERS = [
@@ -19,12 +20,12 @@ const TEAM_MEMBERS = [
   {
     role: "Photographer",
     name: "Murtaza Anwari",
-    img: "/images/golden-hour/03.jpg",
+    img: "/images/process/03.jpg",
   },
   {
     role: "Photographer",
     name: "Enayatullah Anwari",
-    img: "/images/golden-hour/05.jpg",
+    img: "/images/process/02.jpg",
   },
 ];
 
@@ -322,7 +323,7 @@ export default function AboutPage() {
             >
               <span className="w-12 h-px bg-primary/40"></span>
               <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                The Studio
+                Bahar Studio
               </span>
               <span className="w-12 h-px bg-primary/40"></span>
             </div>
@@ -592,16 +593,15 @@ export default function AboutPage() {
               </span>
             </h2>
             <div data-about-animate="fade-up" data-delay="1.5" className="pt-12">
-              <TransitionLink
-                className="inline-flex items-center gap-6 group text-primary font-label uppercase tracking-[0.5em] text-sm font-semibold"
+              <Button
+                as={TransitionLink}
                 href="/contact"
+                variant="outline-accent"
+                size="sm"
+                className="gap-2 font-semibold"
               >
-                <span>Get in touch</span>
-                <div className="relative flex items-center">
-                  <span className="w-16 h-px bg-primary group-hover:w-32 transition-all duration-700"></span>
-                  <ChevronRight className="w-4 h-4 -ml-2 group-hover:ml-0 transition-all duration-700" />
-                </div>
-              </TransitionLink>
+                Get in touch <span aria-hidden="true">&rarr;</span>
+              </Button>
             </div>
           </div>
           <div

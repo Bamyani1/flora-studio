@@ -238,7 +238,7 @@ export function HeroExposure() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Saffron Studios — double exposure"
+              alt="Bahar Studio — double exposure"
               fill
               sizes="80vw"
               priority
@@ -267,7 +267,7 @@ export function HeroExposure() {
                 whiteSpace: "nowrap",
               }}
             >
-              SAFFRON
+              BAHAR
             </span>
           </div>
 
@@ -362,7 +362,7 @@ export function HeroExposure() {
           color: "var(--color-border)",
         }}
       >
-        SAFFRON STUDIOS
+        BAHAR STUDIO
       </span>
     </section>
   );

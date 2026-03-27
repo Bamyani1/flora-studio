@@ -13,7 +13,7 @@ import {
 } from "@/lib/fonts";
 
 export const metadata = {
-  title: "Hero Variations — Saffron Studios",
+  title: "Hero Variations — Bahar Studio",
 };
 
 const HEROES = [
@@ -138,7 +138,7 @@ export default function HeroesPage() {
           color: "color-mix(in srgb, var(--color-text) 40%, transparent)",
         }}
       >
-        Eleven approaches to the Saffron Studios landing
+        Eleven approaches to the Bahar Studio landing
       </p>
 
       {/* Grid */}

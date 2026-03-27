@@ -313,7 +313,7 @@ export function HeroReel() {
           zIndex: 20,
         }}
       >
-        SAFFRON STUDIOS
+        BAHAR STUDIO
       </span>
 
       {/* ---------- Bottom-center label ---------- */}

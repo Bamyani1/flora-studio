@@ -19,15 +19,8 @@ export const ALBUM_BY_SLUG_QUERY = defineQuery(
     title, slug, category, year, location, description,
     heroImage, "heroBlur": heroImage.asset->metadata.lqip,
     images[] { asset->, alt, caption, "blurDataURL": asset->metadata.lqip },
-    narrative
+    narrative, videoUrl
   }`,
 );
 
 export const ALBUM_SLUGS_QUERY = defineQuery(`*[_type == "album"] { "slug": slug.current }`);
-
-export const ABOUT_QUERY = defineQuery(
-  `*[_type == "about"][0] {
-    bio, portrait, "portraitBlur": portrait.asset->metadata.lqip,
-    approach, services[], socialLinks[]
-  }`,
-);

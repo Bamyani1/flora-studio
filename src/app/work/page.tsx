@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { client } from "@/sanity/client";
-import { ALBUMS_QUERY } from "@/sanity/queries";
-import { PLACEHOLDER_ALL_ALBUMS } from "@/lib/placeholder-data";
+import { getAllAlbums } from "@/lib/albums";
 import { buildGalleryLayout } from "@/lib/gallery-layout";
 import {
   GalleryHero,
@@ -9,24 +7,15 @@ import {
   GalleryFullBleed,
   GalleryTextureCards,
 } from "@/components/sections/gallery";
-import type { AlbumMeta } from "@/types/project";
-
 export const metadata: Metadata = {
   title: "Work",
-  description: "Selected photography by Saffron Studios.",
+  description: "Selected photography by Bahar Studio.",
 };
-
-async function getAllAlbums(): Promise<AlbumMeta[]> {
-  try {
-    return await client.fetch(ALBUMS_QUERY);
-  } catch {
-    return PLACEHOLDER_ALL_ALBUMS;
-  }
-}
 
 export default async function WorkPage() {
   const albums = await getAllAlbums();
   const sections = buildGalleryLayout(albums);
+  const performanceMode = "default" as const;
 
   return (
     <main id="main-content">
@@ -34,7 +23,13 @@ export default async function WorkPage() {
         switch (section.type) {
           case "hero":
             return (
-              <GalleryHero key={section.album._id} album={section.album} index={i + 1} priority />
+              <GalleryHero
+                key={section.album._id}
+                album={section.album}
+                index={i + 1}
+                priority
+                performanceMode={performanceMode}
+              />
             );
           case "bento":
             return (
@@ -43,16 +38,28 @@ export default async function WorkPage() {
                 album={section.album}
                 index={i + 1}
                 reversed={section.reversed}
+                performanceMode={performanceMode}
+                deferOffscreen={i > 0}
               />
             );
           case "fullBleed":
-            return <GalleryFullBleed key={section.album._id} album={section.album} index={i + 1} />;
+            return (
+              <GalleryFullBleed
+                key={section.album._id}
+                album={section.album}
+                index={i + 1}
+                performanceMode={performanceMode}
+                deferOffscreen={i > 0}
+              />
+            );
           case "textureCards":
             return (
               <GalleryTextureCards
                 key={`${section.albums[0]._id}-${section.albums[1]._id}`}
                 albums={section.albums}
                 index={i + 1}
+                performanceMode={performanceMode}
+                deferOffscreen={i > 0}
               />
             );
         }

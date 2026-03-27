@@ -93,7 +93,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const hero = HERO_REGISTRY[slug];
     return {
-      title: hero ? `${hero.title} — Hero Variations — Saffron Studios` : "Hero Variations",
+      title: hero ? `${hero.title} — Hero Variations — Bahar Studio` : "Hero Variations",
     };
   });
 }

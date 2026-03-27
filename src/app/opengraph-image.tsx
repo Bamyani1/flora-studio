@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Saffron Studios — Photography that's worth keeping";
+export const alt = "Bahar Studio — Photography that's worth keeping";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -19,7 +19,7 @@ export default function OGImage() {
         color: "#F5F0EB",
       }}
     >
-      {/* Three Threads mark */}
+      {/* Bahar Studio mark */}
       <svg width="80" height="80" viewBox="30 20 40 45" style={{ marginBottom: 32 }}>
         <rect
           x="38"
@@ -63,7 +63,7 @@ export default function OGImage() {
           lineHeight: 1,
         }}
       >
-        SAFFRON
+        BAHAR
       </div>
       <div
         style={{
@@ -73,7 +73,7 @@ export default function OGImage() {
           color: "#F5F0EB",
         }}
       >
-        STUDIOS
+        STUDIO
       </div>
       <div
         style={{

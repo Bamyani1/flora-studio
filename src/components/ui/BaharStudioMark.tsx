@@ -3,7 +3,7 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
 
 /** Ref handle exposing individual SVG elements for GSAP animation */
-export interface ThreeThreadsMarkHandle {
+export interface BaharStudioMarkHandle {
   threads: SVGPathElement[];
   frame: SVGRectElement | null;
   convergence: SVGCircleElement | null;
@@ -11,7 +11,7 @@ export interface ThreeThreadsMarkHandle {
   root: SVGSVGElement | null;
 }
 
-interface ThreeThreadsMarkProps {
+interface BaharStudioMarkProps {
   size?: number;
   className?: string;
   style?: React.CSSProperties;
@@ -20,13 +20,13 @@ interface ThreeThreadsMarkProps {
 }
 
 /**
- * Three Threads Breaking the Frame — Saffron Studios brand mark.
+ * Bahar Studio mark.
  *
  * A thin rectangular frame (photograph) with three organic threads
  * growing from inside and pushing beyond its top edge.
  */
-export const ThreeThreadsMark = forwardRef<ThreeThreadsMarkHandle, ThreeThreadsMarkProps>(
-  function ThreeThreadsMark({ size = 24, className, style, viewBox }, ref) {
+export const BaharStudioMark = forwardRef<BaharStudioMarkHandle, BaharStudioMarkProps>(
+  function BaharStudioMark({ size = 24, className, style, viewBox }, ref) {
     const svgRef = useRef<SVGSVGElement>(null);
     const threadRefs = useRef<(SVGPathElement | null)[]>([]);
     const frameRef = useRef<SVGRectElement>(null);

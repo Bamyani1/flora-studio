@@ -1,12 +1,12 @@
 <div align="center">
 
-# SAFFRON STUDIOS
+# BAHAR STUDIO
 
 _Photography that's worth keeping._
 
 <!-- Replace with a full-width screenshot of the homepage -->
 
-![Saffron Studios](screenshots/hero.png)
+![Bahar Studio](screenshots/hero.png)
 
 ![Next.js 16](https://img.shields.io/badge/Next.js-16.2-0B0C0E?style=flat-square&logo=next.js)
 ![React 19](https://img.shields.io/badge/React-19.2-0B0C0E?style=flat-square&logo=react)
@@ -25,7 +25,7 @@ _Photography that's worth keeping._
 
 A photography studio built on patience and craft. We believe the best images aren't found — they're cultivated. Every frame is composed with intention, selected with care, and refined by hand.
 
-[View the live site &rarr;](https://saffronstudios.com)
+[View the live site &rarr;](https://baharstudio.com)
 
 ---
 
@@ -225,8 +225,8 @@ Zod 3.24 (validation) · Resend 4.0 (email) · Sharp 0.34 (image optimization) �
 ## Getting Started
 
 ```bash
-git clone https://github.com/Bamyani1/saffron-studios.git
-cd saffron-studios
+git clone https://github.com/Bamyani1/bahar-studio.git
+cd bahar-studio
 npm install
 ```
 
@@ -241,14 +241,13 @@ cp .env.example .env.local
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-07-11
-SANITY_API_READ_TOKEN=your_read_token
 
 # Email (Resend)
 RESEND_API_KEY=re_your_api_key
-CONTACT_EMAIL=hello@saffronstudios.com
+CONTACT_EMAIL=hello@baharstudio.com
 
 # Site
-NEXT_PUBLIC_SITE_URL=https://saffronstudios.com
+NEXT_PUBLIC_SITE_URL=https://baharstudio.com
 ```
 
 ```bash
@@ -261,4 +260,4 @@ npm run dev
 
 ---
 
-&copy; 2026 Saffron Studios
+&copy; 2026 Bahar Studio

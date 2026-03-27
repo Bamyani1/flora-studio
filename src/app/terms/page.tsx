@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms",
   description:
-    "Interim terms for Saffron Studios while the full legal language is being finalized.",
+    "Interim terms for Bahar Studio while the full legal language is being finalized.",
 };
 
 const TERMS = [
   {
     title: "Portfolio Use",
-    body: "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Saffron Studios and may not be reused without written permission.",
+    body: "This site and its photography are presented for portfolio and inquiry purposes. Unless otherwise stated, all imagery, text, and branding remain the property of Bahar Studio and may not be reused without written permission.",
   },
   {
     title: "Inquiry Expectations",
@@ -17,7 +17,7 @@ const TERMS = [
   },
   {
     title: "Site Availability",
-    body: "Saffron Studios may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
+    body: "Bahar Studio may update, revise, or temporarily remove pages, galleries, and contact details without notice while the portfolio evolves toward launch.",
   },
   {
     title: "Interim Status",

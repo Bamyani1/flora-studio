@@ -7,7 +7,7 @@ import { CinematicContactForm } from "@/components/ui/CinematicContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Saffron Studios in Dayton, Ohio. Available for milestones, gatherings, motion, portraits, and professional photography.",
+    "Get in touch with Bahar Studio in Dayton, Ohio. Available for milestones, gatherings, motion, portraits, and professional photography.",
 };
 
 function SocialIcon({ icon }: { icon: string }) {
@@ -53,7 +53,7 @@ export default function ContactPage() {
           <div className="relative z-10">
             <FadeIn>
               <span className="mb-8 block font-label text-xs uppercase tracking-wider text-primary">
-                Saffron Studios
+                Bahar Studio
               </span>
             </FadeIn>
 
@@ -76,10 +76,10 @@ export default function ContactPage() {
           <div className="relative z-10">
             <FadeIn delay={0.3}>
               <span className="mb-4 block font-label text-xs uppercase tracking-wider text-primary">
-                The Studio
+                Bahar Studio
               </span>
               <p className="mb-1 font-body text-base text-text-heading">Dayton, Ohio</p>
-              <p className="mt-3 font-body text-sm text-muted">hello@saffronstudios.com</p>
+              <p className="mt-3 font-body text-sm text-muted">hello@baharstudio.com</p>
               <p className="font-body text-sm text-muted">(937) 555-0142</p>
 
               <div className="mt-8 flex space-x-6">

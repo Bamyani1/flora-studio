@@ -65,7 +65,7 @@ export function TextReveal({
         scrollTrigger: {
           trigger: ref.current,
           ...textRevealWords.scrollTrigger,
-          ...(scrub && { scrub: 1 }),
+          ...(scrub && { scrub: true }),
         },
       });
 

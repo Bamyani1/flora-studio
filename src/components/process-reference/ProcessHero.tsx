@@ -117,7 +117,7 @@ export function ProcessHero({ image }: ProcessHeroProps) {
           data-hero-child
           className="mb-6 block font-label text-xs uppercase tracking-[0.4em] text-[var(--process-primary)]"
         >
-          Saffron Studios Process
+          Bahar Studio Process
         </span>
         <h1
           data-hero-child
@@ -138,9 +138,9 @@ export function ProcessHero({ image }: ProcessHeroProps) {
                   .getElementById("process")
                   ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="interactive cursor-pointer"
+              className="interactive cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[var(--process-primary)]/40"
             >
-              <ChevronDown className="h-8 w-8 text-[var(--process-primary)]" />
+              <ChevronDown className="h-6 w-6 text-[var(--process-primary)]" />
             </a>
           </ProcessMagnetic>
           <div className="h-[1px] w-24 bg-gradient-to-r from-[var(--process-outline-variant)] via-[var(--process-outline-variant)] to-transparent" />

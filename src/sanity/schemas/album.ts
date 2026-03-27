@@ -29,6 +29,7 @@ export const album = defineType({
           { title: "Motion", value: "motion" },
           { title: "Portraits", value: "portraits" },
           { title: "Professional", value: "professional" },
+          { title: "Landscape", value: "landscape" },
         ],
       },
       validation: (rule) => rule.required(),
@@ -81,6 +82,12 @@ export const album = defineType({
           ],
         },
       ],
+    }),
+    defineField({
+      name: "videoUrl",
+      title: "Video URL",
+      type: "string",
+      description: "Path to a video file (e.g. /videos/milestone.mp4)",
     }),
     defineField({
       name: "featured",

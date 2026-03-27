@@ -26,7 +26,7 @@ export const textRevealWords = {
   splitConfig: { type: "words" } as const,
   from: { opacity: 0.15 },
   to: { opacity: 1, stagger: 0.05 },
-  scrollTrigger: { start: "top 80%", end: "bottom 20%", scrub: 0.3 },
+  scrollTrigger: { start: "top 80%", end: "bottom 20%", scrub: true },
 };
 
 // --------------------------------------------------
@@ -321,9 +321,20 @@ export const folioReveal = {
 // cinematicHeroReveal — Gallery hero: blur/brightness/scale entrance + parallax
 // --------------------------------------------------
 export const cinematicHeroReveal = {
+  /** Image only uses scale — filter work moves to overlay layers */
   image: {
-    from: { scale: 1.15, filter: "brightness(0.1) blur(20px)" },
-    to: { scale: 1, filter: "brightness(1) blur(0px)", duration: 3.5, ease: "power3.inOut" },
+    from: { scale: 1.15 },
+    to: { scale: 1, duration: 3.5, ease: "power3.inOut" },
+  },
+  /** Dark overlay: simulates brightness(0.1) → brightness(1) */
+  darkOverlay: {
+    from: { autoAlpha: 0.9 },
+    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
+  },
+  /** Blur overlay: backdrop-filter fades out, then hidden from compositor */
+  blurOverlay: {
+    from: { autoAlpha: 1 },
+    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
   },
   nav: {
     from: { y: -20, autoAlpha: 0 },
@@ -347,7 +358,41 @@ export const cinematicHeroReveal = {
   },
   parallax: {
     to: { yPercent: 20, ease: "none" },
-    scrollTrigger: { start: "top top", end: "bottom top", scrub: 0.5 },
+    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+  },
+};
+
+// --------------------------------------------------
+// layeredHeroReveal — Text-behind-subject editorial effect
+// Three depth layers with differential parallax
+// --------------------------------------------------
+export const layeredHeroReveal = {
+  /** Background layer (farthest) — same as cinematicHeroReveal */
+  background: cinematicHeroReveal.image,
+  /** Title text appears between bg and subject — starts while subject is ~89% opaque */
+  title: {
+    from: { y: 30, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 2, ease: "power2.out" },
+  },
+  /** Subject layer (closest) — appears fast so it's opaque before title shows */
+  subject: {
+    from: { autoAlpha: 0, scale: 1.02 },
+    to: { autoAlpha: 1, scale: 1, duration: 1.5, ease: "power2.out" },
+  },
+  /** Dolly zoom + parallax: bg zooms out while subject zooms in on scroll */
+  parallax: {
+    background: {
+      to: { yPercent: 20, scale: 0.85, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
+    title: {
+      to: { yPercent: 12, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
+    subject: {
+      to: { yPercent: -8, scale: 1.35, ease: "none" },
+      scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+    },
   },
 };
 
@@ -399,7 +444,7 @@ export const bentoSplitReveal = {
   /** Static filter applied once via CSS — never animated */
   grayFilter: "grayscale(100%) brightness(0.5)",
   /** Shared ScrollTrigger config for the timeline */
-  scrollTrigger: { start: "top 80%", end: "bottom top", scrub: 0.5 },
+  scrollTrigger: { start: "top 80%", end: "bottom top", scrub: true },
   text: {
     from: { y: 40, autoAlpha: 0 },
     to: { y: 0, autoAlpha: 1, stagger: 0.15, duration: 1.2, ease: easings.smooth },
@@ -414,7 +459,7 @@ export const fullBleedShowcase = {
   image: {
     from: { scale: 1.1, yPercent: -10 },
     to: { scale: 1, yPercent: 10, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: 0.5 },
+    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
   },
   text: {
     from: { y: 50, autoAlpha: 0, scale: 0.9 },
@@ -435,7 +480,7 @@ export const textureCardReveal = {
   image: {
     from: { scale: 1.15, yPercent: -5 },
     to: { scale: 1, yPercent: 5, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: 0.5 },
+    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
   },
 };
 
@@ -454,7 +499,7 @@ export const headerShrink = {
   scrollTrigger: {
     start: 0,
     end: 150,
-    scrub: 0.5,
+    scrub: true,
   },
   from: {
     height: "5rem",
@@ -462,7 +507,6 @@ export const headerShrink = {
     paddingBottom: "1.25rem",
     backgroundColor: "#161a12",
     borderColor: "rgba(255,255,255,0.15)",
-    boxShadow: "0 0 0 rgba(0,0,0,0)",
     borderRadius: "0px",
   },
   to: {
@@ -471,10 +515,10 @@ export const headerShrink = {
     paddingBottom: "0.625rem",
     backgroundColor: "rgba(17,18,16,0.35)",
     borderColor: "rgba(255,255,255,0.2)",
-    boxShadow: "0 4px 30px rgba(0,0,0,0.3)",
     borderRadius: "2px",
   },
-  blur: { from: 0, to: 0 },
+  /** Shadow is now on overlay element — animate its opacity instead */
+  shadow: { from: { opacity: 0 }, to: { opacity: 1 } },
   logo: {
     from: { fontSize: "1.5rem" },
     to: { fontSize: "1.25rem" },
@@ -659,12 +703,12 @@ export const heroMonolithSequence = {
   },
   overlayScroll: {
     to: { opacity: 0.65, ease: "none" },
-    scrollTrigger: { start: "top top", end: "bottom top", scrub: 0.5 },
+    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
   },
   imageScale: {
     from: { scale: 1.05 },
     to: { scale: 1, ease: "none" },
-    scrollTrigger: { start: "top top", end: "bottom top", scrub: 0.5 },
+    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
   },
   subtitle: {
     from: { autoAlpha: 0 },
@@ -1035,7 +1079,7 @@ export const heroSpliceSequence = {
 export const scrollApertureProgress = {
   bladeRotation: { from: 15, to: 0 },
   ringOpacity: { from: 0.3, to: 0.8 },
-  scrollTrigger: { start: "top top", end: "bottom bottom", scrub: 0.3 },
+  scrollTrigger: { start: "top top", end: "bottom bottom", scrub: true },
 };
 
 // --------------------------------------------------

@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { ReactLenis, useLenis } from "lenis/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { clearLenisRootState, getRouteScrollMode, lenisOptions } from "@/lib/scroll";
 
 function LenisGsapSync() {
   const lenis = useLenis();
@@ -11,13 +14,16 @@ function LenisGsapSync() {
   useEffect(() => {
     if (!lenis) return;
 
+    const removeScrollListener = lenis.on("scroll", ScrollTrigger.update);
     const callback = (time: number) => {
       lenis.raf(time * 1000);
     };
 
+    gsap.ticker.lagSmoothing(0);
     gsap.ticker.add(callback);
 
     return () => {
+      removeScrollListener();
       gsap.ticker.remove(callback);
     };
   }, [lenis]);
@@ -26,8 +32,34 @@ function LenisGsapSync() {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const reducedMotion = useReducedMotion();
+  const scrollMode = getRouteScrollMode(pathname);
+  const useNativeScroll = reducedMotion || scrollMode === "native";
+
+  useEffect(() => {
+    if (useNativeScroll) {
+      clearLenisRootState();
+    }
+
+    const timer = setTimeout(() => {
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [pathname, useNativeScroll]);
+
+  if (useNativeScroll) {
+    return (
+      <>
+        <CustomCursor disabled={scrollMode === "native"} />
+        {children}
+      </>
+    );
+  }
+
   return (
-    <ReactLenis root options={{ duration: 1.4, lerp: 0.06, autoRaf: false }}>
+    <ReactLenis root options={lenisOptions}>
       <LenisGsapSync />
       <CustomCursor />
       {children}

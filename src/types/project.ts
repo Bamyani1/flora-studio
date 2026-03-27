@@ -11,17 +11,23 @@ export interface SanityImage {
   url?: string;
 }
 
+export interface HeroLayers {
+  background: SanityImage;
+  subject: SanityImage;
+}
+
 export interface AlbumMeta {
   _id: string;
   title: string;
   slug: { current: string };
-  category: "milestones" | "gatherings" | "motion" | "portraits" | "professional";
+  category: "milestones" | "gatherings" | "motion" | "portraits" | "professional" | "landscape";
   description?: string;
   year?: number;
   location?: string;
   coverImage: SanityImage;
   blurDataURL?: string;
   order?: number;
+  heroLayers?: HeroLayers;
 }
 
 export interface Album extends AlbumMeta {
@@ -30,4 +36,5 @@ export interface Album extends AlbumMeta {
   images: (SanityImage & { blurDataURL?: string })[];
   narrative?: string;
   featured?: boolean;
+  videoUrl?: string;
 }
