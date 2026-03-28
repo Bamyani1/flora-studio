@@ -1,15 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface ProcessParallaxImageProps {
   src: string;
   alt: string;
-  blurDataURL?: string | null;
   className?: string;
   imageClassName?: string;
   priority?: boolean;
@@ -18,7 +17,6 @@ interface ProcessParallaxImageProps {
 export function ProcessParallaxImage({
   src,
   alt,
-  blurDataURL,
   className = "",
   imageClassName = "",
   priority = false,
@@ -56,14 +54,12 @@ export function ProcessParallaxImage({
   return (
     <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
       <div ref={innerRef} className="absolute inset-0 h-[130%] w-full -top-[15%]">
-        <Image
+        <SiteMedia
           src={src}
           alt={alt}
           fill
           priority={priority}
           className={`object-cover ${imageClassName}`}
-          placeholder={blurDataURL ? "blur" : undefined}
-          blurDataURL={blurDataURL ?? undefined}
           sizes="(min-width: 768px) 50vw, 100vw"
         />
       </div>

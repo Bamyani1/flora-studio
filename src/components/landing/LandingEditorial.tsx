@@ -9,9 +9,7 @@ import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
 import { RevealText } from "./RevealText";
-import { getLocalBlur, getLocalDimensions } from "@/lib/image-manifest";
-
-const editorialDims = getLocalDimensions("/images/editorial-hero.jpg");
+import { LANDING_MEDIA } from "@/lib/site-media";
 
 export function LandingEditorial() {
   const descRef = useRef<HTMLParagraphElement>(null);
@@ -50,14 +48,13 @@ export function LandingEditorial() {
       <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <CinematicImageReveal
-          src="/images/editorial-hero.jpg"
-          alt="Graduate sitting on stone steps in contemplation"
+          src={LANDING_MEDIA.editorial.src}
+          alt={LANDING_MEDIA.editorial.alt}
           className="w-full mb-24 md:mb-32"
           overlay={true}
-          blurDataURL={getLocalBlur("/images/editorial-hero.jpg")}
           sizes="(min-width: 1280px) 1280px, 100vw"
-          width={editorialDims?.width}
-          height={editorialDims?.height}
+          width={LANDING_MEDIA.editorial.width}
+          height={LANDING_MEDIA.editorial.height}
         />
 
         <div className="max-w-4xl text-center flex flex-col items-center">

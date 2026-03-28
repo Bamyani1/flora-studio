@@ -1,19 +1,10 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { HeaderContactAction } from "@/components/layout/HeaderContactAction";
 import { setMockPathname } from "../setup/mockNextNavigation";
 
 describe("HeaderContactAction", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-    document.body.innerHTML = "";
-  });
-
-  it("renders a transition link outside the process route", () => {
+  it("renders a transition link to contact", () => {
     setMockPathname("/about");
 
     render(<HeaderContactAction />);
@@ -24,36 +15,14 @@ describe("HeaderContactAction", () => {
     );
   });
 
-  it("scrolls to the process contact section on the process route", () => {
-    setMockPathname("/process");
-    const target = document.createElement("section");
-    target.id = "contact";
-    const scrollSpy = vi.spyOn(target, "scrollIntoView");
-    document.body.appendChild(target);
+  it("renders custom label when provided", () => {
+    setMockPathname("/");
 
-    render(<HeaderContactAction />);
+    render(<HeaderContactAction label="Contact us" />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Get in touch" }));
-
-    expect(scrollSpy).toHaveBeenCalledWith({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-
-  it("clears delayed process-route scroll timers on unmount", () => {
-    setMockPathname("/process");
-    const target = document.createElement("section");
-    target.id = "contact";
-    const scrollSpy = vi.spyOn(target, "scrollIntoView");
-    document.body.appendChild(target);
-
-    const { unmount } = render(<HeaderContactAction scrollDelayMs={300} />);
-
-    fireEvent.click(screen.getByRole("button", { name: "Get in touch" }));
-    unmount();
-    vi.advanceTimersByTime(300);
-
-    expect(scrollSpy).not.toHaveBeenCalled();
+    expect(screen.getByRole("link", { name: "Contact us" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
   });
 });

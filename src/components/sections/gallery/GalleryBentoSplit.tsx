@@ -1,15 +1,15 @@
 "use client";
 
 import { useRef, type CSSProperties } from "react";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { bentoSplitReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl, getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GallerySectionProps } from "./types";
 
 interface BentoSplitProps extends GallerySectionProps {
@@ -25,7 +25,6 @@ export function GalleryBentoSplit({
 }: BentoSplitProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const coverUrl = resolveImageUrl(album.coverImage);
   const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const description = CATEGORY_META[album.category]?.description ?? "";
@@ -116,20 +115,14 @@ export function GalleryBentoSplit({
         <div className="bento-img-wrapper absolute inset-0" style={imageShellStyle}>
           {smoothMode ? (
             <>
-              {coverUrl ? (
-                <Image
-                  alt={album.title}
-                  className="absolute inset-0 object-cover w-full h-full"
-                  src={coverUrl}
-                  fill
-                  loading={priority ? "eager" : "lazy"}
-                  sizes="(min-width: 768px) 66vw, 100vw"
-                  placeholder={album.blurDataURL ? "blur" : undefined}
-                  blurDataURL={album.blurDataURL}
-                />
-              ) : (
-                <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-              )}
+              <SiteMedia
+                alt={`${album.title} cover placeholder`}
+                className="absolute inset-0 object-cover w-full h-full"
+                src={album.coverImage.url}
+                fill
+                loading={priority ? "eager" : "lazy"}
+                sizes="(min-width: 768px) 66vw, 100vw"
+              />
               <div
                 className="absolute inset-0 bg-[var(--color-surface-deep)]/12"
                 aria-hidden="true"
@@ -137,39 +130,24 @@ export function GalleryBentoSplit({
             </>
           ) : (
             <>
-              {coverUrl ? (
-                <Image
-                  alt=""
-                  aria-hidden
-                  className="object-cover w-full h-full"
-                  style={{ filter: bentoSplitReveal.grayFilter }}
-                  src={coverUrl}
-                  fill
-                  loading={priority ? "eager" : "lazy"}
-                  sizes="(min-width: 768px) 66vw, 100vw"
-                  placeholder={album.blurDataURL ? "blur" : undefined}
-                  blurDataURL={album.blurDataURL}
-                />
-              ) : (
-                <div
-                  className="h-full w-full bg-gradient-to-br from-surface to-surface-elevated"
-                  style={{ filter: bentoSplitReveal.grayFilter }}
-                />
-              )}
-              {coverUrl ? (
-                <Image
-                  alt={album.title}
-                  className="bento-img-color absolute inset-0 object-cover w-full h-full"
-                  src={coverUrl}
-                  fill
-                  loading={priority ? "eager" : "lazy"}
-                  sizes="(min-width: 768px) 66vw, 100vw"
-                  placeholder={album.blurDataURL ? "blur" : undefined}
-                  blurDataURL={album.blurDataURL}
-                />
-              ) : (
-                <div className="bento-img-color absolute inset-0 h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-              )}
+              <SiteMedia
+                alt=""
+                aria-hidden
+                className="object-cover w-full h-full"
+                style={{ filter: bentoSplitReveal.grayFilter }}
+                src={album.coverImage.url}
+                fill
+                loading={priority ? "eager" : "lazy"}
+                sizes="(min-width: 768px) 66vw, 100vw"
+              />
+              <SiteMedia
+                alt={`${album.title} cover placeholder`}
+                className="bento-img-color absolute inset-0 object-cover w-full h-full"
+                src={album.coverImage.url}
+                fill
+                loading={priority ? "eager" : "lazy"}
+                sizes="(min-width: 768px) 66vw, 100vw"
+              />
             </>
           )}
         </div>

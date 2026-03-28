@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -10,6 +9,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import styles from "./process-reference.module.css";
 import type { ProcessImage } from "./types";
 import { ProcessMagnetic } from "./ProcessMagnetic";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface ProcessHeroProps {
   image: ProcessImage;
@@ -97,14 +97,12 @@ export function ProcessHero({ image }: ProcessHeroProps) {
     >
       <div ref={bgRef} className="absolute inset-0 z-0">
         <div ref={imageWrapperRef} className="relative h-full w-full">
-          <Image
+          <SiteMedia
             src={image.src}
             alt={image.alt}
             fill
             priority
-            className="object-cover grayscale brightness-50"
-            placeholder={image.blurDataURL ? "blur" : undefined}
-            blurDataURL={image.blurDataURL ?? undefined}
+            className="object-cover grayscale brightness-[0.35]"
             sizes="100vw"
           />
         </div>
@@ -113,12 +111,6 @@ export function ProcessHero({ image }: ProcessHeroProps) {
       <div className={`pointer-events-none absolute inset-0 z-0 ${styles.cinematicVignette}`} />
 
       <div ref={contentRef} className="relative z-10 px-4 text-center">
-        <span
-          data-hero-child
-          className="mb-6 block font-label text-xs uppercase tracking-[0.4em] text-[var(--process-primary)]"
-        >
-          Bahar Studio Process
-        </span>
         <h1
           data-hero-child
           className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-8xl"
@@ -138,7 +130,7 @@ export function ProcessHero({ image }: ProcessHeroProps) {
                   .getElementById("process")
                   ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="interactive cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border border-[var(--process-primary)]/40"
+              className="interactive cursor-pointer flex items-center justify-center"
             >
               <ChevronDown className="h-6 w-6 text-[var(--process-primary)]" />
             </a>

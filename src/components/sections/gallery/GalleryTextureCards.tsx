@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, type CSSProperties } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { textureCardReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl, getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GalleryDualSectionProps } from "./types";
 
 export function GalleryTextureCards({
@@ -91,7 +91,6 @@ export function GalleryTextureCards({
     >
       {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
       {albums.map((album) => {
-        const coverUrl = resolveImageUrl(album.coverImage);
         const dims = getImageDimensions(album.coverImage);
         const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
 
@@ -106,20 +105,14 @@ export function GalleryTextureCards({
             }}
           >
             <div className="absolute inset-0 transition-transform duration-[2s] ease-out group-hover/texture:scale-105">
-              {coverUrl ? (
-                <Image
-                  alt={album.title}
-                  className="texture-img object-cover w-full h-full opacity-80"
-                  src={coverUrl}
-                  fill
-                  loading="lazy"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  placeholder={album.blurDataURL ? "blur" : undefined}
-                  blurDataURL={album.blurDataURL}
-                />
-              ) : (
-                <div className="texture-img h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-              )}
+              <SiteMedia
+                alt={`${album.title} cover placeholder`}
+                className="texture-img object-cover w-full h-full opacity-80"
+                src={album.coverImage.url}
+                fill
+                loading="lazy"
+                sizes="(min-width: 768px) 50vw, 100vw"
+              />
             </div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-12 transition-transform duration-500 group-hover/texture:translate-y-[-10px]">

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
-import { resolveImageUrl } from "@/lib/image-url";
 import { imageGalleryJsonLd } from "@/lib/metadata";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
@@ -41,8 +40,6 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
 
   if (!album) notFound();
 
-  const heroUrl = resolveImageUrl(album.heroImage);
-
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
     description: album.description,
@@ -61,8 +58,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         category={album.category}
         year={album.year}
         location={album.location}
-        heroUrl={heroUrl}
-        heroBlur={album.heroBlur}
+        heroImage={album.heroImage}
       />
 
       {album.narrative && (

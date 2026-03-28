@@ -1,14 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { landingHeroGridSequence } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { getLocalBlur } from "@/lib/image-manifest";
-
-const blurDataURL = getLocalBlur("/images/landing-hero.jpg");
+import { SiteMedia } from "@/components/ui/SiteMedia";
+import { LANDING_MEDIA } from "@/lib/site-media";
 
 export function LandingHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -66,15 +64,13 @@ export function LandingHero() {
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
           <div ref={bgImageRef} className="absolute inset-0">
-            <Image
-              src="/images/landing-hero.jpg"
-              alt="Atmospheric photograph"
+            <SiteMedia
+              src={LANDING_MEDIA.hero.src}
+              alt={LANDING_MEDIA.hero.alt}
               fill
               className="object-cover"
               priority
               sizes="(max-width: 768px) 100vw, 55vw"
-              placeholder={blurDataURL ? "blur" : undefined}
-              blurDataURL={blurDataURL}
             />
             {/* Gradient overlay */}
             <div

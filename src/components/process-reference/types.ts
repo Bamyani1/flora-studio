@@ -1,7 +1,6 @@
 export interface ProcessImage {
   src: string;
   alt: string;
-  blurDataURL?: string | null;
 }
 
 export interface ProcessAction {

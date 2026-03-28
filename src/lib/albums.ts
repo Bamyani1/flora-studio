@@ -5,7 +5,11 @@ import {
   ALBUMS_QUERY,
   FEATURED_ALBUMS_QUERY,
 } from "@/sanity/queries";
-import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP, PLACEHOLDER_FEATURED_ALBUMS } from "@/lib/placeholder-data";
+import {
+  PLACEHOLDER_ALL_ALBUMS,
+  PLACEHOLDER_ALBUM_MAP,
+  PLACEHOLDER_FEATURED_ALBUMS,
+} from "@/lib/placeholder-data";
 import type { Album, AlbumMeta } from "@/types/project";
 
 export interface AlbumNavigationItem {
@@ -57,11 +61,14 @@ export async function getAllAlbums(): Promise<AlbumMeta[]> {
 }
 
 export async function getFeaturedAlbum(): Promise<AlbumMeta> {
+  const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
   try {
     const albums = await client.fetch(FEATURED_ALBUMS_QUERY);
-    return albums?.[0] ?? PLACEHOLDER_FEATURED_ALBUMS[0];
+    return Array.isArray(albums) && albums.length > 0
+      ? pick(albums)
+      : pick(PLACEHOLDER_FEATURED_ALBUMS);
   } catch {
-    return PLACEHOLDER_FEATURED_ALBUMS[0];
+    return pick(PLACEHOLDER_FEATURED_ALBUMS);
   }
 }
 
