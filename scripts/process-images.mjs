@@ -14,26 +14,30 @@ const SRC = "/Users/bamyani/Desktop/bmayan/pictures";
 const DEST = "/Users/bamyani/Desktop/bmayan/public/images";
 const MAX_DIM = 3200;
 const QUALITY = 85;
+const HERO_MAX_DIM = 4800;
+const HERO_QUALITY = 95;
 
 /** Resize a single image and return its output dimensions */
-async function processImage(srcPath, destPath) {
+async function processImage(srcPath, destPath, opts = {}) {
+  const maxDim = opts.maxDim ?? MAX_DIM;
+  const quality = opts.quality ?? QUALITY;
+
   const dir = join(destPath, "..");
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   const meta = await sharp(srcPath).metadata();
   const { width, height } = meta;
 
-  // Determine if we need to resize
   const longest = Math.max(width, height);
   let resizeOpts = undefined;
-  if (longest > MAX_DIM) {
-    resizeOpts = width >= height ? { width: MAX_DIM } : { height: MAX_DIM };
+  if (longest > maxDim) {
+    resizeOpts = width >= height ? { width: maxDim } : { height: maxDim };
   }
 
   const result = await sharp(srcPath)
-    .rotate() // auto-orient from EXIF
+    .rotate()
     .resize(resizeOpts)
-    .jpeg({ quality: QUALITY, mozjpeg: true })
+    .jpeg({ quality, mozjpeg: true })
     .toFile(destPath);
 
   return { width: result.width, height: result.height };
@@ -64,7 +68,7 @@ async function processFolder(srcFolder, destFolder, fileMap) {
 }
 
 /** Process a single named file */
-async function processSingle(srcFolder, srcFile, destFolder, destFile) {
+async function processSingle(srcFolder, srcFile, destFolder, destFile, opts = {}) {
   const srcPath = join(SRC, srcFolder, srcFile);
   const destPath = join(DEST, destFolder, destFile);
   if (!existsSync(srcPath)) {
@@ -72,7 +76,7 @@ async function processSingle(srcFolder, srcFile, destFolder, destFile) {
     return;
   }
   try {
-    const dims = await processImage(srcPath, destPath);
+    const dims = await processImage(srcPath, destPath, opts);
     console.log(`  ✓ ${destFolder}/${destFile} (${dims.width}×${dims.height})`);
   } catch (err) {
     console.error(`  ✗ ${destFile}: ${err.message}`);
@@ -89,6 +93,7 @@ async function main() {
     "DSC01886_fullres.jpg",
     "",
     "landing-hero.jpg",
+    { maxDim: HERO_MAX_DIM, quality: HERO_QUALITY },
   );
   await processSingle(
     "good for heros and albums other important images",
