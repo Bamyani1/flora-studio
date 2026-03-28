@@ -3,38 +3,34 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
-import { landingHeroGridSequence } from "@/lib/animations";
+import { landingHeroGridSequence, landingHeroParallax } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 import { LANDING_MEDIA } from "@/lib/site-media";
 
 export function LandingHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const dividerRef = useRef<HTMLDivElement>(null);
   const bgImageRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const curvesRef = useRef<HTMLDivElement>(null);
-  const dashRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
 
   useGSAP(
     () => {
       const refs: Record<string, React.RefObject<HTMLElement | null>> = {
-        divider: dividerRef,
         bgImage: bgImageRef,
         eyebrow: eyebrowRef,
         headline: headlineRef,
         description: descRef,
         curves: curvesRef,
-        dash: dashRef,
       };
 
       if (reducedMotion) {
         for (const ref of Object.values(refs)) {
-          if (ref.current) gsap.set(ref.current, { autoAlpha: 1, y: 0 });
+          if (ref.current) gsap.set(ref.current, { autoAlpha: 1, y: 0, scale: 1 });
         }
         return;
       }
@@ -47,6 +43,45 @@ export function LandingHero() {
         gsap.set(el, step.from);
         tl.fromTo(el, { ...step.from }, { ...step.to }, step.position);
       }
+
+      if (headlineRef.current) {
+        gsap.to(headlineRef.current, {
+          yPercent: -50,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
+
+      // Ken Burns — ambient slow zoom
+      if (bgImageRef.current) {
+        gsap.fromTo(
+          bgImageRef.current,
+          landingHeroParallax.kenBurns.from,
+          {
+            ...landingHeroParallax.kenBurns.to,
+            delay: landingHeroParallax.kenBurns.delay,
+          },
+        );
+
+        // Scroll parallax — drift up, fade, blur
+        const img = bgImageRef.current;
+        gsap.to(img, {
+          ...landingHeroParallax.scroll.to,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            ...landingHeroParallax.scroll.scrollTrigger,
+            onEnter: () => { img.style.willChange = "transform, opacity, filter"; },
+            onLeave: () => { img.style.willChange = "auto"; },
+            onEnterBack: () => { img.style.willChange = "transform, opacity, filter"; },
+            onLeaveBack: () => { img.style.willChange = "auto"; },
+          },
+        });
+      }
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
   );
@@ -54,12 +89,6 @@ export function LandingHero() {
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-background">
       <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
-      {/* Vertical divider */}
-      <div
-        ref={dividerRef}
-        className="fixed left-[44%] top-0 bottom-0 w-px bg-hero-divider z-[5] hidden md:block"
-      />
-
       <div className="relative min-h-screen grid grid-cols-1 md:grid-cols-[44%_56%]">
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
@@ -81,13 +110,10 @@ export function LandingHero() {
               }}
             />
           </div>
-          <div className="relative hidden md:flex items-end h-full px-6 md:px-12 pb-[30vh]">
-            <div ref={dashRef} className="w-20 h-px bg-hero-divider" />
-          </div>
         </div>
 
         {/* Right column — content */}
-        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center items-center text-center md:items-start md:text-left px-6 md:px-12 py-12 md:py-0 md:pt-[8vh]">
+        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center items-center text-center md:items-start md:text-left px-6 md:px-12 py-12 md:py-0 md:pt-[8vh] md:border-l md:border-white/5">
           <span
             ref={eyebrowRef}
             className="font-label-serif text-[11px] tracking-[0.35em] uppercase mb-5 text-hero-gold"
@@ -113,7 +139,7 @@ export function LandingHero() {
           {/* Decorative curves */}
           <div
             ref={curvesRef}
-            className="absolute bottom-[12vh] right-0 w-[60%] h-20 hidden md:block"
+            className="absolute bottom-[12vh] right-0 w-[90%] h-20 hidden md:block"
           >
             <svg
               viewBox="0 0 400 80"
