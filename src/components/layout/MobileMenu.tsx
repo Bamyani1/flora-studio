@@ -11,6 +11,7 @@ import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useUIStore } from "@/stores/ui-store";
+import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
 
 export function MobileMenu() {
   const pathname = usePathname();
@@ -156,9 +157,10 @@ export function MobileMenu() {
           <TransitionLink
             href="/"
             onClick={handleLinkClick}
-            className="font-display text-[length:var(--text-logo)] font-light uppercase tracking-[var(--tracking-logo-process)] text-[var(--color-header-link-active)]"
+            aria-label="Bahar Studio"
+            className="text-[var(--color-header-link-active)]"
           >
-            Bahar Studio
+            <BaharStudioLogo width={140} />
           </TransitionLink>
 
           <button

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SOCIAL_LINKS } from "@/lib/navigation";
 import { ProcessMagnetic } from "./ProcessMagnetic";
+import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
 
 const footerLinks = [
   { label: "Instagram", href: SOCIAL_LINKS[0].href, external: true },
@@ -13,7 +14,7 @@ export function ProcessFooter() {
   return (
     <footer className="flex w-full flex-col items-end justify-between border-t border-white/5 bg-zinc-950 px-8 py-20 md:flex-row md:px-16">
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <div className="font-display text-lg italic text-neutral-200">Bahar Studio</div>
+        <BaharStudioLogo width={120} className="text-neutral-200" />
         <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
           © {new Date().getFullYear()} Bahar Studio. All rights reserved.
         </div>

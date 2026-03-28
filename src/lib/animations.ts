@@ -436,13 +436,8 @@ export const headerShrink = {
   /** Shadow is now on overlay element — animate its opacity instead */
   shadow: { from: { opacity: 0 }, to: { opacity: 1 } },
   logo: {
-    from: { fontSize: "1.5rem" },
-    to: { fontSize: "1.25rem" },
-  },
-  /** Crossfade: wordmark text fades out, aperture icon fades in */
-  logoMorph: {
-    text: { from: { autoAlpha: 1 }, to: { autoAlpha: 0 } },
-    icon: { from: { autoAlpha: 0, scale: 0.8 }, to: { autoAlpha: 1, scale: 1 } },
+    from: { width: "180px" },
+    to: { width: "140px" },
   },
 };
 

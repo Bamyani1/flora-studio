@@ -10,12 +10,11 @@ import { HEADER_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
 import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
-import { BaharStudioMark, type BaharStudioMarkHandle } from "@/components/ui/BaharStudioMark";
+import { BaharStudioLogo, type BaharStudioLogoHandle } from "@/components/ui/BaharStudioLogo";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLSpanElement>(null);
-  const iconRef = useRef<BaharStudioMarkHandle>(null);
+  const logoRef = useRef<BaharStudioLogoHandle>(null);
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
   const isHomePage = pathname === "/";
@@ -59,27 +58,12 @@ export function Header() {
       tl.fromTo(shadowEl, headerShrink.shadow.from, { ...headerShrink.shadow.to, ease: "none" }, 0);
     }
 
-    // Desktop-only: logo width, opacity, logo morph
-    const logo = logoRef.current;
-    const icon = iconRef.current?.root;
+    // Desktop-only: logo width shrink
+    const logo = logoRef.current?.root;
     ScrollTrigger.matchMedia({
       "(min-width: 768px)": () => {
         if (logo) {
           tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
-          tl.fromTo(
-            logo,
-            headerShrink.logoMorph.text.from,
-            { ...headerShrink.logoMorph.text.to, ease: "none" },
-            0,
-          );
-        }
-        if (icon) {
-          tl.fromTo(
-            icon,
-            headerShrink.logoMorph.icon.from,
-            { ...headerShrink.logoMorph.icon.to, ease: "none" },
-            0,
-          );
         }
       },
     });
@@ -112,7 +96,7 @@ export function Header() {
           {HEADER_NAV_ITEMS.map((item) => (
             <TransitionLink key={item.href} href={item.href} className="relative group">
               <span
-                className={`text-[10px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
+                className={`text-[11px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
                   isNavItemActive(pathname, item.href)
                     ? "text-white"
                     : "text-white/60 hover:text-white"
@@ -138,18 +122,7 @@ export function Header() {
             aria-label="Bahar Studio"
             className="relative flex items-center justify-center"
           >
-            <span
-              ref={logoRef}
-              className="text-lg md:text-2xl font-headline uppercase tracking-[0.3em] font-light whitespace-nowrap text-primary"
-            >
-              BAHAR STUDIO
-            </span>
-            <BaharStudioMark
-              ref={iconRef}
-              size={28}
-              className="absolute text-primary"
-              style={{ visibility: "hidden" }}
-            />
+            <BaharStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
           </TransitionLink>
         </div>
 
@@ -157,14 +130,14 @@ export function Header() {
         <div className="hidden md:flex items-center justify-end w-1/3">
           <HeaderContactAction
             label="Get in touch"
-            className="relative group p-[3px] bg-white font-label text-[10px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
+            className="relative group p-[3px] bg-white font-label text-[11px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
           >
             {/* Outer spinning gradient glow */}
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#a3a3a3_95%,#e5e5e5_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
             {/* Inner spinning gradient */}
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#d4d4d4_95%,#737373_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {/* Button content */}
-            <span className="relative z-10 w-full h-full bg-white text-black px-6 py-2.5 flex items-center justify-center gap-2">
+            <span className="relative z-10 w-full h-full bg-white text-black px-5 py-1.5 flex items-center justify-center gap-2">
               Get in touch
               <svg
                 width="10"
