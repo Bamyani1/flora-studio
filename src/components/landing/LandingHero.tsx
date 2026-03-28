@@ -99,7 +99,8 @@ export function LandingHero() {
               fill
               className="object-cover"
               priority
-              sizes="(max-width: 768px) 100vw, 55vw"
+              quality={90}
+              sizes="(max-width: 768px) 100vw, 44vw"
             />
             {/* Gradient overlay */}
             <div
