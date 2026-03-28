@@ -8,9 +8,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
-import { getLocalBlur, getLocalDimensions } from "@/lib/image-manifest";
-
-const exhibitionDims = getLocalDimensions("/images/exhibition-hero.jpg");
+import { LANDING_MEDIA } from "@/lib/site-media";
 
 export function LandingExhibition() {
   const textColRef = useRef<HTMLDivElement>(null);
@@ -68,13 +66,12 @@ export function LandingExhibition() {
 
           <div className="order-1 md:order-2 w-full md:w-1/2">
             <CinematicImageReveal
-              src="/images/exhibition-hero.jpg"
-              alt="Empty basketball arena viewed from above"
+              src={LANDING_MEDIA.exhibition.src}
+              alt={LANDING_MEDIA.exhibition.alt}
               className="w-full"
               sizes="(min-width: 768px) 50vw, 100vw"
-              blurDataURL={getLocalBlur("/images/exhibition-hero.jpg")}
-              width={exhibitionDims?.width}
-              height={exhibitionDims?.height}
+              width={LANDING_MEDIA.exhibition.width}
+              height={LANDING_MEDIA.exhibition.height}
             />
           </div>
         </div>

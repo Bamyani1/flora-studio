@@ -1,15 +1,14 @@
 "use client";
 
 import { useRef, useCallback } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { staggerGrid, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { AlbumMeta } from "@/types/project";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface ProjectCardProps {
   album: AlbumMeta;
@@ -30,8 +29,6 @@ export function ProjectCard({
   const titleRef = useRef<HTMLSpanElement>(null);
   const hoverTl = useRef<gsap.core.Timeline | null>(null);
   const reduced = useReducedMotion();
-
-  const coverUrl = resolveImageUrl(album.coverImage);
 
   // Scroll entrance + hover timeline
   useGSAP(
@@ -116,20 +113,14 @@ export function ProjectCard({
           className={`relative overflow-hidden ${large ? "aspect-[3/4] md:aspect-auto md:flex-1" : "aspect-video"}`}
         >
           <div ref={imageRef} className="relative h-full w-full">
-            {coverUrl ? (
-              <Image
-                src={coverUrl}
-                alt={album.title}
-                fill
-                loading={eagerImage ? "eager" : undefined}
-                className="object-cover"
-                sizes="(min-width: 768px) 50vw, 100vw"
-                placeholder={album.blurDataURL ? "blur" : undefined}
-                blurDataURL={album.blurDataURL}
-              />
-            ) : (
-              <div className="h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-            )}
+            <SiteMedia
+              src={album.coverImage.url}
+              alt={`${album.title} cover placeholder`}
+              fill
+              loading={eagerImage ? "eager" : undefined}
+              className="object-cover"
+              sizes="(min-width: 768px) 50vw, 100vw"
+            />
           </div>
 
           {/* Hover overlay */}

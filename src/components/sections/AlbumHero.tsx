@@ -1,42 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import { ImageReveal } from "@/components/animations/ImageReveal";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { CATEGORY_META } from "@/lib/categories";
+import { resolveImageUrl } from "@/lib/image-url";
+import { SiteMedia } from "@/components/ui/SiteMedia";
+import type { SanityImage } from "@/types/project";
 
 interface AlbumHeroProps {
   title: string;
   category?: string;
   year?: number;
   location?: string;
-  heroUrl?: string | null;
-  heroBlur?: string;
+  heroImage?: SanityImage;
 }
 
-export function AlbumHero({ title, category, year, location, heroUrl, heroBlur }: AlbumHeroProps) {
+export function AlbumHero({ title, category, year, location, heroImage }: AlbumHeroProps) {
   const categoryLabel = category ? (CATEGORY_META[category]?.label ?? category) : undefined;
   const metaParts = [categoryLabel, year, location].filter(Boolean);
+  const heroSrc = resolveImageUrl(heroImage);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-[75vh] overflow-hidden">
       {/* Hero image */}
       <ImageReveal className="absolute inset-0">
-        {heroUrl ? (
-          <Image
-            src={heroUrl}
-            alt={title}
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-            placeholder={heroBlur ? "blur" : undefined}
-            blurDataURL={heroBlur}
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-        )}
+        <SiteMedia
+          src={heroSrc}
+          alt={`${title} hero`}
+          fill
+          priority
+          className="object-contain"
+          sizes="100vw"
+        />
       </ImageReveal>
 
       {/* Dark overlay for text legibility */}

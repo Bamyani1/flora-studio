@@ -1,19 +1,18 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { folioReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl } from "@/lib/image-url";
 import type { SanityImage } from "@/types/project";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 /* ──────────────────────────────────────────────
    Types
    ────────────────────────────────────────────── */
 
-type ImageType = SanityImage & { blurDataURL?: string };
+type ImageType = SanityImage;
 
 type PageLayout =
   | "title"
@@ -306,40 +305,17 @@ function FullBleedContent({
   index: number;
   pageNumber: number;
 }) {
-  const url = resolveImageUrl(image);
-
   return (
-    <div className="relative h-full min-h-screen">
-      {url ? (
-        <Image
-          src={url}
-          alt={image.alt || `Photograph ${padIndex(index)}`}
-          fill
-          className="folio-reveal object-cover"
-          sizes="100vw"
-          placeholder={image.blurDataURL ? "blur" : undefined}
-          blurDataURL={image.blurDataURL}
-          loading={pageNumber <= 2 ? "eager" : "lazy"}
-        />
-      ) : (
-        <div className="folio-reveal absolute inset-0 bg-gradient-to-br from-surface to-background" />
-      )}
-      {/* Bottom gradient */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, color-mix(in srgb, var(--color-background) 80%, transparent) 0%, transparent 40%)",
-        }}
+    <div className="flex h-full min-h-screen flex-col items-center justify-center">
+      <SiteMedia
+        src={image.url}
+        alt={image.alt || `Photograph ${padIndex(index)}`}
+        width={1600}
+        height={1067}
+        className="folio-reveal max-h-[80vh] w-[90%] object-contain md:w-3/4"
+        sizes="(min-width: 768px) 75vw, 90vw"
+        loading={pageNumber <= 2 ? "eager" : "lazy"}
       />
-      {/* Photo number */}
-      <span className="folio-reveal-label absolute bottom-10 left-10 font-display text-sm font-light text-text opacity-50 md:bottom-10 md:left-10">
-        {padIndex(index)}
-      </span>
-      {/* Page number watermark */}
-      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
-        {pageNumber}
-      </span>
     </div>
   );
 }
@@ -353,31 +329,17 @@ function CenteredPlateContent({
   index: number;
   pageNumber: number;
 }) {
-  const url = resolveImageUrl(image);
-
   return (
     <div className="flex h-full min-h-screen flex-col items-center justify-center">
-      {url ? (
-        <Image
-          src={url}
-          alt={image.alt || `Photograph ${padIndex(index)}`}
-          width={1200}
-          height={800}
-          className="folio-reveal max-h-[70vh] w-[85%] object-contain md:w-1/2"
-          sizes="(min-width: 768px) 50vw, 85vw"
-          placeholder={image.blurDataURL ? "blur" : undefined}
-          blurDataURL={image.blurDataURL}
-          loading="lazy"
-        />
-      ) : (
-        <div className="folio-reveal aspect-[3/2] w-[85%] bg-gradient-to-br from-surface to-background md:w-1/2" />
-      )}
-      <span className="folio-reveal-label mt-6 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        [ PLATE {toRoman(index)} ]
-      </span>
-      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
-        {pageNumber}
-      </span>
+      <SiteMedia
+        src={image.url}
+        alt={image.alt || `Photograph ${padIndex(index)}`}
+        width={1200}
+        height={800}
+        className="folio-reveal max-h-[70vh] w-[85%] object-contain md:w-1/2"
+        sizes="(min-width: 768px) 50vw, 85vw"
+        loading="lazy"
+      />
     </div>
   );
 }
@@ -391,56 +353,31 @@ function DiptychContent({
   startIndex: number;
   pageNumber: number;
 }) {
-  const url0 = resolveImageUrl(images[0]);
-  const url1 = images[1] ? resolveImageUrl(images[1]) : null;
-
   return (
     <div className="flex h-full min-h-screen flex-col items-center justify-center">
       <div className="folio-reveal relative flex w-full flex-col items-center justify-center gap-6 md:flex-row md:gap-[2vw]">
         {/* Image 1 */}
-        {url0 ? (
-          <Image
-            src={url0}
-            alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
-            width={900}
-            height={600}
-            className="max-h-[35vh] w-[85vw] object-contain md:max-h-[65vh] md:w-[43vw]"
-            sizes="(min-width: 768px) 43vw, 85vw"
-            placeholder={images[0]?.blurDataURL ? "blur" : undefined}
-            blurDataURL={images[0]?.blurDataURL}
-            loading="lazy"
-          />
-        ) : (
-          <div className="aspect-[3/2] w-[85vw] bg-gradient-to-br from-surface to-background md:w-[43vw]" />
-        )}
-
-        {/* Separator (desktop only) */}
-        <div className="hidden h-10 w-px bg-primary md:absolute md:left-1/2 md:top-1/2 md:block md:-translate-x-1/2 md:-translate-y-1/2" />
+        <SiteMedia
+          src={images[0]?.url}
+          alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
+          width={900}
+          height={600}
+          className="max-h-[35vh] w-[85vw] object-contain md:max-h-[65vh] md:w-[43vw]"
+          sizes="(min-width: 768px) 43vw, 85vw"
+          loading="lazy"
+        />
 
         {/* Image 2 */}
-        {url1 ? (
-          <Image
-            src={url1}
-            alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
-            width={900}
-            height={600}
-            className="max-h-[35vh] w-[85vw] object-contain md:max-h-[65vh] md:w-[43vw]"
-            sizes="(min-width: 768px) 43vw, 85vw"
-            placeholder={images[1]?.blurDataURL ? "blur" : undefined}
-            blurDataURL={images[1]?.blurDataURL}
-            loading="lazy"
-          />
-        ) : (
-          <div className="aspect-[3/2] w-[85vw] bg-gradient-to-br from-surface to-background md:w-[43vw]" />
-        )}
+        <SiteMedia
+          src={images[1]?.url}
+          alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
+          width={900}
+          height={600}
+          className="max-h-[35vh] w-[85vw] object-contain md:max-h-[65vh] md:w-[43vw]"
+          sizes="(min-width: 768px) 43vw, 85vw"
+          loading="lazy"
+        />
       </div>
-
-      <span className="folio-reveal-label mt-7 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        [ PLATES {toRoman(startIndex)} — {toRoman(startIndex + 1)} ]
-      </span>
-      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
-        {pageNumber}
-      </span>
     </div>
   );
 }
@@ -454,48 +391,31 @@ function DetailCropContent({
   index: number;
   pageNumber: number;
 }) {
-  const url = resolveImageUrl(image);
   const caption = image.caption;
 
   return (
     <div className="flex h-full min-h-screen flex-col items-center justify-center gap-8 px-[8%] md:flex-row md:items-center md:justify-between md:gap-0 md:px-[10%]">
       {/* Text side */}
-      <div className="folio-reveal relative order-1 max-w-[300px] text-center md:order-none md:text-left">
-        <span
-          className="folio-page-number pointer-events-none absolute -top-10 font-display text-[96px] font-light leading-none text-primary md:left-[-10px]"
-          style={{ left: "50%", transform: "translateX(-50%)" }}
-        >
-          {padIndex(index)}
-        </span>
-        {caption && (
-          <p className="folio-reveal-label relative z-10 font-display text-2xl font-light italic leading-[1.35] text-text md:text-4xl">
+      {caption && (
+        <div className="folio-reveal order-1 max-w-[300px] text-center md:order-none md:text-left">
+          <p className="folio-reveal-label font-display text-2xl font-light italic leading-[1.35] text-text md:text-4xl">
             {caption}
           </p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Image side */}
       <div className="order-2 flex justify-center md:order-none md:justify-end">
-        {url ? (
-          <Image
-            src={url}
-            alt={image.alt || `Photograph ${padIndex(index)}`}
-            width={800}
-            height={1000}
-            className="folio-reveal max-h-[50vh] w-[75vw] object-contain md:max-h-[72vh] md:w-[32vw]"
-            sizes="(min-width: 768px) 32vw, 75vw"
-            placeholder={image.blurDataURL ? "blur" : undefined}
-            blurDataURL={image.blurDataURL}
-            loading="lazy"
-          />
-        ) : (
-          <div className="folio-reveal aspect-[2/3] w-[75vw] bg-gradient-to-br from-surface to-background md:w-[32vw]" />
-        )}
+        <SiteMedia
+          src={image.url}
+          alt={image.alt || `Photograph ${padIndex(index)}`}
+          width={800}
+          height={1000}
+          className="folio-reveal max-h-[50vh] w-[75vw] object-contain md:max-h-[72vh] md:w-[32vw]"
+          sizes="(min-width: 768px) 32vw, 75vw"
+          loading="lazy"
+        />
       </div>
-
-      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
-        {pageNumber}
-      </span>
     </div>
   );
 }
@@ -503,13 +423,11 @@ function DetailCropContent({
 function VideoContent({ videoUrl, pageNumber }: { videoUrl: string; pageNumber: number }) {
   return (
     <div className="relative h-full min-h-screen">
-      <video
-        className="folio-reveal absolute inset-0 h-full w-full object-cover"
+      <SiteMedia
         src={videoUrl}
-        autoPlay
-        muted
-        loop
-        playsInline
+        alt="Film placeholder"
+        fill
+        className="folio-reveal absolute inset-0 h-full w-full object-cover"
       />
       {/* Bottom gradient */}
       <div
@@ -521,9 +439,6 @@ function VideoContent({ videoUrl, pageNumber }: { videoUrl: string; pageNumber: 
       />
       <span className="folio-reveal-label absolute bottom-10 left-10 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
         [ FILM ]
-      </span>
-      <span className="folio-page-number absolute bottom-12 left-1/2 -translate-x-1/2 select-none font-display text-[48px] font-light leading-none text-text md:text-[72px]">
-        {pageNumber}
       </span>
     </div>
   );
@@ -569,13 +484,11 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
       pageEls.forEach((pageEl, i) => {
         const reveals = pageEl.querySelectorAll<HTMLElement>(".folio-reveal");
         const labels = pageEl.querySelectorAll<HTMLElement>(".folio-reveal-label");
-        const pageNums = pageEl.querySelectorAll<HTMLElement>(".folio-page-number");
         const titleText = pageEl.querySelector<HTMLElement>(".folio-title-text");
 
         if (reduced) {
           if (reveals.length) gsap.set(reveals, { autoAlpha: 1 });
           if (labels.length) gsap.set(labels, { autoAlpha: 1 });
-          if (pageNums.length) gsap.set(pageNums, { autoAlpha: 0.06 });
           if (titleText) gsap.set(titleText, { clipPath: "inset(0 0 0 0)" });
           return;
         }
@@ -583,7 +496,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         // Initial hidden states
         if (reveals.length) gsap.set(reveals, { autoAlpha: 0 });
         if (labels.length) gsap.set(labels, { autoAlpha: 0 });
-        if (pageNums.length) gsap.set(pageNums, { autoAlpha: 0 });
         if (titleText) gsap.set(titleText, { clipPath: "inset(0 100% 0 0)" });
 
         // Entrance timeline
@@ -603,14 +515,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         }
         if (labels.length > 0) {
           tl.fromTo(labels, folioReveal.label.from, folioReveal.label.to, folioReveal.label.delay);
-        }
-        if (pageNums.length > 0) {
-          tl.fromTo(
-            pageNums,
-            folioReveal.pageNumber.from,
-            folioReveal.pageNumber.to,
-            folioReveal.pageNumber.delay,
-          );
         }
 
         // Title clip-path reveal

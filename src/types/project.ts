@@ -7,13 +7,7 @@ export interface SanityImage {
   };
   alt?: string;
   caption?: string;
-  blurDataURL?: string;
   url?: string;
-}
-
-export interface HeroLayers {
-  background: SanityImage;
-  subject: SanityImage;
 }
 
 export interface AlbumMeta {
@@ -25,15 +19,12 @@ export interface AlbumMeta {
   year?: number;
   location?: string;
   coverImage: SanityImage;
-  blurDataURL?: string;
   order?: number;
-  heroLayers?: HeroLayers;
 }
 
 export interface Album extends AlbumMeta {
   heroImage: SanityImage;
-  heroBlur?: string;
-  images: (SanityImage & { blurDataURL?: string })[];
+  images: SanityImage[];
   narrative?: string;
   featured?: boolean;
   videoUrl?: string;

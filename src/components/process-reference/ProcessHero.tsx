@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -10,6 +9,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import styles from "./process-reference.module.css";
 import type { ProcessImage } from "./types";
 import { ProcessMagnetic } from "./ProcessMagnetic";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface ProcessHeroProps {
   image: ProcessImage;
@@ -97,14 +97,12 @@ export function ProcessHero({ image }: ProcessHeroProps) {
     >
       <div ref={bgRef} className="absolute inset-0 z-0">
         <div ref={imageWrapperRef} className="relative h-full w-full">
-          <Image
+          <SiteMedia
             src={image.src}
             alt={image.alt}
             fill
             priority
             className="object-cover grayscale brightness-50"
-            placeholder={image.blurDataURL ? "blur" : undefined}
-            blurDataURL={image.blurDataURL ?? undefined}
             sizes="100vw"
           />
         </div>

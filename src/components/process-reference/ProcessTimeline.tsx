@@ -215,13 +215,12 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                   <div className="grid grid-cols-2 gap-4">
                     {step.images.map((img) => (
                       <div
-                        key={img.src}
+                        key={`${step.id}-${img.alt}`}
                         className="group relative aspect-square overflow-hidden rounded"
                       >
                         <ProcessParallaxImage
                           src={img.src}
                           alt={img.alt}
-                          blurDataURL={img.blurDataURL}
                           className="h-full w-full"
                           imageClassName="grayscale transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0"
                         />
@@ -248,7 +247,6 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
                       <ProcessParallaxImage
                         src={step.images[0].src}
                         alt={step.images[0].alt}
-                        blurDataURL={step.images[0].blurDataURL}
                         className="h-full w-full"
                         imageClassName="grayscale transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-0"
                       />

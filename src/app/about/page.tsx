@@ -1,7 +1,6 @@
 "use client";
 
-import Image from "next/image";
-import { ChevronRight, Camera } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
@@ -9,25 +8,9 @@ import { withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 import { personJsonLd } from "@/lib/metadata";
-
-const TEAM_MEMBERS = [
-  {
-    role: "Photographer & Designer",
-    name: "Mostafa Bamyani",
-    img: "/images/portrait.jpg",
-  },
-  {
-    role: "Photographer",
-    name: "Murtaza Anwari",
-    img: "/images/process/03.jpg",
-  },
-  {
-    role: "Photographer",
-    name: "Enayatullah Anwari",
-    img: "/images/process/02.jpg",
-  },
-];
+import { ABOUT_MEDIA, ABOUT_TEAM_MEMBERS as TEAM_MEMBERS } from "@/lib/site-media";
 
 function StaggeredText({ text, className }: { text: string; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -420,9 +403,9 @@ export default function AboutPage() {
               <div className="hidden lg:block w-full aspect-[4/5] relative rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10 shadow-2xl">
                 <div
                   ref={defaultImageRef}
-                  className="absolute inset-0 flex items-center justify-center bg-surface-container-lowest"
+                  className="absolute inset-0 bg-surface-container-lowest"
                 >
-                  <Camera className="w-12 h-12 text-outline-variant/20" />
+                  <SiteMedia alt="About team placeholder" fill className="object-cover" />
                 </div>
 
                 {TEAM_MEMBERS.map((member, index) => (
@@ -434,13 +417,12 @@ export default function AboutPage() {
                     className="absolute inset-0"
                     style={{ opacity: 0 }}
                   >
-                    <Image
-                      src={member.img}
-                      alt={member.name}
+                    <SiteMedia
+                      src={member.media.src}
+                      alt={member.media.alt}
                       fill
                       sizes="(min-width: 1024px) 50vw, 0px"
                       className="object-cover object-center"
-                      referrerPolicy="no-referrer"
                     />
                   </div>
                 ))}
@@ -481,13 +463,12 @@ export default function AboutPage() {
 
                     {/* Mobile Image */}
                     <div className="lg:hidden w-full aspect-[4/5] relative mt-8 rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10">
-                      <Image
-                        src={member.img}
-                        alt={member.name}
+                      <SiteMedia
+                        src={member.media.src}
+                        alt={member.media.alt}
                         fill
                         sizes="(max-width: 1023px) 100vw, 0px"
                         className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000"
-                        referrerPolicy="no-referrer"
                       />
                     </div>
                   </div>
@@ -557,13 +538,12 @@ export default function AboutPage() {
               data-about-animate="process-image"
               className="order-1 md:order-2 aspect-square relative group overflow-hidden"
             >
-              <Image
-                alt="Studio Interior"
+              <SiteMedia
+                alt={ABOUT_MEDIA.process.alt}
                 className="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_rgba(0,0,0,0.8)]"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8-vfQCZEqIx1r12WDFxwKuTM4vqEbXPUi1I13AGkEb1NVd05Gz8nQoDf8EOvRK16q72r9ssnVRcaGRiZSEllnkWBiWsJVO1sEEFr9xBqk9TPuebv0-GjqSj-X2l2fdtksi15YGuSDW0n_JQFP8tGeyQ9EMZhf2cZMKlpyhWh2ejN19eaXluDjkFseShyLy1qw4NdgABQfxJ4L3CMWVpDaMIMgnEVvqai4Q9zGp1l-BBPCYRxGt2MfNJdOvTJPoQgJ8FOw0Li60vQ"
+                src={ABOUT_MEDIA.process.src}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 group-hover:border-[12px]"></div>
             </div>

@@ -1,18 +1,17 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { cinematicImageReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface CinematicImageRevealProps {
   src: string;
   alt: string;
   className?: string;
   overlay?: boolean;
-  blurDataURL?: string | null;
   priority?: boolean;
   sizes?: string;
   width?: number;
@@ -24,7 +23,6 @@ export function CinematicImageReveal({
   alt,
   className = "",
   overlay = false,
-  blurDataURL,
   priority = false,
   sizes = "100vw",
   width,
@@ -79,15 +77,13 @@ export function CinematicImageReveal({
       style={{ aspectRatio: width && height ? `${width}/${height}` : "3/2" }}
     >
       <div className="cinematic-img-wrapper absolute inset-0 h-full w-full origin-bottom">
-        <Image
+        <SiteMedia
           src={src}
           alt={alt}
           fill
           className="object-cover"
           sizes={sizes}
           priority={priority}
-          placeholder={blurDataURL ? "blur" : undefined}
-          blurDataURL={blurDataURL ?? undefined}
         />
       </div>
       {overlay && (

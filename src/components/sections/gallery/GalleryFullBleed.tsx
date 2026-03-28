@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, type CSSProperties } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { fullBleedShowcase, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { resolveImageUrl, getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
+import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GallerySectionProps } from "./types";
 
 export function GalleryFullBleed({
@@ -18,7 +18,6 @@ export function GalleryFullBleed({
 }: GallerySectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const coverUrl = resolveImageUrl(album.coverImage);
   const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const smoothMode = performanceMode === "smooth";
@@ -113,20 +112,14 @@ export function GalleryFullBleed({
         }}
       >
         <div className="absolute inset-0 transition-transform duration-[3s] ease-out group-hover/bleed:scale-110">
-          {coverUrl ? (
-            <Image
-              alt={album.title}
-              className="fullbleed-img object-cover w-full h-full"
-              src={coverUrl}
-              fill
-              loading="lazy"
-              sizes="(min-width: 768px) 66vw, 80vw"
-              placeholder={album.blurDataURL ? "blur" : undefined}
-              blurDataURL={album.blurDataURL}
-            />
-          ) : (
-            <div className="fullbleed-img h-full w-full bg-gradient-to-br from-surface to-surface-elevated" />
-          )}
+          <SiteMedia
+            alt={`${album.title} cover placeholder`}
+            className="fullbleed-img object-cover w-full h-full"
+            src={album.coverImage.url}
+            fill
+            loading="lazy"
+            sizes="(min-width: 768px) 66vw, 80vw"
+          />
         </div>
         <div className="absolute inset-0 border border-white/5 pointer-events-none" />
 
