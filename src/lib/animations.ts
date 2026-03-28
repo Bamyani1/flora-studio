@@ -48,6 +48,14 @@ export const clipRevealLeft = {
 };
 
 // --------------------------------------------------
+// branchReveal — Clip-path bloom from center outward
+// --------------------------------------------------
+export const branchReveal = {
+  from: { clipPath: "inset(0% 50% 0% 50%)", autoAlpha: 0.3 },
+  to: { clipPath: "inset(0% 0% 0% 0%)", autoAlpha: 1 },
+};
+
+// --------------------------------------------------
 // imageReveal — Two-part: colored overlay slides away, image scales down
 // --------------------------------------------------
 export const imageReveal = {
@@ -442,14 +450,18 @@ export const headerShrink = {
 };
 
 // --------------------------------------------------
-// landingHeroParallax — (legacy) Hero background scroll-driven parallax
+// landingHeroParallax — Ambient Ken Burns zoom + scroll-driven parallax fade
 // --------------------------------------------------
 export const landingHeroParallax = {
-  yPercent: { from: 0, to: 50 },
-  scale: { from: 1, to: 1.15 },
-  autoAlpha: { from: 1, to: 0 },
-  blur: { from: "blur(0px)", to: "blur(12px)" },
-  scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+  kenBurns: {
+    from: { scale: 1 },
+    to: { scale: 1.06, duration: 10, ease: "none" },
+    delay: 1.8,
+  },
+  scroll: {
+    to: { yPercent: 30, autoAlpha: 0, filter: "blur(8px)", ease: "none" },
+    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
+  },
 };
 
 // --------------------------------------------------
@@ -526,12 +538,6 @@ export const landingHeroGridSequence = {
       to: { autoAlpha: 1, duration: 1.0, ease: easings.smooth },
       position: 1.6,
     },
-    {
-      target: "dash",
-      from: { autoAlpha: 0 },
-      to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
-      position: 1.8,
-    },
   ],
   totalDuration: 2.4,
 };
@@ -597,7 +603,7 @@ export const reducedMotionFallbacks = {
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
-  landingHeroParallax: "disabled — no scroll-driven parallax on hero",
+  landingHeroParallax: "no ambient zoom, no scroll parallax/fade/blur",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
   scrollApertureProgress: "blades at open position, no scroll-linked rotation",
