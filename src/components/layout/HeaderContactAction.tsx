@@ -7,7 +7,6 @@ interface HeaderContactActionProps {
   label?: string;
   children?: React.ReactNode;
   onBeforeAction?: () => void;
-  scrollDelayMs?: number;
 }
 
 export function HeaderContactAction({

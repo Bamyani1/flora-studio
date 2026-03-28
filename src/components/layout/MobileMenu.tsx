@@ -204,7 +204,6 @@ export function MobileMenu() {
           <HeaderContactAction
             label={NAV_CTA.label}
             onBeforeAction={handleLinkClick}
-            scrollDelayMs={450}
             className="mt-12 inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-8 py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--color-header-cta-text)] transition-transform hover:scale-[1.02]"
           />
         </div>

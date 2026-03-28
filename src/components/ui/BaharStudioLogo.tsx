@@ -15,7 +15,7 @@ interface BaharStudioLogoProps {
 }
 
 /**
- * Bahar Studio wordmark logo — outlined SVG paths from FINAL-LOGO.svg.
+ * Bahar Studio wordmark logo — inline SVG paths.
  * Uses currentColor so the parent controls fill via text-color utilities.
  */
 export const BaharStudioLogo = forwardRef<BaharStudioLogoHandle, BaharStudioLogoProps>(
