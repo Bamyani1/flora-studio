@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { staggerGrid, withWillChange } from "@/lib/animations";
@@ -9,12 +9,14 @@ import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { AlbumMeta } from "@/types/project";
 import { SiteMedia } from "@/components/ui/SiteMedia";
+import { getImageDimensions } from "@/lib/image-url";
 
 interface ProjectCardProps {
   album: AlbumMeta;
   index: number;
   large?: boolean;
   eagerImage?: boolean;
+  gridSide?: "left" | "right";
 }
 
 export function ProjectCard({
@@ -22,132 +24,68 @@ export function ProjectCard({
   index,
   large = false,
   eagerImage = false,
+  gridSide,
 }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLSpanElement>(null);
-  const hoverTl = useRef<gsap.core.Timeline | null>(null);
   const reduced = useReducedMotion();
+  const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
+  const dims = getImageDimensions(album.coverImage);
+  const isPortrait = dims ? dims.height > dims.width : false;
 
-  // Scroll entrance + hover timeline
   useGSAP(
     () => {
-      if (!cardRef.current) return;
+      if (!cardRef.current || reduced) return;
 
-      if (reduced) {
-        gsap.set(cardRef.current, { autoAlpha: 1, y: 0 });
-        return;
-      }
-
-      // Set initial hidden state via GSAP so content is visible if JS hasn't run
-      gsap.set(cardRef.current, { autoAlpha: 0, y: staggerGrid.from.y });
-
-      // Staggered scroll entrance
       gsap.fromTo(
         cardRef.current,
-        staggerGrid.from,
+        { autoAlpha: 0, y: 30 },
         {
-          ...staggerGrid.to,
-          ...withWillChange(),
-          delay: index * 0.1,
-          stagger: 0,
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: index * 0.08,
           scrollTrigger: {
             trigger: cardRef.current,
-            ...staggerGrid.scrollTrigger,
+            start: "top 95%",
+            toggleActions: "play none none none",
           },
         },
       );
-
-      // Hover timeline (paused)
-      if (imageRef.current && overlayRef.current && titleRef.current) {
-        const tl = gsap.timeline({ paused: true });
-
-        tl.to(imageRef.current, {
-          scale: 1.05,
-          duration: 0.4,
-          ease: "power2.out",
-        }, 0);
-
-        tl.fromTo(
-          overlayRef.current,
-          { clipPath: "inset(100% 0% 0% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power2.inOut" },
-          0,
-        );
-
-        tl.fromTo(
-          titleRef.current,
-          { clipPath: "inset(0% 0% 100% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.3, ease: "power2.out" },
-          0.15,
-        );
-
-        hoverTl.current = tl;
-      }
     },
     { scope: cardRef, dependencies: [reduced, index] },
   );
 
-  const handleMouseEnter = useCallback(() => {
-    hoverTl.current?.play();
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    hoverTl.current?.reverse();
-  }, []);
-
   return (
     <TransitionLink
       href={`/work/${album.slug.current}`}
-      className={`block ${large ? "md:row-span-2" : ""}`}
+      className={`block ${large ? `md:col-span-2 md:row-span-2 h-full ${gridSide === "right" ? "md:col-start-2" : ""}` : ""}`}
     >
       <div
         ref={cardRef}
         className={`group cursor-pointer ${large ? "md:flex md:h-full md:flex-col" : ""}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
-        {/* Image container */}
         <div
-          className={`relative overflow-hidden ${large ? "aspect-[3/4] md:aspect-auto md:flex-1" : "aspect-video"}`}
+          className={`relative overflow-hidden ${large ? "aspect-[3/4] md:aspect-auto md:flex-1" : isPortrait ? "aspect-[3/4]" : "aspect-video"}`}
         >
-          <div ref={imageRef} className="relative h-full w-full">
+          <div className="relative h-full w-full">
             <SiteMedia
               src={album.coverImage.url}
               alt={`${album.title} cover placeholder`}
               fill
               loading={eagerImage ? "eager" : undefined}
               className="object-cover"
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes={large ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 100vw"}
             />
           </div>
 
-          {/* Hover overlay */}
-          <div
-            ref={overlayRef}
-            className="absolute inset-0 flex items-center justify-center bg-primary/30"
-            style={{
-              clipPath: "inset(100% 0% 0% 0%)",
-            }}
-            aria-hidden="true"
-          >
-            <span
-              ref={titleRef}
-              className="font-display text-2xl text-text-heading"
-              style={{ clipPath: "inset(0% 0% 100% 0%)" }}
-            >
-              View Project
+          {/* Info panel — slides up from bottom on hover */}
+          <div className="absolute inset-x-0 bottom-0 px-6 py-5 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.33,1,0.68,1)]">
+            <h3 className="font-display text-xl text-white font-bold">{album.title}</h3>
+            <span className="block mt-1 font-label text-[10px] uppercase tracking-[0.2em] text-white/80">
+              {categoryLabel}
             </span>
           </div>
-        </div>
-
-        {/* Card info */}
-        <div className="mt-4 flex items-baseline justify-between">
-          <h3 className="font-display text-xl text-text-heading">{album.title}</h3>
-          <span className="font-label text-xs uppercase tracking-wider text-muted">
-            {CATEGORY_META[album.category]?.label ?? album.category}
-          </span>
         </div>
       </div>
     </TransitionLink>

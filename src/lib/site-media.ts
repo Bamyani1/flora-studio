@@ -71,6 +71,13 @@ export const LANDING_MEDIA = {
   },
 } as const;
 
+export const LANDING_HERO_CYCLE = [
+  LANDING_MEDIA.hero,
+  LANDING_MEDIA.editorial,
+  LANDING_MEDIA.exhibition,
+  LANDING_MEDIA.studio,
+] as const;
+
 export const ABOUT_MEDIA = {
   process: {
     src: "/images/about-process.jpg",

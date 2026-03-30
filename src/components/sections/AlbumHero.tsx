@@ -22,7 +22,7 @@ export function AlbumHero({ title, category, year, location, heroImage }: AlbumH
   const heroSrc = resolveImageUrl(heroImage);
 
   return (
-    <section className="relative h-[75vh] overflow-hidden">
+    <section className="relative h-dvh overflow-hidden">
       {/* Hero image */}
       <ImageReveal className="absolute inset-0">
         <SiteMedia
@@ -30,7 +30,7 @@ export function AlbumHero({ title, category, year, location, heroImage }: AlbumH
           alt={`${title} hero`}
           fill
           priority
-          className="object-contain"
+          className="object-cover"
           sizes="100vw"
         />
       </ImageReveal>

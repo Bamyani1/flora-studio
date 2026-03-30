@@ -104,7 +104,7 @@ export function GalleryFullBleed({
       {/* Centered image */}
       <TransitionLink
         href={`/work/${album.slug.current}`}
-        className="relative z-10 w-4/5 md:w-2/3 overflow-hidden block"
+        className="relative z-10 w-4/5 md:w-2/3 overflow-hidden block cursor-pointer"
         style={{
           ...imageShellStyle,
           aspectRatio: dims ? `${dims.width}/${dims.height}` : "16/10",
@@ -138,6 +138,12 @@ export function GalleryFullBleed({
             <p className="font-label text-[10px] tracking-[0.4em] uppercase text-primary">
               {categoryLabel} {album.year ? `— ${album.year}` : ""}
             </p>
+            <span className="inline-flex items-center gap-2 font-label text-[10px] tracking-[0.2em] uppercase text-white/60 opacity-0 group-hover/bleed:opacity-100 transition-opacity duration-500">
+              View Series
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="transform transition-transform duration-300 group-hover/bleed:translate-x-1">
+                <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+            </span>
           </div>
         </div>
       </TransitionLink>

@@ -6,27 +6,31 @@ import { gsap } from "@/lib/gsap";
 import { landingHeroGridSequence, landingHeroParallax } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SiteMedia } from "@/components/ui/SiteMedia";
-import { LANDING_MEDIA } from "@/lib/site-media";
+import { LANDING_HERO_CYCLE } from "@/lib/site-media";
 
 export function LandingHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const bgImageRef = useRef<HTMLDivElement>(null);
+  const bgContainerRef = useRef<HTMLDivElement>(null);
+  const imageLayerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const eyebrowRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
-  const curvesRef = useRef<HTMLDivElement>(null);
 
   const reducedMotion = useReducedMotion();
 
   useGSAP(
     () => {
       const refs: Record<string, React.RefObject<HTMLElement | null>> = {
-        bgImage: bgImageRef,
+        bgImage: bgContainerRef,
         eyebrow: eyebrowRef,
         headline: headlineRef,
         description: descRef,
-        curves: curvesRef,
       };
+
+      const layers = imageLayerRefs.current.filter(Boolean) as HTMLElement[];
+
+      // First image visible, rest hidden
+      layers.forEach((el, i) => gsap.set(el, { autoAlpha: i === 0 ? 1 : 0 }));
 
       if (reducedMotion) {
         for (const ref of Object.values(refs)) {
@@ -35,8 +39,8 @@ export function LandingHero() {
         return;
       }
 
+      // Entrance sequence
       const tl = gsap.timeline();
-
       for (const step of landingHeroGridSequence.steps) {
         const el = refs[step.target]?.current;
         if (!el) continue;
@@ -57,30 +61,37 @@ export function LandingHero() {
         });
       }
 
-      // Ken Burns — ambient slow zoom
-      if (bgImageRef.current) {
+      // Ken Burns + scroll parallax on container (same as before)
+      if (bgContainerRef.current) {
         gsap.fromTo(
-          bgImageRef.current,
+          bgContainerRef.current,
           landingHeroParallax.kenBurns.from,
-          {
-            ...landingHeroParallax.kenBurns.to,
-            delay: landingHeroParallax.kenBurns.delay,
-          },
+          { ...landingHeroParallax.kenBurns.to, delay: landingHeroParallax.kenBurns.delay },
         );
 
-        // Scroll parallax — drift up, fade, blur
-        const img = bgImageRef.current;
-        gsap.to(img, {
+        const container = bgContainerRef.current;
+        gsap.to(container, {
           ...landingHeroParallax.scroll.to,
           scrollTrigger: {
             trigger: sectionRef.current,
             ...landingHeroParallax.scroll.scrollTrigger,
-            onEnter: () => { img.style.willChange = "transform, opacity, filter"; },
-            onLeave: () => { img.style.willChange = "auto"; },
-            onEnterBack: () => { img.style.willChange = "transform, opacity, filter"; },
-            onLeaveBack: () => { img.style.willChange = "auto"; },
+            onEnter: () => { container.style.willChange = "transform"; },
+            onLeave: () => { container.style.willChange = "auto"; },
+            onEnterBack: () => { container.style.willChange = "transform"; },
+            onLeaveBack: () => { container.style.willChange = "auto"; },
           },
         });
+      }
+
+      // Crossfade cycle — simple opacity swap between stacked images
+      if (layers.length > 1) {
+        const crossfade = gsap.timeline({ repeat: -1, delay: 3 });
+
+        for (let i = 0; i < layers.length; i++) {
+          const pos = i * 4;
+          crossfade.to(layers[i], { autoAlpha: 0, duration: 1, ease: "power1.inOut" }, pos + 3);
+          crossfade.to(layers[(i + 1) % layers.length], { autoAlpha: 1, duration: 1, ease: "power1.inOut" }, pos + 3);
+        }
       }
     },
     { scope: sectionRef, dependencies: [reducedMotion] },
@@ -92,16 +103,25 @@ export function LandingHero() {
       <div className="relative min-h-screen grid grid-cols-1 md:grid-cols-[44%_56%]">
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
-          <div ref={bgImageRef} className="absolute inset-0">
-            <SiteMedia
-              src={LANDING_MEDIA.hero.src}
-              alt={LANDING_MEDIA.hero.alt}
-              fill
-              className="object-cover"
-              priority
-              quality={90}
-              sizes="(max-width: 768px) 100vw, 44vw"
-            />
+          <div ref={bgContainerRef} className="absolute inset-0">
+            {LANDING_HERO_CYCLE.map((media, index) => (
+              <div
+                key={media.src}
+                ref={(el) => { imageLayerRefs.current[index] = el; }}
+                className="absolute inset-0"
+                style={{ visibility: "hidden" }}
+              >
+                <SiteMedia
+                  src={media.src}
+                  alt={media.alt}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, 44vw"
+                />
+              </div>
+            ))}
             {/* Gradient overlay */}
             <div
               className="absolute inset-0"
@@ -136,32 +156,6 @@ export function LandingHero() {
           >
             Patience, craft, and an eye for what matters.
           </p>
-
-          {/* Decorative curves */}
-          <div
-            ref={curvesRef}
-            className="absolute bottom-[12vh] right-0 w-[90%] h-20 hidden md:block"
-          >
-            <svg
-              viewBox="0 0 400 80"
-              fill="none"
-              preserveAspectRatio="none"
-              className="w-full h-full"
-            >
-              <path
-                d="M0 60 Q100 20 200 50 T400 30"
-                stroke="rgba(190,150,78,0.2)"
-                strokeWidth="1"
-                fill="none"
-              />
-              <path
-                d="M0 70 Q120 30 240 60 T400 40"
-                stroke="rgba(190,150,78,0.1)"
-                strokeWidth="1"
-                fill="none"
-              />
-            </svg>
-          </div>
         </div>
       </div>
     </section>

@@ -272,7 +272,7 @@ export const folioReveal = {
     to: { autoAlpha: 0.06, duration: 0.6, ease: easings.smooth },
     delay: 0.3,
   },
-  scrollTrigger: { start: "top 60%", toggleActions: "play none none none" },
+  scrollTrigger: { start: "top 90%", toggleActions: "play none none none" },
 };
 
 // --------------------------------------------------
@@ -287,11 +287,6 @@ export const cinematicHeroReveal = {
   /** Dark overlay: simulates brightness(0.1) → brightness(1) */
   darkOverlay: {
     from: { autoAlpha: 0.9 },
-    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
-  },
-  /** Blur overlay: backdrop-filter fades out, then hidden from compositor */
-  blurOverlay: {
-    from: { autoAlpha: 1 },
     to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
   },
   nav: {
@@ -459,7 +454,7 @@ export const landingHeroParallax = {
     delay: 1.8,
   },
   scroll: {
-    to: { yPercent: 30, autoAlpha: 0, filter: "blur(8px)", ease: "none" },
+    to: { yPercent: 30, ease: "none" },
     scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
   },
 };
@@ -532,12 +527,6 @@ export const landingHeroGridSequence = {
       to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
       position: 1.2,
     },
-    {
-      target: "curves",
-      from: { autoAlpha: 0 },
-      to: { autoAlpha: 1, duration: 1.0, ease: easings.smooth },
-      position: 1.6,
-    },
   ],
   totalDuration: 2.4,
 };
@@ -595,7 +584,7 @@ export const reducedMotionFallbacks = {
   folioReveal:
     "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
   cinematicHeroReveal:
-    "image visible immediately at scale 1, no blur/brightness transition, no parallax, all text visible",
+    "image visible immediately at scale 1, no brightness transition, no parallax, all text visible",
   bentoSplitReveal:
     "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
   fullBleedShowcase: "image visible at scale 1, no parallax, text visible immediately",
@@ -603,7 +592,7 @@ export const reducedMotionFallbacks = {
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
-  landingHeroParallax: "no ambient zoom, no scroll parallax/fade/blur",
+  landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
   scrollApertureProgress: "blades at open position, no scroll-linked rotation",

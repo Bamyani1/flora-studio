@@ -14,24 +14,27 @@ export function LandingFooter() {
           <TransitionLink
             key={item.href}
             href={item.href}
-            className="text-white/50 hover:text-primary transition-colors duration-700"
+            className="group relative text-white/50 hover:text-primary transition-colors duration-700"
           >
             {item.label}
+            <span className="absolute -bottom-1 left-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </TransitionLink>
         ))}
         <TransitionLink
           href={NAV_CTA.href}
-          className="text-white/50 hover:text-primary transition-colors duration-700"
+          className="group relative text-white/50 hover:text-primary transition-colors duration-700"
         >
           {NAV_CTA.label}
+          <span className="absolute -bottom-1 left-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
         </TransitionLink>
         {UTILITY_LINKS.map((link) => (
           <TransitionLink
             key={link.href}
             href={link.href}
-            className="text-white/50 hover:text-primary transition-colors duration-700"
+            className="group relative text-white/50 hover:text-primary transition-colors duration-700"
           >
             {link.label}
+            <span className="absolute -bottom-1 left-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </TransitionLink>
         ))}
       </div>
