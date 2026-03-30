@@ -89,7 +89,7 @@ export function GalleryTextureCards({
       style={sectionStyle}
       aria-label="Album pair"
     >
-      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {albums.map((album) => {
         const dims = getImageDimensions(album.coverImage);
         const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;

@@ -64,11 +64,11 @@ export function SiteMedia({
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(186,112,56,0.28),_transparent_42%),radial-gradient(circle_at_bottom_right,_rgba(232,226,216,0.12),_transparent_34%),linear-gradient(145deg,_var(--color-surface)_0%,_var(--color-surface-lowest)_48%,_var(--color-background)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_color-mix(in_srgb,var(--color-primary)_28%,transparent),_transparent_42%),radial-gradient(circle_at_bottom_right,_color-mix(in_srgb,var(--color-text)_12%,transparent),_transparent_34%),linear-gradient(145deg,_var(--color-surface)_0%,_var(--color-surface-lowest)_48%,_var(--color-background)_100%)]"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,transparent_0,transparent_calc(50%-0.5px),rgba(232,226,216,0.16)_calc(50%-0.5px),rgba(232,226,216,0.16)_calc(50%+0.5px),transparent_calc(50%+0.5px)),linear-gradient(to_bottom,transparent_0,transparent_calc(50%-0.5px),rgba(232,226,216,0.12)_calc(50%-0.5px),rgba(232,226,216,0.12)_calc(50%+0.5px),transparent_calc(50%+0.5px))]"
+        className="absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,transparent_0,transparent_calc(50%-0.5px),color-mix(in_srgb,var(--color-text)_16%,transparent)_calc(50%-0.5px),color-mix(in_srgb,var(--color-text)_16%,transparent)_calc(50%+0.5px),transparent_calc(50%+0.5px)),linear-gradient(to_bottom,transparent_0,transparent_calc(50%-0.5px),color-mix(in_srgb,var(--color-text)_12%,transparent)_calc(50%-0.5px),color-mix(in_srgb,var(--color-text)_12%,transparent)_calc(50%+0.5px),transparent_calc(50%+0.5px))]"
       />
       <div aria-hidden="true" className="absolute inset-[6%] border border-white/10" />
       <div

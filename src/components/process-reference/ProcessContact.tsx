@@ -58,7 +58,7 @@ export function ProcessContact({
       className="relative flex min-h-[50vh] flex-col items-center justify-center bg-[var(--process-surface-container-lowest)] px-8 py-32"
       style={{ scrollMarginTop: "calc(var(--header-height) + var(--space-12))" }}
     >
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <h2
         data-contact-animate
         className="mb-10 font-display text-5xl font-light italic text-[var(--process-on-surface-variant)] md:text-6xl"

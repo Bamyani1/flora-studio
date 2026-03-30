@@ -104,7 +104,7 @@ export function LandingHero({ content }: LandingHeroProps) {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-background">
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="relative min-h-screen grid grid-cols-1 md:grid-cols-[44%_56%]">
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">

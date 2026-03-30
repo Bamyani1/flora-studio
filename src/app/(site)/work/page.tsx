@@ -61,7 +61,7 @@ export default async function WorkPage() {
             key="gallery-grid"
             className="relative w-full bg-surface"
           >
-            <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+            <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-px md:[grid-auto-flow:dense]">
               {section.albums.map((album, albumIdx) => {
                 const groupIndex = Math.floor(albumIdx / 3);

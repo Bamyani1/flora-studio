@@ -288,9 +288,9 @@ export function CinematicContactForm() {
               className="group relative w-full overflow-hidden p-[3px] bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {/* Outer spinning gradient glow */}
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,rgba(255,255,255,0.4)_95%,rgba(255,255,255,0.7)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,color-mix(in_srgb,white_40%,transparent)_95%,color-mix(in_srgb,white_70%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
               {/* Inner spinning gradient */}
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,rgba(255,255,255,0.3)_95%,rgba(255,255,255,0.6)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,color-mix(in_srgb,white_30%,transparent)_95%,color-mix(in_srgb,white_60%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               {/* Button face */}
               <span className="relative z-10 flex w-full items-center justify-center bg-primary/80 py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 group-hover:bg-primary">
                 {isPending ? "Sending..." : "Send Message"}

@@ -294,7 +294,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
     <div ref={pageRef}>
       <main id="main-content" className="min-h-screen">
         <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
-          <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+          <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
             <div
               data-about-animate="hero-divider"
@@ -516,7 +516,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             >
               <SiteMedia
                 alt={content.process.image.alt ?? ""}
-                className="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_rgba(0,0,0,0.8)]"
+                className="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
                 src={resolveImageUrl(content.process.image)}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"

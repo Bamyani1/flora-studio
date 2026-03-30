@@ -119,7 +119,7 @@ export function CustomCursor({ disabled = false }: CustomCursorProps) {
   return (
     <div
       ref={cursorRef}
-      className="pointer-events-none fixed left-0 top-0 z-[100] text-[var(--color-primary)]"
+      className="pointer-events-none fixed left-0 top-0 z-cursor text-[var(--color-primary)]"
       style={{ willChange: "transform", width: 40, height: 40 }}
     >
       <svg viewBox="0 0 32 32" width="40" height="40" fill="none">

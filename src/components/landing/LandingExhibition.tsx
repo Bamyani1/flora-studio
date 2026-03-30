@@ -41,7 +41,7 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
 
   return (
     <section className="py-32 md:py-40 relative">
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="absolute inset-0 bg-background transform -skew-y-3 origin-top-left z-0"></div>
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">

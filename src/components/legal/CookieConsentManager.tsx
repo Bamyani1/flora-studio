@@ -24,7 +24,7 @@ interface ConsentUiState {
 }
 
 const panelClass =
-  "fixed inset-x-4 bottom-4 z-[70] border border-border bg-surface-lowest p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] md:left-1/2 md:max-w-3xl md:-translate-x-1/2";
+  "fixed inset-x-4 bottom-4 z-cookie-overlay border border-border bg-surface-lowest p-5 shadow-[0_20px_60px_color-mix(in_srgb,black_35%,transparent)] md:left-1/2 md:max-w-3xl md:-translate-x-1/2";
 
 const actionClass =
   "inline-flex min-h-[44px] items-center justify-center border border-border px-4 py-2 font-label text-xs uppercase tracking-[0.15em] text-text transition-colors duration-300 hover:border-primary hover:text-primary";
@@ -211,7 +211,7 @@ export function CookieConsentManager() {
 
       {preferencesOpen ? (
         <div
-          className="fixed inset-0 z-[80] flex items-end justify-center bg-background/80 px-4 py-6 md:items-center"
+          className="fixed inset-0 z-cookie-modal flex items-end justify-center bg-background/80 px-4 py-6 md:items-center"
           onClick={(event) => {
             if (event.target !== event.currentTarget) return;
             closePreferences();
@@ -222,7 +222,7 @@ export function CookieConsentManager() {
         >
           <div
             ref={dialogRef}
-            className="w-full max-w-2xl border border-border bg-surface-lowest p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+            className="w-full max-w-2xl border border-border bg-surface-lowest p-6 shadow-[0_20px_60px_color-mix(in_srgb,black_35%,transparent)]"
           >
             <div className="space-y-2">
               <p className="font-label text-xs uppercase tracking-[0.2em] text-primary">
@@ -336,7 +336,7 @@ export function CookieConsentManager() {
         <button
           ref={triggerRef}
           type="button"
-          className="fixed right-4 bottom-4 z-[60] border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 hover:border-primary hover:text-primary"
+          className="fixed right-4 bottom-4 z-cookie-trigger border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 hover:border-primary hover:text-primary"
           onClick={() => openPreferences("trigger")}
         >
           Cookie Preferences

@@ -197,7 +197,7 @@ export function GalleryBentoSplit({
       style={sectionStyle}
       aria-label={`${album.title} — album showcase`}
     >
-      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {imageCol}
       {textCol}
     </section>

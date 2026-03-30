@@ -119,7 +119,7 @@ export function GalleryHero({
       style={sectionStyle}
       aria-label={`${album.title} — featured album`}
     >
-      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       <div
         className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[var(--color-surface-lowest)]/80"
         aria-hidden="true"

@@ -40,7 +40,7 @@ export default async function ContactPage() {
       className="relative flex h-screen flex-col overflow-hidden bg-background px-[10%] pt-[100px] pb-20"
     >
       {/* Grain overlay */}
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
 
       {/* Floating two-panel card */}
       <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
@@ -51,7 +51,7 @@ export default async function ContactPage() {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%)",
+                "radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--color-text) 4%, transparent) 0%, transparent 60%)",
             }}
           />
 

@@ -5,7 +5,7 @@ import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
 export function LandingFooter() {
   return (
     <footer className="relative z-20 flex flex-col items-center gap-10 w-full border-t border-white/10 bg-surface-abyss py-24 md:py-32 px-6">
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <BaharStudioLogo className="w-[160px] md:w-[200px] text-white" />
       <div className="flex flex-wrap justify-center gap-8 md:gap-16 font-label uppercase tracking-[0.2em] text-[10px]">
         {PRIMARY_NAV_ITEMS.map((item) => (
