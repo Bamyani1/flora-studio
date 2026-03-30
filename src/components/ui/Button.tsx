@@ -9,7 +9,7 @@ const variantClasses = {
   outline: "border border-border bg-transparent text-text hover:border-border-hover",
   "outline-accent":
     "border border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary",
-  "outline-subtle": "border border-white/35 bg-transparent text-white hover:border-white/50",
+  "outline-subtle": "border border-white/35 bg-transparent text-white hover:border-white/70 hover:bg-white/5",
   ghost: "bg-transparent text-text hover:text-text-heading",
 } as const;
 

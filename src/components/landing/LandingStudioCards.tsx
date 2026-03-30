@@ -52,10 +52,10 @@ export function LandingStudioCards({ featuredAlbum }: LandingStudioCardsProps) {
 
   return (
     <div className="grid md:grid-cols-2 gap-8 md:gap-20 w-full items-stretch">
-      <TransitionLink href={`/work/${featuredAlbum.slug.current}`} className="block">
+      <TransitionLink href={`/work/${featuredAlbum.slug.current}`} className="block group">
         <div
           ref={card1Ref}
-          className="p-10 md:p-16 border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:bg-white/[0.04] transition-colors duration-700 h-full"
+          className="p-10 md:p-16 border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/20 transition-all duration-700 h-full"
         >
           <p className="font-label text-[10px] uppercase tracking-[0.3em] mb-10 text-primary">
             {categoryLabel}
@@ -68,6 +68,12 @@ export function LandingStudioCards({ featuredAlbum }: LandingStudioCardsProps) {
               {featuredAlbum.description}
             </p>
           )}
+          <span className="inline-flex items-center gap-2 mt-8 font-label text-[10px] uppercase tracking-[0.2em] text-white/40 group-hover:text-primary transition-colors duration-500">
+            View album
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="transform transition-transform duration-300 group-hover:translate-x-1">
+              <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </span>
         </div>
       </TransitionLink>
 

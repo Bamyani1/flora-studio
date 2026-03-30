@@ -5,7 +5,7 @@ import type { ImageProps } from "next/image";
 import { PLACEHOLDER_MEDIA_LABEL } from "@/lib/site-media";
 import { cn } from "@/lib/utils";
 
-type SiteMediaProps = Omit<ImageProps, "src" | "loader" | "quality"> & {
+type SiteMediaProps = Omit<ImageProps, "src" | "loader"> & {
   src?: ImageProps["src"] | null;
   label?: string;
 };

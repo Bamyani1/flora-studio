@@ -44,7 +44,6 @@ export function GalleryHero({
           { autoAlpha: 1, y: 0, scale: 1, rotationX: 0 },
         );
         gsap.set(el.querySelector(".gallery-hero-dark-overlay"), { autoAlpha: 0 });
-        gsap.set(el.querySelector(".gallery-hero-blur-overlay"), { autoAlpha: 0 });
         return;
       }
 
@@ -60,13 +59,6 @@ export function GalleryHero({
         { ...cinematicHeroReveal.darkOverlay.to },
         0,
       );
-      tl.fromTo(
-        el.querySelector(".gallery-hero-blur-overlay"),
-        cinematicHeroReveal.blurOverlay.from,
-        { ...cinematicHeroReveal.blurOverlay.to },
-        0,
-      );
-
       tl.fromTo(
         el.querySelector(".gallery-hero-label"),
         cinematicHeroReveal.chapterLabel.from,
@@ -140,24 +132,19 @@ export function GalleryHero({
           priority={priority}
           sizes="100vw"
         />
-        <div
-          className="gallery-hero-blur-overlay absolute inset-0"
-          style={{ backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
-          aria-hidden="true"
-        />
         <div className="gallery-hero-dark-overlay absolute inset-0 bg-black" aria-hidden="true" />
       </div>
 
       <div
-        className="relative z-20 h-full flex flex-col justify-end p-[var(--container-padding-x)] pb-12 md:p-24 max-w-7xl mx-auto"
+        className="relative z-20 h-full flex flex-col justify-end items-end text-right p-[var(--container-padding-x)] pb-12 md:p-24 max-w-7xl mx-auto"
         style={{ perspective: "1000px" }}
       >
         <span className="gallery-hero-label font-label text-xs tracking-[0.3em] text-primary uppercase">
           Chapter {ROMAN[index - 1] ?? index}
         </span>
 
-        <TransitionLink href={`/work/${album.slug.current}`} className="block mt-4">
-          <h2 className="font-display text-[length:var(--text-5xl)] md:text-[length:var(--text-7xl)] text-text-heading leading-none -ml-1">
+        <TransitionLink href={`/work/${album.slug.current}`} className="group block mt-4">
+          <h2 className="font-display text-[length:var(--text-5xl)] md:text-[length:var(--text-7xl)] text-text-heading leading-none transition-colors duration-500 group-hover:text-primary">
             <div className="overflow-hidden">
               <div className="gallery-hero-title-line">{album.title}</div>
             </div>

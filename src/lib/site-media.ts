@@ -48,18 +48,18 @@ export const LANDING_MEDIA = {
   hero: {
     src: "/images/landing-hero.jpg",
     alt: "Bahar Studio hero photograph",
-    width: 2133,
-    height: 3200,
+    width: 3200,
+    height: 4800,
   },
   editorial: {
-    src: "/images/editorial-hero.jpg",
-    alt: "Bahar Studio editorial photograph",
+    src: "/images/exhibition-hero.jpg",
+    alt: "Bahar Studio exhibition photograph",
     width: 2133,
     height: 3200,
   },
   exhibition: {
-    src: "/images/exhibition-hero.jpg",
-    alt: "Bahar Studio exhibition photograph",
+    src: "/images/editorial-hero.jpg",
+    alt: "Bahar Studio editorial photograph",
     width: 2133,
     height: 3200,
   },
@@ -70,6 +70,13 @@ export const LANDING_MEDIA = {
     height: 3200,
   },
 } as const;
+
+export const LANDING_HERO_CYCLE = [
+  LANDING_MEDIA.hero,
+  LANDING_MEDIA.editorial,
+  LANDING_MEDIA.exhibition,
+  LANDING_MEDIA.studio,
+] as const;
 
 export const ABOUT_MEDIA = {
   process: {
