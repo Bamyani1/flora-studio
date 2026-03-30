@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
@@ -24,11 +24,13 @@ const inputClass =
 
 export function CinematicContactForm() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasCompletedSubmissionRef = useRef(false);
   const { fieldErrors, formError, submitted, isPending, handleBlur, handleSubmit, resetSubmitted } =
     useContactForm({
       getData: (formData) => ({
         name: formData.get("sender") as string,
         email: formData.get("reply_to") as string,
+        website: ((formData.get("website") as string) || "").trim() || undefined,
         photographyType: formData.get(
           "photographyType",
         ) as ContactFormData["photographyType"],
@@ -36,12 +38,20 @@ export function CinematicContactForm() {
       }),
     });
 
+  useEffect(() => {
+    if (submitted) {
+      hasCompletedSubmissionRef.current = true;
+    }
+  }, [submitted]);
+
   useGSAP(
     () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || submitted) return;
+
+      const revealTargets = "[data-form-animate]";
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) {
-        gsap.set("[data-form-animate]", { autoAlpha: 1 });
+      if (prefersReduced || hasCompletedSubmissionRef.current) {
+        gsap.set(revealTargets, { autoAlpha: 1, y: 0 });
         return;
       }
 
@@ -80,7 +90,7 @@ export function CinematicContactForm() {
         positions.submit,
       );
     },
-    { scope: containerRef },
+    { scope: containerRef, dependencies: [submitted], revertOnUpdate: true },
   );
 
   if (submitted) {
@@ -134,6 +144,21 @@ export function CinematicContactForm() {
         </h2>
 
         <form onSubmit={handleSubmit} noValidate className="max-w-[540px] space-y-7">
+          <div
+            aria-hidden="true"
+            className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+          >
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+          </div>
+
           {formError && (
             <div
               className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"

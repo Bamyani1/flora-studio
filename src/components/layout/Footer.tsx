@@ -1,9 +1,14 @@
-import { PRIMARY_NAV_ITEMS, NAV_CTA, SOCIAL_LINKS } from "@/lib/navigation";
+import { LEGAL_NAV_ITEMS, NAV_CTA, PRIMARY_NAV_ITEMS } from "@/lib/navigation";
 import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
+import type { SocialLink } from "@/types/content";
 
-const LEGAL_LINKS: { label: string; href: string }[] = [];
-
-export function Footer({ className }: { className?: string }) {
+export function Footer({
+  className,
+  socialLinks,
+}: {
+  className?: string;
+  socialLinks: SocialLink[];
+}) {
   return (
     <footer
       data-footer
@@ -38,7 +43,7 @@ export function Footer({ className }: { className?: string }) {
 
       {/* Legal + Social links */}
       <div className="flex flex-wrap gap-8 md:gap-12">
-        {LEGAL_LINKS.map((link) => (
+        {LEGAL_NAV_ITEMS.map((link) => (
           <a
             key={link.label}
             href={link.href}
@@ -48,10 +53,10 @@ export function Footer({ className }: { className?: string }) {
             <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
           </a>
         ))}
-        {SOCIAL_LINKS.map((link) => (
+        {socialLinks.map((link) => (
           <a
             key={link.label}
-            href={link.href}
+            href={link.url}
             target="_blank"
             rel="noopener noreferrer"
             className="group/footerlink relative font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] hover:text-primary transition-colors duration-300"

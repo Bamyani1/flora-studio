@@ -1,10 +1,18 @@
-import { client } from "@/sanity/client";
+import {
+  albumMetaArraySchema,
+  albumSchema,
+  albumSlugArraySchema,
+  parseSanityContent,
+  SanityContentError,
+} from "@/lib/cms-validation";
+import { normalizeImage, normalizeImages } from "@/lib/image-url";
 import {
   ALBUM_BY_SLUG_QUERY,
   ALBUM_SLUGS_QUERY,
   ALBUMS_QUERY,
   FEATURED_ALBUMS_QUERY,
 } from "@/sanity/queries";
+import { SanityConfigurationError, sanityFetch } from "@/sanity/client";
 import {
   PLACEHOLDER_ALL_ALBUMS,
   PLACEHOLDER_ALBUM_MAP,
@@ -51,46 +59,95 @@ function buildAlbumNavigation(
   };
 }
 
+function normalizeAlbumMeta(album: AlbumMeta): AlbumMeta {
+  return {
+    ...album,
+    coverImage: normalizeImage(album.coverImage) ?? album.coverImage,
+  };
+}
+
+function normalizeAlbum(album: Album): Album {
+  return {
+    ...normalizeAlbumMeta(album),
+    heroImage: normalizeImage(album.heroImage) ?? album.heroImage,
+    images: normalizeImages(album.images),
+  };
+}
+
 export async function getAllAlbums(): Promise<AlbumMeta[]> {
   try {
-    const albums = await client.fetch(ALBUMS_QUERY);
-    return Array.isArray(albums) && albums.length > 0 ? albums : PLACEHOLDER_ALL_ALBUMS;
-  } catch {
+    const albums = parseSanityContent(
+      "albums",
+      albumMetaArraySchema,
+      await sanityFetch<unknown>({ query: ALBUMS_QUERY }),
+    );
+
+    return albums.map((album) => normalizeAlbumMeta(album));
+  } catch (error) {
+    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+      throw error;
+    }
     return PLACEHOLDER_ALL_ALBUMS;
   }
 }
 
-export async function getFeaturedAlbum(): Promise<AlbumMeta> {
+export async function getFeaturedAlbum(): Promise<AlbumMeta | null> {
   const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
   try {
-    const albums = await client.fetch(FEATURED_ALBUMS_QUERY);
-    return Array.isArray(albums) && albums.length > 0
-      ? pick(albums)
-      : pick(PLACEHOLDER_FEATURED_ALBUMS);
-  } catch {
+    const featuredAlbums = parseSanityContent(
+      "featured albums",
+      albumMetaArraySchema,
+      await sanityFetch<unknown>({ query: FEATURED_ALBUMS_QUERY }),
+    ).map((album) => normalizeAlbumMeta(album));
+
+    if (featuredAlbums.length > 0) {
+      return pick(featuredAlbums);
+    }
+
+    const liveAlbums = await getAllAlbums();
+
+    if (liveAlbums.length === 0) {
+      return null;
+    }
+
+    return pick(liveAlbums);
+  } catch (error) {
+    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+      throw error;
+    }
     return pick(PLACEHOLDER_FEATURED_ALBUMS);
   }
 }
 
 export async function getAlbumSlugs(): Promise<{ slug: string }[]> {
   try {
-    const slugs = await client.fetch(ALBUM_SLUGS_QUERY);
-    const normalized = Array.isArray(slugs)
-      ? slugs.filter((entry): entry is { slug: string } => typeof entry?.slug === "string")
-      : [];
-    return normalized.length > 0
-      ? normalized
-      : PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current }));
-  } catch {
+    return parseSanityContent(
+      "album slugs",
+      albumSlugArraySchema,
+      await sanityFetch<unknown>({ query: ALBUM_SLUGS_QUERY }),
+    );
+  } catch (error) {
+    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+      throw error;
+    }
     return PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current }));
   }
 }
 
 export async function getAlbumBySlug(slug: string): Promise<Album | null> {
   try {
-    const album = await client.fetch(ALBUM_BY_SLUG_QUERY, { slug });
-    return album ?? PLACEHOLDER_ALBUM_MAP[slug] ?? null;
-  } catch {
+    const album = await sanityFetch<unknown | null>({ query: ALBUM_BY_SLUG_QUERY, params: { slug } });
+
+    if (album === null) {
+      return null;
+    }
+
+    return normalizeAlbum(parseSanityContent("album detail", albumSchema, album));
+  } catch (error) {
+    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+      throw error;
+    }
     return PLACEHOLDER_ALBUM_MAP[slug] ?? null;
   }
 }

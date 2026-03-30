@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { bentoSplitReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import { SiteMedia } from "@/components/ui/SiteMedia";
@@ -28,6 +28,7 @@ export function GalleryBentoSplit({
   const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const description = CATEGORY_META[album.category]?.description ?? "";
+  const coverSrc = resolveImageUrl(album.coverImage);
   const smoothMode = performanceMode === "smooth";
   const sectionStyle: CSSProperties | undefined = deferOffscreen
     ? {
@@ -116,9 +117,9 @@ export function GalleryBentoSplit({
           {smoothMode ? (
             <>
               <SiteMedia
-                alt={`${album.title} cover placeholder`}
+                alt={album.coverImage.alt || `${album.title} cover`}
                 className="absolute inset-0 object-cover w-full h-full"
-                src={album.coverImage.url}
+                src={coverSrc}
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
@@ -135,15 +136,15 @@ export function GalleryBentoSplit({
                 aria-hidden
                 className="object-cover w-full h-full"
                 style={{ filter: bentoSplitReveal.grayFilter }}
-                src={album.coverImage.url}
+                src={coverSrc}
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
               />
               <SiteMedia
-                alt={`${album.title} cover placeholder`}
+                alt={album.coverImage.alt || `${album.title} cover`}
                 className="bento-img-color absolute inset-0 object-cover w-full h-full"
-                src={album.coverImage.url}
+                src={coverSrc}
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"

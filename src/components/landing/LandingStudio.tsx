@@ -1,24 +1,35 @@
 import { getFeaturedAlbum } from "@/lib/albums";
 import { CinematicImageReveal } from "./CinematicImageReveal";
 import { LandingStudioCards } from "./LandingStudioCards";
-import { LANDING_MEDIA } from "@/lib/site-media";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
+import type { HomeStudioContent } from "@/types/content";
 
-export async function LandingStudio() {
+interface LandingStudioProps {
+  content: HomeStudioContent;
+}
+
+export async function LandingStudio({ content }: LandingStudioProps) {
   const album = await getFeaturedAlbum();
+  const dims = getImageDimensions(content.image);
 
   return (
     <section className="relative py-32 md:py-52">
       <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center">
         <CinematicImageReveal
-          src={LANDING_MEDIA.studio.src}
-          alt={LANDING_MEDIA.studio.alt}
+          src={resolveImageUrl(content.image)}
+          alt={content.image.alt ?? ""}
           className="w-full mb-20 md:mb-32"
-          width={LANDING_MEDIA.studio.width}
-          height={LANDING_MEDIA.studio.height}
+          width={dims?.width ?? 2041}
+          height={dims?.height ?? 3200}
         />
 
-        <LandingStudioCards featuredAlbum={album} />
+        <LandingStudioCards
+          featuredAlbum={album}
+          ctaEyebrow={content.ctaEyebrow}
+          ctaLabel={content.ctaLabel}
+          ctaHref={content.cta.href}
+        />
       </div>
     </section>
   );

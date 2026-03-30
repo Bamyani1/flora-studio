@@ -25,7 +25,7 @@ _Photography that's worth keeping._
 
 A photography studio built on patience and craft. We believe the best images aren't found — they're cultivated. Every frame is composed with intention, selected with care, and refined by hand.
 
-[View the live site &rarr;](https://baharstudio.com)
+[View the live site &rarr;](https://studiobahar.com)
 
 ---
 
@@ -218,7 +218,7 @@ Sanity 5.16 · next-sanity 12.0
 Zustand 5.0
 
 **Utilities**
-Zod 3.24 (validation) · Resend 4.0 (email) · Sharp 0.34 (image optimization) · Lucide React (icons)
+Zod 3.24 (validation) · Nodemailer 8.0 via iCloud SMTP (email) · Sharp 0.34 (image optimization) · Lucide React (icons)
 
 ---
 
@@ -242,17 +242,23 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-07-11
 
-# Email (Resend)
-RESEND_API_KEY=re_your_api_key
-CONTACT_EMAIL=hello@baharstudio.com
+# Email (iCloud SMTP)
+# SMTP login for the underlying iCloud mailbox
+ICLOUD_SMTP_USER=your-icloud-mailbox@icloud.com
+ICLOUD_SMTP_PASS=your_app_specific_password
+# Verified custom-domain sender and inbox
+CONTACT_EMAIL=info@studiobahar.com
+CONTACT_DELIVERY_MODE=
 
 # Site
-NEXT_PUBLIC_SITE_URL=https://baharstudio.com
+NEXT_PUBLIC_SITE_URL=https://studiobahar.com
 ```
 
 ```bash
 npm run dev
 ```
+
+Production mail setup notes, including the DMARC record that still needs to exist in DNS, are documented in `docs/contact-email-ops.md`.
 
 ---
 

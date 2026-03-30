@@ -14,8 +14,13 @@ export default defineConfig({
   },
   webServer: {
     command: "npm run dev -- --hostname 127.0.0.1 --port 3101",
+    env: {
+      ...process.env,
+      CONTACT_DELIVERY_MODE: "stub",
+      NEXT_DIST_DIR: ".next-playwright",
+    },
     url: "http://127.0.0.1:3101",
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },
   projects: [

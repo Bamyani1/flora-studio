@@ -58,30 +58,19 @@ export const album = defineType({
     defineField({
       name: "coverImage",
       title: "Cover Image",
-      type: "image",
-      options: { hotspot: true },
+      type: "imageWithAlt",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "heroImage",
       title: "Hero Image",
-      type: "image",
-      options: { hotspot: true },
+      type: "imageWithAlt",
     }),
     defineField({
       name: "images",
       title: "Gallery Images",
       type: "array",
-      of: [
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            { name: "alt", title: "Alt Text", type: "string" },
-            { name: "caption", title: "Caption", type: "string" },
-          ],
-        },
-      ],
+      of: [{ type: "imageWithAlt" }],
     }),
     defineField({
       name: "videoUrl",

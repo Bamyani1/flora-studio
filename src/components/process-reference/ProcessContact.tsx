@@ -8,7 +8,15 @@ import { withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ProcessMagnetic } from "./ProcessMagnetic";
 
-export function ProcessContact() {
+export function ProcessContact({
+  heading,
+  buttonHref,
+  buttonLabel,
+}: {
+  heading: string;
+  buttonHref: string;
+  buttonLabel: string;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
@@ -55,15 +63,15 @@ export function ProcessContact() {
         data-contact-animate
         className="mb-10 font-display text-5xl font-light italic text-[var(--process-on-surface-variant)] md:text-6xl"
       >
-        Get In Touch
+        {heading}
       </h2>
       <ProcessMagnetic>
         <Link
-          href="/contact"
+          href={buttonHref}
           data-contact-animate
           className="inline-block bg-[var(--process-primary)] px-12 py-4 font-label text-[11px] uppercase tracking-[0.2em] text-[var(--process-on-primary)]"
         >
-          Contact
+          {buttonLabel}
         </Link>
       </ProcessMagnetic>
     </section>

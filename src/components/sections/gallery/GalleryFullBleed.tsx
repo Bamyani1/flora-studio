@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { fullBleedShowcase, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import { SiteMedia } from "@/components/ui/SiteMedia";
@@ -20,6 +20,7 @@ export function GalleryFullBleed({
   const reduced = useReducedMotion();
   const dims = getImageDimensions(album.coverImage);
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
+  const coverSrc = resolveImageUrl(album.coverImage);
   const smoothMode = performanceMode === "smooth";
   const sectionStyle: CSSProperties | undefined = deferOffscreen
     ? {
@@ -113,9 +114,9 @@ export function GalleryFullBleed({
       >
         <div className="absolute inset-0 transition-transform duration-[3s] ease-out group-hover/bleed:scale-110">
           <SiteMedia
-            alt={`${album.title} cover placeholder`}
+            alt={album.coverImage.alt || `${album.title} cover`}
             className="fullbleed-img object-cover w-full h-full"
-            src={album.coverImage.url}
+            src={coverSrc}
             fill
             loading="lazy"
             sizes="(min-width: 768px) 66vw, 80vw"

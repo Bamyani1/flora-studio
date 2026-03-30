@@ -87,6 +87,34 @@ describe("useContactForm", () => {
     });
   });
 
+  it("returns to a fresh form after resetting a successful submit", async () => {
+    mockSubmitContactForm.mockResolvedValue({ success: true });
+
+    render(<ContactFormHarness />);
+
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Ava Reed" } });
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "ava@example.com" } });
+    fireEvent.change(screen.getByLabelText("Photography Type"), {
+      target: { value: "milestones" },
+    });
+    fireEvent.change(screen.getByLabelText("Message"), {
+      target: { value: "I would love to book a portrait session this spring." },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Submitted")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+
+    expect(screen.getByLabelText("Name")).toHaveValue("");
+    expect(screen.getByLabelText("Email")).toHaveValue("");
+    expect(screen.getByLabelText("Photography Type")).toHaveValue("");
+    expect(screen.getByLabelText("Message")).toHaveValue("");
+    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+  });
+
   it("surfaces provider errors after a valid submit", async () => {
     mockSubmitContactForm.mockResolvedValue({
       success: false,

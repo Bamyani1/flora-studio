@@ -6,9 +6,14 @@ import { gsap } from "@/lib/gsap";
 import { landingHeroGridSequence, landingHeroParallax } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SiteMedia } from "@/components/ui/SiteMedia";
-import { LANDING_HERO_CYCLE } from "@/lib/site-media";
+import { resolveImageUrl } from "@/lib/image-url";
+import type { HomeHeroContent } from "@/types/content";
 
-export function LandingHero() {
+interface LandingHeroProps {
+  content: HomeHeroContent;
+}
+
+export function LandingHero({ content }: LandingHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const bgContainerRef = useRef<HTMLDivElement>(null);
   const imageLayerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -104,16 +109,16 @@ export function LandingHero() {
         {/* Left column — image */}
         <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
           <div ref={bgContainerRef} className="absolute inset-0">
-            {LANDING_HERO_CYCLE.map((media, index) => (
+            {content.mediaCycle.map((media, index) => (
               <div
-                key={media.src}
+                key={`${media.asset._ref}-${index}`}
                 ref={(el) => { imageLayerRefs.current[index] = el; }}
                 className="absolute inset-0"
                 style={{ visibility: "hidden" }}
               >
                 <SiteMedia
-                  src={media.src}
-                  alt={media.alt}
+                  src={resolveImageUrl(media)}
+                  alt={media.alt ?? ""}
                   fill
                   className="object-cover"
                   priority={index === 0}
@@ -139,22 +144,26 @@ export function LandingHero() {
             ref={eyebrowRef}
             className="font-label-serif text-[11px] tracking-[0.35em] uppercase mb-5 text-hero-gold"
           >
-            Photography with intention
+            {content.eyebrow}
           </span>
 
           <h1
             ref={headlineRef}
             className="font-headline-serif font-bold leading-[0.95] tracking-tight mb-12"
           >
-            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-text">Every frame,</span>
-            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-hero-gold">earned.</span>
+            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-text">
+              {content.titleLine1}
+            </span>
+            <span className="block text-[clamp(2.5rem,9vw,8rem)] text-hero-gold">
+              {content.titleLine2}
+            </span>
           </h1>
 
           <p
             ref={descRef}
             className="font-headline-serif font-normal text-[clamp(1.1rem,1.8vw,1.4rem)] leading-relaxed max-w-[340px] mx-auto md:mx-0 mb-12 text-hero-muted"
           >
-            Patience, craft, and an eye for what matters.
+            {content.description}
           </p>
         </div>
       </div>

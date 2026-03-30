@@ -6,14 +6,15 @@ import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap";
 import { useLenis } from "lenis/react";
 import { navOverlayOpen, navOverlayClose } from "@/lib/animations";
-import { NAV_CTA, PRIMARY_NAV_ITEMS, SOCIAL_LINKS, isNavItemActive } from "@/lib/navigation";
+import { NAV_CTA, PRIMARY_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
+import type { SocialLink } from "@/types/content";
 import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useUIStore } from "@/stores/ui-store";
 import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
 
-export function MobileMenu() {
+export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -210,10 +211,10 @@ export function MobileMenu() {
 
         {/* Social links */}
         <div className="flex flex-wrap justify-center gap-6">
-          {SOCIAL_LINKS.map((link) => (
+          {socialLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
+              href={link.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.label}

@@ -6,8 +6,8 @@ test("route transitions preserve scroll-triggered chrome behavior", async ({ pag
   const header = page.locator("header");
   const beforeHeight = await header.evaluate((element) => parseFloat(getComputedStyle(element).height));
 
-  await page.getByLabel("Main navigation").getByRole("link", { name: "Work" }).click();
-  await expect(page).toHaveURL(/\/work$/);
+  await page.getByLabel("Main navigation").getByRole("link", { name: "Process" }).click();
+  await expect(page).toHaveURL(/\/process$/);
 
   await page.evaluate(() => {
     window.scrollTo({ top: window.innerHeight * 2, behavior: "instant" });
@@ -16,6 +16,5 @@ test("route transitions preserve scroll-triggered chrome behavior", async ({ pag
 
   const afterHeight = await header.evaluate((element) => parseFloat(getComputedStyle(element).height));
 
-  await expect(page.getByRole("button", { name: "Back to top" })).toBeVisible();
   expect(afterHeight).toBeLessThan(beforeHeight);
 });

@@ -9,7 +9,7 @@ import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import type { AlbumMeta } from "@/types/project";
 import { SiteMedia } from "@/components/ui/SiteMedia";
-import { getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
 
 interface ProjectCardProps {
   album: AlbumMeta;
@@ -31,6 +31,7 @@ export function ProjectCard({
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
   const dims = getImageDimensions(album.coverImage);
   const isPortrait = dims ? dims.height > dims.width : false;
+  const coverSrc = resolveImageUrl(album.coverImage);
 
   useGSAP(
     () => {
@@ -70,8 +71,8 @@ export function ProjectCard({
         >
           <div className="relative h-full w-full">
             <SiteMedia
-              src={album.coverImage.url}
-              alt={`${album.title} cover placeholder`}
+              src={coverSrc}
+              alt={album.coverImage.alt || `${album.title} cover`}
               fill
               loading={eagerImage ? "eager" : undefined}
               className="object-cover"

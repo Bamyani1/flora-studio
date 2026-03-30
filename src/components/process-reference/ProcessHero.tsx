@@ -13,9 +13,11 @@ import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface ProcessHeroProps {
   image: ProcessImage;
+  titleLine1: string;
+  titleLine2: string;
 }
 
-export function ProcessHero({ image }: ProcessHeroProps) {
+export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const imageWrapperRef = useRef<HTMLDivElement>(null);
@@ -115,8 +117,8 @@ export function ProcessHero({ image }: ProcessHeroProps) {
           data-hero-child
           className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-8xl"
         >
-          Our Process: <br />
-          <span className="italic font-light">Frame by Frame</span>
+          {titleLine1} <br />
+          <span className="italic font-light">{titleLine2}</span>
         </h1>
         <div data-hero-child className="mt-12 flex items-center justify-center gap-8">
           <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-[var(--process-outline-variant)] to-transparent" />
