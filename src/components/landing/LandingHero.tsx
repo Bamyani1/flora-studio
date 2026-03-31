@@ -140,12 +140,19 @@ export function LandingHero({ content }: LandingHeroProps) {
                 />
               </div>
             ))}
-            {/* Gradient overlay */}
+            {/* Gradient overlay — vertical fade (all screens) + right fade (desktop only) */}
             <div
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(to right, transparent 60%, var(--color-background) 100%), linear-gradient(to bottom, var(--color-background) 0%, transparent 15%, transparent 60%, var(--color-background) 100%)",
+                  "linear-gradient(to bottom, var(--color-background) 0%, transparent 15%, transparent 60%, var(--color-background) 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 hidden md:block"
+              style={{
+                background:
+                  "linear-gradient(to right, transparent 60%, var(--color-background) 100%)",
               }}
             />
           </div>
