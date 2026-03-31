@@ -68,11 +68,10 @@ export function LandingHero({ content }: LandingHeroProps) {
 
       // Ken Burns + scroll parallax on container (same as before)
       if (bgContainerRef.current) {
-        gsap.fromTo(
-          bgContainerRef.current,
-          landingHeroParallax.kenBurns.from,
-          { ...landingHeroParallax.kenBurns.to, delay: landingHeroParallax.kenBurns.delay },
-        );
+        gsap.fromTo(bgContainerRef.current, landingHeroParallax.kenBurns.from, {
+          ...landingHeroParallax.kenBurns.to,
+          delay: landingHeroParallax.kenBurns.delay,
+        });
 
         const container = bgContainerRef.current;
         gsap.to(container, {
@@ -80,10 +79,18 @@ export function LandingHero({ content }: LandingHeroProps) {
           scrollTrigger: {
             trigger: sectionRef.current,
             ...landingHeroParallax.scroll.scrollTrigger,
-            onEnter: () => { container.style.willChange = "transform"; },
-            onLeave: () => { container.style.willChange = "auto"; },
-            onEnterBack: () => { container.style.willChange = "transform"; },
-            onLeaveBack: () => { container.style.willChange = "auto"; },
+            onEnter: () => {
+              container.style.willChange = "transform";
+            },
+            onLeave: () => {
+              container.style.willChange = "auto";
+            },
+            onEnterBack: () => {
+              container.style.willChange = "transform";
+            },
+            onLeaveBack: () => {
+              container.style.willChange = "auto";
+            },
           },
         });
       }
@@ -95,7 +102,11 @@ export function LandingHero({ content }: LandingHeroProps) {
         for (let i = 0; i < layers.length; i++) {
           const pos = i * 4;
           crossfade.to(layers[i], { autoAlpha: 0, duration: 1, ease: "power1.inOut" }, pos + 3);
-          crossfade.to(layers[(i + 1) % layers.length], { autoAlpha: 1, duration: 1, ease: "power1.inOut" }, pos + 3);
+          crossfade.to(
+            layers[(i + 1) % layers.length],
+            { autoAlpha: 1, duration: 1, ease: "power1.inOut" },
+            pos + 3,
+          );
         }
       }
     },
@@ -107,12 +118,14 @@ export function LandingHero({ content }: LandingHeroProps) {
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="relative min-h-screen grid grid-cols-1 md:grid-cols-[44%_56%]">
         {/* Left column — image */}
-        <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[60vh] md:min-h-0">
+        <div className="relative row-start-1 col-start-1 overflow-hidden min-h-[50vh] md:min-h-0">
           <div ref={bgContainerRef} className="absolute inset-0">
             {content.mediaCycle.map((media, index) => (
               <div
                 key={`${media.asset._ref}-${index}`}
-                ref={(el) => { imageLayerRefs.current[index] = el; }}
+                ref={(el) => {
+                  imageLayerRefs.current[index] = el;
+                }}
                 className="absolute inset-0"
                 style={{ visibility: "hidden" }}
               >
@@ -139,7 +152,7 @@ export function LandingHero({ content }: LandingHeroProps) {
         </div>
 
         {/* Right column — content */}
-        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center items-center text-center md:items-start md:text-left px-6 md:px-12 py-12 md:py-0 md:pt-[8vh] md:border-l md:border-white/5">
+        <div className="relative row-start-2 md:row-start-1 md:col-start-2 flex flex-col justify-center items-center text-center md:items-start md:text-left px-6 md:px-12 py-6 md:py-0 md:pt-[8vh] md:border-l md:border-white/5">
           <span
             ref={eyebrowRef}
             className="font-label-serif text-[11px] tracking-[0.35em] uppercase mb-5 text-hero-gold"
@@ -149,7 +162,7 @@ export function LandingHero({ content }: LandingHeroProps) {
 
           <h1
             ref={headlineRef}
-            className="font-headline-serif font-bold leading-[0.95] tracking-tight mb-12"
+            className="font-headline-serif font-bold leading-[0.95] tracking-tight mb-6 md:mb-12"
           >
             <span className="block text-[clamp(2.5rem,9vw,8rem)] text-text">
               {content.titleLine1}
@@ -161,7 +174,7 @@ export function LandingHero({ content }: LandingHeroProps) {
 
           <p
             ref={descRef}
-            className="font-headline-serif font-normal text-[clamp(1.1rem,1.8vw,1.4rem)] leading-relaxed max-w-[340px] mx-auto md:mx-0 mb-12 text-hero-muted"
+            className="font-headline-serif font-normal text-[clamp(1.1rem,1.8vw,1.4rem)] leading-relaxed max-w-[340px] mx-auto md:mx-0 mb-6 md:mb-12 text-hero-muted"
           >
             {content.description}
           </p>
