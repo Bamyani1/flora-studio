@@ -2,13 +2,13 @@ const sk = "rounded-sm bg-surface animate-[skeleton-pulse_2s_ease-in-out_infinit
 
 export default function ContactLoading() {
   return (
-    <main className="relative flex h-screen flex-col overflow-hidden bg-background px-[10%] pt-[140px] pb-20">
+    <main className="relative flex min-h-screen flex-col overflow-hidden bg-background px-4 pt-24 pb-10 sm:px-[5%] md:h-screen md:min-h-0 md:px-[10%] md:pt-[140px] md:pb-20">
       {/* Grain overlay */}
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
 
       <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
         {/* Left Panel */}
-        <div className="flex w-full flex-col justify-between bg-surface-deep px-8 py-10 md:w-[45%] md:px-14 md:py-14">
+        <div className="flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[45%] md:justify-between md:gap-0 md:px-14 md:py-14">
           {/* Top */}
           <div>
             <div className={`mb-8 h-3 w-24 ${sk}`} />
