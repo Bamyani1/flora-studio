@@ -421,21 +421,32 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                         key={member.name}
                         data-about-animate="team-item"
                         data-delay={String(index * 0.1)}
-                        onMouseEnter={() => { setActiveMember(index); setIsHovering(true); }}
+                        onMouseEnter={() => {
+                          setActiveMember(index);
+                          setIsHovering(true);
+                        }}
                         onMouseLeave={() => setIsHovering(false)}
                         className="group border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3"
                       >
                         <div className="flex items-start md:items-center justify-between gap-4">
                           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
-                            <span className={`font-mono text-sm transition-colors duration-500 group-hover:text-primary ${active ? "text-primary" : "text-primary/40"}`}>
+                            <span
+                              className={`font-mono text-sm transition-colors duration-500 group-hover:text-primary ${active ? "text-primary" : "text-primary/40"}`}
+                            >
                               0{index + 1}
                             </span>
-                            <h3 className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight group-hover:text-white ${active ? "text-white" : "text-on-surface"}`}>
+                            <h3
+                              className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight group-hover:text-white ${active ? "text-white" : "text-on-surface"}`}
+                            >
                               {member.name}
                             </h3>
                           </div>
-                          <div className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}>
-                            <ChevronRight className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`} />
+                          <div
+                            className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
+                          >
+                            <ChevronRight
+                              className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
+                            />
                           </div>
                         </div>
 
@@ -466,7 +477,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-64 px-12 bg-surface-container-lowest">
+        <section className="py-64 px-6 bg-surface-container-lowest md:px-12">
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
             <div className="order-2 md:order-1 space-y-20">
               <div className="space-y-8">
@@ -524,7 +535,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-72 px-12 bg-surface text-center film-reel-border relative overflow-hidden">
+        <section className="py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
             <span
               data-about-animate="letter-spacing"
