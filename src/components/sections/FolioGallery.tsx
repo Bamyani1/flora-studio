@@ -46,19 +46,6 @@ interface FolioGalleryProps {
    Helpers
    ────────────────────────────────────────────── */
 
-function toRoman(n: number): string {
-  const vals = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-  const syms = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
-  let result = "";
-  for (let i = 0; i < vals.length; i++) {
-    while (n >= vals[i]) {
-      result += syms[i];
-      n -= vals[i];
-    }
-  }
-  return result;
-}
-
 const NUMBER_WORDS = [
   "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
   "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen",
@@ -104,7 +91,7 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
 
   // Rotation cycles for uniform-orientation albums
   const landscapeCycle: PageLayout[] = ["diptych", "panoramic", "full-bleed", "diptych", "editorial-left", "panoramic"];
-  const portraitCycle: PageLayout[] = ["diptych", "full-bleed", "editorial-left", "diptych", "editorial-right", "full-bleed"];
+  const portraitCycle: PageLayout[] = ["diptych", "full-bleed", "diptych", "full-bleed", "diptych", "full-bleed"];
   let cycleIdx = 0;
 
   pages.push({ layout: "title", images: [], imageIndex: 0, pageNumber: pageNum++ });
@@ -270,6 +257,7 @@ function FullBleedContent({
   pageNumber: number;
 }) {
   const { w, h } = getDims(image);
+  const isPortrait = h > w;
   return (
     <div className="flex flex-col items-center py-[2vh]">
       <SiteMedia
@@ -277,8 +265,16 @@ function FullBleedContent({
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
-        className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
-        sizes="(min-width: 768px) 78vw, 92vw"
+        className={`folio-reveal h-auto w-auto ${
+          isPortrait
+            ? "max-w-[88%] md:max-w-[60%]"
+            : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"
+        }`}
+        sizes={
+          isPortrait
+            ? "(min-width: 768px) 60vw, 88vw"
+            : "(min-width: 768px) 78vw, 92vw"
+        }
         loading={pageNumber <= 2 ? "eager" : "lazy"}
       />
     </div>
@@ -297,6 +293,7 @@ function EditorialContent({
   side: "left" | "right";
 }) {
   const { w, h } = getDims(image);
+  const isPortrait = h > w;
   return (
     <div
       className={`flex py-[2vh] px-[4vw] md:px-[6vw] ${
@@ -308,8 +305,16 @@ function EditorialContent({
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
-        className="folio-reveal h-auto w-auto max-h-[80vh] max-w-[80vw] md:max-w-[50vw] lg:max-w-[42vw]"
-        sizes="(min-width: 1024px) 42vw, (min-width: 768px) 50vw, 80vw"
+        className={`folio-reveal h-auto w-auto ${
+          isPortrait
+            ? "max-w-[80vw] md:max-w-[55vw] lg:max-w-[50vw]"
+            : "max-h-[80vh] max-w-[80vw] md:max-w-[50vw] lg:max-w-[42vw]"
+        }`}
+        sizes={
+          isPortrait
+            ? "(min-width: 1024px) 50vw, (min-width: 768px) 55vw, 80vw"
+            : "(min-width: 1024px) 42vw, (min-width: 768px) 50vw, 80vw"
+        }
         loading="lazy"
       />
     </div>
@@ -502,6 +507,7 @@ function VideoContent({ videoUrl }: { videoUrl: string }) {
         muted
         loop
         playsInline
+        aria-label="Album video presentation"
         className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
       />
       <span className="folio-reveal-label mt-4 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
@@ -524,9 +530,6 @@ function ColophonContent() {
         Bahar Studio
       </span>
       <div className="folio-reveal-label mt-8 h-px w-[60px] bg-primary" />
-      <span className="folio-reveal-label mt-5 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        MMXXVI
-      </span>
     </div>
   );
 }
@@ -537,11 +540,9 @@ function ColophonContent() {
 
 export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   const pages = buildFolioPages(images, videoUrl);
-  const totalNumeral = toRoman(pages.length);
 
   useGSAP(
     () => {
@@ -550,7 +551,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
 
       const pageEls = el.querySelectorAll<HTMLElement>(".folio-page");
 
-      pageEls.forEach((pageEl, i) => {
+      pageEls.forEach((pageEl) => {
         const reveals = pageEl.querySelectorAll<HTMLElement>(".folio-reveal");
         const labels = pageEl.querySelectorAll<HTMLElement>(".folio-reveal-label");
         const titleText = pageEl.querySelector<HTMLElement>(".folio-title-text");
@@ -571,8 +572,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
             trigger: pageEl,
             start: folioReveal.scrollTrigger.start,
             toggleActions: folioReveal.scrollTrigger.toggleActions,
-            onEnter: () => updateIndicator(i),
-            onEnterBack: () => updateIndicator(i),
           },
           ...withWillChange(),
         });
@@ -596,26 +595,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         }
       });
 
-      if (indicatorRef.current && !reduced) {
-        gsap.fromTo(
-          indicatorRef.current,
-          { autoAlpha: 0 },
-          {
-            autoAlpha: 1,
-            duration: 0.4,
-            scrollTrigger: {
-              trigger: el,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-
-      function updateIndicator(pageIndex: number) {
-        if (!indicatorRef.current) return;
-        indicatorRef.current.textContent = `${toRoman(pageIndex + 1)} / ${totalNumeral}`;
-      }
     },
     { scope: sectionRef, dependencies: [reduced] },
   );
@@ -644,12 +623,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
             }}
           />
 
-          <div
-            ref={indicatorRef}
-            className="absolute top-5 right-5 font-label text-[10px] uppercase tracking-[0.16em] text-muted pointer-events-auto md:top-8 md:right-8 md:text-[11px]"
-          >
-            I / {totalNumeral}
-          </div>
         </div>
       </div>
 

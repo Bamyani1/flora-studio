@@ -64,6 +64,9 @@ scripts/.image-cache.json
 /playwright-report/
 /test-results/
 
+# Lighthouse
+/lighthouse-reports/
+
 # Local debug / scratch worktrees
 /.ref-runtime/
 

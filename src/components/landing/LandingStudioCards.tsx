@@ -39,11 +39,13 @@ export function LandingStudioCards({
     if (card1Ref.current) {
       gsap.fromTo(card1Ref.current, fadeUp.from, {
         ...fadeUp.to,
-        duration: 1.2,
+        duration: 0.8,
         ...withWillChange(),
         scrollTrigger: {
           trigger: card1Ref.current,
-          ...fadeUp.scrollTrigger,
+          start: "top 95%",
+          end: "top 20%",
+          toggleActions: "play none none none",
         },
       });
     }
@@ -54,12 +56,14 @@ export function LandingStudioCards({
 
     gsap.fromTo(card2Ref.current, fadeUp.from, {
       ...fadeUp.to,
-      duration: 1.2,
-      delay: card1Ref.current ? 0.2 : 0,
+      duration: 0.8,
+      delay: card1Ref.current ? 0.15 : 0,
       ...withWillChange(),
       scrollTrigger: {
         trigger: card2Ref.current,
-        ...fadeUp.scrollTrigger,
+        start: "top 95%",
+        end: "top 20%",
+        toggleActions: "play none none none",
       },
     });
   }, [reducedMotion]);
@@ -72,16 +76,13 @@ export function LandingStudioCards({
         <TransitionLink href={`/work/${featuredAlbum.slug.current}`} className="block group">
           <div
             ref={card1Ref}
-            className="p-10 md:p-16 border border-white/10 bg-white/[0.02] backdrop-blur-sm hover:bg-white/[0.06] hover:border-white/20 transition-all duration-700 h-full"
+            className="p-8 md:p-12 border border-white/10 bg-white/[0.02] hover:bg-white hover:border-white transition-all duration-700 h-full cursor-pointer"
           >
-            <p className="font-label text-[10px] uppercase tracking-[0.3em] mb-10 text-primary">
-              {CATEGORY_META[featuredAlbum.category]?.label ?? featuredAlbum.category}
-            </p>
-            <h4 className="font-headline text-3xl md:text-4xl mb-6 italic text-white">
+            <h4 className="font-headline text-3xl md:text-4xl mb-6 italic text-white group-hover:text-surface-deep">
               {featuredAlbum.title}
             </h4>
             {featuredAlbum.description && (
-              <p className="font-body text-base text-white/60 leading-relaxed">
+              <p className="font-body text-base text-white/60 group-hover:text-surface-deep/60 leading-relaxed transition-colors duration-700">
                 {featuredAlbum.description}
               </p>
             )}
@@ -97,14 +98,13 @@ export function LandingStudioCards({
 
       <div
         ref={card2Ref}
-        className="bg-primary p-10 md:p-16 flex flex-col justify-center items-center text-surface-deep group cursor-pointer relative overflow-hidden"
+        className="p-8 md:p-12 flex flex-col justify-center items-center border border-white/10 bg-white/[0.02] hover:bg-primary hover:border-primary transition-all duration-700 group cursor-pointer relative overflow-hidden"
       >
-        <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]"></div>
         <TransitionLink href={ctaHref} className="relative z-10 flex flex-col items-center">
-          <p className="font-label text-[10px] uppercase tracking-[0.3em] mb-6 opacity-70 group-hover:opacity-100 transition-opacity">
+          <p className="font-label text-[10px] uppercase tracking-[0.3em] mb-6 text-primary group-hover:text-surface-deep/70 transition-colors duration-700">
             {ctaEyebrow}
           </p>
-          <span className="font-label text-xs uppercase tracking-[0.2em] font-semibold border border-surface-deep/35 px-8 py-3 group-hover:border-surface-deep transition-colors duration-500">
+          <span className="font-label text-xs uppercase tracking-[0.2em] font-semibold text-on-surface border border-primary/35 px-8 py-3 group-hover:text-surface-deep group-hover:border-surface-deep/35 transition-colors duration-500">
             {ctaLabel}
           </span>
         </TransitionLink>

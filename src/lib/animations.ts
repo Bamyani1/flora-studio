@@ -265,14 +265,14 @@ export const folioReveal = {
   },
   titleClip: {
     from: { clipPath: "inset(0 100% 0 0)" },
-    to: { clipPath: "inset(0 0 0 0)", duration: 1.2, ease: easings.sharp },
+    to: { clipPath: "inset(0 0 0 0)", duration: 0.8, ease: easings.sharp },
   },
   pageNumber: {
     from: { autoAlpha: 0 },
     to: { autoAlpha: 0.06, duration: 0.6, ease: easings.smooth },
     delay: 0.3,
   },
-  scrollTrigger: { start: "top 90%", toggleActions: "play none none none" },
+  scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
 };
 
 // --------------------------------------------------
@@ -281,33 +281,33 @@ export const folioReveal = {
 export const cinematicHeroReveal = {
   /** Image only uses scale — filter work moves to overlay layers */
   image: {
-    from: { scale: 1.15 },
-    to: { scale: 1, duration: 3.5, ease: "power3.inOut" },
+    from: { scale: 1.08 },
+    to: { scale: 1, duration: 1.8, ease: "power3.out" },
   },
   /** Dark overlay: simulates brightness(0.1) → brightness(1) */
   darkOverlay: {
-    from: { autoAlpha: 0.9 },
-    to: { autoAlpha: 0, duration: 3.5, ease: "power3.inOut" },
+    from: { autoAlpha: 0.85 },
+    to: { autoAlpha: 0, duration: 1.8, ease: "power3.out" },
   },
   nav: {
     from: { y: -20, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 1, stagger: 0.1, ease: easings.smooth },
+    to: { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: easings.smooth },
   },
   chapterLabel: {
     from: { y: 20, autoAlpha: 0 },
-    to: { autoAlpha: 1, y: 0, duration: 1, ease: easings.smooth },
+    to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
   },
   titleLine: {
-    from: { y: 100, autoAlpha: 0, rotationX: -20 },
-    to: { y: 0, autoAlpha: 1, rotationX: 0, duration: 1.5, ease: easings.smooth, stagger: 0.2 },
+    from: { y: 60, autoAlpha: 0, rotationX: -15 },
+    to: { y: 0, autoAlpha: 1, rotationX: 0, duration: 1, ease: easings.smooth, stagger: 0.15 },
   },
   description: {
-    from: { y: 20, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 1, ease: easings.smooth },
+    from: { y: 15, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth },
   },
   scrollCue: {
     from: { autoAlpha: 0 },
-    to: { autoAlpha: 1, duration: 1, ease: easings.smooth },
+    to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
   },
   parallax: {
     to: { yPercent: 20, ease: "none" },
@@ -439,8 +439,8 @@ export const headerShrink = {
   /** Shadow is now on overlay element — animate its opacity instead */
   shadow: { from: { opacity: 0 }, to: { opacity: 1 } },
   logo: {
-    from: { width: "180px" },
-    to: { width: "140px" },
+    from: { scale: 1, transformOrigin: "center center" },
+    to: { scale: 0.778, transformOrigin: "center center" },
   },
 };
 

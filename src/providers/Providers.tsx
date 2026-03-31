@@ -4,7 +4,12 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ReactLenis, useLenis } from "lenis/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { CustomCursor } from "@/components/ui/CustomCursor";
+import dynamic from "next/dynamic";
+
+const CustomCursor = dynamic(
+  () => import("@/components/ui/CustomCursor").then((mod) => mod.CustomCursor),
+  { ssr: false },
+);
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { clearLenisRootState, getRouteScrollMode, lenisOptions } from "@/lib/scroll";
 

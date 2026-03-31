@@ -13,6 +13,7 @@ interface TransitionLinkProps {
   onClick?: () => void;
   prefetch?: boolean;
   "aria-label"?: string;
+  "aria-current"?: "page" | undefined;
 }
 
 export function TransitionLink({
@@ -23,6 +24,7 @@ export function TransitionLink({
   onClick,
   prefetch = true,
   "aria-label": ariaLabel,
+  "aria-current": ariaCurrent,
 }: TransitionLinkProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -70,6 +72,7 @@ export function TransitionLink({
       className={className}
       style={style}
       aria-label={ariaLabel}
+      aria-current={ariaCurrent}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       prefetch={prefetch}

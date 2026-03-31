@@ -1,5 +1,4 @@
 import { localImageFromPublicPath } from "@/lib/placeholder-images";
-import { createPlaceholderImage } from "@/lib/site-media";
 import type {
   AboutPageContent,
   ContactPageContent,
@@ -13,7 +12,7 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
   studioName: "Bahar Studio",
   location: "Dayton, Ohio",
   email: "info@studiobahar.com",
-  phone: "(937) 555-0142",
+  phone: "(937)-7977381",
   socialLinks: [
     {
       label: "Instagram",
@@ -21,23 +20,9 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
       url: "https://instagram.com/baharstudio",
       icon: "instagram",
     },
-    {
-      label: "Behance",
-      platform: "Behance",
-      url: "https://behance.net/baharstudio",
-      icon: "behance",
-    },
-    {
-      label: "LinkedIn",
-      platform: "LinkedIn",
-      url: "https://linkedin.com/company/baharstudio",
-      icon: "linkedin",
-    },
   ],
   sameAs: [
     "https://instagram.com/baharstudio",
-    "https://behance.net/baharstudio",
-    "https://linkedin.com/company/baharstudio",
   ],
 };
 
@@ -50,15 +35,15 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     description: "Patience, craft, and an eye for what matters.",
     mediaCycle: [
       localImageFromPublicPath("/images/landing-hero.jpg", "Bahar Studio hero photograph"),
-      localImageFromPublicPath("/images/exhibition-hero.jpg", "Bahar Studio exhibition photograph"),
-      localImageFromPublicPath("/images/editorial-hero.jpg", "Bahar Studio editorial photograph"),
       localImageFromPublicPath("/images/studio-hero.jpg", "Bahar Studio featured work"),
+      localImageFromPublicPath("/images/editorial-hero.jpg", "Bahar Studio editorial photograph"),
+      localImageFromPublicPath("/images/exhibition-hero.jpg", "Bahar Studio exhibition photograph"),
     ],
   },
   editorial: {
     image: localImageFromPublicPath(
-      "/images/exhibition-hero.jpg",
-      "Bahar Studio exhibition photograph",
+      "/images/studio-hero.jpg",
+      "Bahar Studio featured work",
     ),
     titleLine1: "We pay attention",
     titleLine2Lead: "to",
@@ -84,11 +69,11 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     image: localImageFromPublicPath("/images/editorial-hero.jpg", "Bahar Studio editorial photograph"),
   },
   studio: {
-    image: localImageFromPublicPath("/images/studio-hero.jpg", "Bahar Studio featured work"),
-    ctaEyebrow: "Join Bahar Studio",
-    ctaLabel: "Access",
+    image: localImageFromPublicPath("/images/game-day/hero.jpg", "Bahar Studio game day action photograph"),
+    ctaEyebrow: "Work With Us",
+    ctaLabel: "Get in Touch",
     cta: {
-      label: "Access",
+      label: "Get in Touch",
       href: "/contact",
     },
   },
@@ -122,20 +107,14 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
         portrait: localImageFromPublicPath("/images/portrait.jpg", "Portrait of Mostafa Bamyani"),
       },
       {
-        name: "Murtaza Anwari",
+        name: "Mortaza Anwari",
         role: "Photographer",
-        portrait: createPlaceholderImage({
-          key: "team-murtaza-anwari",
-          alt: "Portrait placeholder for Murtaza Anwari",
-        }),
+        portrait: localImageFromPublicPath("/images/portrait-mortaza.jpg", "Portrait of Mortaza Anwari"),
       },
       {
         name: "Enayatullah Anwari",
         role: "Photographer",
-        portrait: createPlaceholderImage({
-          key: "team-enayatullah-anwari",
-          alt: "Portrait placeholder for Enayatullah Anwari",
-        }),
+        portrait: localImageFromPublicPath("/images/portrait-enayat.jpg", "Portrait of Enayatullah Anwari"),
       },
     ],
   },
@@ -153,7 +132,7 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
       {
         title: "Refinement",
         description:
-          "Each image is individually graded. We build a visual language specific to your project.",
+          "Each image is individually graded. We build a visual language specific to your vision.",
       },
     ],
     image: localImageFromPublicPath("/images/about-process.jpg", "Bahar Studio creative process"),
@@ -186,7 +165,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       id: "01",
       title: "Conversation",
       description:
-        "Every project starts with a conversation. We learn about you, the occasion, the setting, and the feeling you want to walk away with. From there, we plan.",
+        "Every session starts with a conversation. We learn about you, the occasion, the setting, and the feeling you want to walk away with. From there, we plan.",
       meta: "Phase: Planning & Scope",
       images: [
         localImageFromPublicPath("/images/process/01.jpg", "Planning and conversation phase"),
@@ -246,5 +225,5 @@ export const PLACEHOLDER_CONTACT_PAGE: ContactPageContent = {
   _id: "contactPage",
   titleLine1: "Get in",
   titleLine2: "touch.",
-  description: "Have a project in mind? We'd love to hear about it.",
+  description: "Have a vision in mind? We'd love to hear about it.",
 };

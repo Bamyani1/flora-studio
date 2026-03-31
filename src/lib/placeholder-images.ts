@@ -45,7 +45,14 @@ export function autoGallery(slug: string, altPrefix: string): SanityImage[] {
     .filter((file) => /^\d+\.jpg$/i.test(file))
     .sort();
 
-  return files.map((file, index) =>
+  const images = files.map((file, index) =>
     localImageFromPublicPath(`/images/${slug}/${file}`, `${altPrefix} ${index + 1}`),
   );
+
+  const heroPath = `/images/${slug}/hero.jpg`;
+  if (fs.existsSync(getAbsolutePublicPath(heroPath))) {
+    images.push(localImageFromPublicPath(heroPath, `${altPrefix} hero`));
+  }
+
+  return images;
 }

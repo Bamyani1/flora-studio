@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
-import { imageGalleryJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, imageGalleryJsonLd } from "@/lib/metadata";
+import { publicEnv } from "@/lib/public-env";
+import { generateLqipDataUrl } from "@/lib/lqip";
+import { resolveImageUrl } from "@/lib/image-url";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
 import { FolioGallery } from "@/components/sections/FolioGallery";
@@ -30,7 +33,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — a photography album by Bahar Studio.`,
+    description: description ?? `${title} — photography by Bahar Studio, Dayton, Ohio.`,
   };
 }
 
@@ -40,12 +43,20 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
 
   if (!album) notFound();
 
+  const heroBlurDataURL = await generateLqipDataUrl(resolveImageUrl(album.heroImage));
+
+  const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
     description: album.description,
     slug,
     imageCount: album.images?.length ?? 0,
   });
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    { name: "Work", url: `${SITE_URL}/work` },
+    { name: album.title, url: `${SITE_URL}/work/${slug}` },
+  ]);
 
   return (
     <main id="main-content">
@@ -53,12 +64,17 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <AlbumHero
         title={album.title}
         category={album.category}
         year={album.year}
         location={album.location}
         heroImage={album.heroImage}
+        blurDataURL={heroBlurDataURL}
       />
 
       {album.narrative && (
@@ -75,9 +91,18 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 && (
-        <FolioGallery images={album.images} title={album.title} videoUrl={album.videoUrl} />
-      )}
+      {album.images?.length > 0 && (() => {
+        const seen = new Set<string>();
+        const galleryImages = [...album.images, album.heroImage].filter((img) => {
+          const ref = img.asset._ref;
+          if (seen.has(ref)) return false;
+          seen.add(ref);
+          return true;
+        });
+        return (
+          <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
+        );
+      })()}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

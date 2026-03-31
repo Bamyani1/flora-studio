@@ -10,6 +10,7 @@ export interface GallerySectionProps {
   priority?: boolean;
   performanceMode?: GalleryPerformanceMode;
   deferOffscreen?: boolean;
+  blurDataURL?: string;
 }
 
 export interface GalleryDualSectionProps {

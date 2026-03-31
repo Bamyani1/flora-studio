@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ProcessExperience } from "@/components/process-reference/ProcessExperience";
 import { resolveImageUrl } from "@/lib/image-url";
+import { breadcrumbJsonLd } from "@/lib/metadata";
+import { publicEnv } from "@/lib/public-env";
 import { getProcessPageContent, getSiteSettings } from "@/lib/site-content";
 
 export const metadata: Metadata = {
@@ -15,8 +17,19 @@ export default async function ProcessPage() {
     getSiteSettings(),
   ]);
 
+  const SITE_URL = publicEnv.siteUrl;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    { name: "Process", url: `${SITE_URL}/process` },
+  ]);
+
   return (
-    <ProcessExperience
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <ProcessExperience
       heroImage={{
         src: resolveImageUrl(processPage.hero.image) ?? "",
         alt: processPage.hero.image.alt ?? "Bahar Studio process hero",
@@ -37,5 +50,6 @@ export default async function ProcessPage() {
       contactButtonHref={processPage.contactCta.buttonHref}
       socialLinks={siteSettings.socialLinks}
     />
+    </>
   );
 }

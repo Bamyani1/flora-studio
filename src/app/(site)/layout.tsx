@@ -1,3 +1,4 @@
+import { VercelAnalytics } from "@/components/analytics/VercelAnalytics";
 import { CookieConsentManager } from "@/components/legal/CookieConsentManager";
 import { RouteChrome } from "@/components/layout/RouteChrome";
 import { getSiteSettings } from "@/lib/site-content";
@@ -16,6 +17,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       </a>
       <RouteChrome socialLinks={siteSettings.socialLinks}>{children}</RouteChrome>
       <CookieConsentManager />
+      <VercelAnalytics />
     </Providers>
   );
 }

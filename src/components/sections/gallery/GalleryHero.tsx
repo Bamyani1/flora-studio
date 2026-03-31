@@ -11,14 +11,13 @@ import { resolveImageUrl } from "@/lib/image-url";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GallerySectionProps } from "./types";
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 export function GalleryHero({
   album,
-  index,
   priority = false,
   performanceMode = "default",
   deferOffscreen = false,
+  blurDataURL,
 }: GallerySectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
@@ -62,28 +61,22 @@ export function GalleryHero({
         0,
       );
       tl.fromTo(
-        el.querySelector(".gallery-hero-label"),
-        cinematicHeroReveal.chapterLabel.from,
-        { ...cinematicHeroReveal.chapterLabel.to },
-        "-=2.3",
-      )
-        .fromTo(
           el.querySelectorAll(".gallery-hero-title-line"),
           cinematicHeroReveal.titleLine.from,
           { ...cinematicHeroReveal.titleLine.to },
-          "-=2.0",
+          "-=1.2",
         )
         .fromTo(
           el.querySelector(".gallery-hero-desc"),
           cinematicHeroReveal.description.from,
           { ...cinematicHeroReveal.description.to },
-          "-=1.5",
+          "-=0.6",
         )
         .fromTo(
           el.querySelector(".gallery-hero-scroll"),
           cinematicHeroReveal.scrollCue.from,
           { ...cinematicHeroReveal.scrollCue.to },
-          "-=1.0",
+          "-=0.4",
         );
 
       const img = el.querySelector<HTMLElement>(".gallery-hero-img");
@@ -133,6 +126,7 @@ export function GalleryHero({
           fill
           priority={priority}
           sizes="100vw"
+          blurDataURL={blurDataURL}
         />
         <div className="gallery-hero-dark-overlay absolute inset-0 bg-black" aria-hidden="true" />
       </div>
@@ -141,10 +135,6 @@ export function GalleryHero({
         className="relative z-20 h-full flex flex-col justify-end items-end text-right p-[var(--container-padding-x)] pb-12 md:p-24 max-w-7xl mx-auto"
         style={{ perspective: "1000px" }}
       >
-        <span className="gallery-hero-label font-label text-xs tracking-[0.3em] text-primary uppercase">
-          Chapter {ROMAN[index - 1] ?? index}
-        </span>
-
         <TransitionLink href={`/work/${album.slug.current}`} className="group block mt-4">
           <h2 className="font-display text-[length:var(--text-5xl)] md:text-[length:var(--text-7xl)] text-text-heading leading-none transition-colors duration-500 group-hover:text-primary">
             <div className="overflow-hidden">
