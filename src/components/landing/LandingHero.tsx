@@ -133,7 +133,7 @@ export function LandingHero({ content }: LandingHeroProps) {
                   src={resolveImageUrl(media)}
                   alt={media.alt ?? ""}
                   fill
-                  className="object-cover"
+                  className="object-cover max-md:object-top"
                   priority={index === 0}
                   quality={90}
                   sizes="(max-width: 768px) 100vw, 44vw"
