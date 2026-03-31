@@ -58,12 +58,11 @@ test("contact form surfaces a server-side delivery error", async ({ page }) => {
     },
   ]);
   await page.goto("/contact");
+  await expect(page.getByRole("button", { name: "Send Message" })).toBeVisible();
   await fillValidContactForm(page);
 
   await page.getByRole("button", { name: "Send Message" }).click();
 
-  await expect(
-    page.getByText("Failed to send message. Please try again later."),
-  ).toBeVisible();
+  await expect(page.getByText("Failed to send message. Please try again later.")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Message received" })).toHaveCount(0);
 });
