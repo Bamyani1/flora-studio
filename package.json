@@ -7,14 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "images:process": "node scripts/process-images.mjs",
+    "images:validate": "node scripts/process-images.mjs --validate",
     "migrate:sanity": "tsx scripts/migrate-sanity.ts",
     "type-check": "tsc --noEmit",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:e2e:all",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:consent": "playwright test --config playwright.consent.config.ts",
-    "verify": "npm run lint && npm run type-check && npm run test:unit && npm run test:e2e && npm run build"
+    "test:e2e:all": "npm run test:e2e && npm run test:e2e:consent",
+    "verify": "npm run lint && npm run type-check && npm run test:unit && npm run test:e2e:all && npm run build"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -39,7 +42,6 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.0.0",
     "@types/nodemailer": "^7.0.11",
     "@types/react": "^19.0.0",

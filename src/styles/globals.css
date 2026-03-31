@@ -27,14 +27,13 @@
   --color-hero-gold: #e09438;
   --color-hero-divider: #505a48;
   --color-hero-muted: #b4bca6;
+  --color-hero-dark: #283022;
 
   /* --- Typography: Font Families --- */
   --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-headline: var(--font-display);
-  --font-headline-serif: "Cormorant Garamond", "Georgia", serif;
   --font-body: "Inter", "system-ui", "-apple-system", sans-serif;
   --font-label: "Inter", "system-ui", "-apple-system", sans-serif;
-  --font-label-serif: "EB Garamond", "Georgia", serif;
   /* --- Typography: Type Scale (Major Third — 1.25 ratio) --- */
   --text-xs: 0.75rem; /* 12px */
   --text-sm: 0.875rem; /* 14px */
@@ -96,6 +95,8 @@
   --duration-fast: 200ms;
   --duration-normal: 400ms;
   --duration-slow: 800ms;
+  --duration-cinematic: 1200ms;
+  --duration-hero: 3500ms;
 
   /* --- Motion: Easing Tokens (CSS cubic-bezier + GSAP equivalents in comments) --- */
   --ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* GSAP: power3.out */
@@ -132,6 +133,8 @@
   --container-padding-x-mobile: 1rem; /* 16px on mobile */
   --header-height: 5rem; /* 80px — expanded at top */
   --header-height-compact: 3.5rem; /* 56px — on scroll */
+  --header-py-expanded: 1.25rem; /* 20px */
+  --header-py-compact: 0.625rem; /* 10px */
 
   /* --- Material Design Color Tokens (About page) --- */
   --color-surface-container-lowest: #1c2018;

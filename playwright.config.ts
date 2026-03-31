@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  testIgnore: "**/legal-consent-enabled.spec.ts",
   timeout: 30000,
   expect: {
     timeout: 5000,
@@ -17,6 +18,7 @@ export default defineConfig({
     env: {
       ...process.env,
       CONTACT_DELIVERY_MODE: "stub",
+      CONTENT_RUNTIME_MODE: "e2e",
       NEXT_DIST_DIR: ".next-playwright",
     },
     url: "http://127.0.0.1:3101",

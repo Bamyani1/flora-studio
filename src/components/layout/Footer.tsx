@@ -47,7 +47,7 @@ export function Footer({
           <a
             key={link.label}
             href={link.href}
-            className="group/footerlink relative font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] hover:text-primary transition-colors duration-300"
+            className="group/footerlink relative font-label text-[10px] uppercase tracking-[0.2em] font-light text-[var(--color-on-surface-variant)] transition-colors duration-300 hover:text-primary"
           >
             {link.label}
             <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
@@ -59,7 +59,7 @@ export function Footer({
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group/footerlink relative font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] hover:text-primary transition-colors duration-300"
+            className="group/footerlink relative font-label text-[10px] uppercase tracking-[0.2em] font-light text-[var(--color-on-surface-variant)] transition-colors duration-300 hover:text-primary"
           >
             {link.label}
             <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />

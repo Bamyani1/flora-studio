@@ -6,6 +6,15 @@ import {
   PLACEHOLDER_PROCESS_PAGE,
   PLACEHOLDER_SITE_SETTINGS,
 } from "@/lib/placeholder-site-content";
+import {
+  E2E_ABOUT_PAGE,
+  E2E_CONTACT_PAGE,
+  E2E_HOME_PAGE,
+  E2E_PROCESS_PAGE,
+  E2E_SITE_SETTINGS,
+} from "@/lib/e2e-content";
+
+vi.mock("server-only", () => ({}));
 
 const { MockSanityConfigurationError, mockSanityFetch } = vi.hoisted(() => {
   class MockSanityConfigurationError extends Error {
@@ -144,13 +153,24 @@ describe("site content loaders", () => {
     await expect(getContactPageContent()).resolves.toEqual(PLACEHOLDER_CONTACT_PAGE);
   });
 
-  it("rethrows a Sanity configuration error instead of falling back", async () => {
+  it("keeps placeholder fallback in preview mode when Sanity is unavailable", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "preview";
+    mockSanityFetch.mockRejectedValue(new Error("cms down"));
+
+    const { getHomePageContent } = await import("@/lib/site-content");
+
+    await expect(getHomePageContent()).resolves.toEqual(PLACEHOLDER_HOME_PAGE);
+  });
+
+  it("throws a content-unavailable error in production mode when Sanity is unavailable", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "production";
     mockSanityFetch.mockRejectedValue(new MockSanityConfigurationError());
 
     const { getHomePageContent } = await import("@/lib/site-content");
 
     await expect(getHomePageContent()).rejects.toMatchObject({
-      name: "SanityConfigurationError",
+      name: "ContentUnavailableError",
+      resource: "home page",
     });
   });
 
@@ -260,5 +280,25 @@ describe("site content loaders", () => {
     expect(homePage.hero.mediaCycle[0]?.url).toBe(
       "https://cdn.sanity.io/images/studio123/production/home-1600x900.jpg",
     );
+  });
+
+  it("returns deterministic fixture content in e2e mode without calling Sanity", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "e2e";
+    mockSanityFetch.mockRejectedValue(new Error("should not be called"));
+
+    const {
+      getAboutPageContent,
+      getContactPageContent,
+      getHomePageContent,
+      getProcessPageContent,
+      getSiteSettings,
+    } = await import("@/lib/site-content");
+
+    await expect(getSiteSettings()).resolves.toEqual(E2E_SITE_SETTINGS);
+    await expect(getHomePageContent()).resolves.toEqual(E2E_HOME_PAGE);
+    await expect(getAboutPageContent()).resolves.toEqual(E2E_ABOUT_PAGE);
+    await expect(getProcessPageContent()).resolves.toEqual(E2E_PROCESS_PAGE);
+    await expect(getContactPageContent()).resolves.toEqual(E2E_CONTACT_PAGE);
+    expect(mockSanityFetch).not.toHaveBeenCalled();
   });
 });

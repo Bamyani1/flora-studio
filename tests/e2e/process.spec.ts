@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("process route exposes a working contact CTA", async ({ page }) => {
-  await page.goto("/process", { waitUntil: "networkidle" });
+  await page.goto("/process", { waitUntil: "domcontentloaded" });
 
   await page.getByRole("link", { name: "Get in touch" }).click();
 

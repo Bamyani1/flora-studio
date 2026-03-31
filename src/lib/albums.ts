@@ -12,12 +12,17 @@ import {
   ALBUMS_QUERY,
   FEATURED_ALBUMS_QUERY,
 } from "@/sanity/queries";
-import { SanityConfigurationError, sanityFetch } from "@/sanity/client";
+import { sanityFetch } from "@/sanity/client";
 import {
   PLACEHOLDER_ALL_ALBUMS,
   PLACEHOLDER_ALBUM_MAP,
   PLACEHOLDER_FEATURED_ALBUMS,
 } from "@/lib/placeholder-data";
+import { E2E_ALBUMS, getE2EAlbumBySlug } from "@/lib/e2e-content";
+import {
+  isE2EContentRuntime,
+  resolveContentAvailabilityFailure,
+} from "@/lib/content-runtime.server";
 import type { Album, AlbumMeta } from "@/types/project";
 
 export interface AlbumNavigationItem {
@@ -75,6 +80,10 @@ function normalizeAlbum(album: Album): Album {
 }
 
 export async function getAllAlbums(): Promise<AlbumMeta[]> {
+  if (isE2EContentRuntime()) {
+    return E2E_ALBUMS.map((album) => normalizeAlbumMeta(album));
+  }
+
   try {
     const albums = parseSanityContent(
       "albums",
@@ -84,15 +93,21 @@ export async function getAllAlbums(): Promise<AlbumMeta[]> {
 
     return albums.map((album) => normalizeAlbumMeta(album));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_ALL_ALBUMS;
+
+    return resolveContentAvailabilityFailure("albums", error, () => PLACEHOLDER_ALL_ALBUMS);
   }
 }
 
 export async function getFeaturedAlbum(): Promise<AlbumMeta | null> {
   const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
+  if (isE2EContentRuntime()) {
+    const featuredAlbum = E2E_ALBUMS.find((album) => album.featured) ?? E2E_ALBUMS[0] ?? null;
+    return featuredAlbum ? normalizeAlbumMeta(featuredAlbum) : null;
+  }
 
   try {
     const featuredAlbums = parseSanityContent(
@@ -113,14 +128,21 @@ export async function getFeaturedAlbum(): Promise<AlbumMeta | null> {
 
     return pick(liveAlbums);
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return pick(PLACEHOLDER_FEATURED_ALBUMS);
+
+    return resolveContentAvailabilityFailure("featured albums", error, () =>
+      pick(PLACEHOLDER_FEATURED_ALBUMS),
+    );
   }
 }
 
 export async function getAlbumSlugs(): Promise<{ slug: string }[]> {
+  if (isE2EContentRuntime()) {
+    return E2E_ALBUMS.map((album) => ({ slug: album.slug.current }));
+  }
+
   try {
     return parseSanityContent(
       "album slugs",
@@ -128,14 +150,21 @@ export async function getAlbumSlugs(): Promise<{ slug: string }[]> {
       await sanityFetch<unknown>({ query: ALBUM_SLUGS_QUERY }),
     );
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current }));
+
+    return resolveContentAvailabilityFailure("album slugs", error, () =>
+      PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current })),
+    );
   }
 }
 
 export async function getAlbumBySlug(slug: string): Promise<Album | null> {
+  if (isE2EContentRuntime()) {
+    return getE2EAlbumBySlug(slug);
+  }
+
   try {
     const album = await sanityFetch<unknown | null>({ query: ALBUM_BY_SLUG_QUERY, params: { slug } });
 
@@ -145,10 +174,11 @@ export async function getAlbumBySlug(slug: string): Promise<Album | null> {
 
     return normalizeAlbum(parseSanityContent("album detail", albumSchema, album));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_ALBUM_MAP[slug] ?? null;
+
+    return resolveContentAvailabilityFailure("album detail", error, () => PLACEHOLDER_ALBUM_MAP[slug] ?? null);
   }
 }
 

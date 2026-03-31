@@ -4,6 +4,9 @@ import {
   PLACEHOLDER_ALBUM_MAP,
   PLACEHOLDER_FEATURED_ALBUMS,
 } from "@/lib/placeholder-data";
+import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "@/lib/e2e-content";
+
+vi.mock("server-only", () => ({}));
 
 const { MockSanityConfigurationError, mockSanityFetch } = vi.hoisted(() => {
   class MockSanityConfigurationError extends Error {
@@ -62,17 +65,28 @@ describe("album loaders", () => {
     await expect(getAllAlbums()).resolves.toEqual(PLACEHOLDER_ALL_ALBUMS);
   });
 
-  it("rethrows a Sanity configuration error instead of falling back", async () => {
+  it("keeps placeholder fallback in preview mode when Sanity is unavailable", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "preview";
+    mockSanityFetch.mockRejectedValue(new Error("cms down"));
+
+    const { getAllAlbums } = await import("@/lib/albums");
+
+    await expect(getAllAlbums()).resolves.toEqual(PLACEHOLDER_ALL_ALBUMS);
+  });
+
+  it("throws a content-unavailable error in production mode when Sanity is unavailable", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "production";
     mockSanityFetch.mockRejectedValue(new MockSanityConfigurationError());
 
     const { getAllAlbums } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).rejects.toMatchObject({
-      name: "SanityConfigurationError",
+      name: "ContentUnavailableError",
+      resource: "albums",
     });
   });
 
-  it("throws on invalid published album list data", async () => {
+  it("throws on invalid published album list data instead of soft-falling back", async () => {
     mockSanityFetch.mockResolvedValue([{ slug: { current: "broken" } }]);
 
     const { getAllAlbums } = await import("@/lib/albums");
@@ -109,6 +123,29 @@ describe("album loaders", () => {
     const result = await getFeaturedAlbum();
 
     expect(PLACEHOLDER_FEATURED_ALBUMS).toContainEqual(result);
+  });
+
+  it("returns deterministic fixture content in e2e mode without calling Sanity", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "e2e";
+    mockSanityFetch.mockRejectedValue(new Error("should not be called"));
+
+    const { getAllAlbums, getAlbumBySlug, getAlbumSlugs, getFeaturedAlbum } = await import(
+      "@/lib/albums"
+    );
+
+    await expect(getAllAlbums()).resolves.toEqual(E2E_ALBUMS);
+    await expect(getAlbumSlugs()).resolves.toEqual([{ slug: E2E_PRIMARY_ALBUM_SLUG }]);
+    await expect(getAlbumBySlug(E2E_PRIMARY_ALBUM_SLUG)).resolves.toEqual(E2E_ALBUMS[0]);
+    await expect(getFeaturedAlbum()).resolves.toEqual(E2E_ALBUMS[0]);
+    expect(mockSanityFetch).not.toHaveBeenCalled();
+  });
+
+  it("returns null for non-fixture album slugs in e2e mode", async () => {
+    process.env.CONTENT_RUNTIME_MODE = "e2e";
+
+    const { getAlbumBySlug } = await import("@/lib/albums");
+
+    await expect(getAlbumBySlug("the-graduate")).resolves.toBeNull();
   });
 
   it("returns normalized album slugs and preserves an empty live result", async () => {

@@ -21,13 +21,24 @@ import {
   PLACEHOLDER_SITE_SETTINGS,
 } from "@/lib/placeholder-site-content";
 import {
+  E2E_ABOUT_PAGE,
+  E2E_CONTACT_PAGE,
+  E2E_HOME_PAGE,
+  E2E_PROCESS_PAGE,
+  E2E_SITE_SETTINGS,
+} from "@/lib/e2e-content";
+import {
+  isE2EContentRuntime,
+  resolveContentAvailabilityFailure,
+} from "@/lib/content-runtime.server";
+import {
   ABOUT_PAGE_QUERY,
   CONTACT_PAGE_QUERY,
   HOME_PAGE_QUERY,
   PROCESS_PAGE_QUERY,
   SITE_SETTINGS_QUERY,
 } from "@/sanity/queries";
-import { SanityConfigurationError, sanityFetch } from "@/sanity/client";
+import { sanityFetch } from "@/sanity/client";
 import type {
   AboutPageContent,
   ContactPageContent,
@@ -213,63 +224,88 @@ function normalizeContactPage(raw: ContactPageDocument): ContactPageContent {
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
+  if (isE2EContentRuntime()) {
+    return E2E_SITE_SETTINGS;
+  }
+
   try {
     const data = await sanityFetch<unknown>({ query: SITE_SETTINGS_QUERY });
     return normalizeSiteSettings(parseSanityContent("siteSettings", siteSettingsDocumentSchema, data));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_SITE_SETTINGS;
+
+    return resolveContentAvailabilityFailure("site settings", error, () => PLACEHOLDER_SITE_SETTINGS);
   }
 }
 
 export async function getHomePageContent(): Promise<HomePageContent> {
+  if (isE2EContentRuntime()) {
+    return E2E_HOME_PAGE;
+  }
+
   try {
     const data = await sanityFetch<unknown>({ query: HOME_PAGE_QUERY });
     return normalizeHomePage(parseSanityContent("homePage", homePageDocumentSchema, data));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_HOME_PAGE;
+
+    return resolveContentAvailabilityFailure("home page", error, () => PLACEHOLDER_HOME_PAGE);
   }
 }
 
 export async function getAboutPageContent(): Promise<AboutPageContent> {
+  if (isE2EContentRuntime()) {
+    return E2E_ABOUT_PAGE;
+  }
+
   try {
     const data = await sanityFetch<unknown>({ query: ABOUT_PAGE_QUERY });
     return normalizeAboutPage(parseSanityContent("aboutPage", aboutPageDocumentSchema, data));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_ABOUT_PAGE;
+
+    return resolveContentAvailabilityFailure("about page", error, () => PLACEHOLDER_ABOUT_PAGE);
   }
 }
 
 export async function getProcessPageContent(): Promise<ProcessPageContent> {
+  if (isE2EContentRuntime()) {
+    return E2E_PROCESS_PAGE;
+  }
+
   try {
     const data = await sanityFetch<unknown>({ query: PROCESS_PAGE_QUERY });
     return normalizeProcessPage(parseSanityContent("processPage", processPageDocumentSchema, data));
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_PROCESS_PAGE;
+
+    return resolveContentAvailabilityFailure("process page", error, () => PLACEHOLDER_PROCESS_PAGE);
   }
 }
 
 export async function getContactPageContent(): Promise<ContactPageContent> {
+  if (isE2EContentRuntime()) {
+    return E2E_CONTACT_PAGE;
+  }
+
   try {
     const data = await sanityFetch<unknown>({ query: CONTACT_PAGE_QUERY });
     return normalizeContactPage(
       parseSanityContent("contactPage", contactPageDocumentSchema, data),
     );
   } catch (error) {
-    if (error instanceof SanityContentError || error instanceof SanityConfigurationError) {
+    if (error instanceof SanityContentError) {
       throw error;
     }
-    return PLACEHOLDER_CONTACT_PAGE;
+
+    return resolveContentAvailabilityFailure("contact page", error, () => PLACEHOLDER_CONTACT_PAGE);
   }
 }

@@ -10,6 +10,8 @@
 # next.js
 /.next/
 /.next-playwright/
+/.next-playwright-consent/
+/.next-local-compare/
 /out/
 
 # production
@@ -59,6 +61,14 @@ scripts/.image-cache.json
 
 # Playwright MCP
 .playwright-mcp/
+/playwright-report/
+/test-results/
+
+# Local debug / scratch worktrees
+/.ref-runtime/
+
+# Root-level exports
+/*.html
 
 # Editor config
 

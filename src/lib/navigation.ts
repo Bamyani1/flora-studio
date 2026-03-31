@@ -21,9 +21,3 @@ export const NAV_CTA = NAV_ITEMS.find((item) => item.kind === "cta")!;
 export function isNavItemActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
-
-export const SOCIAL_LINKS = [
-  { label: "Instagram", href: "https://instagram.com/baharstudio", icon: "instagram" },
-  { label: "Behance", href: "https://behance.net/baharstudio", icon: "behance" },
-  { label: "LinkedIn", href: "https://linkedin.com/company/baharstudio", icon: "linkedin" },
-] as const;

@@ -1,26 +1,17 @@
 import { expect, test } from "@playwright/test";
+import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "../../src/lib/e2e-content";
 
-test("work routes reflect live Sanity state without placeholder fallback", async ({ page }) => {
-  await page.goto("/work");
-  const albumLinks = page.locator("a[href^='/work/']");
-  const linkCount = await albumLinks.count();
+test("work routes follow the deterministic fixture album flow", async ({ page }) => {
+  await page.goto("/work", { waitUntil: "networkidle" });
 
-  if (linkCount === 0) {
-    await expect(page.getByText("No published albums right now.", { exact: false })).toBeVisible();
-    await page.goto("/work/the-graduate");
-    await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
-    return;
-  }
+  const albumLink = page.locator(`a[href='/work/${E2E_PRIMARY_ALBUM_SLUG}']`).first();
 
-  const firstAlbumLink = albumLinks.first();
-  const href = await firstAlbumLink.getAttribute("href");
+  await expect(albumLink).toBeVisible();
+  await albumLink.click();
 
-  expect(href).toBeTruthy();
-
-  await firstAlbumLink.evaluate((element: HTMLAnchorElement) => {
-    element.click();
-  });
-
-  await expect(page).toHaveURL(new RegExp(`${href}$`), { timeout: 10000 });
+  await expect(page).toHaveURL(new RegExp(`/work/${E2E_PRIMARY_ALBUM_SLUG}$`), { timeout: 10000 });
   await expect(page.locator("main#main-content")).toBeVisible();
+  await expect(
+    page.locator("main#main-content h1").filter({ hasText: E2E_ALBUMS[0].title }),
+  ).toBeVisible();
 });

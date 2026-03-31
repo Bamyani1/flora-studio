@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { type ChangeEvent, useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
@@ -25,18 +25,26 @@ const inputClass =
 export function CinematicContactForm() {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasCompletedSubmissionRef = useRef(false);
-  const { fieldErrors, formError, submitted, isPending, handleBlur, handleSubmit, resetSubmitted } =
-    useContactForm({
-      getData: (formData) => ({
-        name: formData.get("sender") as string,
-        email: formData.get("reply_to") as string,
-        website: ((formData.get("website") as string) || "").trim() || undefined,
-        photographyType: formData.get(
-          "photographyType",
-        ) as ContactFormData["photographyType"],
-        message: formData.get("message") as string,
-      }),
-    });
+  const {
+    fieldErrors,
+    formError,
+    submitted,
+    isPending,
+    validateField,
+    handleBlur,
+    handleSubmit,
+    resetSubmitted,
+  } = useContactForm({
+    getData: (formData) => ({
+      name: formData.get("sender") as string,
+      email: formData.get("reply_to") as string,
+      website: ((formData.get("website") as string) || "").trim() || undefined,
+      photographyType: formData.get(
+        "photographyType",
+      ) as ContactFormData["photographyType"],
+      message: formData.get("message") as string,
+    }),
+  });
 
   useEffect(() => {
     if (submitted) {
@@ -92,6 +100,16 @@ export function CinematicContactForm() {
     },
     { scope: containerRef, dependencies: [submitted], revertOnUpdate: true },
   );
+
+  const handleFieldChange =
+    (name: keyof typeof fieldErrors) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      if (!fieldErrors[name]) {
+        return;
+      }
+
+      validateField(name, event.target.value);
+    };
 
   if (submitted) {
     return (
@@ -187,6 +205,7 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR NAME"
                 className={inputClass}
+                onChange={handleFieldChange("name")}
                 onBlur={handleBlur("name")}
               />
               {fieldErrors.name && (
@@ -207,6 +226,7 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR EMAIL ADDRESS"
                 className={inputClass}
+                onChange={handleFieldChange("email")}
                 onBlur={handleBlur("email")}
               />
               {fieldErrors.email && (
@@ -229,6 +249,7 @@ export function CinematicContactForm() {
                 required
                 className={`${inputClass} cursor-pointer appearance-none pr-10`}
                 defaultValue=""
+                onChange={handleFieldChange("photographyType")}
                 onBlur={handleBlur("photographyType")}
               >
                 {photographyOptions.map((opt) => (
@@ -271,6 +292,7 @@ export function CinematicContactForm() {
               required
               placeholder="TELL US ABOUT YOUR EVENT, TIMELINE, OR ANY IDEAS..."
               className={`${inputClass} resize-none`}
+              onChange={handleFieldChange("message")}
               onBlur={handleBlur("message")}
             />
             {fieldErrors.message && (

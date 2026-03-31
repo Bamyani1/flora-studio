@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "../../src/lib/e2e-content";
 
 const ROUTE_ASSERTIONS = [
   { route: "/", text: "Every frame," },
@@ -9,33 +10,22 @@ const ROUTE_ASSERTIONS = [
 
 for (const { route, text } of ROUTE_ASSERTIONS) {
   test(`core content renders on ${route}`, async ({ page }) => {
-    await page.goto(route, { waitUntil: "networkidle" });
+    await page.goto(route, {
+      waitUntil: route === "/process" ? "domcontentloaded" : "networkidle",
+    });
     await expect(page.getByText(text, { exact: false }).first()).toBeVisible();
   });
 }
 
-test("work index renders either live albums or the explicit empty state", async ({ page }) => {
+test("work index renders the checked-in fixture album", async ({ page }) => {
   await page.goto("/work", { waitUntil: "networkidle" });
 
-  const albumLinks = page.locator("a[href^='/work/']");
-
-  if (await albumLinks.count()) {
-    await expect(albumLinks.first()).toBeVisible();
-    return;
-  }
-
-  await expect(page.getByText("No published albums right now.", { exact: false })).toBeVisible();
+  await expect(page.locator(`a[href='/work/${E2E_PRIMARY_ALBUM_SLUG}']`).first()).toBeVisible();
+  await expect(page.getByText(E2E_ALBUMS[0].title, { exact: false }).first()).toBeVisible();
 });
 
-test("missing album routes do not resurrect placeholder content", async ({ page }) => {
+test("missing album routes stay missing in fixture mode", async ({ page }) => {
   await page.goto("/work/the-graduate", { waitUntil: "networkidle" });
 
-  const notFoundHeading = page.getByRole("heading", { name: "Page not found" });
-
-  if (await notFoundHeading.count()) {
-    await expect(notFoundHeading).toBeVisible();
-    return;
-  }
-
-  await expect(page.getByText("The Graduate", { exact: false }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });

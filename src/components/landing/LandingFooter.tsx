@@ -26,7 +26,7 @@ export function LandingFooter() {
           <span className="absolute -bottom-1 left-0 w-full h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
         </TransitionLink>
       </div>
-      <div className="flex flex-wrap justify-center gap-6 font-label uppercase tracking-[0.16em] text-[9px]">
+      <div className="flex flex-wrap justify-center gap-6 font-label text-[9px] uppercase tracking-[0.16em]">
         {LEGAL_NAV_ITEMS.map((link) => (
           <TransitionLink
             key={link.href}
@@ -38,7 +38,7 @@ export function LandingFooter() {
           </TransitionLink>
         ))}
       </div>
-      <div className="mt-8 font-label uppercase tracking-[0.2em] text-[9px] text-white/30 text-center">
+      <div className="mt-8 text-center font-label text-[9px] uppercase tracking-[0.2em] text-white/30">
         &copy; {new Date().getFullYear()} BAHAR STUDIO. ALL RIGHTS RESERVED.
       </div>
     </footer>

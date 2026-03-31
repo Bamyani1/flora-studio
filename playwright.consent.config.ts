@@ -18,6 +18,7 @@ export default defineConfig({
     env: {
       ...process.env,
       CONTACT_DELIVERY_MODE: "stub",
+      CONTENT_RUNTIME_MODE: "e2e",
       NEXT_DIST_DIR: ".next-playwright-consent",
       NEXT_PUBLIC_ENABLE_COOKIE_CONSENT: "true",
     },
