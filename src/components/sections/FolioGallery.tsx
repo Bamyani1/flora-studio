@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { folioReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { resolveImageUrl } from "@/lib/image-url";
 import type { SanityImage } from "@/types/project";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 
@@ -83,6 +84,10 @@ function getDims(img: ImageType): { w: number; h: number } {
 function getOrientation(img: ImageType): Orientation {
   const { w, h } = getDims(img);
   return w >= h ? "landscape" : "portrait";
+}
+
+function getSrc(image?: ImageType | null) {
+  return resolveImageUrl(image);
 }
 
 /* ──────────────────────────────────────────────
@@ -241,7 +246,7 @@ function PanoramicContent({
   return (
     <div className="py-[2vh]">
       <SiteMedia
-        src={image.url}
+        src={getSrc(image)}
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
@@ -268,11 +273,11 @@ function FullBleedContent({
   return (
     <div className="flex flex-col items-center py-[2vh]">
       <SiteMedia
-        src={image.url}
+        src={getSrc(image)}
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
-        className="folio-reveal h-auto max-h-[85vh] w-[92%] md:w-[78%]"
+        className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
         sizes="(min-width: 768px) 78vw, 92vw"
         loading={pageNumber <= 2 ? "eager" : "lazy"}
       />
@@ -299,11 +304,11 @@ function EditorialContent({
       }`}
     >
       <SiteMedia
-        src={image.url}
+        src={getSrc(image)}
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
-        className="folio-reveal h-auto max-h-[80vh] w-[80vw] md:w-[50vw] lg:w-[42vw]"
+        className="folio-reveal h-auto w-auto max-h-[80vh] max-w-[80vw] md:max-w-[50vw] lg:max-w-[42vw]"
         sizes="(min-width: 1024px) 42vw, (min-width: 768px) 50vw, 80vw"
         loading="lazy"
       />
@@ -328,7 +333,7 @@ function StaggeredPairContent({
   return (
     <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
       <SiteMedia
-        src={images[0]?.url}
+        src={getSrc(images[0])}
         alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
         width={d0.w}
         height={d0.h}
@@ -338,7 +343,7 @@ function StaggeredPairContent({
         loading="lazy"
       />
       <SiteMedia
-        src={images[1]?.url}
+        src={getSrc(images[1])}
         alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
         width={d1.w}
         height={d1.h}
@@ -373,7 +378,7 @@ function TrioMosaicContent({
     <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
       {/* Large image */}
       <SiteMedia
-        src={images[0]?.url}
+        src={getSrc(images[0])}
         alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
         width={d0.w}
         height={d0.h}
@@ -388,7 +393,7 @@ function TrioMosaicContent({
         style={{ flex: stackFlex }}
       >
         <SiteMedia
-          src={images[1]?.url}
+          src={getSrc(images[1])}
           alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
           width={d1.w}
           height={d1.h}
@@ -397,7 +402,7 @@ function TrioMosaicContent({
           loading="lazy"
         />
         <SiteMedia
-          src={images[2]?.url}
+          src={getSrc(images[2])}
           alt={images[2]?.alt || `Photograph ${padIndex(startIndex + 2)}`}
           width={d2.w}
           height={d2.h}
@@ -427,7 +432,7 @@ function DiptychContent({
   return (
     <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
       <SiteMedia
-        src={images[0]?.url}
+        src={getSrc(images[0])}
         alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
         width={d0.w}
         height={d0.h}
@@ -437,7 +442,7 @@ function DiptychContent({
         loading="lazy"
       />
       <SiteMedia
-        src={images[1]?.url}
+        src={getSrc(images[1])}
         alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
         width={d1.w}
         height={d1.h}
@@ -473,11 +478,11 @@ function DetailCropContent({
       )}
       <div className={`flex justify-center ${caption ? "order-2 md:order-none md:justify-end" : ""}`}>
         <SiteMedia
-          src={image.url}
+          src={getSrc(image)}
           alt={image.alt || `Photograph ${padIndex(index)}`}
           width={w}
           height={h}
-          className={`folio-reveal h-auto ${caption ? "max-h-[50vh] w-[75vw] md:max-h-[75vh] md:w-[35vw]" : "max-h-[85vh] w-[92%] md:w-[78%]"}`}
+          className={`folio-reveal h-auto w-auto ${caption ? "max-h-[50vh] max-w-[75vw] md:max-h-[75vh] md:max-w-[35vw]" : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"}`}
           sizes={caption ? "(min-width: 768px) 35vw, 75vw" : "(min-width: 768px) 78vw, 92vw"}
           loading="lazy"
         />
@@ -497,7 +502,7 @@ function VideoContent({ videoUrl }: { videoUrl: string }) {
         muted
         loop
         playsInline
-        className="folio-reveal h-auto max-h-[85vh] w-[92%] md:w-[78%]"
+        className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
       />
       <span className="folio-reveal-label mt-4 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
         [ FILM ]

@@ -17,3 +17,22 @@ export function resolveImageUrl(img?: SanityImage | null): string | null {
   }
   return null;
 }
+
+export function normalizeImage(img?: SanityImage | null): SanityImage | null {
+  if (!img) return null;
+
+  const url = resolveImageUrl(img);
+
+  return {
+    ...img,
+    url: url ?? undefined,
+  };
+}
+
+export function normalizeImages(images?: (SanityImage | null | undefined)[] | null): SanityImage[] {
+  if (!Array.isArray(images)) return [];
+
+  return images
+    .map((image) => normalizeImage(image))
+    .filter((image): image is SanityImage => Boolean(image));
+}

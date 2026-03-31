@@ -7,8 +7,8 @@ import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 export type ContactFieldName = keyof ContactFormData;
 export type ContactFieldErrors = Partial<Record<ContactFieldName, string>>;
 
-export interface UseContactFormOptions {
-  getData: (formData: FormData) => ContactFormData;
+export interface UseContactFormOptions<TData extends ContactFormData = ContactFormData> {
+  getData: (formData: FormData) => TData;
 }
 
 function mapIssuesToFieldErrors(data: ContactFormData): ContactFieldErrors {
@@ -26,7 +26,7 @@ function mapIssuesToFieldErrors(data: ContactFormData): ContactFieldErrors {
   return errors;
 }
 
-export function useContactForm({ getData }: UseContactFormOptions) {
+export function useContactForm<TData extends ContactFormData>({ getData }: UseContactFormOptions<TData>) {
   const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -86,6 +86,8 @@ export function useContactForm({ getData }: UseContactFormOptions) {
   );
 
   const resetSubmitted = useCallback(() => {
+    setFieldErrors({});
+    setFormError(null);
     setSubmitted(false);
   }, []);
 

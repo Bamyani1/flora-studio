@@ -7,6 +7,7 @@ import { cinematicHeroReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
+import { resolveImageUrl } from "@/lib/image-url";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GallerySectionProps } from "./types";
 
@@ -22,6 +23,7 @@ export function GalleryHero({
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
+  const coverSrc = resolveImageUrl(album.coverImage);
   const smoothMode = performanceMode === "smooth";
   const sectionStyle: CSSProperties | undefined =
     smoothMode && deferOffscreen
@@ -117,7 +119,7 @@ export function GalleryHero({
       style={sectionStyle}
       aria-label={`${album.title} — featured album`}
     >
-      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       <div
         className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[var(--color-surface-lowest)]/80"
         aria-hidden="true"
@@ -125,8 +127,8 @@ export function GalleryHero({
 
       <div className="absolute inset-0 w-full h-full overflow-hidden" style={imageShellStyle}>
         <SiteMedia
-          src={album.coverImage.url}
-          alt={`${album.title} cover placeholder`}
+          src={coverSrc}
+          alt={album.coverImage.alt || `${album.title} cover`}
           className="gallery-hero-img object-cover w-full h-full"
           fill
           priority={priority}

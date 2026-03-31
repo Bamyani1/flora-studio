@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { type ChangeEvent, useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
@@ -24,24 +24,42 @@ const inputClass =
 
 export function CinematicContactForm() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { fieldErrors, formError, submitted, isPending, handleBlur, handleSubmit, resetSubmitted } =
-    useContactForm({
-      getData: (formData) => ({
-        name: formData.get("sender") as string,
-        email: formData.get("reply_to") as string,
-        photographyType: formData.get(
-          "photographyType",
-        ) as ContactFormData["photographyType"],
-        message: formData.get("message") as string,
-      }),
-    });
+  const hasCompletedSubmissionRef = useRef(false);
+  const {
+    fieldErrors,
+    formError,
+    submitted,
+    isPending,
+    validateField,
+    handleBlur,
+    handleSubmit,
+    resetSubmitted,
+  } = useContactForm({
+    getData: (formData) => ({
+      name: formData.get("sender") as string,
+      email: formData.get("reply_to") as string,
+      website: ((formData.get("website") as string) || "").trim() || undefined,
+      photographyType: formData.get(
+        "photographyType",
+      ) as ContactFormData["photographyType"],
+      message: formData.get("message") as string,
+    }),
+  });
+
+  useEffect(() => {
+    if (submitted) {
+      hasCompletedSubmissionRef.current = true;
+    }
+  }, [submitted]);
 
   useGSAP(
     () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || submitted) return;
+
+      const revealTargets = "[data-form-animate]";
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) {
-        gsap.set("[data-form-animate]", { autoAlpha: 1 });
+      if (prefersReduced || hasCompletedSubmissionRef.current) {
+        gsap.set(revealTargets, { autoAlpha: 1, y: 0 });
         return;
       }
 
@@ -80,8 +98,18 @@ export function CinematicContactForm() {
         positions.submit,
       );
     },
-    { scope: containerRef },
+    { scope: containerRef, dependencies: [submitted], revertOnUpdate: true },
   );
+
+  const handleFieldChange =
+    (name: keyof typeof fieldErrors) =>
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      if (!fieldErrors[name]) {
+        return;
+      }
+
+      validateField(name, event.target.value);
+    };
 
   if (submitted) {
     return (
@@ -134,6 +162,21 @@ export function CinematicContactForm() {
         </h2>
 
         <form onSubmit={handleSubmit} noValidate className="max-w-[540px] space-y-7">
+          <div
+            aria-hidden="true"
+            className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+          >
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+          </div>
+
           {formError && (
             <div
               className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"
@@ -162,6 +205,7 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR NAME"
                 className={inputClass}
+                onChange={handleFieldChange("name")}
                 onBlur={handleBlur("name")}
               />
               {fieldErrors.name && (
@@ -182,6 +226,7 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR EMAIL ADDRESS"
                 className={inputClass}
+                onChange={handleFieldChange("email")}
                 onBlur={handleBlur("email")}
               />
               {fieldErrors.email && (
@@ -204,6 +249,7 @@ export function CinematicContactForm() {
                 required
                 className={`${inputClass} cursor-pointer appearance-none pr-10`}
                 defaultValue=""
+                onChange={handleFieldChange("photographyType")}
                 onBlur={handleBlur("photographyType")}
               >
                 {photographyOptions.map((opt) => (
@@ -246,6 +292,7 @@ export function CinematicContactForm() {
               required
               placeholder="TELL US ABOUT YOUR EVENT, TIMELINE, OR ANY IDEAS..."
               className={`${inputClass} resize-none`}
+              onChange={handleFieldChange("message")}
               onBlur={handleBlur("message")}
             />
             {fieldErrors.message && (
@@ -263,9 +310,9 @@ export function CinematicContactForm() {
               className="group relative w-full overflow-hidden p-[3px] bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {/* Outer spinning gradient glow */}
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,rgba(255,255,255,0.4)_95%,rgba(255,255,255,0.7)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,color-mix(in_srgb,white_40%,transparent)_95%,color-mix(in_srgb,white_70%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
               {/* Inner spinning gradient */}
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,rgba(255,255,255,0.3)_95%,rgba(255,255,255,0.6)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,color-mix(in_srgb,white_30%,transparent)_95%,color-mix(in_srgb,white_60%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               {/* Button face */}
               <span className="relative z-10 flex w-full items-center justify-center bg-primary/80 py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 group-hover:bg-primary">
                 {isPending ? "Sending..." : "Send Message"}

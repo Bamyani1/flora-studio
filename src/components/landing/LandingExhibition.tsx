@@ -8,11 +8,17 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
-import { LANDING_MEDIA } from "@/lib/site-media";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
+import type { HomeExhibitionContent } from "@/types/content";
 
-export function LandingExhibition() {
+interface LandingExhibitionProps {
+  content: HomeExhibitionContent;
+}
+
+export function LandingExhibition({ content }: LandingExhibitionProps) {
   const textColRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const dims = getImageDimensions(content.image);
 
   useGSAP(() => {
     if (!textColRef.current) return;
@@ -35,43 +41,42 @@ export function LandingExhibition() {
 
   return (
     <section className="py-32 md:py-40 relative">
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="absolute inset-0 bg-background transform -skew-y-3 origin-top-left z-0"></div>
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-center">
           <div ref={textColRef} className="order-2 md:order-1 w-full md:w-1/2">
             <span className="text-primary font-label text-[10px] tracking-[0.5em] mb-6 block">
-              EXHIBITION 01
+              {content.eyebrow}
             </span>
             <h3 className="font-headline text-5xl md:text-7xl italic text-white mb-8 leading-tight">
-              Before
+              {content.titleLine1}
               <br />
-              the Game
+              {content.titleLine2}
             </h3>
             <p className="font-body text-white/60 text-lg leading-relaxed mb-12 max-w-md">
-              An empty arena holds every game it&apos;s ever seen. The silence before tip-off, the
-              geometry of the court, and the weight of what&apos;s about to happen.
+              {content.description}
             </p>
             <Button
               as={TransitionLink}
-              href="/work"
+              href={content.cta.href}
               variant="outline-subtle"
               size="xs"
               className="gap-2"
             >
-              Explore Exhibition <span aria-hidden="true">&rarr;</span>
+              {content.cta.label} <span aria-hidden="true">&rarr;</span>
             </Button>
           </div>
 
           <div className="order-1 md:order-2 w-full md:w-1/2">
             <CinematicImageReveal
-              src={LANDING_MEDIA.exhibition.src}
-              alt={LANDING_MEDIA.exhibition.alt}
+              src={resolveImageUrl(content.image)}
+              alt={content.image.alt ?? ""}
               className="w-full"
               sizes="(min-width: 768px) 50vw, 100vw"
-              width={LANDING_MEDIA.exhibition.width}
-              height={LANDING_MEDIA.exhibition.height}
+              width={dims?.width ?? 2133}
+              height={dims?.height ?? 3200}
             />
           </div>
         </div>

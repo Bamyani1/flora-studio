@@ -13,10 +13,12 @@ import { ProcessMagnetic } from "./ProcessMagnetic";
 import { ProcessParallaxImage } from "./ProcessParallaxImage";
 
 interface ProcessTimelineProps {
+  title: string;
+  description: string;
   steps: ProcessStep[];
 }
 
-export function ProcessTimeline({ steps }: ProcessTimelineProps) {
+export function ProcessTimeline({ title, description, steps }: ProcessTimelineProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
@@ -113,11 +115,10 @@ export function ProcessTimeline({ steps }: ProcessTimelineProps) {
       <div className="mx-auto max-w-[1440px] px-8 md:px-16">
         <div ref={headerRef} data-timeline-animate className="mb-32 text-center">
           <h2 className="mb-6 font-display text-4xl font-light tracking-tight text-[var(--process-on-surface)] md:text-6xl">
-            The Process
+            {title}
           </h2>
           <p className="mx-auto max-w-2xl font-body leading-relaxed text-on-surface-variant/70">
-            Every image begins long before the shutter opens. The method is a dialogue between
-            light, timing, and atmosphere, shaped deliberately so the final frame feels inevitable.
+            {description}
           </p>
         </div>
 

@@ -8,7 +8,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 
 interface CinematicImageRevealProps {
-  src: string;
+  src?: string | null;
   alt: string;
   className?: string;
   overlay?: boolean;

@@ -27,7 +27,7 @@ export const baseMetadata: Metadata = {
 };
 
 /** JSON-LD: LocalBusiness — for the home page */
-export function localBusinessJsonLd() {
+export function localBusinessJsonLd(sameAs: string[] = []) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -36,7 +36,7 @@ export function localBusinessJsonLd() {
       "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",
     url: SITE_URL,
     image: `${SITE_URL}/opengraph-image`,
-    sameAs: [],
+    sameAs,
   };
 }
 
@@ -62,13 +62,21 @@ export function imageGalleryJsonLd(album: {
 }
 
 /** JSON-LD: Person — for the about page */
-export function personJsonLd() {
+export function personJsonLd({
+  name = "Mostafa Bamyani",
+  jobTitle = "Photographer & Designer",
+  sameAs = [],
+}: {
+  name?: string;
+  jobTitle?: string;
+  sameAs?: string[];
+} = {}) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Mostafa Bamyani",
-    jobTitle: "Photographer & Designer",
+    name,
+    jobTitle,
     url: `${SITE_URL}/about`,
-    sameAs: [],
+    sameAs,
   };
 }

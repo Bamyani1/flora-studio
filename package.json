@@ -7,12 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "images:process": "node scripts/process-images.mjs",
+    "images:validate": "node scripts/process-images.mjs --validate",
+    "migrate:sanity": "tsx scripts/migrate-sanity.ts",
     "type-check": "tsc --noEmit",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:e2e:all",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "verify": "npm run lint && npm run type-check && npm run test:unit && npm run test:e2e && npm run build"
+    "test:e2e:consent": "playwright test --config playwright.consent.config.ts",
+    "test:e2e:all": "npm run test:e2e && npm run test:e2e:consent",
+    "verify": "npm run lint && npm run type-check && npm run test:unit && npm run test:e2e:all && npm run build"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -24,9 +29,9 @@
     "lucide-react": "^0.577.0",
     "next": "^16.2.0",
     "next-sanity": "^12.0.0",
+    "nodemailer": "^8.0.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "resend": "^4.0.0",
     "tailwind-merge": "^3.0.0",
     "tailwindcss": "^4.0.0",
     "zod": "^3.24.0",
@@ -37,8 +42,8 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.0.0",
+    "@types/nodemailer": "^7.0.11",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.1",
@@ -48,6 +53,7 @@
     "prettier": "^3.4.0",
     "sanity": "^5.16.0",
     "sharp": "^0.34.5",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.0",
     "vitest": "^4.1.2"
   }

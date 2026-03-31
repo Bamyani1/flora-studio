@@ -3,19 +3,39 @@
  * Resizes to 3200px on longest edge, JPEG quality 85.
  * Outputs to /public/images/ with clean directory structure.
  *
- * Usage: node scripts/process-images.mjs
+ * Usage:
+ *   node scripts/process-images.mjs
+ *   node scripts/process-images.mjs --validate
  */
 
 import sharp from "sharp";
-import { mkdirSync, existsSync, readdirSync, statSync } from "fs";
-import { join, extname, basename } from "path";
+import { mkdirSync, existsSync } from "fs";
+import { join } from "path";
 
-const SRC = "/Users/bamyani/Desktop/bmayan/pictures";
-const DEST = "/Users/bamyani/Desktop/bmayan/public/images";
+const ROOT = import.meta.dirname ? join(import.meta.dirname, "..") : process.cwd();
+const SRC = join(ROOT, "pictures");
+const DEST = join(ROOT, "public/images");
 const MAX_DIM = 3200;
 const QUALITY = 85;
 const HERO_MAX_DIM = 4800;
 const HERO_QUALITY = 95;
+const VALIDATE_ONLY = process.argv.includes("--validate");
+let validationErrors = 0;
+
+function recordValidation(targetPath, exists) {
+  if (!VALIDATE_ONLY) {
+    return exists;
+  }
+
+  if (exists) {
+    console.log(`  ✓ ${targetPath}`);
+    return true;
+  }
+
+  validationErrors += 1;
+  console.error(`  ✗ Missing: ${targetPath}`);
+  return false;
+}
 
 /** Resize a single image and return its output dimensions */
 async function processImage(srcPath, destPath, opts = {}) {
@@ -46,18 +66,17 @@ async function processImage(srcPath, destPath, opts = {}) {
 /** Process all JPGs in a source folder into a dest folder with numbered names */
 async function processFolder(srcFolder, destFolder, fileMap) {
   const srcDir = join(SRC, srcFolder);
-  if (!existsSync(srcDir)) {
-    console.error(`  ⚠ Source folder not found: ${srcDir}`);
+  if (!recordValidation(srcDir, existsSync(srcDir))) {
     return;
   }
 
   for (const [srcFile, destFile] of Object.entries(fileMap)) {
     const srcPath = join(srcDir, srcFile);
     const destPath = join(DEST, destFolder, destFile);
-    if (!existsSync(srcPath)) {
-      console.error(`  ⚠ Missing: ${srcFile}`);
+    if (!recordValidation(srcPath, existsSync(srcPath))) {
       continue;
     }
+    if (VALIDATE_ONLY) continue;
     try {
       const dims = await processImage(srcPath, destPath);
       console.log(`  ✓ ${destFile} (${dims.width}×${dims.height})`);
@@ -71,10 +90,10 @@ async function processFolder(srcFolder, destFolder, fileMap) {
 async function processSingle(srcFolder, srcFile, destFolder, destFile, opts = {}) {
   const srcPath = join(SRC, srcFolder, srcFile);
   const destPath = join(DEST, destFolder, destFile);
-  if (!existsSync(srcPath)) {
-    console.error(`  ⚠ Missing: ${srcPath}`);
+  if (!recordValidation(srcPath, existsSync(srcPath))) {
     return;
   }
+  if (VALIDATE_ONLY) return;
   try {
     const dims = await processImage(srcPath, destPath, opts);
     console.log(`  ✓ ${destFolder}/${destFile} (${dims.width}×${dims.height})`);
@@ -84,7 +103,11 @@ async function processSingle(srcFolder, srcFile, destFolder, destFile, opts = {}
 }
 
 async function main() {
-  console.log("Processing images → /public/images/\n");
+  console.log(`${VALIDATE_ONLY ? "Validating" : "Processing"} images → /public/images/\n`);
+
+  if (!recordValidation(SRC, existsSync(SRC))) {
+    throw new Error("Source image root is missing.");
+  }
 
   // ── Landing Page ──
   console.log("Landing Page:");
@@ -366,11 +389,18 @@ async function main() {
   const videoDest = join(DEST, "..", "videos", "milestone.mp4");
   const videoDir = join(videoDest, "..");
   if (!existsSync(videoDir)) mkdirSync(videoDir, { recursive: true });
-  if (existsSync(videoSrc)) {
+  if (recordValidation(videoSrc, existsSync(videoSrc)) && !VALIDATE_ONLY) {
     copyFileSync(videoSrc, videoDest);
     console.log(`  ✓ videos/milestone.mp4`);
-  } else {
-    console.error(`  ⚠ Video not found: ${videoSrc}`);
+  }
+
+  if (VALIDATE_ONLY) {
+    if (validationErrors > 0) {
+      throw new Error(`Validation failed with ${validationErrors} missing source item(s).`);
+    }
+
+    console.log("\nValidation passed.");
+    return;
   }
 
   console.log("\nDone!");

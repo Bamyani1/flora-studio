@@ -4,10 +4,6 @@
 
 _Photography that's worth keeping._
 
-<!-- Replace with a full-width screenshot of the homepage -->
-
-![Bahar Studio](screenshots/hero.png)
-
 ![Next.js 16](https://img.shields.io/badge/Next.js-16.2-0B0C0E?style=flat-square&logo=next.js)
 ![React 19](https://img.shields.io/badge/React-19.2-0B0C0E?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-0B0C0E?style=flat-square&logo=typescript)
@@ -25,7 +21,7 @@ _Photography that's worth keeping._
 
 A photography studio built on patience and craft. We believe the best images aren't found — they're cultivated. Every frame is composed with intention, selected with care, and refined by hand.
 
-[View the live site &rarr;](https://baharstudio.com)
+[View the live site &rarr;](https://studiobahar.com)
 
 ---
 
@@ -68,17 +64,30 @@ _Every color references a place — the depth of ancient trade routes, grey of A
 
 ## Typography
 
-### BerlingskeSerif — Display
+### Cormorant Garamond — Display
 
-The studio's display typeface. A serif with quiet authority — used for headlines, the wordmark, and navigation. Locally loaded in Light (300) and Regular (400) weights.
+The studio's primary editorial serif. It carries hero headlines, section titles, and the strongest branded moments.
 
-_Commercial license, Playtype._
+_Open source, Google Fonts._
+
+### EB Garamond — Navigation
+
+The navigation serif tier. It is reserved for site chrome and CTA copy that should feel branded without competing with editorial headlines.
+
+_Open source, Google Fonts._
 
 ### Inter — Body
 
-Variable-weight sans-serif (100–900) for body text, UI, metadata, and captions. Loaded as a single variable font file for optimal performance.
+Variable-weight sans-serif (100–900) for body copy, forms, utility labels, and legal/meta text. Loaded locally as a single variable font file for stable rendering.
 
-_Open source, Google Fonts._
+_Open source, locally bundled._
+
+### Typography Roles
+
+- `font-display`: editorial headlines, quotations, and large branded statements
+- `font-nav`: header/footer/menu chrome and branded CTA copy
+- `font-body`: paragraphs, form values, placeholders, helper copy, and legal copy
+- `font-label`: compact labels, utility actions, validation labels, and small metadata
 
 #### Type Scale
 
@@ -117,8 +126,10 @@ _All visual values flow from CSS custom properties — a single source of truth.
 **Typography**
 
 ```css
---font-display: "Berlingske Serif", "Georgia", serif;
+--font-display: "Cormorant Garamond", "Georgia", serif;
+--font-nav: "EB Garamond", "Georgia", serif;
 --font-body: "Inter", "system-ui", "-apple-system", sans-serif;
+--font-label: "Inter", "system-ui", "-apple-system", sans-serif;
 --text-hero: 8rem; /* 128px */
 --text-hero-mobile: 3.5rem; /* 56px */
 --text-body: 1rem; /* 16px */
@@ -169,14 +180,15 @@ Cinematic quality extends to code. The architecture prioritizes clarity, perform
 - **Named animation presets** — all animations reference presets in `lib/animations.ts`, never inline GSAP configs
 - **Design tokens as source of truth** — all visual values come from CSS custom properties in `globals.css`
 - **Smooth scroll** — Lenis synced to GSAP ticker (lerp: 0.06, duration: 1.4) for perfect scroll-animation alignment
+- **Content runtime policy** — local and preview environments can soft-fallback for authoring; production fails loudly when live content is unavailable; e2e runs on checked-in fixtures
 - **Headless CMS** — Sanity with embedded studio at `/studio` for content management
 
 **Component architecture:**
 
-- **Layout:** Header, Footer, MobileMenu, TransitionOverlay, RouteChrome, BackToTop, ScrollIndicator
-- **Animations:** TextReveal, FadeIn, ImageReveal, ClipReveal, ParallaxSection, MagneticButton
-- **Sections:** Hero, CuratedCollections, FilterableGrid, ExhibitionFeature, StartAStory, AlbumHero, HorizontalScrollGallery
-- **UI:** Button, Input, Textarea, Select, InlineContactForm
+- **Layout:** Header, Footer, MobileMenu, TransitionOverlay, RouteChrome, BackToTop
+- **Animations:** TextReveal, FadeIn, ImageReveal, MagneticButton, CinematicImageReveal
+- **Sections:** LandingHero, LandingEditorial, LandingExhibition, LandingStudio, ProcessExperience, GalleryHero, ProjectCard, AlbumHero, FolioGallery
+- **UI:** Button, CinematicContactForm, SiteMedia, BaharStudioLogo, CustomCursor
 
 ---
 
@@ -190,13 +202,7 @@ Cinematic quality extends to code. The architecture prioritizes clarity, perform
 | About   | `/about`       | Brand manifesto, team, creative approach                                  |
 | Process | `/process`     | Multi-phase creative timeline                                             |
 | Contact | `/contact`     | Portrait, form with Zod validation, studio details                        |
-| Studio  | `/studio`      | Embedded Sanity CMS                                                       |
-
-<!-- Replace with screenshots of key pages -->
-
-![Home](screenshots/home.png)
-![Work](screenshots/work.png)
-![About](screenshots/about.png)
+| Studio  | `/studio`      | Admin-only Sanity CMS shell. Excluded from `robots.txt` and smoke-tested only. |
 
 ---
 
@@ -206,7 +212,7 @@ Cinematic quality extends to code. The architecture prioritizes clarity, perform
 Next.js 16.2 · React 19.2 · TypeScript 5.7
 
 **Animation & Motion**
-GSAP 3.14 (ScrollTrigger, SplitText, Flip) · Framer Motion 12.37 (LazyMotion) · Lenis 1.3
+GSAP 3.14 (ScrollTrigger, SplitText, Flip) · Lenis 1.3
 
 **Styling**
 Tailwind CSS 4.0 · CSS Custom Properties
@@ -218,7 +224,7 @@ Sanity 5.16 · next-sanity 12.0
 Zustand 5.0
 
 **Utilities**
-Zod 3.24 (validation) · Resend 4.0 (email) · Sharp 0.34 (image optimization) · Lucide React (icons)
+Zod 3.24 (validation) · Nodemailer 8.0 via iCloud SMTP (email) · Sharp 0.34 (image optimization) · Lucide React (icons)
 
 ---
 
@@ -242,17 +248,58 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-07-11
 
-# Email (Resend)
-RESEND_API_KEY=re_your_api_key
-CONTACT_EMAIL=hello@baharstudio.com
+# Email (iCloud SMTP)
+# SMTP login for the underlying iCloud mailbox
+ICLOUD_SMTP_USER=your-icloud-mailbox@icloud.com
+ICLOUD_SMTP_PASS=your_app_specific_password
+# Verified custom-domain sender and inbox
+CONTACT_EMAIL=info@studiobahar.com
+CONTACT_DELIVERY_MODE=
 
 # Site
-NEXT_PUBLIC_SITE_URL=https://baharstudio.com
+NEXT_PUBLIC_SITE_URL=https://studiobahar.com
 ```
 
 ```bash
 npm run dev
 ```
+
+Production mail setup notes, including the DMARC record that still needs to exist in DNS, are documented in `docs/contact-email-ops.md`.
+
+---
+
+## Verification
+
+Use the repo scripts as the source of truth:
+
+```bash
+npm run verify
+```
+
+That covers linting, type-checking, unit tests, the main Playwright suite, the consent-specific Playwright suite, and a production build.
+
+```bash
+npm run test:e2e
+npm run test:e2e:consent
+npm run test:e2e:all
+```
+
+The Playwright suites run with checked-in e2e content fixtures, so browser verification does not depend on live Sanity state.
+
+The `/studio` route is treated as an admin-only surface. In local dev, unauthenticated Sanity auth/network noise is expected until a valid Studio session is established.
+
+---
+
+## Asset Processing
+
+The image-processing script is an internal content-prep tool. It depends on a local `pictures/` source tree and writes optimized assets into `public/images/`.
+
+```bash
+npm run images:validate
+npm run images:process
+```
+
+Run validation first to confirm the expected source folders and filenames exist before processing.
 
 ---
 

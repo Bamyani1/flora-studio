@@ -103,15 +103,15 @@ export function Header() {
           height: "5rem",
           paddingTop: "1.25rem",
           paddingBottom: "1.25rem",
-          backgroundColor: "#111210",
-          borderColor: "rgba(255,255,255,0.15)",
+          backgroundColor: "var(--color-surface-deep)",
+          borderColor: "var(--color-header-border)",
           borderRadius: "0px",
         }}
       >
         {/* Shadow layer — opacity animated instead of per-frame boxShadow */}
         <div
           className="header-shadow-target absolute inset-0 rounded-[inherit] pointer-events-none"
-          style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.3)", opacity: 0 }}
+          style={{ boxShadow: "0 4px 30px color-mix(in srgb, var(--color-black) 30%, transparent)", opacity: 0 }}
           aria-hidden="true"
         />
 

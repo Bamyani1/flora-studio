@@ -36,6 +36,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const reducedMotion = useReducedMotion();
   const scrollMode = getRouteScrollMode(pathname);
   const useNativeScroll = reducedMotion || scrollMode === "native";
+  const enableCustomCursor = process.env.NEXT_PUBLIC_ENABLE_CUSTOM_CURSOR === "true";
+
+  const cursor = enableCustomCursor ? <CustomCursor disabled={scrollMode === "native"} /> : null;
 
   useEffect(() => {
     if (useNativeScroll) {
@@ -52,7 +55,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   if (useNativeScroll) {
     return (
       <>
-        <CustomCursor disabled={scrollMode === "native"} />
+        {cursor}
         {children}
       </>
     );
@@ -61,7 +64,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ReactLenis root options={lenisOptions}>
       <LenisGsapSync />
-      <CustomCursor />
+      {cursor}
       {children}
     </ReactLenis>
   );

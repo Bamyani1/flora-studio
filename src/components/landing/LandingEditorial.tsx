@@ -9,12 +9,18 @@ import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
 import { CinematicImageReveal } from "./CinematicImageReveal";
 import { RevealText } from "./RevealText";
-import { LANDING_MEDIA } from "@/lib/site-media";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
+import type { HomeEditorialContent } from "@/types/content";
 
-export function LandingEditorial() {
+interface LandingEditorialProps {
+  content: HomeEditorialContent;
+}
+
+export function LandingEditorial({ content }: LandingEditorialProps) {
   const descRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const dims = getImageDimensions(content.image);
 
   useGSAP(() => {
     if (!descRef.current || !ctaRef.current) return;
@@ -45,28 +51,28 @@ export function LandingEditorial() {
 
   return (
     <section className="relative py-32 md:py-52 px-6 md:px-24">
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         <CinematicImageReveal
-          src={LANDING_MEDIA.editorial.src}
-          alt={LANDING_MEDIA.editorial.alt}
+          src={resolveImageUrl(content.image)}
+          alt={content.image.alt ?? ""}
           className="w-full mb-24 md:mb-32"
           overlay={true}
           sizes="(min-width: 1280px) 1280px, 100vw"
-          width={LANDING_MEDIA.editorial.width}
-          height={LANDING_MEDIA.editorial.height}
+          width={dims?.width ?? 2133}
+          height={dims?.height ?? 3200}
         />
 
         <div className="max-w-4xl text-center flex flex-col items-center">
           <h2 className="font-headline text-4xl md:text-6xl text-white leading-tight mb-10">
-            <RevealText text="We pay attention" />
+            <RevealText text={content.titleLine1} />
             <br />
-            <RevealText text="to" delay={0.2} />{" "}
+            <RevealText text={content.titleLine2Lead} delay={0.2} />{" "}
             <span className="italic text-white/70">
-              <RevealText text="the" delay={0.3} />
+              <RevealText text={content.titleLine2Muted} delay={0.3} />
             </span>{" "}
             <span className="text-primary">
-              <RevealText text="light." delay={0.4} />
+              <RevealText text={content.titleLine2Accent} delay={0.4} />
             </span>
           </h2>
 
@@ -74,21 +80,18 @@ export function LandingEditorial() {
             ref={descRef}
             className="font-body text-white/60 text-lg md:text-xl leading-relaxed mb-16 max-w-2xl"
           >
-            Our work starts long before the camera comes out &mdash; with a conversation, a plan,
-            and a clear sense of what we&apos;re making together. Every image is selected by hand
-            and graded individually. What you receive isn&apos;t a batch of photos. It&apos;s a
-            collection that was tended to.
+            {content.description}
           </p>
 
           <div ref={ctaRef}>
             <Button
               as={TransitionLink}
-              href="/work"
+              href={content.cta.href}
               variant="outline-subtle"
               size="xs"
               className="group relative overflow-hidden"
             >
-              <span className="relative z-10">See the work</span>
+              <span className="relative z-10">{content.cta.label}</span>
               <div className="absolute inset-0 bg-white/5 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"></div>
             </Button>
           </div>

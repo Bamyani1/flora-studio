@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { textureCardReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { getImageDimensions } from "@/lib/image-url";
+import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import { SiteMedia } from "@/components/ui/SiteMedia";
@@ -89,10 +89,11 @@ export function GalleryTextureCards({
       style={sectionStyle}
       aria-label="Album pair"
     >
-      {!smoothMode && <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />}
+      {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {albums.map((album) => {
         const dims = getImageDimensions(album.coverImage);
         const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
+        const coverSrc = resolveImageUrl(album.coverImage);
 
         return (
           <TransitionLink
@@ -106,9 +107,9 @@ export function GalleryTextureCards({
           >
             <div className="absolute inset-0 transition-transform duration-[2s] ease-out group-hover/texture:scale-105">
               <SiteMedia
-                alt={`${album.title} cover placeholder`}
+                alt={album.coverImage.alt || `${album.title} cover`}
                 className="texture-img object-cover w-full h-full opacity-80"
-                src={album.coverImage.url}
+                src={coverSrc}
                 fill
                 loading="lazy"
                 sizes="(min-width: 768px) 50vw, 100vw"

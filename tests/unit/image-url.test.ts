@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const originalEnv = { ...process.env };
 
-describe("resolveImageUrl", () => {
+describe("image url helpers", () => {
   beforeEach(() => {
     vi.resetModules();
     process.env = { ...originalEnv };
@@ -51,5 +51,42 @@ describe("resolveImageUrl", () => {
         asset: { _ref: "image-abc123-1600x900-jpg" },
       } as never),
     ).toBeNull();
+  });
+
+  it("normalizes image objects with explicit urls and ref-based urls", async () => {
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = "studio123";
+
+    const { normalizeImage, normalizeImages } = await import("@/lib/image-url");
+
+    expect(
+      normalizeImage({
+        _type: "image",
+        asset: { _type: "reference", _ref: "image-abc123-1600x900-jpg" },
+      } as never),
+    ).toMatchObject({
+      url: "https://cdn.sanity.io/images/studio123/production/abc123-1600x900.jpg",
+    });
+
+    expect(
+      normalizeImages([
+        null,
+        {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-def456-800x600-jpg" },
+        },
+        {
+          _type: "image",
+          asset: { _type: "reference", _ref: "image-ghi789-1024x768-jpg" },
+          url: "https://example.com/override.jpg",
+        },
+      ] as never),
+    ).toEqual([
+      expect.objectContaining({
+        url: "https://cdn.sanity.io/images/studio123/production/def456-800x600.jpg",
+      }),
+      expect.objectContaining({
+        url: "https://example.com/override.jpg",
+      }),
+    ]);
   });
 });

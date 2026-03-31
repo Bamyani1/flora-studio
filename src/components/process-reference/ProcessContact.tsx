@@ -8,7 +8,15 @@ import { withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ProcessMagnetic } from "./ProcessMagnetic";
 
-export function ProcessContact() {
+export function ProcessContact({
+  heading,
+  buttonHref,
+  buttonLabel,
+}: {
+  heading: string;
+  buttonHref: string;
+  buttonLabel: string;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
@@ -50,20 +58,20 @@ export function ProcessContact() {
       className="relative flex min-h-[50vh] flex-col items-center justify-center bg-[var(--process-surface-container-lowest)] px-8 py-32"
       style={{ scrollMarginTop: "calc(var(--header-height) + var(--space-12))" }}
     >
-      <div className="grain-medium absolute inset-0 z-[2]" aria-hidden="true" />
+      <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <h2
         data-contact-animate
         className="mb-10 font-display text-5xl font-light italic text-[var(--process-on-surface-variant)] md:text-6xl"
       >
-        Get In Touch
+        {heading}
       </h2>
       <ProcessMagnetic>
         <Link
-          href="/contact"
+          href={buttonHref}
           data-contact-animate
           className="inline-block bg-[var(--process-primary)] px-12 py-4 font-label text-[11px] uppercase tracking-[0.2em] text-[var(--process-on-primary)]"
         >
-          Contact
+          {buttonLabel}
         </Link>
       </ProcessMagnetic>
     </section>

@@ -1,39 +1,5 @@
-import fs from "fs";
-import path from "path";
-import sizeOf from "image-size";
-import type { Album, AlbumMeta, SanityImage } from "@/types/project";
-
-/** Build a SanityImage pointing to a local /images/ path */
-function localImage(imgPath: string, alt: string, width: number, height: number): SanityImage {
-  return {
-    _type: "image",
-    asset: {
-      _ref: `image-local-${width}x${height}-jpg`,
-      _type: "reference",
-    },
-    alt,
-    url: imgPath,
-  };
-}
-
-/** Auto-detect gallery images and their real dimensions from disk */
-function autoGallery(slug: string, altPrefix: string): SanityImage[] {
-  const dir = path.join(process.cwd(), "public/images", slug);
-  const files = fs.readdirSync(dir)
-    .filter((f) => /^\d+\.jpg$/i.test(f))
-    .sort();
-
-  return files.map((file, i) => {
-    const buffer = fs.readFileSync(path.join(dir, file));
-    const dims = sizeOf(buffer);
-    return localImage(
-      `/images/${slug}/${file}`,
-      `${altPrefix} ${i + 1}`,
-      dims.width ?? 2133,
-      dims.height ?? 3200,
-    );
-  });
-}
+import type { Album, AlbumMeta } from "@/types/project";
+import { autoGallery, localImage } from "@/lib/placeholder-images";
 
 export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
   {

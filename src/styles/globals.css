@@ -15,7 +15,6 @@
   --color-black: #000000;
   --color-primary: #c97b2a;
   --color-primary-muted: #a86520;
-  --color-accent: #c97b2a;
   --color-text: #e8dfd4;
   --color-text-heading: #e8dfd4;
   --color-muted: #8a9878;
@@ -111,6 +110,17 @@
   --radius-md: 0.5rem; /* 8px */
   --radius-lg: 0.75rem; /* 12px */
   --radius-full: 9999px;
+
+  /* --- Z-Index Scale --- */
+  --z-grain: 2;
+  --z-content: 10;
+  --z-back-to-top: 30;
+  --z-header: 50;
+  --z-skip-link: 60;
+  --z-cookie-trigger: 60;
+  --z-cookie-overlay: 70;
+  --z-cookie-modal: 80;
+  --z-cursor: 100;
 
   /* --- Layout --- */
   --max-width: 90rem; /* 1440px */
