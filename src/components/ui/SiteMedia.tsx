@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import type { ImageProps } from "next/image";
 import { PLACEHOLDER_MEDIA_LABEL } from "@/lib/site-media";
 import { cn } from "@/lib/utils";
 
-type SiteMediaProps = Omit<ImageProps, "src" | "loader"> & {
+type SiteMediaProps = Omit<ImageProps, "src" | "loader" | "placeholder" | "blurDataURL"> & {
   src?: ImageProps["src"] | null;
   label?: string;
+  blurDataURL?: string;
 };
 
 export function SiteMedia({
@@ -21,13 +23,15 @@ export function SiteMedia({
   sizes,
   priority,
   loading,
+  blurDataURL,
   label = PLACEHOLDER_MEDIA_LABEL,
   ...rest
 }: SiteMediaProps) {
   const decorative = alt.length === 0;
   const isPlaceholder = !src || (typeof src === "string" && src.startsWith("placeholder://"));
+  const [hasError, setHasError] = useState(false);
 
-  if (!isPlaceholder) {
+  if (!isPlaceholder && !hasError) {
     return (
       <Image
         src={src}
@@ -40,6 +44,9 @@ export function SiteMedia({
         sizes={sizes}
         priority={priority}
         loading={loading}
+        placeholder={blurDataURL ? "blur" : undefined}
+        blurDataURL={blurDataURL}
+        onError={() => setHasError(true)}
         {...rest}
       />
     );

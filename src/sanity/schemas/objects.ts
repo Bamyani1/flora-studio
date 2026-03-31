@@ -44,8 +44,6 @@ export const socialLink = defineType({
       options: {
         list: [
           { title: "Instagram", value: "instagram" },
-          { title: "Behance", value: "behance" },
-          { title: "LinkedIn", value: "linkedin" },
         ],
       },
       validation: (rule) => rule.required(),

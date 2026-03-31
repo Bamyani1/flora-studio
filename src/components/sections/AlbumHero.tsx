@@ -14,9 +14,10 @@ interface AlbumHeroProps {
   year?: number;
   location?: string;
   heroImage?: SanityImage;
+  blurDataURL?: string;
 }
 
-export function AlbumHero({ title, category, year, location, heroImage }: AlbumHeroProps) {
+export function AlbumHero({ title, category, year, location, heroImage, blurDataURL }: AlbumHeroProps) {
   const categoryLabel = category ? (CATEGORY_META[category]?.label ?? category) : undefined;
   const metaParts = [categoryLabel, year, location].filter(Boolean);
   const heroSrc = resolveImageUrl(heroImage);
@@ -30,8 +31,10 @@ export function AlbumHero({ title, category, year, location, heroImage }: AlbumH
           alt={`${title} hero`}
           fill
           priority
+          quality={90}
           className="object-cover"
           sizes="100vw"
+          blurDataURL={blurDataURL}
         />
       </ImageReveal>
 

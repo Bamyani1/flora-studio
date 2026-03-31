@@ -52,6 +52,12 @@ const FALLBACK_ABOUT_PORTRAITS = new Map(
   PLACEHOLDER_ABOUT_PAGE.team.members.map((member) => [member.name, member.portrait ?? null]),
 );
 
+// Alias: CMS may still use the old spelling until manually updated
+FALLBACK_ABOUT_PORTRAITS.set(
+  "Murtaza Anwari",
+  FALLBACK_ABOUT_PORTRAITS.get("Mortaza Anwari") ?? null,
+);
+
 function requireResolvedImage(image: SanityImage, label: string) {
   const normalized = normalizeImage(image);
 
@@ -73,12 +79,14 @@ function normalizeSiteSettings(raw: SiteSettingsDocument): SiteSettings {
     location: raw.location,
     email: raw.email,
     phone: raw.phone,
-    socialLinks: raw.socialLinks.map((link) => ({
-      label: link.label,
-      platform: link.platform,
-      url: link.url,
-      icon: link.icon,
-    })),
+    socialLinks: raw.socialLinks
+      .filter((link) => link.icon === "instagram")
+      .map((link) => ({
+        label: link.label,
+        platform: link.platform,
+        url: link.url,
+        icon: link.icon as "instagram",
+      })),
     sameAs: raw.sameAs,
   };
 }

@@ -184,6 +184,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
                 key={item.href}
                 href={item.href}
                 onClick={handleLinkClick}
+                aria-current={isNavItemActive(pathname, item.href) ? "page" : undefined}
                 className={`menu-item-text group relative font-display text-4xl uppercase tracking-[0.06em] transition-colors ${
                   isNavItemActive(pathname, item.href)
                     ? "text-[var(--color-header-link-active)]"

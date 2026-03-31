@@ -25,18 +25,17 @@ function StaggeredText({ text, className }: { text: string; className?: string }
         return;
       }
 
-      const split = new SplitText(ref.current, { type: "words", mask: "words" });
+      const split = new SplitText(ref.current, { type: "lines", mask: "lines" });
 
       gsap.fromTo(
-        split.words,
-        { yPercent: 120, opacity: 0, rotation: 5 },
+        split.lines,
+        { yPercent: 100, opacity: 0 },
         {
           yPercent: 0,
           opacity: 1,
-          rotation: 0,
           duration: 1,
           ease: "expo.out",
-          stagger: 0.08,
+          stagger: 0.12,
           ...withWillChange(),
           scrollTrigger: {
             trigger: ref.current,
@@ -65,49 +64,45 @@ interface AboutPageClientProps {
 }
 
 export function AboutPageClient({ content }: AboutPageClientProps) {
-  const [hoveredMember, setHoveredMember] = useState<number | null>(null);
+  const [activeMember, setActiveMember] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const defaultImageRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const teamMembers = content.team.members;
 
-  const prevMember = useRef<number | null>(null);
+  // Auto-cycle portraits when not hovering
   useEffect(() => {
-    if (reduced) return;
+    if (isHovering || teamMembers.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveMember((prev) => (prev + 1) % teamMembers.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isHovering, teamMembers.length]);
 
-    if (prevMember.current !== null && imageRefs.current[prevMember.current]) {
+  const prevMember = useRef(0);
+  useEffect(() => {
+    if (reduced || prevMember.current === activeMember) return;
+
+    if (imageRefs.current[prevMember.current]) {
       gsap.to(imageRefs.current[prevMember.current], {
         opacity: 0,
         scale: 1.03,
         duration: 0.4,
         ease: "power2.inOut",
       });
-    } else if (prevMember.current === null && defaultImageRef.current) {
-      gsap.to(defaultImageRef.current, {
-        opacity: 0,
-        scale: 1.03,
-        duration: 0.4,
-        ease: "power2.inOut",
-      });
     }
 
-    if (hoveredMember !== null && imageRefs.current[hoveredMember]) {
+    if (imageRefs.current[activeMember]) {
       gsap.fromTo(
-        imageRefs.current[hoveredMember],
-        { opacity: 0, scale: 1.03 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" },
-      );
-    } else if (hoveredMember === null && defaultImageRef.current) {
-      gsap.fromTo(
-        defaultImageRef.current,
+        imageRefs.current[activeMember],
         { opacity: 0, scale: 1.03 },
         { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" },
       );
     }
 
-    prevMember.current = hoveredMember;
-  }, [hoveredMember, reduced]);
+    prevMember.current = activeMember;
+  }, [activeMember, reduced]);
 
   useGSAP(
     () => {
@@ -377,92 +372,92 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-32 md:py-48 px-6 md:px-12 lg:px-24 bg-surface film-reel-border relative">
-          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 relative z-20">
-            <div className="lg:sticky lg:top-32 h-fit flex flex-col gap-12">
-              <div data-about-animate="fade-left">
-                <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-6">
-                  {content.team.eyebrow}
-                </span>
-                <h2 className="font-display text-5xl md:text-7xl tracking-tighter mb-6 text-on-surface">
-                  {content.team.title}
-                </h2>
-                <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-md text-base font-light">
-                  {content.team.description}
-                </p>
-              </div>
-
-              <div className="hidden lg:block w-full aspect-[4/5] relative rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10 shadow-2xl">
-                <div
-                  ref={defaultImageRef}
-                  className="absolute inset-0 bg-surface-container-lowest"
-                >
-                  <SiteMedia alt="About team placeholder" fill className="object-cover" />
-                </div>
-
-                {teamMembers.map((member, index) => (
-                  <div
-                    key={member.name}
-                    ref={(el) => {
-                      imageRefs.current[index] = el;
-                    }}
-                    className="absolute inset-0"
-                    style={{ opacity: 0 }}
-                  >
-                    <SiteMedia
-                      src={resolveImageUrl(member.portrait ?? undefined)}
-                      alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 0px"
-                      className="object-cover object-center"
-                    />
-                  </div>
-                ))}
-              </div>
+        <section className="py-16 md:py-24 px-6 md:px-12 lg:px-24 bg-surface film-reel-border relative">
+          <div className="max-w-screen-2xl mx-auto relative z-20">
+            {/* Section intro — full width above the grid */}
+            <div data-about-animate="fade-left" className="mb-12 md:mb-16">
+              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-4">
+                {content.team.eyebrow}
+              </span>
+              <h2 className="font-display text-4xl md:text-6xl tracking-tighter mb-4 text-on-surface">
+                {content.team.title}
+              </h2>
+              <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-lg text-base font-light">
+                {content.team.description}
+              </p>
             </div>
 
-            <div className="flex flex-col justify-center pt-12 lg:pt-32">
-              <div className="border-t border-outline-variant/20">
-                {teamMembers.map((member, index) => (
-                  <div
-                    key={member.name}
-                    data-about-animate="team-item"
-                    data-delay={String(index * 0.1)}
-                    onMouseEnter={() => setHoveredMember(index)}
-                    onMouseLeave={() => setHoveredMember(null)}
-                    className="group border-b border-outline-variant/20 py-10 md:py-16 cursor-pointer flex flex-col gap-6"
-                  >
-                    <div className="flex items-start md:items-center justify-between gap-4">
-                      <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
-                        <span className="font-mono text-primary/40 text-sm group-hover:text-primary transition-colors duration-500">
-                          0{index + 1}
-                        </span>
-                        <h3 className="font-display text-4xl md:text-5xl lg:text-6xl text-on-surface group-hover:text-white transition-colors duration-500 tracking-tight">
-                          {member.name}
-                        </h3>
-                      </div>
-                      <div className="w-10 h-10 rounded-full border border-outline-variant/20 flex items-center justify-center group-hover:border-primary group-hover:bg-primary transition-all duration-500 shrink-0">
-                        <ChevronRight className="w-4 h-4 text-on-surface-variant/40 group-hover:text-on-primary transition-colors duration-500" />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-6 md:pl-16">
-                      <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-primary transition-colors duration-500">
-                        {member.role}
-                      </span>
-                    </div>
-
-                    <div className="lg:hidden w-full aspect-[4/5] relative mt-8 rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10">
+            {/* Portrait + Names grid — vertically centered */}
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-10 lg:gap-16 items-center">
+              <div className="hidden lg:block">
+                <div className="w-full max-w-md aspect-[3/4] relative rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10 shadow-2xl">
+                  {teamMembers.map((member, index) => (
+                    <div
+                      key={member.name}
+                      ref={(el) => {
+                        imageRefs.current[index] = el;
+                      }}
+                      className="absolute inset-0"
+                      style={{ opacity: index === 0 ? 1 : 0 }}
+                    >
                       <SiteMedia
                         src={resolveImageUrl(member.portrait ?? undefined)}
                         alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
                         fill
-                        sizes="(max-width: 1023px) 100vw, 0px"
-                        className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000"
+                        sizes="(min-width: 1024px) 28rem, 0px"
+                        className="object-cover object-center"
                       />
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="border-t border-outline-variant/20">
+                  {teamMembers.map((member, index) => {
+                    const active = activeMember === index;
+                    return (
+                      <div
+                        key={member.name}
+                        data-about-animate="team-item"
+                        data-delay={String(index * 0.1)}
+                        onMouseEnter={() => { setActiveMember(index); setIsHovering(true); }}
+                        onMouseLeave={() => setIsHovering(false)}
+                        className="group border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3"
+                      >
+                        <div className="flex items-start md:items-center justify-between gap-4">
+                          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
+                            <span className={`font-mono text-sm transition-colors duration-500 group-hover:text-primary ${active ? "text-primary" : "text-primary/40"}`}>
+                              0{index + 1}
+                            </span>
+                            <h3 className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight group-hover:text-white ${active ? "text-white" : "text-on-surface"}`}>
+                              {member.name}
+                            </h3>
+                          </div>
+                          <div className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}>
+                            <ChevronRight className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`} />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-6 md:pl-14">
+                          <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-primary transition-colors duration-500">
+                            {member.role}
+                          </span>
+                        </div>
+
+                        <div className="lg:hidden w-full aspect-[4/5] relative mt-6 rounded-sm overflow-hidden bg-surface-container-lowest border border-outline-variant/10">
+                          <SiteMedia
+                            src={resolveImageUrl(member.portrait ?? undefined)}
+                            alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
+                            fill
+                            sizes="(max-width: 1023px) 100vw, 0px"
+                            className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

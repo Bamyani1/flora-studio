@@ -38,7 +38,7 @@ export const socialLinkSchema = z
     label: z.string().min(1),
     platform: z.string().min(1),
     url: z.string().min(1),
-    icon: z.enum(["instagram", "behance", "linkedin"]),
+    icon: z.string(),
   })
   .passthrough();
 

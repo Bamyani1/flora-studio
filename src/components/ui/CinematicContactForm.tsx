@@ -20,7 +20,7 @@ const photographyOptions = [
 
 const labelClass = "block font-label text-xs uppercase tracking-wider text-primary/70 mb-2";
 const inputClass =
-  "w-full bg-transparent border border-border/30 rounded-sm px-4 py-3 font-body text-text tracking-wider uppercase text-sm focus:border-primary/40 focus:outline-none focus:ring-0 transition-colors duration-300 placeholder:text-muted/40 placeholder:tracking-wider placeholder:uppercase placeholder:text-sm";
+  "w-full bg-transparent border border-border/30 rounded-sm px-4 py-3 font-body text-text tracking-wider uppercase text-sm focus:border-primary/40 focus:outline-2 focus:outline-primary focus:outline-offset-2 transition-colors duration-300 placeholder:text-muted/40 placeholder:tracking-wider placeholder:uppercase placeholder:text-sm";
 
 export function CinematicContactForm() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -158,7 +158,7 @@ export function CinematicContactForm() {
           className="mb-10 font-display text-3xl font-light leading-tight text-text-heading md:text-4xl"
           style={{ opacity: 0 }}
         >
-          Tell us about your project
+          Tell us about your vision
         </h2>
 
         <form onSubmit={handleSubmit} noValidate className="max-w-[540px] space-y-7">
@@ -205,11 +205,13 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR NAME"
                 className={inputClass}
+                aria-invalid={!!fieldErrors.name}
+                aria-describedby={fieldErrors.name ? "sender-error" : undefined}
                 onChange={handleFieldChange("name")}
                 onBlur={handleBlur("name")}
               />
               {fieldErrors.name && (
-                <p className="mt-2 text-xs text-error" role="alert">
+                <p id="sender-error" className="mt-2 text-xs text-error" role="alert">
                   {fieldErrors.name}
                 </p>
               )}
@@ -226,11 +228,13 @@ export function CinematicContactForm() {
                 autoComplete="off"
                 placeholder="YOUR EMAIL ADDRESS"
                 className={inputClass}
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "reply-to-error" : undefined}
                 onChange={handleFieldChange("email")}
                 onBlur={handleBlur("email")}
               />
               {fieldErrors.email && (
-                <p className="mt-2 text-xs text-error" role="alert">
+                <p id="reply-to-error" className="mt-2 text-xs text-error" role="alert">
                   {fieldErrors.email}
                 </p>
               )}
@@ -249,6 +253,8 @@ export function CinematicContactForm() {
                 required
                 className={`${inputClass} cursor-pointer appearance-none pr-10`}
                 defaultValue=""
+                aria-invalid={!!fieldErrors.photographyType}
+                aria-describedby={fieldErrors.photographyType ? "photography-type-error" : undefined}
                 onChange={handleFieldChange("photographyType")}
                 onBlur={handleBlur("photographyType")}
               >
@@ -274,7 +280,7 @@ export function CinematicContactForm() {
               </svg>
             </div>
             {fieldErrors.photographyType && (
-              <p className="mt-2 text-xs text-error" role="alert">
+              <p id="photography-type-error" className="mt-2 text-xs text-error" role="alert">
                 {fieldErrors.photographyType}
               </p>
             )}
@@ -292,11 +298,13 @@ export function CinematicContactForm() {
               required
               placeholder="TELL US ABOUT YOUR EVENT, TIMELINE, OR ANY IDEAS..."
               className={`${inputClass} resize-none`}
+              aria-invalid={!!fieldErrors.message}
+              aria-describedby={fieldErrors.message ? "message-error" : undefined}
               onChange={handleFieldChange("message")}
               onBlur={handleBlur("message")}
             />
             {fieldErrors.message && (
-              <p className="mt-2 text-xs text-error" role="alert">
+              <p id="message-error" className="mt-2 text-xs text-error" role="alert">
                 {fieldErrors.message}
               </p>
             )}

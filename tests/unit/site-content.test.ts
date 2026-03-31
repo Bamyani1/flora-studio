@@ -211,7 +211,7 @@ describe("site content loaders", () => {
             },
           },
           {
-            name: "Murtaza Anwari",
+            name: "Mortaza Anwari",
             role: "Photographer",
             portrait: null,
           },
@@ -231,8 +231,8 @@ describe("site content loaders", () => {
     expect(aboutPage.team.members[0].portrait?.url).toBe(
       "https://cdn.sanity.io/images/studio123/production/mostafa-1000x1500.jpg",
     );
-    expect(aboutPage.team.members[1].portrait?.url).toContain("placeholder://bahar-studio/media");
-    expect(aboutPage.team.members[2].portrait?.url).toContain("placeholder://bahar-studio/media");
+    expect(aboutPage.team.members[1].portrait?.url).toBe("/images/portrait-mortaza.jpg");
+    expect(aboutPage.team.members[2].portrait?.url).toBe("/images/portrait-enayat.jpg");
   });
 
   it("treats invalid published process content as a content error", async () => {

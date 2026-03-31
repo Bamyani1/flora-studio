@@ -5,7 +5,7 @@ export interface LinkField {
   href: string;
 }
 
-export type SocialIcon = "instagram" | "behance" | "linkedin";
+export type SocialIcon = "instagram";
 
 export interface SocialLink {
   label: string;

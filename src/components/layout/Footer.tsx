@@ -28,7 +28,7 @@ export function Footer({
       </div>
 
       {/* Page navigation */}
-      <div className="flex flex-wrap gap-8 md:gap-12">
+      <nav aria-label="Footer navigation" className="flex flex-wrap gap-8 md:gap-12">
         {[...PRIMARY_NAV_ITEMS, NAV_CTA].map((item) => (
           <a
             key={item.label}
@@ -39,10 +39,10 @@ export function Footer({
             <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
           </a>
         ))}
-      </div>
+      </nav>
 
       {/* Legal + Social links */}
-      <div className="flex flex-wrap gap-8 md:gap-12">
+      <nav aria-label="Legal and social links" className="flex flex-wrap gap-8 md:gap-12">
         {LEGAL_NAV_ITEMS.map((link) => (
           <a
             key={link.label}
@@ -65,7 +65,7 @@ export function Footer({
             <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
           </a>
         ))}
-      </div>
+      </nav>
     </footer>
   );
 }

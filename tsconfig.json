@@ -40,11 +40,5 @@
     ".next-playwright-consent/types/**/*.ts",
     ".next-playwright-consent/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "gallery",
-    "newest-landing",
-    "new-landing",
-    "landing-hero -section"
-  ]
+  "exclude": ["node_modules"]
 }

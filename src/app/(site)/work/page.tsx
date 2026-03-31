@@ -1,22 +1,44 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
 import { buildGalleryLayout } from "@/lib/gallery-layout";
+import { generateLqipDataUrl } from "@/lib/lqip";
+import { resolveImageUrl } from "@/lib/image-url";
+import { breadcrumbJsonLd } from "@/lib/metadata";
+import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { GalleryHero } from "@/components/sections/gallery";
 import { ProjectCard } from "@/components/sections/ProjectCard";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "Selected photography by Bahar Studio.",
+  description:
+    "Browse the portfolio of Bahar Studio — milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
 };
 
 export default async function WorkPage() {
   const albums = await getAllAlbums();
   const sections = buildGalleryLayout(albums);
 
+  const heroSection = sections.find((s) => s.type === "hero");
+  const heroBlurDataURL =
+    heroSection?.type === "hero"
+      ? await generateLqipDataUrl(resolveImageUrl(heroSection.album.coverImage))
+      : undefined;
+
+  const SITE_URL = publicEnv.siteUrl;
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", url: SITE_URL },
+    { name: "Work", url: `${SITE_URL}/work` },
+  ]);
+
   if (sections.length === 0) {
     return (
-      <main
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        />
+        <main
         id="main-content"
         className="flex min-h-screen items-center justify-center bg-surface px-6 py-24 text-center"
       >
@@ -39,11 +61,17 @@ export default async function WorkPage() {
           </TransitionLink>
         </div>
       </main>
+      </>
     );
   }
 
   return (
-    <main id="main-content">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <main id="main-content">
       {sections.map((section) => {
         if (section.type === "hero") {
           return (
@@ -52,6 +80,7 @@ export default async function WorkPage() {
               album={section.album}
               index={1}
               priority
+              blurDataURL={heroBlurDataURL}
             />
           );
         }
@@ -84,5 +113,6 @@ export default async function WorkPage() {
         );
       })}
     </main>
+    </>
   );
 }

@@ -32,7 +32,7 @@ export function LegalDocument({ sections }: { sections: LegalSection[] }) {
               id={section.id}
               className="scroll-mt-[calc(var(--header-height)+var(--space-8))]"
             >
-              <h2 className="font-display text-3xl font-light text-text-heading md:text-4xl">
+              <h2 className="font-display text-2xl font-light text-text-heading md:text-3xl">
                 {section.title}
               </h2>
               <div className="mt-6 space-y-5">

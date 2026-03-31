@@ -18,7 +18,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${cormorantGaramond.variable} ${inter.variable} ${notoSerif.variable} ${spaceGrotesk.variable} ${ebGaramond.variable}`}
     >
-      <body className="grain-overlay bg-background font-body text-text antialiased">{children}</body>
+      <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+      </head>
+      <body className="grain-overlay bg-background font-body text-text antialiased">
+        {children}
+      </body>
     </html>
   );
 }

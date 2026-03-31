@@ -102,7 +102,13 @@ export async function getAllAlbums(): Promise<AlbumMeta[]> {
 }
 
 export async function getFeaturedAlbum(): Promise<AlbumMeta | null> {
-  const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+  const pick = <T>(arr: T[]): T => {
+    const now = new Date();
+    const dayOfYear = Math.floor(
+      (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000,
+    );
+    return arr[dayOfYear % arr.length];
+  };
 
   if (isE2EContentRuntime()) {
     const featuredAlbum = E2E_ALBUMS.find((album) => album.featured) ?? E2E_ALBUMS[0] ?? null;

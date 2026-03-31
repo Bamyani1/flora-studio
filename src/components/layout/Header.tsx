@@ -19,6 +19,7 @@ export function Header() {
   const branchRef = useRef<SVGSVGElement>(null);
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
+  const menuOpen = useUIStore((s) => s.menuOpen);
   const isHomePage = pathname === "/";
 
   // Homepage entrance animation
@@ -62,6 +63,12 @@ export function Header() {
     const tl = gsap.timeline({
       scrollTrigger: {
         ...headerShrink.scrollTrigger,
+        onEnter: () => {
+          header.style.willChange = "height, padding, background-color";
+        },
+        onLeaveBack: () => {
+          header.style.willChange = "auto";
+        },
       },
     });
 
@@ -118,7 +125,12 @@ export function Header() {
         {/* Left nav — desktop only */}
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-8 w-1/3">
           {HEADER_NAV_ITEMS.map((item) => (
-            <TransitionLink key={item.href} href={item.href} className="relative group">
+            <TransitionLink
+              key={item.href}
+              href={item.href}
+              className="relative group"
+              aria-current={isNavItemActive(pathname, item.href) ? "page" : undefined}
+            >
               <span
                 className={`text-[11px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
                   isNavItemActive(pathname, item.href)
@@ -199,6 +211,8 @@ export function Header() {
           className="md:hidden text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
           onClick={() => useUIStore.getState().setMenuOpen(true)}
           aria-label="Open menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           Menu
         </button>
