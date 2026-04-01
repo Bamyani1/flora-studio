@@ -24,12 +24,16 @@ export interface SiteSettings {
   sameAs: string[];
 }
 
+export interface HeroMediaItem extends SanityImage {
+  objectPosition?: string;
+}
+
 export interface HomeHeroContent {
   eyebrow: string;
   titleLine1: string;
   titleLine2: string;
   description: string;
-  mediaCycle: SanityImage[];
+  mediaCycle: HeroMediaItem[];
 }
 
 export interface HomeEditorialContent {
@@ -53,7 +57,6 @@ export interface HomeExhibitionContent {
 
 export interface HomeStudioContent {
   image: SanityImage;
-  ctaEyebrow: string;
   ctaLabel: string;
   cta: LinkField;
 }

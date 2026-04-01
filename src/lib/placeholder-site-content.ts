@@ -9,7 +9,7 @@ import type {
 
 export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
   _id: "siteSettings",
-  studioName: "Bahar Studio",
+  studioName: "Studio Bahar",
   location: "Dayton, Ohio",
   email: "info@studiobahar.com",
   phone: "(937)-7977381",
@@ -17,13 +17,11 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
     {
       label: "Instagram",
       platform: "Instagram",
-      url: "https://instagram.com/baharstudio",
+      url: "https://instagram.com/studiobahar",
       icon: "instagram",
     },
   ],
-  sameAs: [
-    "https://instagram.com/baharstudio",
-  ],
+  sameAs: ["https://instagram.com/studiobahar"],
 };
 
 export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
@@ -32,25 +30,40 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     eyebrow: "Photography with intention",
     titleLine1: "Every frame,",
     titleLine2: "earned.",
-    description: "Patience, craft, and an eye for what matters.",
+    description: "Photography with intention.",
     mediaCycle: [
-      localImageFromPublicPath("/images/landing-hero.jpg", "Bahar Studio hero photograph"),
-      localImageFromPublicPath("/images/studio-hero.jpg", "Bahar Studio featured work"),
-      localImageFromPublicPath("/images/editorial-hero.jpg", "Bahar Studio editorial photograph"),
-      localImageFromPublicPath("/images/exhibition-hero.jpg", "Bahar Studio exhibition photograph"),
+      {
+        ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Studio Bahar hero photograph"),
+        objectPosition: "50% 48%",
+      },
+      {
+        ...localImageFromPublicPath("/images/hero/hero-02.jpg", "Studio Bahar featured work"),
+        objectPosition: "50% 34%",
+      },
+      {
+        ...localImageFromPublicPath(
+          "/images/hero/hero-03.jpg",
+          "Studio Bahar editorial photograph",
+        ),
+        objectPosition: "50% 44%",
+      },
+      {
+        ...localImageFromPublicPath(
+          "/images/hero/hero-04.jpg",
+          "Studio Bahar portfolio photograph",
+        ),
+        objectPosition: "50% 30%",
+      },
     ],
   },
   editorial: {
-    image: localImageFromPublicPath(
-      "/images/studio-hero.jpg",
-      "Bahar Studio featured work",
-    ),
+    image: localImageFromPublicPath("/images/studio-hero.jpg", "Studio Bahar featured work"),
     titleLine1: "We pay attention",
     titleLine2Lead: "to",
     titleLine2Muted: "the",
     titleLine2Accent: "light.",
     description:
-      "Our work starts long before the camera comes out — with a conversation, a plan, and a clear sense of what we're making together. Every image is selected by hand and graded individually. What you receive isn't a batch of photos. It's a collection that was tended to.",
+      "Our work starts long before the camera comes out. It begins with a conversation, a plan, and a clear sense of what we're making together. Every image is selected by hand and graded individually. What you receive isn't a batch of photos. It's a collection that was tended to.",
     cta: {
       label: "See the work",
       href: "/work",
@@ -66,14 +79,19 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
       label: "Explore Exhibition",
       href: "/work",
     },
-    image: localImageFromPublicPath("/images/editorial-hero.jpg", "Bahar Studio editorial photograph"),
+    image: localImageFromPublicPath(
+      "/images/editorial-hero.jpg",
+      "Studio Bahar editorial photograph",
+    ),
   },
   studio: {
-    image: localImageFromPublicPath("/images/game-day/hero.jpg", "Bahar Studio game day action photograph"),
-    ctaEyebrow: "Work With Us",
-    ctaLabel: "Get in Touch",
+    image: localImageFromPublicPath(
+      "/images/game-day/hero.jpg",
+      "Studio Bahar game day action photograph",
+    ),
+    ctaLabel: "Inquire for 2026",
     cta: {
-      label: "Get in Touch",
+      label: "Inquire for 2026",
       href: "/contact",
     },
   },
@@ -82,7 +100,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
 export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
   _id: "aboutPage",
   hero: {
-    eyebrow: "Bahar Studio",
+    eyebrow: "Studio Bahar",
     titleLine1: "Who We",
     titleLine2: "Are.",
     description:
@@ -92,7 +110,7 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     eyebrow: "Our Approach",
     quotePrefix: "We show up prepared, stay present, and make every",
     quoteAccent: "frame",
-    quoteSuffix: "count. No shortcuts, no templates — just intention behind everything we do.",
+    quoteSuffix: "count. No shortcuts, no templates. Just intention behind everything we do.",
     footerLabel: "Our Approach",
   },
   team: {
@@ -109,12 +127,18 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
       {
         name: "Mortaza Anwari",
         role: "Photographer",
-        portrait: localImageFromPublicPath("/images/portrait-mortaza.jpg", "Portrait of Mortaza Anwari"),
+        portrait: localImageFromPublicPath(
+          "/images/portrait-mortaza.jpg",
+          "Portrait of Mortaza Anwari",
+        ),
       },
       {
         name: "Enayatullah Anwari",
         role: "Photographer",
-        portrait: localImageFromPublicPath("/images/portrait-enayat.jpg", "Portrait of Enayatullah Anwari"),
+        portrait: localImageFromPublicPath(
+          "/images/portrait-enayat.jpg",
+          "Portrait of Enayatullah Anwari",
+        ),
       },
     ],
   },
@@ -122,7 +146,7 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     eyebrow: "How It Works",
     title: "How we work.",
     description:
-      "We grade and refine every image by hand to get the tone, mood, and consistency right — not filtered, not batch-processed, not rushed.",
+      "We grade and refine every image by hand to get the tone, mood, and consistency right. Not filtered, not batch-processed, not rushed.",
     cards: [
       {
         title: "Selection",
@@ -135,7 +159,7 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
           "Each image is individually graded. We build a visual language specific to your vision.",
       },
     ],
-    image: localImageFromPublicPath("/images/about-process.jpg", "Bahar Studio creative process"),
+    image: localImageFromPublicPath("/images/about-process.jpg", "Studio Bahar creative process"),
   },
   cta: {
     eyebrow: "What's next",
@@ -153,7 +177,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
   hero: {
     titleLine1: "Our Process:",
     titleLine2: "Frame by Frame",
-    image: localImageFromPublicPath("/images/process/hero.jpg", "Bahar Studio process hero"),
+    image: localImageFromPublicPath("/images/process/hero.jpg", "Studio Bahar process hero"),
   },
   intro: {
     title: "The Process",
@@ -177,7 +201,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       id: "02",
       title: "Presence",
       description:
-        "On the day, we work with intention — reading the light, directing when it helps, staying ready for the moments that can't be planned. Every frame is composed, not just taken.",
+        "On the day, we work with intention. Reading the light, directing when it helps, staying ready for the moments that can't be planned. Every frame is composed, not just taken.",
       metaList: ["Phase: The Shoot"],
       images: [localImageFromPublicPath("/images/process/02.jpg", "On location during the shoot")],
       layout: "bordered",
@@ -187,7 +211,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       id: "03",
       title: "Selection",
       description:
-        "From every session, we select only the strongest images — where composition, expression, and light come together. Quality over quantity, always.",
+        "From every session, we select only the strongest images. The ones where composition, expression, and light come together. Quality over quantity, always.",
       meta: "Phase: Selection",
       images: [
         localImageFromPublicPath("/images/process/03.jpg", "Selecting the strongest frames"),
@@ -199,12 +223,12 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       id: "04",
       title: "Refinement",
       description:
-        "Each selected image is graded by hand for tone, mood, and consistency. The final collection is delivered as a cohesive set — something worth coming back to.",
+        "Each selected image is graded by hand for tone, mood, and consistency. The final collection is delivered as a cohesive set. Something worth coming back to.",
       images: [
-        localImageFromPublicPath("/images/process/04a.jpg", "Refinement — portrait tones"),
-        localImageFromPublicPath("/images/process/04b.jpg", "Refinement — interior shadows"),
-        localImageFromPublicPath("/images/process/04c.jpg", "Refinement — golden hour"),
-        localImageFromPublicPath("/images/process/04d.jpg", "Refinement — natural color"),
+        localImageFromPublicPath("/images/process/04a.jpg", "Refinement, portrait tones"),
+        localImageFromPublicPath("/images/process/04b.jpg", "Refinement, interior shadows"),
+        localImageFromPublicPath("/images/process/04c.jpg", "Refinement, golden hour"),
+        localImageFromPublicPath("/images/process/04d.jpg", "Refinement, natural color"),
       ],
       layout: "grid",
       align: "right",

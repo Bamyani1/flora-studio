@@ -123,6 +123,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
               <div
                 className="absolute inset-0 bg-[var(--color-surface-deep)]/12"
@@ -140,6 +141,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
               <SiteMedia
                 alt={album.coverImage.alt || `${album.title} cover`}
@@ -148,6 +150,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
             </>
           )}
@@ -195,7 +198,7 @@ export function GalleryBentoSplit({
       ref={sectionRef}
       className="relative min-h-screen w-full bg-surface grid grid-cols-1 md:grid-cols-12 overflow-hidden"
       style={sectionStyle}
-      aria-label={`${album.title} — album showcase`}
+      aria-label={`${album.title}, album showcase`}
     >
       {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {imageCol}

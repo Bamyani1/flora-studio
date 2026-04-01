@@ -47,9 +47,27 @@ interface FolioGalleryProps {
    ────────────────────────────────────────────── */
 
 const NUMBER_WORDS = [
-  "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
-  "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen",
-  "Nineteen", "Twenty",
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen",
+  "Twenty",
 ];
 
 function imageCountLabel(count: number): string {
@@ -90,8 +108,22 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
   let videoInserted = false;
 
   // Rotation cycles for uniform-orientation albums
-  const landscapeCycle: PageLayout[] = ["diptych", "panoramic", "full-bleed", "diptych", "editorial-left", "panoramic"];
-  const portraitCycle: PageLayout[] = ["diptych", "full-bleed", "diptych", "full-bleed", "diptych", "full-bleed"];
+  const landscapeCycle: PageLayout[] = [
+    "diptych",
+    "panoramic",
+    "full-bleed",
+    "diptych",
+    "editorial-left",
+    "panoramic",
+  ];
+  const portraitCycle: PageLayout[] = [
+    "diptych",
+    "full-bleed",
+    "diptych",
+    "full-bleed",
+    "diptych",
+    "full-bleed",
+  ];
   let cycleIdx = 0;
 
   pages.push({ layout: "title", images: [], imageIndex: 0, pageNumber: pageNum++ });
@@ -127,18 +159,12 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
         chosen = "trio-mosaic";
         pushPage(chosen, [images[idx], images[idx + 1], images[idx + 2]], idx + 1);
         idx += 3;
-
-      } else if (
-        remaining >= 2 &&
-        ori !== nextOri &&
-        lastLayout !== "staggered-pair"
-      ) {
+      } else if (remaining >= 2 && ori !== nextOri && lastLayout !== "staggered-pair") {
         chosen = "staggered-pair";
         pushPage(chosen, [images[idx], images[idx + 1]], idx + 1);
         idx += 2;
 
-      // ── Uniform orientation: use rotation cycle for variety ──
-
+        // ── Uniform orientation: use rotation cycle for variety ──
       } else if (allSameOri) {
         const cycle = ori === "landscape" ? landscapeCycle : portraitCycle;
         chosen = cycle[cycleIdx % cycle.length];
@@ -161,7 +187,7 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
           idx++;
         }
 
-      // ── Fallback ──
+        // ── Fallback ──
       } else {
         chosen = "full-bleed";
         pushPage(chosen, [images[idx]], idx + 1);
@@ -209,7 +235,7 @@ function TitleContent({ title, count }: { title: string; count: number }) {
       </h2>
       <div className="folio-reveal-label mt-6 h-px bg-primary" style={{ width: 60 }} />
       <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted">
-        Bahar Studio
+        Studio Bahar
       </span>
       <span className="folio-reveal-label mt-2 font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
         {imageCountLabel(count)}
@@ -240,6 +266,7 @@ function PanoramicContent({
         className="folio-reveal h-auto w-full"
         sizes="100vw"
         loading={pageNumber <= 2 ? "eager" : "lazy"}
+        quality={85}
       />
     </div>
   );
@@ -266,16 +293,11 @@ function FullBleedContent({
         width={w}
         height={h}
         className={`folio-reveal h-auto w-auto ${
-          isPortrait
-            ? "max-w-[88%] md:max-w-[60%]"
-            : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"
+          isPortrait ? "max-w-[88%] md:max-w-[60%]" : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"
         }`}
-        sizes={
-          isPortrait
-            ? "(min-width: 768px) 60vw, 88vw"
-            : "(min-width: 768px) 78vw, 92vw"
-        }
+        sizes={isPortrait ? "(min-width: 768px) 60vw, 88vw" : "(min-width: 768px) 78vw, 92vw"}
         loading={pageNumber <= 2 ? "eager" : "lazy"}
+        quality={85}
       />
     </div>
   );
@@ -316,6 +338,7 @@ function EditorialContent({
             : "(min-width: 1024px) 42vw, (min-width: 768px) 50vw, 80vw"
         }
         loading="lazy"
+        quality={85}
       />
     </div>
   );
@@ -323,13 +346,7 @@ function EditorialContent({
 
 /* ── Staggered pair: equal-height row via flex ── */
 
-function StaggeredPairContent({
-  images,
-  startIndex,
-}: {
-  images: ImageType[];
-  startIndex: number;
-}) {
+function StaggeredPairContent({ images, startIndex }: { images: ImageType[]; startIndex: number }) {
   const d0 = getDims(images[0]);
   const d1 = getDims(images[1]);
   const ar0 = d0.w / d0.h;
@@ -346,6 +363,7 @@ function StaggeredPairContent({
         style={{ flex: ar0 }}
         sizes="(min-width: 768px) 46vw, 92vw"
         loading="lazy"
+        quality={85}
       />
       <SiteMedia
         src={getSrc(images[1])}
@@ -356,6 +374,7 @@ function StaggeredPairContent({
         style={{ flex: ar1 }}
         sizes="(min-width: 768px) 46vw, 92vw"
         loading="lazy"
+        quality={85}
       />
     </div>
   );
@@ -363,13 +382,7 @@ function StaggeredPairContent({
 
 /* ── Trio mosaic: large image + stacked column, flex-packed ── */
 
-function TrioMosaicContent({
-  images,
-  startIndex,
-}: {
-  images: ImageType[];
-  startIndex: number;
-}) {
+function TrioMosaicContent({ images, startIndex }: { images: ImageType[]; startIndex: number }) {
   const d0 = getDims(images[0]);
   const d1 = getDims(images[1]);
   const d2 = getDims(images[2]);
@@ -391,12 +404,10 @@ function TrioMosaicContent({
         style={{ flex: r0 }}
         sizes="(min-width: 768px) 55vw, 92vw"
         loading="lazy"
+        quality={85}
       />
       {/* Stacked column */}
-      <div
-        className="flex flex-row gap-3 md:flex-col md:gap-[1.5vw]"
-        style={{ flex: stackFlex }}
-      >
+      <div className="flex flex-row gap-3 md:flex-col md:gap-[1.5vw]" style={{ flex: stackFlex }}>
         <SiteMedia
           src={getSrc(images[1])}
           alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
@@ -405,6 +416,7 @@ function TrioMosaicContent({
           className="folio-reveal h-auto w-full"
           sizes="(min-width: 768px) 36vw, 44vw"
           loading="lazy"
+          quality={85}
         />
         <SiteMedia
           src={getSrc(images[2])}
@@ -414,6 +426,7 @@ function TrioMosaicContent({
           className="folio-reveal h-auto w-full"
           sizes="(min-width: 768px) 36vw, 44vw"
           loading="lazy"
+          quality={85}
         />
       </div>
     </div>
@@ -422,13 +435,7 @@ function TrioMosaicContent({
 
 /* ── Diptych: equal-height row via flex ── */
 
-function DiptychContent({
-  images,
-  startIndex,
-}: {
-  images: ImageType[];
-  startIndex: number;
-}) {
+function DiptychContent({ images, startIndex }: { images: ImageType[]; startIndex: number }) {
   const d0 = getDims(images[0]);
   const d1 = getDims(images[1]);
   const ar0 = d0.w / d0.h;
@@ -445,6 +452,7 @@ function DiptychContent({
         style={{ flex: ar0 }}
         sizes="(min-width: 768px) 45vw, 92vw"
         loading="lazy"
+        quality={85}
       />
       <SiteMedia
         src={getSrc(images[1])}
@@ -455,6 +463,7 @@ function DiptychContent({
         style={{ flex: ar1 }}
         sizes="(min-width: 768px) 45vw, 92vw"
         loading="lazy"
+        quality={85}
       />
     </div>
   );
@@ -462,18 +471,14 @@ function DiptychContent({
 
 /* ── Detail crop: single image with optional caption ── */
 
-function DetailCropContent({
-  image,
-  index,
-}: {
-  image: ImageType;
-  index: number;
-}) {
+function DetailCropContent({ image, index }: { image: ImageType; index: number }) {
   const { w, h } = getDims(image);
   const caption = image.caption;
 
   return (
-    <div className={`flex flex-col items-center justify-center gap-6 py-[2vh] px-[8%] ${caption ? "md:flex-row md:items-center md:justify-between md:gap-0 md:px-[10%]" : ""}`}>
+    <div
+      className={`flex flex-col items-center justify-center gap-6 py-[2vh] px-[8%] ${caption ? "md:flex-row md:items-center md:justify-between md:gap-0 md:px-[10%]" : ""}`}
+    >
       {caption && (
         <div className="folio-reveal order-1 max-w-[300px] text-center md:order-none md:text-left">
           <p className="folio-reveal-label font-display text-2xl font-light italic leading-[1.35] text-text md:text-4xl">
@@ -481,7 +486,9 @@ function DetailCropContent({
           </p>
         </div>
       )}
-      <div className={`flex justify-center ${caption ? "order-2 md:order-none md:justify-end" : ""}`}>
+      <div
+        className={`flex justify-center ${caption ? "order-2 md:order-none md:justify-end" : ""}`}
+      >
         <SiteMedia
           src={getSrc(image)}
           alt={image.alt || `Photograph ${padIndex(index)}`}
@@ -490,6 +497,7 @@ function DetailCropContent({
           className={`folio-reveal h-auto w-auto ${caption ? "max-h-[50vh] max-w-[75vw] md:max-h-[75vh] md:max-w-[35vw]" : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"}`}
           sizes={caption ? "(min-width: 768px) 35vw, 75vw" : "(min-width: 768px) 78vw, 92vw"}
           loading="lazy"
+          quality={85}
         />
       </div>
     </div>
@@ -527,7 +535,7 @@ function ColophonContent() {
         Published by
       </span>
       <span className="folio-reveal-label mt-3 font-display text-2xl font-light italic text-text">
-        Bahar Studio
+        Studio Bahar
       </span>
       <div className="folio-reveal-label mt-8 h-px w-[60px] bg-primary" />
     </div>
@@ -594,7 +602,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           });
         }
       });
-
     },
     { scope: sectionRef, dependencies: [reduced] },
   );
@@ -610,7 +617,12 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
             aria-hidden="true"
           >
             <filter id="folio-grain">
-              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves={3} stitchTiles="stitch" />
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.65"
+                numOctaves={3}
+                stitchTiles="stitch"
+              />
             </filter>
             <rect width="100%" height="100%" filter="url(#folio-grain)" />
           </svg>
@@ -622,7 +634,6 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
                 "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, color-mix(in srgb, var(--color-background) 30%, transparent) 70%, color-mix(in srgb, var(--color-background) 70%, transparent) 100%)",
             }}
           />
-
         </div>
       </div>
 
@@ -642,10 +653,18 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         >
           {page.layout === "title" && <TitleContent title={title} count={images.length} />}
           {page.layout === "panoramic" && (
-            <PanoramicContent image={page.images[0]} index={page.imageIndex} pageNumber={page.pageNumber} />
+            <PanoramicContent
+              image={page.images[0]}
+              index={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
           )}
           {page.layout === "full-bleed" && (
-            <FullBleedContent image={page.images[0]} index={page.imageIndex} pageNumber={page.pageNumber} />
+            <FullBleedContent
+              image={page.images[0]}
+              index={page.imageIndex}
+              pageNumber={page.pageNumber}
+            />
           )}
           {(page.layout === "editorial-left" || page.layout === "editorial-right") && (
             <EditorialContent
@@ -666,9 +685,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           {page.layout === "detail-crop" && (
             <DetailCropContent image={page.images[0]} index={page.imageIndex} />
           )}
-          {page.layout === "video" && page.videoUrl && (
-            <VideoContent videoUrl={page.videoUrl} />
-          )}
+          {page.layout === "video" && page.videoUrl && <VideoContent videoUrl={page.videoUrl} />}
           {page.layout === "colophon" && <ColophonContent />}
         </div>
       ))}
