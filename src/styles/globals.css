@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================
-   BAHAR STUDIO — Design Token System
+   STUDIO BAHAR — Design Token System
    ============================================ */
 
 @theme {
@@ -67,7 +67,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
-  --tracking-hero: 0.12em; /* BAHAR STUDIO wordmark spacing (brand guidelines: 0.12em) */
+  --tracking-hero: 0.12em; /* STUDIO BAHAR wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
   --leading-none: 1;
@@ -236,7 +236,22 @@
 }
 
 /* --- Reduced Motion Preferences --- */
+/* Anti-FOUC: hide elements before GSAP initializes */
+[data-animate],
+.folio-reveal,
+.folio-reveal-label,
+.texture-card {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .folio-reveal,
+  .folio-reveal-label,
+  .texture-card {
+    opacity: 1;
+  }
+
   *,
   *::before,
   *::after {
@@ -350,6 +365,12 @@ button:focus-visible {
 
 .text-shadow-subtle {
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-hero {
+  text-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .perspective-1000 {

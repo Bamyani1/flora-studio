@@ -61,11 +61,16 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
         },
       });
 
-      // Image scale entrance
+      // Image scale entrance — scroll-triggered to avoid fighting with parallax on mount
       gsap.from(imageWrapperRef.current, {
         scale: 1.1,
         duration: 2,
         ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 95%",
+          toggleActions: "play none none none",
+        },
       });
 
       // Staggered text content entrance

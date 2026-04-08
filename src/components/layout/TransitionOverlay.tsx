@@ -38,9 +38,11 @@ export function TransitionOverlay() {
   const scheduleRefresh = useCallback(() => {
     clearRefresh();
     refreshTimeoutRef.current = window.setTimeout(() => {
-      ScrollTrigger.refresh();
-      refreshTimeoutRef.current = null;
-    }, 0);
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        refreshTimeoutRef.current = null;
+      });
+    }, 100);
   }, [clearRefresh]);
 
   const setHiddenState = useCallback(() => {

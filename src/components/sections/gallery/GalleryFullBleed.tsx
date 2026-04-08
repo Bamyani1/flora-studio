@@ -127,6 +127,7 @@ export function GalleryFullBleed({
 
         {/* Text overlay */}
         <div
+          data-animate
           className={`fullbleed-text absolute inset-0 flex items-center justify-center transition-all duration-700 ${
             smoothMode
               ? "bg-gradient-to-t from-[var(--color-surface-lowest)]/55 via-[var(--color-surface)]/15 to-transparent group-hover/bleed:bg-gradient-to-t"

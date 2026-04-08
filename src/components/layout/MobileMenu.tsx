@@ -12,7 +12,7 @@ import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useUIStore } from "@/stores/ui-store";
-import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
+import { StudioBaharLogo } from "@/components/ui/StudioBaharLogo";
 
 export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
   const pathname = usePathname();
@@ -158,10 +158,10 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
           <TransitionLink
             href="/"
             onClick={handleLinkClick}
-            aria-label="Bahar Studio"
+            aria-label="Studio Bahar"
             className="text-[var(--color-header-link-active)]"
           >
-            <BaharStudioLogo width={140} />
+            <StudioBaharLogo width={140} />
           </TransitionLink>
 
           <button

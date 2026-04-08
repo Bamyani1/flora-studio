@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LEGAL_NAV_ITEMS } from "@/lib/navigation";
 import { ProcessMagnetic } from "./ProcessMagnetic";
-import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
+import { StudioBaharLogo } from "@/components/ui/StudioBaharLogo";
 import type { SocialLink } from "@/types/content";
 
 export function ProcessFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
@@ -13,9 +13,9 @@ export function ProcessFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
   return (
     <footer className="flex w-full flex-col items-end justify-between border-t border-white/5 bg-zinc-950 px-8 py-20 md:flex-row md:px-16">
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <BaharStudioLogo width={120} className="text-neutral-200" />
+        <StudioBaharLogo width={120} className="text-neutral-200" />
         <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
-          © {new Date().getFullYear()} Bahar Studio. All rights reserved.
+          © {new Date().getFullYear()} Studio Bahar. All rights reserved.
         </div>
       </div>
       <div className="flex flex-col items-start gap-8 md:items-end">

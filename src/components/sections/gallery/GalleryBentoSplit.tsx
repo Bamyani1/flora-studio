@@ -91,7 +91,9 @@ export function GalleryBentoSplit({
         );
       }
 
-      // Text stagger
+      // Text stagger — clear CSS [data-animate] on wrapper, children handle their own visibility
+      const bentoText = el.querySelector<HTMLElement>(".bento-text");
+      if (bentoText) gsap.set(bentoText, { autoAlpha: 1 });
       const textChildren = el.querySelectorAll(".bento-text > *");
       if (textChildren.length > 0) {
         gsap.fromTo(textChildren, bentoSplitReveal.text.from, {
@@ -167,6 +169,7 @@ export function GalleryBentoSplit({
 
   const textCol = (
     <div
+      data-animate
       className={`md:col-span-4 flex flex-col bg-[var(--color-surface)] p-12 justify-center bento-text ${reversed ? "md:order-1 border-r border-[var(--color-outline-variant)]/10" : ""}`}
     >
       <h3 className="font-display text-[length:var(--text-3xl)] text-text-heading leading-tight">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import {
@@ -12,6 +12,8 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 import { resolveImageUrl } from "@/lib/image-url";
 import type { HomeHeroContent } from "@/types/content";
+
+const IMAGE_LOAD_TIMEOUT_MS = 3000;
 
 interface LandingHeroProps {
   content: HomeHeroContent;
@@ -30,7 +32,30 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const scrollLineRef = useRef<HTMLDivElement>(null);
 
+  // Image-load gating: entrance + Ken Burns wait for first image, crossfade waits for all
+  const loadedCountRef = useRef(0);
+  const entranceTlRef = useRef<gsap.core.Timeline | null>(null);
+  const kenBurnsTweenRef = useRef<gsap.core.Tween | null>(null);
+  const crossfadeTlRef = useRef<gsap.core.Timeline | null>(null);
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const totalImages = content.mediaCycle.length;
   const reducedMotion = useReducedMotion();
+
+  const playEntrance = useCallback(() => {
+    if (fallbackTimerRef.current) {
+      clearTimeout(fallbackTimerRef.current);
+      fallbackTimerRef.current = null;
+    }
+    entranceTlRef.current?.play();
+    kenBurnsTweenRef.current?.play();
+  }, []);
+
+  const handleImageLoad = useCallback(() => {
+    loadedCountRef.current++;
+    if (loadedCountRef.current === 1) playEntrance();
+    if (loadedCountRef.current >= totalImages) crossfadeTlRef.current?.play();
+  }, [totalImages, playEntrance]);
 
   useGSAP(
     () => {
@@ -56,16 +81,17 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         return;
       }
 
-      // Entrance sequence
-      const tl = gsap.timeline();
+      // Entrance sequence — paused until first image loads
+      const tl = gsap.timeline({ paused: true });
       for (const step of landingHeroEditorialSequence.steps) {
         const el = refs[step.target]?.current;
         if (!el) continue;
         gsap.set(el, step.from);
         tl.fromTo(el, { ...step.from }, { ...step.to }, step.position);
       }
+      entranceTlRef.current = tl;
 
-      // Headline parallax (gentle)
+      // Headline parallax (gentle) — scroll-driven, set up immediately
       if (line1Ref.current && line2Ref.current) {
         gsap.to([line1Ref.current, line2Ref.current], {
           yPercent: -15,
@@ -93,13 +119,19 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         });
       }
 
-      // Ken Burns + scroll parallax on image container
+      // Ken Burns — paused until first image loads
       if (bgContainerRef.current) {
-        gsap.fromTo(bgContainerRef.current, landingHeroParallax.kenBurns.from, {
-          ...landingHeroParallax.kenBurns.to,
-          delay: landingHeroParallax.kenBurns.delay,
-        });
+        kenBurnsTweenRef.current = gsap.fromTo(
+          bgContainerRef.current,
+          landingHeroParallax.kenBurns.from,
+          {
+            ...landingHeroParallax.kenBurns.to,
+            delay: landingHeroParallax.kenBurns.delay,
+            paused: true,
+          },
+        );
 
+        // Scroll parallax — set up immediately (scroll-driven)
         const container = bgContainerRef.current;
         gsap.to(container, {
           ...landingHeroParallax.scroll.to,
@@ -143,12 +175,12 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         });
       }
 
-      // Crossfade cycle — 6s visible + 1.5s fade per image
+      // Crossfade cycle — paused until all images loaded
       if (layers.length > 1) {
         const hold = 6;
         const fade = 1.5;
         const interval = hold + fade;
-        const crossfade = gsap.timeline({ repeat: -1, delay: hold });
+        const crossfade = gsap.timeline({ repeat: -1, paused: true });
 
         for (let i = 0; i < layers.length; i++) {
           const pos = i * interval;
@@ -171,9 +203,22 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
             pos + hold,
           );
         }
+        crossfadeTlRef.current = crossfade;
       }
+
+      // Timeout fallback: play entrance after 3s even if first image hasn't loaded
+      fallbackTimerRef.current = setTimeout(() => {
+        if (entranceTlRef.current?.paused()) playEntrance();
+      }, IMAGE_LOAD_TIMEOUT_MS);
+
+      return () => {
+        if (fallbackTimerRef.current) {
+          clearTimeout(fallbackTimerRef.current);
+          fallbackTimerRef.current = null;
+        }
+      };
     },
-    { scope: sectionRef, dependencies: [reducedMotion] },
+    { scope: sectionRef, dependencies: [reducedMotion, playEntrance] },
   );
 
   return (
@@ -206,6 +251,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
               quality={90}
               sizes="100vw"
               blurDataURL={index === 0 ? blurDataURL : undefined}
+              onLoad={handleImageLoad}
             />
           </div>
         ))}
@@ -214,6 +260,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       {/* Vignette overlay */}
       <div
         ref={vignetteRef}
+        data-animate
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
         style={{
@@ -256,14 +303,17 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
 
         <div className="flex flex-col text-shadow-hero">
           <h1 className="font-display font-light leading-[1.2] tracking-[0.04em] text-[clamp(0.9rem,2vw,1.8rem)] text-white/65 mb-1">
-            <span ref={line1Ref}>{content.titleLine1} </span>
-            <span ref={line2Ref} className="text-hero-gold/55 italic">
+            <span ref={line1Ref} data-animate>
+              {content.titleLine1}{" "}
+            </span>
+            <span ref={line2Ref} data-animate className="text-hero-gold/55 italic">
               {content.titleLine2}
             </span>
           </h1>
 
           <p
             ref={descRef}
+            data-animate
             className="font-body font-light text-[clamp(0.4rem,0.5vw,0.5rem)] uppercase tracking-[0.25em] text-hero-muted/25"
           >
             {content.description}
@@ -274,6 +324,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       {/* Scroll indicator — bottom-center */}
       <div
         ref={scrollCueRef}
+        data-animate
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-content hidden md:flex"
         aria-hidden="true"
       >

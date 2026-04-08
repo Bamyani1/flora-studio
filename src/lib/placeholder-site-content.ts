@@ -37,10 +37,6 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
         objectPosition: "50% 48%",
       },
       {
-        ...localImageFromPublicPath("/images/hero/hero-02.jpg", "Studio Bahar featured work"),
-        objectPosition: "50% 34%",
-      },
-      {
         ...localImageFromPublicPath(
           "/images/hero/hero-03.jpg",
           "Studio Bahar editorial photograph",

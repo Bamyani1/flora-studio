@@ -1,7 +1,7 @@
 import type { SanityImage } from "@/types/project";
 
-export const PLACEHOLDER_MEDIA_SRC = "placeholder://bahar-studio/media";
-export const PLACEHOLDER_MEDIA_VIDEO_TOKEN = "placeholder://bahar-studio/video";
+export const PLACEHOLDER_MEDIA_SRC = "placeholder://studio-bahar/media";
+export const PLACEHOLDER_MEDIA_VIDEO_TOKEN = "placeholder://studio-bahar/video";
 export const PLACEHOLDER_MEDIA_LABEL = "Media Placeholder";
 
 interface PlaceholderImageOptions {

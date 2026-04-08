@@ -26,6 +26,9 @@ export function ImageReveal({
     () => {
       if (!containerRef.current || !overlayRef.current || !imageWrapRef.current) return;
 
+      // Clear CSS [data-animate] opacity on the container — children handle their own animation
+      gsap.set(containerRef.current, { autoAlpha: 1 });
+
       if (reduced) {
         gsap.set(overlayRef.current, { scaleX: 0 });
         gsap.set(imageWrapRef.current, { scale: 1 });
@@ -51,7 +54,7 @@ export function ImageReveal({
   );
 
   return (
-    <div ref={containerRef} className={`overflow-hidden ${className ?? ""}`}>
+    <div ref={containerRef} data-animate className={`overflow-hidden ${className ?? ""}`}>
       <div className="relative h-full w-full">
         <div ref={imageWrapRef} className="relative h-full w-full">
           {children}

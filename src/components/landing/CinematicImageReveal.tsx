@@ -46,7 +46,8 @@ export function CinematicImageReveal({
       }
 
       // Set initial hidden state before ScrollTrigger fires
-      gsap.set(el, cinematicImageReveal.reveal.from);
+      // autoAlpha: 1 clears CSS [data-animate] opacity; clip-path still hides the element
+      gsap.set(el, { ...cinematicImageReveal.reveal.from, autoAlpha: 1 });
 
       // Clip-path reveal on enter
       gsap.fromTo(el, cinematicImageReveal.reveal.from, {
@@ -73,6 +74,7 @@ export function CinematicImageReveal({
   return (
     <div
       ref={containerRef}
+      data-animate
       className={`relative overflow-hidden ${className}`}
       style={{ aspectRatio: width && height ? `${width}/${height}` : "3/2" }}
     >

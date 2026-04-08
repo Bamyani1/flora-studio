@@ -4,9 +4,7 @@ import { cookies } from "next/headers";
 import { getContactServerConfig } from "@/lib/contact-config.server";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 
-export type ContactActionResult =
-  | { success: true }
-  | { success: false; error: string };
+export type ContactActionResult = { success: true } | { success: false; error: string };
 
 const DELIVERY_FAILURE_MESSAGE = "Failed to send message. Please try again later.";
 const CONTACT_TEST_FAILURE_COOKIE = "__contact_delivery_test";
@@ -29,14 +27,14 @@ function buildAutoReplyText(data: ContactFormData, contactEmail: string) {
   return [
     `Hi ${data.name},`,
     "",
-    "Thanks for reaching out to Bahar Studio.",
+    "Thanks for reaching out to Studio Bahar.",
     "We received your message and will follow up within 24 hours.",
     "",
     `Inquiry type: ${data.photographyType}`,
     "",
     "If you need to add anything else before then, just reply to this email.",
     "",
-    "Bahar Studio",
+    "Studio Bahar",
     contactEmail,
   ].join("\n");
 }
@@ -112,10 +110,10 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
     });
 
     await transporter.sendMail({
-      from: `Bahar Studio <${contactEmail}>`,
+      from: `Studio Bahar <${contactEmail}>`,
       to: contactEmail,
       replyTo: parsed.data.email,
-      subject: `New inquiry from ${parsed.data.name} — ${parsed.data.photographyType}`,
+      subject: `New inquiry from ${parsed.data.name}: ${parsed.data.photographyType}`,
       text: buildNotificationEmailText(parsed.data),
     });
 
@@ -125,9 +123,9 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       }
 
       await transporter.sendMail({
-        from: `Bahar Studio <${contactEmail}>`,
+        from: `Studio Bahar <${contactEmail}>`,
         to: parsed.data.email,
-        subject: "We received your message — Bahar Studio",
+        subject: "We received your message | Studio Bahar",
         text: buildAutoReplyText(parsed.data, contactEmail),
       });
     } catch (err) {

@@ -152,7 +152,6 @@ async function main() {
   if (recordValidation(HERO_SRC, existsSync(HERO_SRC))) {
     for (const [srcFile, destFile] of [
       ["DSC_0645.jpg", "hero-01.jpg"],
-      ["DSC_0659.jpg", "hero-02.jpg"],
       ["DSC01830_fullres.jpg", "hero-03.jpg"],
       ["DSC02259-Enhanced-NR_fullres.jpg", "hero-04.jpg"],
     ]) {

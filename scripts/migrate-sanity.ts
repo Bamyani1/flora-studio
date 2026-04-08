@@ -274,9 +274,16 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
     heroTitleLine2: content.hero.titleLine2,
     heroDescription: content.hero.description,
     heroMediaCycle: await Promise.all(
-      content.hero.mediaCycle.map((image, index) =>
-        requireImage(image, `home.heroMediaCycle[${index}]`, keyFor("hero-media", index + 1)),
-      ),
+      content.hero.mediaCycle.map(async (image, index) => {
+        const uploaded = await requireImage(
+          image,
+          `home.heroMediaCycle[${index}]`,
+          keyFor("hero-media", index + 1),
+        );
+        return image.objectPosition
+          ? { ...uploaded, objectPosition: image.objectPosition }
+          : uploaded;
+      }),
     ),
     editorialImage: await requireImage(content.editorial.image, "home.editorialImage"),
     editorialTitleLine1: content.editorial.titleLine1,
@@ -292,7 +299,7 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
     exhibitionImage: await requireImage(content.exhibition.image, "home.exhibitionImage"),
     exhibitionCta: linkField(content.exhibition.cta),
     studioImage: await requireImage(content.studio.image, "home.studioImage"),
-    studioCtaEyebrow: content.studio.ctaEyebrow,
+    studioCtaEyebrow: "Work With Us",
     studioCtaLabel: content.studio.ctaLabel,
     studioCta: linkField(content.studio.cta),
   };

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
 import { breadcrumbJsonLd, imageGalleryJsonLd } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
-import { generateLqipDataUrl } from "@/lib/lqip";
+import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
@@ -33,7 +33,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — photography by Bahar Studio, Dayton, Ohio.`,
+    description: description ?? `${title}. Photography by Studio Bahar, Dayton, Ohio.`,
   };
 }
 
@@ -43,7 +43,10 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
 
   if (!album) notFound();
 
-  const heroBlurDataURL = await generateLqipDataUrl(resolveImageUrl(album.heroImage));
+  const heroUrl = resolveImageUrl(album.heroImage);
+  const heroBlurDataURL = heroUrl?.startsWith("https://cdn.sanity.io")
+    ? await generateLqipDataUrl(heroUrl)
+    : await generateLocalLqipDataUrl(heroUrl);
 
   const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
@@ -91,18 +94,19 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 && (() => {
-        const seen = new Set<string>();
-        const galleryImages = [...album.images, album.heroImage].filter((img) => {
-          const ref = img.asset._ref;
-          if (seen.has(ref)) return false;
-          seen.add(ref);
-          return true;
-        });
-        return (
-          <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
-        );
-      })()}
+      {album.images?.length > 0 &&
+        (() => {
+          const seen = new Set<string>();
+          const galleryImages = [...album.images, album.heroImage].filter((img) => {
+            const key = img.url ?? img.asset._ref;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+          return (
+            <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
+          );
+        })()}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>
