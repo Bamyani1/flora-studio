@@ -1,5 +1,6 @@
-import { LEGAL_NAV_ITEMS, NAV_CTA, PRIMARY_NAV_ITEMS } from "@/lib/navigation";
-import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
+import Link from "next/link";
+import { LEGAL_NAV_ITEMS, PRIMARY_NAV_ITEMS } from "@/lib/navigation";
+import { StudioBaharLogo } from "@/components/ui/StudioBaharLogo";
 import type { SocialLink } from "@/types/content";
 
 export function Footer({
@@ -13,59 +14,56 @@ export function Footer({
     <footer
       data-footer
       className={[
-        "w-full border-t border-[var(--color-outline-variant)]/10 bg-[var(--color-surface-lowest)] flex flex-col md:flex-row justify-between items-center px-[var(--container-padding-x)] py-16 gap-8",
+        "flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-8 py-20 md:flex-row md:px-16",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      {/* Brand + copyright */}
-      <div className="flex flex-col gap-4">
-        <BaharStudioLogo width={120} className="text-text-heading" />
-        <p className="font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] opacity-80 hover:opacity-100 transition-opacity duration-300">
-          &copy; {new Date().getFullYear()} Bahar Studio. All rights reserved.
-        </p>
+      {/* Left — Logo + Copyright */}
+      <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
+        <StudioBaharLogo width={120} className="text-neutral-200" />
+        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+          &copy; {new Date().getFullYear()} Studio Bahar. All rights reserved.
+        </div>
       </div>
 
-      {/* Page navigation */}
-      <nav aria-label="Footer navigation" className="flex flex-wrap gap-8 md:gap-12">
-        {[...PRIMARY_NAV_ITEMS, NAV_CTA].map((item) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className="group/footerlink relative font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] hover:text-primary transition-colors duration-300"
-          >
-            {item.label}
-            <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
-          </a>
-        ))}
-      </nav>
-
-      {/* Legal + Social links */}
-      <nav aria-label="Legal and social links" className="flex flex-wrap gap-8 md:gap-12">
-        {LEGAL_NAV_ITEMS.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            className="group/footerlink relative font-label text-[10px] uppercase tracking-[0.2em] font-light text-[var(--color-on-surface-variant)] transition-colors duration-300 hover:text-primary"
-          >
-            {link.label}
-            <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
-          </a>
-        ))}
-        {socialLinks.map((link) => (
-          <a
-            key={link.label}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group/footerlink relative font-label text-[10px] uppercase tracking-[0.2em] font-light text-[var(--color-on-surface-variant)] transition-colors duration-300 hover:text-primary"
-          >
-            {link.label}
-            <span className="absolute left-0 bottom-[-4px] w-full h-[1px] bg-primary transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover/footerlink:scale-x-100" />
-          </a>
-        ))}
-      </nav>
+      {/* Right — Social + Journal, then Legal */}
+      <div className="flex flex-col items-start gap-8 md:items-end">
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-10">
+          {PRIMARY_NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+            >
+              {item.label}
+            </Link>
+          ))}
+          {socialLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <nav aria-label="Legal links" className="flex flex-wrap gap-6">
+          {LEGAL_NAV_ITEMS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition-colors duration-300 hover:text-neutral-200"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
     </footer>
   );
 }

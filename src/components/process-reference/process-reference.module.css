@@ -50,8 +50,7 @@
 
 @media (max-width: 768px) {
   .timelineRule::before {
-    left: 20px;
-    transform: none;
+    display: none;
   }
 }
 

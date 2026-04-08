@@ -1,8 +1,7 @@
 import { ImageResponse } from "next/og";
 import { publicEnv } from "@/lib/public-env";
 
-export const runtime = "edge";
-export const alt = "Bahar Studio photography album";
+export const alt = "Studio Bahar photography album";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -71,11 +70,7 @@ function getImageUrl(album: OGAlbum): string | null {
 /*  OG Image handler                                                   */
 /* ------------------------------------------------------------------ */
 
-export default async function OGImage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function OGImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const album = await fetchAlbumForOG(slug);
   const imageUrl = album ? getImageUrl(album) : null;
@@ -86,100 +81,96 @@ export default async function OGImage({
     const sanityUrl = `${imageUrl}?w=1200&h=630&fit=crop&auto=format`;
 
     return new ImageResponse(
-      (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          position: "relative",
+        }}
+      >
+        <img
+          src={sanityUrl}
+          width={1200}
+          height={630}
+          alt=""
+          style={{ objectFit: "cover", width: "100%", height: "100%" }}
+        />
         <div
           style={{
-            width: "100%",
-            height: "100%",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "45%",
+            background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)",
             display: "flex",
-            position: "relative",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            padding: "0 48px 40px",
           }}
         >
-          <img
-            src={sanityUrl}
-            width={1200}
-            height={630}
-            alt=""
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
-          />
           <div
             style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "45%",
-              background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)",
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              padding: "0 48px 40px",
+              color: "#F5F0EB",
+              fontSize: 48,
+              fontWeight: 300,
+              letterSpacing: "0.05em",
+              lineHeight: 1,
             }}
           >
-            <div
-              style={{
-                color: "#F5F0EB",
-                fontSize: 48,
-                fontWeight: 300,
-                letterSpacing: "0.05em",
-                lineHeight: 1,
-              }}
-            >
-              {title}
-            </div>
-            <div
-              style={{
-                color: "#8B7355",
-                fontSize: 14,
-                letterSpacing: "0.2em",
-                lineHeight: 1,
-              }}
-            >
-              BAHAR STUDIO
-            </div>
+            {title}
+          </div>
+          <div
+            style={{
+              color: "#8B7355",
+              fontSize: 14,
+              letterSpacing: "0.2em",
+              lineHeight: 1,
+            }}
+          >
+            STUDIO BAHAR
           </div>
         </div>
-      ),
+      </div>,
       { ...size },
     );
   }
 
   // Text-only fallback (matches root OG image style)
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#121212",
+        color: "#F5F0EB",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#121212",
-          color: "#F5F0EB",
+          fontSize: 48,
+          fontWeight: 300,
+          letterSpacing: "0.1em",
+          lineHeight: 1,
         }}
       >
-        <div
-          style={{
-            fontSize: 48,
-            fontWeight: 300,
-            letterSpacing: "0.1em",
-            lineHeight: 1,
-          }}
-        >
-          {title}
-        </div>
-        <div
-          style={{
-            fontSize: 16,
-            marginTop: 40,
-            color: "#8B7355",
-          }}
-        >
-          BAHAR STUDIO
-        </div>
+        {title}
       </div>
-    ),
+      <div
+        style={{
+          fontSize: 16,
+          marginTop: 40,
+          color: "#8B7355",
+        }}
+      >
+        STUDIO BAHAR
+      </div>
+    </div>,
     { ...size },
   );
 }

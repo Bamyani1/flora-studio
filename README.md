@@ -1,6 +1,6 @@
 <div align="center">
 
-# BAHAR STUDIO
+# STUDIO BAHAR
 
 _Photography that's worth keeping._
 
@@ -27,23 +27,23 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 
 ## Tech Stack
 
-| Layer | Tools |
-| --- | --- |
-| **Framework** | Next.js 16.2, React 19.2, TypeScript 5.7 |
-| **Styling** | Tailwind CSS 4.0, CSS custom properties (`@theme` directives in `src/styles/globals.css`) |
-| **Animation** | GSAP 3.14 (ScrollTrigger, SplitText, Flip), Lenis 1.3 |
-| **CMS** | Sanity 5.16, next-sanity 12.0 |
-| **State** | Zustand 5.0 |
+| Layer         | Tools                                                                                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **Framework** | Next.js 16.2, React 19.2, TypeScript 5.7                                                                           |
+| **Styling**   | Tailwind CSS 4.0, CSS custom properties (`@theme` directives in `src/styles/globals.css`)                          |
+| **Animation** | GSAP 3.14 (ScrollTrigger, SplitText, Flip), Lenis 1.3                                                              |
+| **CMS**       | Sanity 5.16, next-sanity 12.0                                                                                      |
+| **State**     | Zustand 5.0                                                                                                        |
 | **Utilities** | Zod 3.24 (validation), Nodemailer 8.0 via iCloud SMTP (email), Sharp 0.34 (image processing), Lucide React (icons) |
-| **Testing** | Vitest 4.1 (unit/component), Playwright 1.58 (e2e) |
+| **Testing**   | Vitest 4.1 (unit/component), Playwright 1.58 (e2e)                                                                 |
 
 ---
 
 ## Getting Started
 
 ```bash
-git clone https://github.com/Bamyani1/bahar-studio.git
-cd bahar-studio
+git clone https://github.com/Bamyani1/studio-bahar.git
+cd studio-bahar
 npm install
 ```
 
@@ -55,19 +55,19 @@ cp .env.example .env.local
 
 Required variables:
 
-| Variable | Purpose |
-| --- | --- |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (default: `production`) |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Sanity API version |
-| `SANITY_API_TOKEN` | Sanity write token |
-| `SANITY_READ_TOKEN` | Sanity viewer token |
-| `ICLOUD_SMTP_USER` | iCloud SMTP mailbox for contact form |
-| `ICLOUD_SMTP_PASS` | iCloud app-specific password |
-| `CONTACT_EMAIL` | Verified sender/inbox address |
-| `CONTACT_DELIVERY_MODE` | Set to `stub` for local dev (skips email sending) |
-| `NEXT_PUBLIC_SITE_URL` | Canonical site URL |
-| `NEXT_PUBLIC_ENABLE_COOKIE_CONSENT` | Enable cookie consent banner (`true`/`false`) |
+| Variable                            | Purpose                                           |
+| ----------------------------------- | ------------------------------------------------- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID`     | Sanity project ID                                 |
+| `NEXT_PUBLIC_SANITY_DATASET`        | Sanity dataset (default: `production`)            |
+| `NEXT_PUBLIC_SANITY_API_VERSION`    | Sanity API version                                |
+| `SANITY_API_TOKEN`                  | Sanity write token                                |
+| `SANITY_READ_TOKEN`                 | Sanity viewer token                               |
+| `ICLOUD_SMTP_USER`                  | iCloud SMTP mailbox for contact form              |
+| `ICLOUD_SMTP_PASS`                  | iCloud app-specific password                      |
+| `CONTACT_EMAIL`                     | Verified sender/inbox address                     |
+| `CONTACT_DELIVERY_MODE`             | Set to `stub` for local dev (skips email sending) |
+| `NEXT_PUBLIC_SITE_URL`              | Canonical site URL                                |
+| `NEXT_PUBLIC_ENABLE_COOKIE_CONSENT` | Enable cookie consent banner (`true`/`false`)     |
 
 ```bash
 npm run dev
@@ -125,14 +125,14 @@ tests/
 
 The "Darkroom Moss" palette and all visual values are defined as CSS custom properties inside the `@theme` block in `src/styles/globals.css`:
 
-| Category | Examples |
-| --- | --- |
-| **Colors** | `--color-background` (#242820), `--color-surface` (#303528), `--color-primary` (#c97b2a), `--color-text` (#e8dfd4), `--color-muted` (#8a9878) |
-| **Typography** | `--font-display` (Cormorant Garamond), `--font-body` (Inter), `--text-xs` through `--text-hero` |
-| **Spacing** | `--space-1` (4px) through `--space-64` (256px) |
-| **Motion** | `--duration-instant` (100ms) through `--duration-hero` (3500ms), `--ease-out`, `--ease-in-out`, `--ease-out-expo` |
-| **Z-Index** | `--z-grain` (2) through `--z-cursor` (100) |
-| **Layout** | `--max-width` (1440px), `--header-height` (80px), `--container-padding-x` (32px) |
+| Category       | Examples                                                                                                                                      |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Colors**     | `--color-background` (#242820), `--color-surface` (#303528), `--color-primary` (#c97b2a), `--color-text` (#e8dfd4), `--color-muted` (#8a9878) |
+| **Typography** | `--font-display` (Cormorant Garamond), `--font-body` (Inter), `--text-xs` through `--text-hero`                                               |
+| **Spacing**    | `--space-1` (4px) through `--space-64` (256px)                                                                                                |
+| **Motion**     | `--duration-instant` (100ms) through `--duration-hero` (3500ms), `--ease-out`, `--ease-in-out`, `--ease-out-expo`                             |
+| **Z-Index**    | `--z-grain` (2) through `--z-cursor` (100)                                                                                                    |
+| **Layout**     | `--max-width` (1440px), `--header-height` (80px), `--container-padding-x` (32px)                                                              |
 
 > Source of truth: `src/styles/globals.css`
 
@@ -140,37 +140,37 @@ The "Darkroom Moss" palette and all visual values are defined as CSS custom prop
 
 ## Pages
 
-| Page | Route | Description |
-| --- | --- | --- |
-| Home | `/` | Choreographed hero sequence, curated collections grid, exhibition feature |
-| Work | `/work` | Filterable archive of collections across categories |
-| Album | `/work/[slug]` | Individual collection — hero, narrative, gallery |
-| About | `/about` | Brand manifesto, team, creative approach |
-| Process | `/process` | Multi-phase creative timeline |
-| Contact | `/contact` | Portrait, form with Zod validation, studio details |
-| Privacy | `/privacy` | Privacy policy |
-| Terms | `/terms` | Terms of service |
-| Studio | `/studio` | Admin-only Sanity CMS. Excluded from `robots.txt`. |
+| Page    | Route          | Description                                                               |
+| ------- | -------------- | ------------------------------------------------------------------------- |
+| Home    | `/`            | Choreographed hero sequence, curated collections grid, exhibition feature |
+| Work    | `/work`        | Filterable archive of collections across categories                       |
+| Album   | `/work/[slug]` | Individual collection — hero, narrative, gallery                          |
+| About   | `/about`       | Brand manifesto, team, creative approach                                  |
+| Process | `/process`     | Multi-phase creative timeline                                             |
+| Contact | `/contact`     | Portrait, form with Zod validation, studio details                        |
+| Privacy | `/privacy`     | Privacy policy                                                            |
+| Terms   | `/terms`       | Terms of service                                                          |
+| Studio  | `/studio`      | Admin-only Sanity CMS. Excluded from `robots.txt`.                        |
 
 ---
 
 ## Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start dev server |
-| `npm run build` | Production build |
-| `npm run start` | Start production server |
-| `npm run lint` | ESLint |
-| `npm run type-check` | TypeScript check (`tsc --noEmit`) |
-| `npm run test:unit` | Vitest unit/component tests |
-| `npm run test:e2e` | Playwright e2e suite (port 3101) |
-| `npm run test:e2e:consent` | Playwright cookie consent suite (port 3102) |
-| `npm run test:e2e:all` | Both e2e suites |
-| `npm run test` | Unit tests + all e2e |
-| `npm run verify` | Full pipeline: lint → type-check → unit → e2e → build |
-| `npm run images:validate` | Validate source image structure |
-| `npm run images:process` | Optimize images from `pictures/` into `public/images/` |
+| Command                    | Description                                            |
+| -------------------------- | ------------------------------------------------------ |
+| `npm run dev`              | Start dev server                                       |
+| `npm run build`            | Production build                                       |
+| `npm run start`            | Start production server                                |
+| `npm run lint`             | ESLint                                                 |
+| `npm run type-check`       | TypeScript check (`tsc --noEmit`)                      |
+| `npm run test:unit`        | Vitest unit/component tests                            |
+| `npm run test:e2e`         | Playwright e2e suite (port 3101)                       |
+| `npm run test:e2e:consent` | Playwright cookie consent suite (port 3102)            |
+| `npm run test:e2e:all`     | Both e2e suites                                        |
+| `npm run test`             | Unit tests + all e2e                                   |
+| `npm run verify`           | Full pipeline: lint → type-check → unit → e2e → build  |
+| `npm run images:validate`  | Validate source image structure                        |
+| `npm run images:process`   | Optimize images from `pictures/` into `public/images/` |
 
 ---
 
@@ -179,6 +179,7 @@ The "Darkroom Moss" palette and all visual values are defined as CSS custom prop
 **Unit and component tests** run with Vitest in a jsdom environment (`tests/unit/`, `tests/component/`).
 
 **E2E tests** run with Playwright on Chromium:
+
 - Main suite on `127.0.0.1:3101` with `CONTENT_RUNTIME_MODE=e2e` and `CONTACT_DELIVERY_MODE=stub`
 - Cookie consent suite on port 3102 with `NEXT_PUBLIC_ENABLE_COOKIE_CONSENT=true`
 
@@ -190,4 +191,4 @@ npm run verify
 
 ---
 
-&copy; 2026 Bahar Studio
+&copy; 2026 Studio Bahar

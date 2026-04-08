@@ -28,6 +28,7 @@ export function RevealText({ text, className = "", delay = 0 }: RevealTextProps)
 
       const split = new SplitText(el, landingWordReveal.splitConfig);
 
+      gsap.set(el, { autoAlpha: 1 }); // Clear CSS [data-animate] opacity; words handle their own visibility
       gsap.set(split.words, { yPercent: 120, rotation: 4, autoAlpha: 0 });
 
       gsap.to(split.words, {
@@ -48,7 +49,7 @@ export function RevealText({ text, className = "", delay = 0 }: RevealTextProps)
   );
 
   return (
-    <span ref={ref} className={`inline-block ${className}`}>
+    <span ref={ref} data-animate className={`inline-block ${className}`}>
       {text}
     </span>
   );

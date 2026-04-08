@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { publicEnv } from "@/lib/public-env";
 
-const SITE_NAME = "Bahar Studio";
+const SITE_NAME = "Studio Bahar";
 const SITE_URL = publicEnv.siteUrl;
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Photography that's worth keeping`,
-    template: `%s — ${SITE_NAME}`,
+    default: `${SITE_NAME} | Photography that's worth keeping`,
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",

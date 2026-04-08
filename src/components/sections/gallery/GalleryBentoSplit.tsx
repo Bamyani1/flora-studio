@@ -91,7 +91,9 @@ export function GalleryBentoSplit({
         );
       }
 
-      // Text stagger
+      // Text stagger — clear CSS [data-animate] on wrapper, children handle their own visibility
+      const bentoText = el.querySelector<HTMLElement>(".bento-text");
+      if (bentoText) gsap.set(bentoText, { autoAlpha: 1 });
       const textChildren = el.querySelectorAll(".bento-text > *");
       if (textChildren.length > 0) {
         gsap.fromTo(textChildren, bentoSplitReveal.text.from, {
@@ -123,6 +125,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
               <div
                 className="absolute inset-0 bg-[var(--color-surface-deep)]/12"
@@ -140,6 +143,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
               <SiteMedia
                 alt={album.coverImage.alt || `${album.title} cover`}
@@ -148,6 +152,7 @@ export function GalleryBentoSplit({
                 fill
                 loading={priority ? "eager" : "lazy"}
                 sizes="(min-width: 768px) 66vw, 100vw"
+                quality={85}
               />
             </>
           )}
@@ -164,6 +169,7 @@ export function GalleryBentoSplit({
 
   const textCol = (
     <div
+      data-animate
       className={`md:col-span-4 flex flex-col bg-[var(--color-surface)] p-12 justify-center bento-text ${reversed ? "md:order-1 border-r border-[var(--color-outline-variant)]/10" : ""}`}
     >
       <h3 className="font-display text-[length:var(--text-3xl)] text-text-heading leading-tight">
@@ -195,7 +201,7 @@ export function GalleryBentoSplit({
       ref={sectionRef}
       className="relative min-h-screen w-full bg-surface grid grid-cols-1 md:grid-cols-12 overflow-hidden"
       style={sectionStyle}
-      aria-label={`${album.title} — album showcase`}
+      aria-label={`${album.title}, album showcase`}
     >
       {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {imageCol}

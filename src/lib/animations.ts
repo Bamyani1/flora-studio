@@ -408,7 +408,7 @@ export const textureCardReveal = {
 // --------------------------------------------------
 export const landingHeaderEntrance = {
   from: { y: -100, autoAlpha: 0 },
-  to: { y: 0, autoAlpha: 1, duration: 1.5, ease: easings.smooth, delay: 0.5 },
+  to: { y: 0, autoAlpha: 1, duration: 1.5, ease: easings.smooth },
 };
 
 // --------------------------------------------------
@@ -427,14 +427,16 @@ export const headerShrink = {
     backgroundColor: "#161a12",
     borderColor: "rgba(255,255,255,0.15)",
     borderRadius: "0px",
+    backdropFilter: "blur(0px)",
   },
   to: {
     height: "3.5rem",
     paddingTop: "0.625rem",
     paddingBottom: "0.625rem",
-    backgroundColor: "rgba(17,18,16,0.35)",
+    backgroundColor: "rgba(17,18,16,0.55)",
     borderColor: "rgba(255,255,255,0.2)",
     borderRadius: "2px",
+    backdropFilter: "blur(16px)",
   },
   /** Shadow is now on overlay element — animate its opacity instead */
   shadow: { from: { opacity: 0 }, to: { opacity: 1 } },
@@ -451,7 +453,7 @@ export const landingHeroParallax = {
   kenBurns: {
     from: { scale: 1 },
     to: { scale: 1.06, duration: 10, ease: "none" },
-    delay: 1.8,
+    delay: 2.1,
   },
   scroll: {
     to: { yPercent: 30, ease: "none" },
@@ -530,6 +532,82 @@ export const landingHeroGridSequence = {
   ],
   totalDuration: 2.4,
 };
+
+// --------------------------------------------------
+// landingHeroEditorialSequence — Full-bleed editorial hero choreography (~2.8s)
+// --------------------------------------------------
+export const landingHeroEditorialSequence = {
+  steps: [
+    {
+      target: "bgImage",
+      from: { scale: 1.12, autoAlpha: 0 },
+      to: { scale: 1, autoAlpha: 1, duration: 2.0, ease: easings.smooth },
+      position: 0,
+    },
+    {
+      target: "vignette",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 1.5, ease: easings.smooth },
+      position: 0.3,
+    },
+    {
+      target: "frameLine",
+      from: { autoAlpha: 0, scale: 1.04 },
+      to: { autoAlpha: 1, scale: 1, duration: 1.2, ease: easings.smooth },
+      position: 0.8,
+    },
+    {
+      target: "eyebrow",
+      from: { autoAlpha: 0, x: -20 },
+      to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
+      position: 1.0,
+    },
+    {
+      target: "headlineLine1",
+      from: { autoAlpha: 0, y: 30, clipPath: "inset(0 0 100% 0)" },
+      to: {
+        autoAlpha: 1,
+        y: 0,
+        clipPath: "inset(0 0 0% 0)",
+        duration: 1.0,
+        ease: easings.smooth,
+      },
+      position: 1.1,
+    },
+    {
+      target: "headlineLine2",
+      from: { autoAlpha: 0, y: 30, clipPath: "inset(0 0 100% 0)" },
+      to: {
+        autoAlpha: 1,
+        y: 0,
+        clipPath: "inset(0 0 0% 0)",
+        duration: 1.0,
+        ease: easings.smooth,
+      },
+      position: 1.3,
+    },
+    {
+      target: "description",
+      from: { autoAlpha: 0, y: 15 },
+      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
+      position: 1.6,
+    },
+    {
+      target: "counter",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
+      position: 1.8,
+    },
+    {
+      target: "scrollCue",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
+      position: 2.0,
+    },
+  ],
+  totalDuration: 2.8,
+};
+
 // --------------------------------------------------
 // scrollApertureProgress — Scroll-linked aperture blade rotation
 // --------------------------------------------------
@@ -592,6 +670,8 @@ export const reducedMotionFallbacks = {
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
+  landingHeroEditorialSequence:
+    "all elements visible immediately, no choreography, no clip-path, no parallax",
   landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",

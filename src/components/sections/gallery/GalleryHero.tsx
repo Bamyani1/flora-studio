@@ -11,7 +11,6 @@ import { resolveImageUrl } from "@/lib/image-url";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 import type { GallerySectionProps } from "./types";
 
-
 export function GalleryHero({
   album,
   priority = false,
@@ -61,11 +60,11 @@ export function GalleryHero({
         0,
       );
       tl.fromTo(
-          el.querySelectorAll(".gallery-hero-title-line"),
-          cinematicHeroReveal.titleLine.from,
-          { ...cinematicHeroReveal.titleLine.to },
-          "-=1.2",
-        )
+        el.querySelectorAll(".gallery-hero-title-line"),
+        cinematicHeroReveal.titleLine.from,
+        { ...cinematicHeroReveal.titleLine.to },
+        "-=1.2",
+      )
         .fromTo(
           el.querySelector(".gallery-hero-desc"),
           cinematicHeroReveal.description.from,
@@ -110,7 +109,7 @@ export function GalleryHero({
       ref={sectionRef}
       className="relative h-dvh w-full overflow-hidden"
       style={sectionStyle}
-      aria-label={`${album.title} — featured album`}
+      aria-label={`${album.title}, featured album`}
     >
       {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       <div
@@ -138,17 +137,22 @@ export function GalleryHero({
         <TransitionLink href={`/work/${album.slug.current}`} className="group block mt-4">
           <h2 className="font-display text-[length:var(--text-5xl)] md:text-[length:var(--text-7xl)] text-text-heading leading-none transition-colors duration-500 group-hover:text-primary">
             <div className="overflow-hidden">
-              <div className="gallery-hero-title-line">{album.title}</div>
+              <div className="gallery-hero-title-line" data-animate>
+                {album.title}
+              </div>
             </div>
           </h2>
         </TransitionLink>
 
-        <p className="gallery-hero-desc max-w-md font-body text-[var(--color-on-surface-variant)]/70 text-sm leading-relaxed mt-4">
-          {categoryLabel} {album.year ? `— ${album.year}` : ""}{" "}
+        <p
+          data-animate
+          className="gallery-hero-desc max-w-md font-body text-[var(--color-on-surface-variant)]/70 text-sm leading-relaxed mt-4"
+        >
+          {categoryLabel} {album.year ? `· ${album.year}` : ""}{" "}
           {album.location ? `| ${album.location}` : ""}
         </p>
 
-        <div className="gallery-hero-scroll mt-12 flex items-center gap-4">
+        <div data-animate className="gallery-hero-scroll mt-12 flex items-center gap-4">
           <div className="w-[1px] h-12 bg-primary/30" />
           <span className="font-label text-[10px] tracking-[0.2em] uppercase text-[var(--color-on-surface-variant)]/50">
             Scroll to Explore

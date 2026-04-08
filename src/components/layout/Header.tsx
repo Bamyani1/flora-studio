@@ -11,11 +11,11 @@ import { HEADER_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
 import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
-import { BaharStudioLogo, type BaharStudioLogoHandle } from "@/components/ui/BaharStudioLogo";
+import { StudioBaharLogo, type StudioBaharLogoHandle } from "@/components/ui/StudioBaharLogo";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<BaharStudioLogoHandle>(null);
+  const logoRef = useRef<StudioBaharLogoHandle>(null);
   const branchRef = useRef<SVGSVGElement>(null);
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
@@ -82,11 +82,7 @@ export function Header() {
 
     // Branch divider: retract to center on scroll (no layout props — GPU only)
     if (branchRef.current) {
-      tl.to(
-        branchRef.current,
-        { clipPath: "inset(0% 50% 0% 50%)", autoAlpha: 0, ease: "none" },
-        0,
-      );
+      tl.to(branchRef.current, { clipPath: "inset(0% 50% 0% 50%)", autoAlpha: 0, ease: "none" }, 0);
     }
 
     // Desktop-only: logo width shrink
@@ -118,7 +114,10 @@ export function Header() {
         {/* Shadow layer — opacity animated instead of per-frame boxShadow */}
         <div
           className="header-shadow-target absolute inset-0 rounded-[inherit] pointer-events-none"
-          style={{ boxShadow: "0 4px 30px color-mix(in srgb, var(--color-black) 30%, transparent)", opacity: 0 }}
+          style={{
+            boxShadow: "0 4px 30px color-mix(in srgb, var(--color-black) 30%, transparent)",
+            opacity: 0,
+          }}
           aria-hidden="true"
         />
 
@@ -155,10 +154,10 @@ export function Header() {
         <div className="w-1/2 flex flex-col items-start md:w-1/3 md:items-center relative">
           <TransitionLink
             href="/"
-            aria-label="Bahar Studio"
+            aria-label="Studio Bahar"
             className="relative flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-500"
           >
-            <BaharStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
+            <StudioBaharLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
           </TransitionLink>
           <svg
             ref={branchRef}

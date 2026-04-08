@@ -113,13 +113,16 @@ export function GalleryTextureCards({
                 fill
                 loading="lazy"
                 sizes="(min-width: 768px) 50vw, 100vw"
+                quality={85}
               />
             </div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-12 transition-transform duration-500 group-hover/texture:translate-y-[-10px]">
               <h5 className="font-display text-[length:var(--text-2xl)] text-text-heading mb-2 transition-colors duration-300 group-hover/texture:text-primary">
                 {album.title}
-                <span className="inline-block ml-2 opacity-0 -translate-x-2 group-hover/texture:opacity-100 group-hover/texture:translate-x-0 transition-all duration-300">&rarr;</span>
+                <span className="inline-block ml-2 opacity-0 -translate-x-2 group-hover/texture:opacity-100 group-hover/texture:translate-x-0 transition-all duration-300">
+                  &rarr;
+                </span>
               </h5>
               <p className="font-body text-xs text-[var(--color-on-surface-variant)]/70 uppercase tracking-widest">
                 {categoryLabel}

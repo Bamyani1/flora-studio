@@ -12,8 +12,8 @@ const SINGLETON_TYPES = new Set([
 ]);
 
 export default defineConfig({
-  name: "bahar-studio",
-  title: "Bahar Studio",
+  name: "studio-bahar",
+  title: "Studio Bahar",
   basePath: "/studio",
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",

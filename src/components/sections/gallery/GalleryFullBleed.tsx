@@ -92,7 +92,7 @@ export function GalleryFullBleed({
       ref={sectionRef}
       className="relative h-dvh w-full flex items-center justify-center bg-[var(--color-surface-lowest)] overflow-hidden group/bleed"
       style={sectionStyle}
-      aria-label={`${album.title} — featured`}
+      aria-label={`${album.title}, featured`}
     >
       {!smoothMode && <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />}
       {!smoothMode && (
@@ -120,12 +120,14 @@ export function GalleryFullBleed({
             fill
             loading="lazy"
             sizes="(min-width: 768px) 66vw, 80vw"
+            quality={85}
           />
         </div>
         <div className="absolute inset-0 border border-white/5 pointer-events-none" />
 
         {/* Text overlay */}
         <div
+          data-animate
           className={`fullbleed-text absolute inset-0 flex items-center justify-center transition-all duration-700 ${
             smoothMode
               ? "bg-gradient-to-t from-[var(--color-surface-lowest)]/55 via-[var(--color-surface)]/15 to-transparent group-hover/bleed:bg-gradient-to-t"
@@ -137,11 +139,17 @@ export function GalleryFullBleed({
               {album.title}
             </h4>
             <p className="font-label text-[10px] tracking-[0.4em] uppercase text-primary">
-              {categoryLabel} {album.year ? `— ${album.year}` : ""}
+              {categoryLabel} {album.year ? `· ${album.year}` : ""}
             </p>
             <span className="inline-flex items-center gap-2 font-label text-[10px] tracking-[0.2em] uppercase text-white/60 opacity-0 group-hover/bleed:opacity-100 transition-opacity duration-500">
               View Series
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="transform transition-transform duration-300 group-hover/bleed:translate-x-1">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                className="transform transition-transform duration-300 group-hover/bleed:translate-x-1"
+              >
                 <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
               </svg>
             </span>
@@ -152,7 +160,7 @@ export function GalleryFullBleed({
       {/* Vertical text branding */}
       <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:block">
         <span className="font-label text-[8px] tracking-[1em] text-[var(--color-on-surface-variant)]/30 uppercase [writing-mode:vertical-lr] rotate-180">
-          Bahar Studio {album.year ?? ""}
+          Studio Bahar {album.year ?? ""}
         </span>
       </div>
     </section>

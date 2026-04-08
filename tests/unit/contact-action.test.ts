@@ -144,7 +144,7 @@ describe("submitContactForm", () => {
     expect(mockSendMail).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        from: `Bahar Studio <${contactEmail}>`,
+        from: `Studio Bahar <${contactEmail}>`,
         to: contactEmail,
         replyTo: "ava@example.com",
       }),
@@ -152,9 +152,9 @@ describe("submitContactForm", () => {
     expect(mockSendMail).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
-        from: `Bahar Studio <${contactEmail}>`,
+        from: `Studio Bahar <${contactEmail}>`,
         to: "ava@example.com",
-        subject: "We received your message — Bahar Studio",
+        subject: "We received your message | Studio Bahar",
       }),
     );
   });

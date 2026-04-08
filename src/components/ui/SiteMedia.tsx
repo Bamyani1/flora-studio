@@ -10,6 +10,7 @@ type SiteMediaProps = Omit<ImageProps, "src" | "loader" | "placeholder" | "blurD
   src?: ImageProps["src"] | null;
   label?: string;
   blurDataURL?: string;
+  onLoad?: ImageProps["onLoad"];
 };
 
 export function SiteMedia({
@@ -24,6 +25,7 @@ export function SiteMedia({
   priority,
   loading,
   blurDataURL,
+  onLoad,
   label = PLACEHOLDER_MEDIA_LABEL,
   ...rest
 }: SiteMediaProps) {
@@ -46,6 +48,7 @@ export function SiteMedia({
         loading={loading}
         placeholder={blurDataURL ? "blur" : undefined}
         blurDataURL={blurDataURL}
+        onLoad={onLoad}
         onError={() => setHasError(true)}
         {...rest}
       />

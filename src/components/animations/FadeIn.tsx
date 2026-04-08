@@ -71,10 +71,7 @@ export function FadeIn({
   );
 
   return (
-    <Tag
-      ref={ref}
-      className={className}
-    >
+    <Tag ref={ref} data-animate className={className}>
       {children}
     </Tag>
   );
