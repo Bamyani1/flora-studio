@@ -22,13 +22,13 @@ import { CookieConsentManager } from "@/components/legal/CookieConsentManager";
 
 describe("CookieConsentManager", () => {
   beforeEach(() => {
-    document.cookie = "bahar_consent=; Max-Age=0; Path=/";
+    document.cookie = "flora_consent=; Max-Age=0; Path=/";
     mockLenis.start.mockReset();
     mockLenis.stop.mockReset();
   });
 
   afterEach(() => {
-    document.cookie = "bahar_consent=; Max-Age=0; Path=/";
+    document.cookie = "flora_consent=; Max-Age=0; Path=/";
   });
 
   it("shows the banner when enabled with no stored consent and restores it on escape", async () => {
@@ -41,9 +41,7 @@ describe("CookieConsentManager", () => {
     fireEvent.click(screen.getByRole("button", { name: "Customize" }));
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("dialog", { name: "Choose non-essential categories" }),
-      ).toBeVisible(),
+      expect(screen.getByRole("dialog", { name: "Choose non-essential categories" })).toBeVisible(),
     );
     await waitFor(() =>
       expect(screen.getByRole("checkbox", { name: "Analytics consent" })).toHaveFocus(),
@@ -59,7 +57,7 @@ describe("CookieConsentManager", () => {
     );
     await waitFor(() => expect(screen.getByRole("button", { name: "Customize" })).toHaveFocus());
     expect(screen.getByRole("region", { name: "Cookie preferences banner" })).toBeVisible();
-    expect(document.cookie).not.toContain("bahar_consent=");
+    expect(document.cookie).not.toContain("flora_consent=");
     expect(mockLenis.start).toHaveBeenCalled();
   });
 
@@ -73,9 +71,7 @@ describe("CookieConsentManager", () => {
     fireEvent.click(screen.getByRole("button", { name: "Customize" }));
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("dialog", { name: "Choose non-essential categories" }),
-      ).toBeVisible(),
+      expect(screen.getByRole("dialog", { name: "Choose non-essential categories" })).toBeVisible(),
     );
 
     fireEvent.click(screen.getByRole("checkbox", { name: "Analytics consent" }));
@@ -84,14 +80,12 @@ describe("CookieConsentManager", () => {
     await waitFor(() =>
       expect(screen.getByRole("button", { name: "Cookie Preferences" })).toBeVisible(),
     );
-    expect(document.cookie).toContain("bahar_consent=");
+    expect(document.cookie).toContain("flora_consent=");
 
     fireEvent.click(screen.getByRole("button", { name: "Cookie Preferences" }));
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("dialog", { name: "Choose non-essential categories" }),
-      ).toBeVisible(),
+      expect(screen.getByRole("dialog", { name: "Choose non-essential categories" })).toBeVisible(),
     );
 
     fireEvent.keyDown(document, { key: "Escape" });

@@ -143,9 +143,7 @@ async function checkSitemap() {
   // Expected static routes
   for (const route of STATIC_ROUTES) {
     const expected =
-      route === "/"
-        ? "https://studiobahar.com</loc>"
-        : `https://studiobahar.com${route}</loc>`;
+      route === "/" ? "https://floraohio.com</loc>" : `https://floraohio.com${route}</loc>`;
     record(
       xml.includes(expected),
       `sitemap ${xml.includes(expected) ? "contains" : "missing"} ${route}`,
@@ -179,12 +177,8 @@ async function checkRobots() {
   record(true, `/robots.txt → 200`);
 
   const body = await res.text();
-  const hasUserAgent =
-    body.includes("User-Agent:") || body.includes("User-agent:");
-  record(
-    hasUserAgent,
-    `/robots.txt ${hasUserAgent ? "has" : "missing"} User-Agent`,
-  );
+  const hasUserAgent = body.includes("User-Agent:") || body.includes("User-agent:");
+  record(hasUserAgent, `/robots.txt ${hasUserAgent ? "has" : "missing"} User-Agent`);
   record(
     body.includes("Sitemap:"),
     `/robots.txt ${body.includes("Sitemap:") ? "has" : "missing"} Sitemap reference`,
@@ -206,9 +200,7 @@ async function main() {
     try {
       execSync("npx next build", { stdio: "inherit", cwd: process.cwd() });
     } catch {
-      console.error(
-        "\n\x1b[31mBuild failed. Aborting smoke test.\x1b[0m\n",
-      );
+      console.error("\n\x1b[31mBuild failed. Aborting smoke test.\x1b[0m\n");
       process.exit(1);
     }
   } else {
@@ -216,9 +208,7 @@ async function main() {
   }
 
   // 2. Start server
-  console.log(
-    `\n\x1b[1m--- Starting production server on port ${PORT} ---\x1b[0m\n`,
-  );
+  console.log(`\n\x1b[1m--- Starting production server on port ${PORT} ---\x1b[0m\n`);
   const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
     stdio: "pipe",
     env: { ...process.env },

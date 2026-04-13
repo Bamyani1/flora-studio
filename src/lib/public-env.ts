@@ -7,7 +7,7 @@ export interface PublicEnv {
 }
 
 export const publicEnv: PublicEnv = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://studiobahar.com",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://floraohio.com",
   sanityProjectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || null,
   sanityDataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   sanityApiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-07-11",

@@ -87,8 +87,8 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.studiobahar.com" }],
-      "destination": "https://studiobahar.com/:path*",
+      "has": [{ "type": "host", "value": "www.floraohio.com" }],
+      "destination": "https://floraohio.com/:path*",
       "permanent": true
     }
   ]

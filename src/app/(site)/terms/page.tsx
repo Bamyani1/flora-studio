@@ -5,7 +5,7 @@ import { LEGAL_LAST_UPDATED, TERMS_SECTIONS } from "@/lib/legal-content";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "Terms of Service for Bahar Studio covering ownership of site content, permitted use, inquiries, liability limitations, and governing law.",
+    "Terms of Service for Flora Studio covering ownership of site content, permitted use, inquiries, liability limitations, and governing law.",
 };
 
 export default function TermsPage() {
@@ -20,7 +20,7 @@ export default function TermsPage() {
             Terms of Service
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-            These terms govern use of the Bahar Studio website itself. They do not replace any
+            These terms govern use of the Flora Studio website itself. They do not replace any
             separate written agreement that may apply to a booked photography project or other
             client engagement.
           </p>

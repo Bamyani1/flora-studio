@@ -5,7 +5,7 @@ import { LEGAL_LAST_UPDATED, PRIVACY_SECTIONS } from "@/lib/legal-content";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy Policy for Bahar Studio covering website inquiries, manual business records, client work records, and future cookie or tracking disclosures.",
+    "Privacy Policy for Flora Studio covering website inquiries, manual business records, client work records, and future cookie or tracking disclosures.",
 };
 
 export default function PrivacyPage() {
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
-            This Privacy Policy explains how Bahar Studio handles information connected to the
+            This Privacy Policy explains how Flora Studio handles information connected to the
             website, inquiries, and manual studio operations. It is written to reflect the current
             workflow of the business and will be updated if site technologies or business practices
             materially change.

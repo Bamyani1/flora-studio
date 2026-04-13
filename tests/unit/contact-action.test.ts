@@ -30,7 +30,7 @@ vi.mock("nodemailer", () => ({
 }));
 
 const smtpUser = "studio-mailbox@icloud.com";
-const contactEmail = "info@studiobahar.com";
+const contactEmail = "info@floraohio.com";
 
 const validPayload = {
   name: "Ava Reed",
@@ -144,7 +144,7 @@ describe("submitContactForm", () => {
     expect(mockSendMail).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        from: `Bahar Studio <${contactEmail}>`,
+        from: `Flora Studio <${contactEmail}>`,
         to: contactEmail,
         replyTo: "ava@example.com",
       }),
@@ -152,9 +152,9 @@ describe("submitContactForm", () => {
     expect(mockSendMail).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
-        from: `Bahar Studio <${contactEmail}>`,
+        from: `Flora Studio <${contactEmail}>`,
         to: "ava@example.com",
-        subject: "We received your message — Bahar Studio",
+        subject: "We received your message — Flora Studio",
       }),
     );
   });

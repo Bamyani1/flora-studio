@@ -33,7 +33,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title} — photography by Bahar Studio, Dayton, Ohio.`,
+    description: description ?? `${title} — photography by Flora Studio, Dayton, Ohio.`,
   };
 }
 
@@ -91,18 +91,19 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 && (() => {
-        const seen = new Set<string>();
-        const galleryImages = [...album.images, album.heroImage].filter((img) => {
-          const ref = img.asset._ref;
-          if (seen.has(ref)) return false;
-          seen.add(ref);
-          return true;
-        });
-        return (
-          <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
-        );
-      })()}
+      {album.images?.length > 0 &&
+        (() => {
+          const seen = new Set<string>();
+          const galleryImages = [...album.images, album.heroImage].filter((img) => {
+            const ref = img.asset._ref;
+            if (seen.has(ref)) return false;
+            seen.add(ref);
+            return true;
+          });
+          return (
+            <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
+          );
+        })()}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

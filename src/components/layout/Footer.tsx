@@ -1,5 +1,5 @@
 import { LEGAL_NAV_ITEMS, NAV_CTA, PRIMARY_NAV_ITEMS } from "@/lib/navigation";
-import { BaharStudioLogo } from "@/components/ui/BaharStudioLogo";
+import { FloraStudioLogo } from "@/components/ui/FloraStudioLogo";
 import type { SocialLink } from "@/types/content";
 
 export function Footer({
@@ -21,9 +21,9 @@ export function Footer({
     >
       {/* Brand + copyright */}
       <div className="flex flex-col gap-4">
-        <BaharStudioLogo width={120} className="text-text-heading" />
+        <FloraStudioLogo width={120} className="text-text-heading" />
         <p className="font-label text-[10px] tracking-[0.2em] uppercase font-light text-[var(--color-on-surface-variant)] opacity-80 hover:opacity-100 transition-opacity duration-300">
-          &copy; {new Date().getFullYear()} Bahar Studio. All rights reserved.
+          &copy; {new Date().getFullYear()} Flora Studio. All rights reserved.
         </p>
       </div>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { publicEnv } from "@/lib/public-env";
 
-const SITE_NAME = "Bahar Studio";
+const SITE_NAME = "Flora Studio";
 const SITE_URL = publicEnv.siteUrl;
 
 export const baseMetadata: Metadata = {

@@ -530,6 +530,58 @@ export const landingHeroGridSequence = {
   ],
   totalDuration: 2.4,
 };
+
+// --------------------------------------------------
+// landingHeroEditorialSequence — Ultra-minimal editorial hero entrance (~2.5s)
+// --------------------------------------------------
+export const landingHeroEditorialSequence = {
+  steps: [
+    {
+      target: "bgImage",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 1.5, ease: easings.smooth },
+      position: 0.3,
+    },
+    {
+      target: "vignette",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 1.2, ease: easings.smooth },
+      position: 0.5,
+    },
+    {
+      target: "frameLine",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
+      position: 0.8,
+    },
+    {
+      target: "headlineLine1",
+      from: { autoAlpha: 0, y: 10 },
+      to: { autoAlpha: 1, y: 0, duration: 0.9, ease: easings.smooth },
+      position: 1.0,
+    },
+    {
+      target: "headlineLine2",
+      from: { autoAlpha: 0, y: 10 },
+      to: { autoAlpha: 1, y: 0, duration: 0.9, ease: easings.smooth },
+      position: 1.15,
+    },
+    {
+      target: "description",
+      from: { autoAlpha: 0, y: 8 },
+      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
+      position: 1.3,
+    },
+    {
+      target: "scrollCue",
+      from: { autoAlpha: 0 },
+      to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
+      position: 1.6,
+    },
+  ],
+  totalDuration: 2.5,
+};
+
 // --------------------------------------------------
 // scrollApertureProgress — Scroll-linked aperture blade rotation
 // --------------------------------------------------
@@ -592,6 +644,7 @@ export const reducedMotionFallbacks = {
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
+  landingHeroEditorialSequence: "all hero elements visible immediately, no choreography",
   landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",

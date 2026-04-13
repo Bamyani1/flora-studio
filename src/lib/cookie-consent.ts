@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const COOKIE_CONSENT_COOKIE_NAME = "bahar_consent";
+export const COOKIE_CONSENT_COOKIE_NAME = "flora_consent";
 export const COOKIE_CONSENT_MAX_AGE = 60 * 60 * 24 * 365;
 
 export type CookieConsentCategory = "essential" | "analytics" | "marketing";
@@ -63,10 +63,7 @@ export function readCookieConsent(cookieSource: string): CookieConsentState | nu
   return parseCookieConsent(match.slice(COOKIE_CONSENT_COOKIE_NAME.length + 1));
 }
 
-export function buildCookieConsentCookieString(
-  value: CookieConsentState,
-  secure = false,
-): string {
+export function buildCookieConsentCookieString(value: CookieConsentState, secure = false): string {
   const parts = [
     `${COOKIE_CONSENT_COOKIE_NAME}=${serializeCookieConsent(value)}`,
     "Path=/",
