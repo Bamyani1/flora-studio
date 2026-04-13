@@ -57,7 +57,7 @@ test("contact form surfaces a server-side delivery error", async ({ page }) => {
       url: "http://127.0.0.1:3101",
     },
   ]);
-  await page.goto("/contact");
+  await page.goto("/contact", { waitUntil: "networkidle" });
   await expect(page.getByRole("button", { name: "Send Message" })).toBeVisible();
   await fillValidContactForm(page);
 
