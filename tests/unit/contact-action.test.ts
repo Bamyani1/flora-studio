@@ -63,7 +63,7 @@ describe("submitContactForm", () => {
       deliveryMode: "stub",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({ success: true });
     expect(mockSendMail).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe("submitContactForm", () => {
       deliveryMode: "live",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({ success: true });
     expect(mockSendMail).not.toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe("submitContactForm", () => {
       deliveryMode: "stub",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({
       success: false,
@@ -110,7 +110,7 @@ describe("submitContactForm", () => {
       deliveryMode: "live",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({
       success: false,
@@ -128,7 +128,7 @@ describe("submitContactForm", () => {
     });
     mockSendMail.mockResolvedValue({});
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({ success: true });
     expect(mockCreateTransport).toHaveBeenCalledWith({
@@ -168,7 +168,7 @@ describe("submitContactForm", () => {
       deliveryMode: "stub",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({
       success: false,
@@ -186,7 +186,7 @@ describe("submitContactForm", () => {
     });
     mockSendMail.mockRejectedValue(new Error("SMTP auth failed"));
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({
       success: false,
@@ -204,7 +204,7 @@ describe("submitContactForm", () => {
     });
     mockSendMail.mockResolvedValueOnce({}).mockRejectedValueOnce(new Error("Mailbox unavailable"));
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(submitContactForm(validPayload)).resolves.toEqual({ success: true });
     expect(mockSendMail).toHaveBeenCalledTimes(2);
@@ -218,7 +218,7 @@ describe("submitContactForm", () => {
       deliveryMode: "live",
     });
 
-    const { submitContactForm } = await import("@/app/contact/action");
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
 
     await expect(
       submitContactForm({

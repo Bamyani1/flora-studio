@@ -9,7 +9,7 @@ const { mockSubmitContactForm } = vi.hoisted(() => ({
   mockSubmitContactForm: vi.fn(),
 }));
 
-vi.mock("@/app/contact/action", () => ({
+vi.mock("@/app/(site)/contact/action", () => ({
   submitContactForm: mockSubmitContactForm,
 }));
 

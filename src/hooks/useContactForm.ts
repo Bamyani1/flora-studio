@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { submitContactForm, type ContactActionResult } from "@/app/contact/action";
+import { submitContactForm, type ContactActionResult } from "@/app/(site)/contact/action";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 
 export type ContactFieldName = keyof ContactFormData;
