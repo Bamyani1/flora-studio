@@ -1,21 +1,33 @@
 <div align="center">
 
-# FLORA STUDIO
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flora-studio-wordmark-dark.svg">
+  <img alt="Flora Studio" src=".github/assets/flora-studio-wordmark-light.svg" width="440">
+</picture>
+
+<br />
+<br />
 
 _Photography that's worth keeping._
 
-![Next.js 16](https://img.shields.io/badge/Next.js-16.2-0B0C0E?style=flat-square&logo=next.js)
-![React 19](https://img.shields.io/badge/React-19.2-0B0C0E?style=flat-square&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7-0B0C0E?style=flat-square&logo=typescript)
-![Tailwind 4](https://img.shields.io/badge/Tailwind-4.0-0B0C0E?style=flat-square&logo=tailwindcss)
-![GSAP](https://img.shields.io/badge/GSAP-3.14-0B0C0E?style=flat-square&logo=greensock)
-![Lenis](https://img.shields.io/badge/Lenis-1.3-0B0C0E?style=flat-square)
-![Sanity](https://img.shields.io/badge/Sanity-5.16-0B0C0E?style=flat-square&logo=sanity)
-![Zustand](https://img.shields.io/badge/Zustand-5.0-0B0C0E?style=flat-square)
+<br />
 
-[**View the live site &rarr;**](https://floraohio.com)
+[![Visit floraohio.com](https://img.shields.io/badge/VISIT-floraohio.com-c97b2a?style=for-the-badge&labelColor=242820)](https://floraohio.com)
+
+<br />
+
+![Next.js 16](https://img.shields.io/badge/Next.js-16.2-242820?style=flat-square&logo=next.js&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19.2-242820?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-242820?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind 4](https://img.shields.io/badge/Tailwind-4.0-242820?style=flat-square&logo=tailwindcss&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-3.14-242820?style=flat-square&logo=greensock&logoColor=white)
+![Lenis](https://img.shields.io/badge/Lenis-1.3-242820?style=flat-square)
+![Sanity](https://img.shields.io/badge/Sanity-5.16-242820?style=flat-square&logo=sanity&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-5.0-242820?style=flat-square)
 
 </div>
+
+<br />
 
 ---
 
@@ -23,7 +35,7 @@ _Photography that's worth keeping._
 
 A photography studio portfolio built on patience and craft. Every frame is composed with intention, selected with care, and refined by hand. The site pairs a cinematic, GSAP-choreographed hero with an editorial gallery engine and a headless Sanity CMS that the studio can update without touching code.
 
----
+<br />
 
 ## Tech Stack
 
@@ -39,7 +51,7 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 | **Testing**   | Vitest (unit + component), Playwright (e2e + cookie consent)                       |
 | **Infra**     | Vercel, GitHub Actions CI, Vercel Analytics & Speed Insights                       |
 
----
+<br />
 
 ## Highlights
 
@@ -54,7 +66,7 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 - **Security-first headers** — strict Content-Security-Policy, HSTS with preload, `X-Frame-Options`, `Referrer-Policy`, and `Permissions-Policy` configured in `vercel.json`.
 - **Performance-tuned** — Lighthouse mobile scores: home 74 / 91 / 96 / 100, gallery 75 / 96 / 96 / 100, contact 75 / 100 / 96 / 100 (performance / a11y / best practices / SEO).
 
----
+<br />
 
 ## Architecture
 
@@ -65,7 +77,7 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 - **Validation** uses Zod for both the contact form and Sanity content schemas.
 - **SEO & metadata** are centralized: a single `baseMetadata` export and JSON-LD builders for `LocalBusiness`, `ImageGallery`, `Person`, and `BreadcrumbList`.
 
----
+<br />
 
 ## Design System
 
@@ -78,7 +90,7 @@ The _Darkroom Moss_ palette and every visual value are defined as CSS custom pro
 | **Motion**     | Durations from `100ms` instant to `3500ms` hero, with `ease-out-expo` for signature reveals    |
 | **Layout**     | 1440px max width, 80px header, 32px container padding                                          |
 
----
+<br />
 
 ## Pages
 
@@ -92,9 +104,19 @@ The _Darkroom Moss_ palette and every visual value are defined as CSS custom pro
 | Contact | `/contact`     | Portrait, Zod-validated form via Server Action, studio details            |
 | Studio  | `/studio`      | Embedded Sanity CMS for content editing                                   |
 
+<br />
+
 ---
 
 <div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flora-studio-wordmark-dark.svg">
+  <img alt="Flora Studio" src=".github/assets/flora-studio-wordmark-light.svg" width="200">
+</picture>
+
+<br />
+<br />
 
 [**floraohio.com &rarr;**](https://floraohio.com)
 
