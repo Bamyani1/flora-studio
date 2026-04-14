@@ -77,7 +77,7 @@ test("about, work, and process headings match the GitHub runtime", async ({ page
 
   expect(work.heroHeading).toContain("cormorant garamond");
 
-  await page.goto("/process", { waitUntil: "domcontentloaded" });
+  await page.goto("/process", { waitUntil: "networkidle" });
   const process = await page.evaluate(() => {
     const pick = (element: Element | null) =>
       element ? getComputedStyle(element as HTMLElement).fontFamily.toLowerCase() : null;

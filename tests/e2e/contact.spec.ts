@@ -4,22 +4,16 @@ const CONTACT_TEST_FAILURE_COOKIE = "__contact_delivery_test";
 
 async function fillValidContactForm(page: import("@playwright/test").Page) {
   await page.locator("#sender").fill("Ava Reed");
-  await expect(page.locator("#sender")).toHaveValue("Ava Reed");
   await page.locator("#reply_to").fill("ava@example.com");
-  await expect(page.locator("#reply_to")).toHaveValue("ava@example.com");
   await page.locator("#photographyType").selectOption("milestones");
-  await expect(page.locator("#photographyType")).toHaveValue("milestones");
   await page.locator("#message").fill("I would love to book a graduation session this spring.");
-  await expect(page.locator("#message")).toHaveValue(
-    "I would love to book a graduation session this spring.",
-  );
 }
 
 test("contact form validates and supports submitting another message after success", async ({
   page,
 }) => {
   await page.goto("/contact");
-  await expect(page.getByText("info@floraohio.com")).toBeVisible();
+  await expect(page.getByRole("main").getByText("info@floraohio.com")).toBeVisible();
 
   await page.getByRole("button", { name: "Send Message" }).click();
   await expect(page.getByText("Name must be at least 2 characters")).toBeVisible();

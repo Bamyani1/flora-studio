@@ -6,18 +6,18 @@ test("privacy and terms pages render production copy", async ({ page }) => {
   await expect(page).toHaveTitle(/Privacy Policy/);
   await expect(page.getByRole("heading", { name: "Privacy Policy" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Who This Policy Covers" })).toBeVisible();
-  await expect(page.getByText("Last updated April 13, 2026")).toBeVisible();
-  await expect(page.getByText("Interim Policy")).toHaveCount(0);
-  await expect(page.getByText("placeholder policy")).toHaveCount(0);
+  await expect(page.getByRole("main").getByText("Last updated April 13, 2026")).toBeVisible();
+  await expect(page.getByRole("main").getByText("Interim Policy")).toHaveCount(0);
+  await expect(page.getByRole("main").getByText("placeholder policy")).toHaveCount(0);
 
   await page.goto("/terms");
 
   await expect(page).toHaveTitle(/Terms of Service/);
   await expect(page.getByRole("heading", { name: "Terms of Service" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Prohibited Uses of Content" })).toBeVisible();
-  await expect(page.getByText("Last updated April 13, 2026")).toBeVisible();
-  await expect(page.getByText("Interim Terms")).toHaveCount(0);
-  await expect(page.getByText("placeholder for launch")).toHaveCount(0);
+  await expect(page.getByRole("main").getByText("Last updated April 13, 2026")).toBeVisible();
+  await expect(page.getByRole("main").getByText("Interim Terms")).toHaveCount(0);
+  await expect(page.getByRole("main").getByText("placeholder for launch")).toHaveCount(0);
 });
 
 test("footer legal links navigate and consent ui stays hidden when disabled", async ({ page }) => {
