@@ -53,6 +53,41 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 
 <br />
 
+## Getting Started
+
+### Prerequisites
+
+- **Node.js 24 LTS** &mdash; `.nvmrc` is provided; run `nvm use`
+- **npm 11** or newer
+
+### Local development
+
+```bash
+git clone https://github.com/Bamyani1/flora-studio.git
+cd flora-studio
+npm install
+cp .env.example .env.local     # fill in Sanity + SMTP credentials
+npm run dev                    # http://localhost:3000
+```
+
+The embedded Sanity Studio is available at [`/studio`](http://localhost:3000/studio) once the dev server is running.
+
+### Scripts
+
+| Command                | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `npm run dev`          | Start the Next.js dev server on port 3000                |
+| `npm run build`        | Production build                                         |
+| `npm run start`        | Serve the production build                               |
+| `npm run lint`         | ESLint (Next + TypeScript core web vitals ruleset)       |
+| `npm run type-check`   | `tsc --noEmit`                                           |
+| `npm run test:unit`    | Vitest unit + component tests                            |
+| `npm run test:e2e`     | Playwright e2e (auto-starts the dev server on port 3101) |
+| `npm run test:e2e:all` | Full e2e suite including the cookie-consent project      |
+| `npm run verify`       | Full gate &mdash; lint, type-check, unit, e2e, build     |
+
+<br />
+
 ## Highlights
 
 - **Cinematic hero** — a GSAP-choreographed sequence with SplitText line reveals, ScrollTrigger-driven parallax, and a custom image rotator that respects `prefers-reduced-motion`.
