@@ -16,7 +16,6 @@ import { join } from "path";
 
 const ROOT = import.meta.dirname ? join(import.meta.dirname, "..") : process.cwd();
 const SRC = join(ROOT, "pictures");
-const HERO_SRC = join(ROOT, "landing-photos");
 const DEST = join(ROOT, "public/images");
 const MAX_DIM = 3200;
 const QUALITY = 85;
@@ -110,11 +109,8 @@ async function main() {
   console.log(`${VALIDATE_ONLY ? "Validating" : "Processing"} images → /public/images/\n`);
 
   const hasSrc = recordValidation(SRC, existsSync(SRC));
-  if (!hasSrc && !existsSync(HERO_SRC)) {
-    throw new Error("No source directories found (pictures/ or landing-photos/).");
-  }
   if (!hasSrc) {
-    console.log("  ⚠ pictures/ not found — skipping album/page images\n");
+    throw new Error("No source directory found (pictures/).");
   }
 
   if (hasSrc) {
@@ -145,30 +141,6 @@ async function main() {
       "",
       "studio-hero.jpg",
     );
-  }
-
-  // ── Landing Hero Cycle ──
-  console.log("\nLanding Hero Cycle:");
-  if (recordValidation(HERO_SRC, existsSync(HERO_SRC))) {
-    for (const [srcFile, destFile] of [
-      ["DSC_0645.jpg", "hero-01.jpg"],
-      ["DSC01830_fullres.jpg", "hero-03.jpg"],
-      ["DSC02259-Enhanced-NR_fullres.jpg", "hero-04.jpg"],
-    ]) {
-      const srcPath = join(HERO_SRC, srcFile);
-      const destPath = join(DEST, "hero", destFile);
-      if (!recordValidation(srcPath, existsSync(srcPath))) continue;
-      if (VALIDATE_ONLY) continue;
-      try {
-        const dims = await processImage(srcPath, destPath, {
-          maxDim: HERO_MAX_DIM,
-          quality: HERO_QUALITY,
-        });
-        console.log(`  ✓ hero/${destFile} (${dims.width}×${dims.height})`);
-      } catch (err) {
-        console.error(`  ✗ ${destFile}: ${err.message}`);
-      }
-    }
   }
 
   if (hasSrc) {
