@@ -21,7 +21,7 @@ test("landing page typography matches the GitHub runtime", async ({ page }) => {
       heroCopy: pick(document.querySelector("main p.font-body")),
       editorialHeading: pick(document.querySelector("h2.font-headline")),
       exhibitionHeading: pick(document.querySelector("h3.font-headline")),
-      studioHeading: pick(document.querySelector("h4.font-headline")),
+      studioHeading: pick(Array.from(document.querySelectorAll("h2.font-headline")).pop() ?? null),
       navLabel: pick(document.querySelector("header nav a span")),
       headerCta: pick(
         Array.from(document.querySelectorAll("header a span")).find((element) =>

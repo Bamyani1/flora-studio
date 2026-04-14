@@ -37,10 +37,6 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
         objectPosition: "50% 48%",
       },
       {
-        ...localImageFromPublicPath("/images/hero/hero-02.jpg", "Flora Studio featured work"),
-        objectPosition: "50% 34%",
-      },
-      {
         ...localImageFromPublicPath(
           "/images/hero/hero-03.jpg",
           "Flora Studio editorial photograph",
@@ -89,7 +85,6 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
       "/images/game-day/hero.jpg",
       "Flora Studio game day action photograph",
     ),
-    ctaEyebrow: "Ready when you are",
     ctaLabel: "Inquire for 2026",
     cta: {
       label: "Inquire for 2026",

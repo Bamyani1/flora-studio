@@ -21,7 +21,6 @@ interface ProjectCardProps {
 
 export function ProjectCard({
   album,
-  index,
   large = false,
   eagerImage = false,
   gridSide,
@@ -45,7 +44,6 @@ export function ProjectCard({
           y: 0,
           duration: 0.6,
           ease: "power2.out",
-          delay: index * 0.08,
           scrollTrigger: {
             trigger: cardRef.current,
             start: "top 95%",
@@ -54,7 +52,7 @@ export function ProjectCard({
         },
       );
     },
-    { scope: cardRef, dependencies: [reduced, index] },
+    { scope: cardRef, dependencies: [reduced] },
   );
 
   return (
@@ -64,6 +62,7 @@ export function ProjectCard({
     >
       <div
         ref={cardRef}
+        data-animate
         className={`group cursor-pointer ${large ? "md:flex md:h-full md:flex-col" : ""}`}
       >
         <div

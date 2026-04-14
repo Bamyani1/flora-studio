@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
 import { buildGalleryLayout } from "@/lib/gallery-layout";
-import { generateLqipDataUrl } from "@/lib/lqip";
+import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
@@ -12,7 +12,7 @@ import { ProjectCard } from "@/components/sections/ProjectCard";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Browse the portfolio of Flora Studio — milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
+    "Browse the portfolio of Flora Studio. Milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
 };
 
 export default async function WorkPage() {
@@ -20,9 +20,12 @@ export default async function WorkPage() {
   const sections = buildGalleryLayout(albums);
 
   const heroSection = sections.find((s) => s.type === "hero");
-  const heroBlurDataURL =
-    heroSection?.type === "hero"
-      ? await generateLqipDataUrl(resolveImageUrl(heroSection.album.coverImage))
+  const heroImageUrl =
+    heroSection?.type === "hero" ? resolveImageUrl(heroSection.album.coverImage) : null;
+  const heroBlurDataURL = heroImageUrl?.startsWith("https://cdn.sanity.io")
+    ? await generateLqipDataUrl(heroImageUrl)
+    : heroImageUrl?.startsWith("/")
+      ? await generateLocalLqipDataUrl(heroImageUrl)
       : undefined;
 
   const SITE_URL = publicEnv.siteUrl;

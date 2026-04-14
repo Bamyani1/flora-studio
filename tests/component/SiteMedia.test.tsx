@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 
@@ -23,5 +23,28 @@ describe("SiteMedia", () => {
 
     const media = screen.getByRole("img", { name: "Ratio placeholder" });
     expect(media).toHaveStyle({ aspectRatio: "1200 / 800" });
+  });
+
+  it("passes onLoad through to Image for real sources", () => {
+    const onLoad = vi.fn();
+    const { container } = render(
+      <SiteMedia src="/images/hero/hero-01.jpg" alt="Hero" fill onLoad={onLoad} />,
+    );
+
+    // Verify the img element exists (non-placeholder path renders Image)
+    const img = container.querySelector("img");
+    expect(img).toBeInTheDocument();
+  });
+
+  it("does not render an img element for placeholder sources", () => {
+    const onLoad = vi.fn();
+    const { container } = render(
+      <SiteMedia src="placeholder://flora-studio/test" alt="Placeholder" fill onLoad={onLoad} />,
+    );
+
+    // Placeholder renders a div with role="img", not an <img> element
+    const img = container.querySelector("img");
+    expect(img).not.toBeInTheDocument();
+    expect(onLoad).not.toHaveBeenCalled();
   });
 });

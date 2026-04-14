@@ -113,7 +113,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       from: `Flora Studio <${contactEmail}>`,
       to: contactEmail,
       replyTo: parsed.data.email,
-      subject: `New inquiry from ${parsed.data.name} — ${parsed.data.photographyType}`,
+      subject: `New inquiry from ${parsed.data.name}: ${parsed.data.photographyType}`,
       text: buildNotificationEmailText(parsed.data),
     });
 
@@ -125,7 +125,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       await transporter.sendMail({
         from: `Flora Studio <${contactEmail}>`,
         to: parsed.data.email,
-        subject: "We received your message — Flora Studio",
+        subject: "We received your message | Flora Studio",
         text: buildAutoReplyText(parsed.data, contactEmail),
       });
     } catch (err) {

@@ -5,7 +5,7 @@ export const CATEGORY_META: Record<string, { label: string; description: string 
   },
   gatherings: {
     label: "Gatherings",
-    description: "The energy of people coming together — game days, campus nights, celebrations.",
+    description: "The energy of people coming together. Game days, campus nights, celebrations.",
   },
   motion: {
     label: "Motion",

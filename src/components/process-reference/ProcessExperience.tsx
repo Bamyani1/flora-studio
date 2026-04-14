@@ -4,7 +4,7 @@ import styles from "./process-reference.module.css";
 import type { ProcessImage, ProcessStep } from "./types";
 import type { SocialLink } from "@/types/content";
 import { ProcessContact } from "./ProcessContact";
-import { ProcessFooter } from "./ProcessFooter";
+import { Footer } from "@/components/layout/Footer";
 import { ProcessHero } from "./ProcessHero";
 import { ProcessPageTransition } from "./ProcessPageTransition";
 import { ProcessTimeline } from "./ProcessTimeline";
@@ -38,18 +38,14 @@ export function ProcessExperience({
     <main id="main-content" className={`${styles.page} min-h-screen`}>
       <ProcessPageTransition>
         <div className="min-h-screen bg-[var(--process-surface)] text-[var(--process-on-surface)]">
-          <ProcessHero
-            image={heroImage}
-            titleLine1={heroTitleLine1}
-            titleLine2={heroTitleLine2}
-          />
+          <ProcessHero image={heroImage} titleLine1={heroTitleLine1} titleLine2={heroTitleLine2} />
           <ProcessTimeline title={introTitle} description={introDescription} steps={steps} />
           <ProcessContact
             heading={contactHeading}
             buttonHref={contactButtonHref}
             buttonLabel={contactButtonLabel}
           />
-          <ProcessFooter socialLinks={socialLinks} />
+          <Footer socialLinks={socialLinks} />
         </div>
       </ProcessPageTransition>
     </main>

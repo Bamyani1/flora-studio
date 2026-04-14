@@ -8,7 +8,7 @@ import { getProcessPageContent, getSiteSettings } from "@/lib/site-content";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "From conversation to delivery — how we work at Flora Studio. Four phases, one standard: nothing leaves until it's worth keeping.",
+    "From conversation to delivery. How we work at Flora Studio. Four phases, one standard: nothing leaves until it's worth keeping.",
 };
 
 export default async function ProcessPage() {

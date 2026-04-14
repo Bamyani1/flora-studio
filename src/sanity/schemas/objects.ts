@@ -42,9 +42,7 @@ export const socialLink = defineType({
       title: "Icon",
       type: "string",
       options: {
-        list: [
-          { title: "Instagram", value: "instagram" },
-        ],
+        list: [{ title: "Instagram", value: "instagram" }],
       },
       validation: (rule) => rule.required(),
     }),
@@ -78,6 +76,12 @@ export const imageWithAlt = defineType({
       name: "caption",
       title: "Caption",
       type: "string",
+    }),
+    defineField({
+      name: "objectPosition",
+      title: "Object Position",
+      type: "string",
+      description: "CSS object-position value (e.g. '50% 48%')",
     }),
   ],
 });

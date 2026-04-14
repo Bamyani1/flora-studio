@@ -57,7 +57,6 @@ export interface HomeExhibitionContent {
 
 export interface HomeStudioContent {
   image: SanityImage;
-  ctaEyebrow: string;
   ctaLabel: string;
   cta: LinkField;
 }
