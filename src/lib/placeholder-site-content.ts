@@ -17,11 +17,11 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
     {
       label: "Instagram",
       platform: "Instagram",
-      url: "https://instagram.com/florastudio",
+      url: "https://www.instagram.com/byflorastudio/",
       icon: "instagram",
     },
   ],
-  sameAs: ["https://instagram.com/florastudio"],
+  sameAs: ["https://www.instagram.com/byflorastudio/"],
 };
 
 export const PLACEHOLDER_HOME_PAGE: HomePageContent = {

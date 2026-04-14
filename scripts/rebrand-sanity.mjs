@@ -6,6 +6,8 @@ const REPLACEMENTS = [
   ["STUDIO BAHAR", "FLORA STUDIO"],
   ["BAHAR STUDIO", "FLORA STUDIO"],
   ["studiobahar.com", "floraohio.com"],
+  ["https://instagram.com/florastudio/", "https://www.instagram.com/byflorastudio/"],
+  ["https://instagram.com/florastudio", "https://www.instagram.com/byflorastudio/"],
   ["instagram.com/studiobahar", "instagram.com/florastudio"],
   ["bahar-studio", "flora-studio"],
 ];
