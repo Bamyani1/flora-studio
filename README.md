@@ -42,8 +42,8 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 ## Getting Started
 
 ```bash
-git clone https://github.com/Bamyani1/flora-studio.git
-cd flora-studio
+git clone https://github.com/Bamyani1/studiobahar.com.git
+cd studiobahar.com
 npm install
 ```
 

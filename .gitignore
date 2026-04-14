@@ -11,7 +11,6 @@
 /.next/
 /.next-playwright/
 /.next-playwright-consent/
-/.next-local-compare/
 /out/
 
 # production
@@ -41,40 +40,15 @@ next-env.d.ts
 # image optimization cache
 scripts/.image-cache.json
 
-# Non-source asset/work directories
-/pictures/
-/audit/
-/contact/
-/process/
-
-# Experimental / prototype directories
-/newest-landing/
-/new-landing/
-/new-contact-form/
-/landing-hero -section/
-/gallery/
-/color-variations/
-
-# Root-level design screenshots
+# Root-level design screenshots / working files
 /*.png
 /*.jpg
+/*.html
 
-# Playwright MCP
+# Playwright / test outputs
 .playwright-mcp/
 /playwright-report/
 /test-results/
 
 # Lighthouse
 /lighthouse-reports/
-
-# Local debug / scratch worktrees
-/.ref-runtime/
-
-# Root-level exports
-/*.html
-
-# Editor config
-
-
-
-
