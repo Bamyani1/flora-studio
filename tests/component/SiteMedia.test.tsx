@@ -4,7 +4,7 @@ import { SiteMedia } from "@/components/ui/SiteMedia";
 
 describe("SiteMedia", () => {
   it("renders the shared placeholder marker with accessible alt text", () => {
-    render(<SiteMedia src="placeholder://studio-bahar/test" alt="Example placeholder" fill />);
+    render(<SiteMedia src="placeholder://flora-studio/test" alt="Example placeholder" fill />);
 
     const media = screen.getByRole("img", { name: "Example placeholder" });
     expect(media).toHaveAttribute("data-media-placeholder", "true");
@@ -14,7 +14,7 @@ describe("SiteMedia", () => {
   it("preserves an intrinsic ratio when width and height are provided", () => {
     render(
       <SiteMedia
-        src="placeholder://studio-bahar/test"
+        src="placeholder://flora-studio/test"
         alt="Ratio placeholder"
         width={1200}
         height={800}
@@ -39,7 +39,7 @@ describe("SiteMedia", () => {
   it("does not render an img element for placeholder sources", () => {
     const onLoad = vi.fn();
     const { container } = render(
-      <SiteMedia src="placeholder://studio-bahar/test" alt="Placeholder" fill onLoad={onLoad} />,
+      <SiteMedia src="placeholder://flora-studio/test" alt="Placeholder" fill onLoad={onLoad} />,
     );
 
     // Placeholder renders a div with role="img", not an <img> element

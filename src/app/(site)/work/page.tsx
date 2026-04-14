@@ -12,7 +12,7 @@ import { ProjectCard } from "@/components/sections/ProjectCard";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Browse the portfolio of Studio Bahar. Milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
+    "Browse the portfolio of Flora Studio. Milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
 };
 
 export default async function WorkPage() {

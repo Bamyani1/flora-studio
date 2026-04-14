@@ -1,6 +1,6 @@
 <div align="center">
 
-# STUDIO BAHAR
+# FLORA STUDIO
 
 _Photography that's worth keeping._
 
@@ -21,7 +21,7 @@ _Photography that's worth keeping._
 
 A photography studio portfolio built on patience and craft. Every frame is composed with intention, selected with care, and refined by hand.
 
-[View the live site &rarr;](https://studiobahar.com)
+[View the live site &rarr;](https://floraohio.com)
 
 ---
 
@@ -42,8 +42,8 @@ A photography studio portfolio built on patience and craft. Every frame is compo
 ## Getting Started
 
 ```bash
-git clone https://github.com/Bamyani1/studio-bahar.git
-cd studio-bahar
+git clone https://github.com/Bamyani1/flora-studio.git
+cd flora-studio
 npm install
 ```
 
@@ -191,4 +191,4 @@ npm run verify
 
 ---
 
-&copy; 2026 Studio Bahar
+&copy; 2026 Flora Studio

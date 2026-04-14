@@ -49,7 +49,7 @@ describe("site content loaders", () => {
     const { getSiteSettings } = await import("@/lib/site-content");
 
     const settings = await getSiteSettings();
-    expect(settings.studioName).toBe("Studio Bahar");
+    expect(settings.studioName).toBe("Flora Studio");
   });
 
   it("returns deterministic fixture content in e2e mode", async () => {

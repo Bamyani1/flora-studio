@@ -9,19 +9,19 @@ import type {
 
 export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
   _id: "siteSettings",
-  studioName: "Studio Bahar",
+  studioName: "Flora Studio",
   location: "Dayton, Ohio",
-  email: "info@studiobahar.com",
+  email: "info@floraohio.com",
   phone: "(937)-7977381",
   socialLinks: [
     {
       label: "Instagram",
       platform: "Instagram",
-      url: "https://instagram.com/studiobahar",
+      url: "https://instagram.com/florastudio",
       icon: "instagram",
     },
   ],
-  sameAs: ["https://instagram.com/studiobahar"],
+  sameAs: ["https://instagram.com/florastudio"],
 };
 
 export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
@@ -33,27 +33,27 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     description: "Photography with intention.",
     mediaCycle: [
       {
-        ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Studio Bahar hero photograph"),
+        ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Flora Studio hero photograph"),
         objectPosition: "50% 48%",
       },
       {
         ...localImageFromPublicPath(
           "/images/hero/hero-03.jpg",
-          "Studio Bahar editorial photograph",
+          "Flora Studio editorial photograph",
         ),
         objectPosition: "50% 44%",
       },
       {
         ...localImageFromPublicPath(
           "/images/hero/hero-04.jpg",
-          "Studio Bahar portfolio photograph",
+          "Flora Studio portfolio photograph",
         ),
         objectPosition: "50% 30%",
       },
     ],
   },
   editorial: {
-    image: localImageFromPublicPath("/images/studio-hero.jpg", "Studio Bahar featured work"),
+    image: localImageFromPublicPath("/images/studio-hero.jpg", "Flora Studio featured work"),
     titleLine1: "We pay attention",
     titleLine2Lead: "to",
     titleLine2Muted: "the",
@@ -77,13 +77,13 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     },
     image: localImageFromPublicPath(
       "/images/editorial-hero.jpg",
-      "Studio Bahar editorial photograph",
+      "Flora Studio editorial photograph",
     ),
   },
   studio: {
     image: localImageFromPublicPath(
       "/images/game-day/hero.jpg",
-      "Studio Bahar game day action photograph",
+      "Flora Studio game day action photograph",
     ),
     ctaLabel: "Inquire for 2026",
     cta: {
@@ -96,7 +96,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
 export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
   _id: "aboutPage",
   hero: {
-    eyebrow: "Studio Bahar",
+    eyebrow: "Flora Studio",
     titleLine1: "Who We",
     titleLine2: "Are.",
     description:
@@ -155,7 +155,7 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
           "Each image is individually graded. We build a visual language specific to your vision.",
       },
     ],
-    image: localImageFromPublicPath("/images/about-process.jpg", "Studio Bahar creative process"),
+    image: localImageFromPublicPath("/images/about-process.jpg", "Flora Studio creative process"),
   },
   cta: {
     eyebrow: "What's next",
@@ -173,7 +173,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
   hero: {
     titleLine1: "Our Process:",
     titleLine2: "Frame by Frame",
-    image: localImageFromPublicPath("/images/process/hero.jpg", "Studio Bahar process hero"),
+    image: localImageFromPublicPath("/images/process/hero.jpg", "Flora Studio process hero"),
   },
   intro: {
     title: "The Process",

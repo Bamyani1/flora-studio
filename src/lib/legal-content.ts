@@ -5,14 +5,14 @@ export interface LegalSection {
   bullets?: string[];
 }
 
-export const LEGAL_LAST_UPDATED = "March 30, 2026";
+export const LEGAL_LAST_UPDATED = "April 13, 2026";
 
 export const PRIVACY_SECTIONS: LegalSection[] = [
   {
     id: "who-this-policy-covers",
     title: "Who This Policy Covers",
     paragraphs: [
-      "This Privacy Policy applies to people who visit this website, submit an inquiry, communicate with Studio Bahar, or book photography services through Studio Bahar. It describes how Studio Bahar collects, uses, stores, and discloses personal information in connection with the website and the studio's manual business operations.",
+      "This Privacy Policy applies to people who visit this website, submit an inquiry, communicate with Flora Studio, or book photography services through Flora Studio. It describes how Flora Studio collects, uses, stores, and discloses personal information in connection with the website and the studio's manual business operations.",
       "Some project-specific details may also be governed by separate contracts, releases, written communications, or other client-facing documents. When those documents apply, they work alongside this Privacy Policy rather than replacing it entirely.",
     ],
   },
@@ -20,8 +20,8 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "information-we-collect",
     title: "Information We Collect",
     paragraphs: [
-      "Studio Bahar keeps data collection deliberately limited. Through the website, Studio Bahar currently collects only the information a visitor chooses to submit through the contact form, along with a hidden anti-spam field used to help detect automated abuse.",
-      "Outside the website, Studio Bahar may also maintain manual business records needed to communicate with clients and run photography projects.",
+      "Flora Studio keeps data collection deliberately limited. Through the website, Flora Studio currently collects only the information a visitor chooses to submit through the contact form, along with a hidden anti-spam field used to help detect automated abuse.",
+      "Outside the website, Flora Studio may also maintain manual business records needed to communicate with clients and run photography projects.",
     ],
     bullets: [
       "Website inquiry details such as name, email address, photography type, and message contents.",
@@ -34,7 +34,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "how-we-use-information",
     title: "How We Use Information",
     paragraphs: [
-      "Studio Bahar uses personal information to respond to inquiries, evaluate availability, discuss requested services, prepare and perform booked photography work, deliver finished work, maintain project and business records, and comply with legal obligations.",
+      "Flora Studio uses personal information to respond to inquiries, evaluate availability, discuss requested services, prepare and perform booked photography work, deliver finished work, maintain project and business records, and comply with legal obligations.",
       "Information may also be used to help protect the website, email workflows, and inquiry process against spam, fraud, misuse, or other abusive activity.",
     ],
   },
@@ -42,15 +42,15 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "when-we-share-information",
     title: "When We Share Information",
     paragraphs: [
-      "Studio Bahar does not sell personal information and does not share personal information for cross-context behavioral advertising. Studio Bahar does not currently use advertising pixels, data-broker integrations, or similar marketing-tracking tools on this site.",
-      "Studio Bahar may disclose personal information to service providers that support website hosting, website content infrastructure, email delivery, or storage and sync operations, and may also disclose information when reasonably necessary to comply with law, enforce rights, or protect people, property, or the business.",
+      "Flora Studio does not sell personal information and does not share personal information for cross-context behavioral advertising. Flora Studio does not currently use advertising pixels, data-broker integrations, or similar marketing-tracking tools on this site.",
+      "Flora Studio may disclose personal information to service providers that support website hosting, website content infrastructure, email delivery, or storage and sync operations, and may also disclose information when reasonably necessary to comply with law, enforce rights, or protect people, property, or the business.",
     ],
   },
   {
     id: "service-providers-and-infrastructure",
     title: "Service Providers and Infrastructure",
     paragraphs: [
-      "Studio Bahar currently relies on a small set of third-party providers to operate the website and core communications. These providers support infrastructure and operations, but they do not all handle the same types of data.",
+      "Flora Studio currently relies on a small set of third-party providers to operate the website and core communications. These providers support infrastructure and operations, but they do not all handle the same types of data.",
     ],
     bullets: [
       "Apple/iCloud Mail is used for inquiry delivery, mailbox operations, and related email communications.",
@@ -63,15 +63,15 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "client-work-portfolio-use-and-releases",
     title: "Client Work, Portfolio Use, and Releases",
     paragraphs: [
-      "Studio Bahar's services may involve adults, families, or minors who are booked through a parent, guardian, or other adult. The existence of a photography project may therefore involve personal information and image data connected to more than one person.",
-      "Public portfolio, social, or editorial use of client images occurs only when Studio Bahar has permission, a release, contractual authorization, or another appropriate legal basis. Public display rights for client work are not assumed by default.",
+      "Flora Studio's services may involve adults, families, or minors who are booked through a parent, guardian, or other adult. The existence of a photography project may therefore involve personal information and image data connected to more than one person.",
+      "Public portfolio, social, or editorial use of client images occurs only when Flora Studio has permission, a release, contractual authorization, or another appropriate legal basis. Public display rights for client work are not assumed by default.",
     ],
   },
   {
     id: "retention",
     title: "Retention",
     paragraphs: [
-      "Studio Bahar retains information only for as long as reasonably necessary for the purposes described in this Privacy Policy, unless a longer period is required or permitted by law, dispute-resolution needs, or legitimate business recordkeeping.",
+      "Flora Studio retains information only for as long as reasonably necessary for the purposes described in this Privacy Policy, unless a longer period is required or permitted by law, dispute-resolution needs, or legitimate business recordkeeping.",
     ],
     bullets: [
       "Unbooked inquiries may be retained for up to 24 months after the last meaningful interaction, unless longer retention is needed for legal, dispute, or recordkeeping reasons.",
@@ -83,8 +83,8 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "cookies-and-similar-technologies",
     title: "Cookies and Similar Technologies",
     paragraphs: [
-      "At the time of this policy, Studio Bahar uses only essential or operational technologies needed to run the site and support the contact workflow. Studio Bahar does not currently use analytics cookies, advertising pixels, session-replay tools, or other non-essential tracking technologies on this website.",
-      "If Studio Bahar adds non-essential analytics, advertising, or similar tools in the future, this Privacy Policy and the site's consent choices will be updated before or when those tools are activated.",
+      "At the time of this policy, Flora Studio uses only essential or operational technologies needed to run the site and support the contact workflow. Flora Studio does not currently use analytics cookies, advertising pixels, session-replay tools, or other non-essential tracking technologies on this website.",
+      "If Flora Studio adds non-essential analytics, advertising, or similar tools in the future, this Privacy Policy and the site's consent choices will be updated before or when those tools are activated.",
     ],
   },
   {
@@ -92,31 +92,31 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     title: "U.S. Privacy Rights",
     paragraphs: [
       "Depending on where a person lives and the context of the relationship, U.S. privacy laws may provide rights such as the right to know what information is collected, request access, request correction, request deletion, request portability where applicable, opt out of certain sale, sharing, or targeted-advertising practices where applicable, receive equal service without unlawful discrimination, and appeal a denial where applicable.",
-      "California residents may have rights under the California Consumer Privacy Act, as amended by the California Privacy Rights Act, depending on the circumstances. Studio Bahar is based in Ohio, and as of March 30, 2026, Ohio does not currently have a comparable omnibus consumer privacy law. Studio Bahar nevertheless offers a single email intake path for privacy requests and will review requests in light of applicable law.",
-      "If Studio Bahar introduces future sale, sharing, or targeted-advertising activities that trigger opt-out requirements, Studio Bahar will honor legally required preference signals, including Global Privacy Control where applicable.",
+      "California residents may have rights under the California Consumer Privacy Act, as amended by the California Privacy Rights Act, depending on the circumstances. Flora Studio is based in Ohio, and as of March 30, 2026, Ohio does not currently have a comparable omnibus consumer privacy law. Flora Studio nevertheless offers a single email intake path for privacy requests and will review requests in light of applicable law.",
+      "If Flora Studio introduces future sale, sharing, or targeted-advertising activities that trigger opt-out requirements, Flora Studio will honor legally required preference signals, including Global Privacy Control where applicable.",
     ],
   },
   {
     id: "childrens-privacy",
     title: "Children's Privacy",
     paragraphs: [
-      "This website is not directed to children under 13, and Studio Bahar does not knowingly collect personal information from children through the website. Parents or guardians who believe a child has submitted personal information through the website may contact info@studiobahar.com to request review and deletion where appropriate.",
-      "This section applies to website use. It does not prevent Studio Bahar from providing adult-booked photography services that may involve minors when handled through a parent, guardian, or other authorized adult.",
+      "This website is not directed to children under 13, and Flora Studio does not knowingly collect personal information from children through the website. Parents or guardians who believe a child has submitted personal information through the website may contact info@floraohio.com to request review and deletion where appropriate.",
+      "This section applies to website use. It does not prevent Flora Studio from providing adult-booked photography services that may involve minors when handled through a parent, guardian, or other authorized adult.",
     ],
   },
   {
     id: "international-visitors",
     title: "International Visitors",
     paragraphs: [
-      "Studio Bahar operates in the United States. If you access the website or communicate with Studio Bahar from outside the United States, your information may be processed, transferred, and stored in the United States or in systems that support U.S.-based business operations.",
+      "Flora Studio operates in the United States. If you access the website or communicate with Flora Studio from outside the United States, your information may be processed, transferred, and stored in the United States or in systems that support U.S.-based business operations.",
     ],
   },
   {
     id: "changes-and-contact",
     title: "Changes and Contact",
     paragraphs: [
-      "Studio Bahar may update this Privacy Policy from time to time to reflect changes in law, business practices, or the website. When Studio Bahar updates the policy, the revised version will be posted on this page with a new last-updated date.",
-      "Privacy requests, questions, and appeals may be sent to info@studiobahar.com.",
+      "Flora Studio may update this Privacy Policy from time to time to reflect changes in law, business practices, or the website. When Flora Studio updates the policy, the revised version will be posted on this page with a new last-updated date.",
+      "Privacy requests, questions, and appeals may be sent to info@floraohio.com.",
     ],
   },
 ];
@@ -126,7 +126,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "use-of-the-site",
     title: "Use of the Site",
     paragraphs: [
-      "This website is provided for personal, informational, and inquiry purposes. You may browse the site, review portfolio materials, and contact Studio Bahar about potential services, subject to these Terms of Service and applicable law.",
+      "This website is provided for personal, informational, and inquiry purposes. You may browse the site, review portfolio materials, and contact Flora Studio about potential services, subject to these Terms of Service and applicable law.",
       "You may not use the site in a way that is unlawful, abusive, disruptive, fraudulent, security-invasive, or intended to interfere with the website, its infrastructure, or other users' ability to access it.",
     ],
   },
@@ -134,14 +134,14 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "ownership-of-content",
     title: "Ownership of Content",
     paragraphs: [
-      "Unless otherwise stated, all photography, imagery, text, branding, layout, design elements, and other content presented on this website are owned by or licensed to Studio Bahar and are protected by copyright, trademark, and other applicable laws.",
+      "Unless otherwise stated, all photography, imagery, text, branding, layout, design elements, and other content presented on this website are owned by or licensed to Flora Studio and are protected by copyright, trademark, and other applicable laws.",
     ],
   },
   {
     id: "prohibited-uses-of-content",
     title: "Prohibited Uses of Content",
     paragraphs: [
-      "Without prior written permission from Studio Bahar, you may not copy, reproduce, republish, distribute, commercially exploit, or create derivative works from the website or its contents.",
+      "Without prior written permission from Flora Studio, you may not copy, reproduce, republish, distribute, commercially exploit, or create derivative works from the website or its contents.",
     ],
     bullets: [
       "Scrape or systematically harvest site content or imagery.",
@@ -154,14 +154,14 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "inquiries-are-not-contracts",
     title: "Inquiries Are Not Contracts",
     paragraphs: [
-      "Sending an inquiry, email, or message to Studio Bahar does not create a booking, contract, partnership, agency relationship, or obligation to provide services. Availability, pricing, deliverables, timelines, and service commitments are not final until the parties enter into a separate written agreement.",
+      "Sending an inquiry, email, or message to Flora Studio does not create a booking, contract, partnership, agency relationship, or obligation to provide services. Availability, pricing, deliverables, timelines, and service commitments are not final until the parties enter into a separate written agreement.",
     ],
   },
   {
     id: "client-work-and-public-display",
     title: "Client Work and Public Display",
     paragraphs: [
-      "Any client-service terms, deliverables, usage rights, releases, cancellation terms, and related obligations are governed by separate written agreements between Studio Bahar and the client. These site terms do not replace or override those agreements.",
+      "Any client-service terms, deliverables, usage rights, releases, cancellation terms, and related obligations are governed by separate written agreements between Flora Studio and the client. These site terms do not replace or override those agreements.",
       "Any public display or portfolio use of client work depends on permission, release, contractual authorization, or another appropriate legal basis.",
     ],
   },
@@ -169,14 +169,14 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "third-party-links",
     title: "Third-Party Links",
     paragraphs: [
-      "This website may link to third-party platforms or websites for convenience, including social platforms or portfolio networks. Studio Bahar does not control those third-party services, and their availability, terms, and privacy practices are governed by their own policies.",
+      "This website may link to third-party platforms or websites for convenience, including social platforms or portfolio networks. Flora Studio does not control those third-party services, and their availability, terms, and privacy practices are governed by their own policies.",
     ],
   },
   {
     id: "site-availability-and-accuracy",
     title: "Site Availability and Accuracy",
     paragraphs: [
-      "Studio Bahar may update, revise, suspend, or remove website content at any time without notice. While Studio Bahar aims to present accurate and current information, the site may include errors, omissions, outdated material, or temporary inaccuracies.",
+      "Flora Studio may update, revise, suspend, or remove website content at any time without notice. While Flora Studio aims to present accurate and current information, the site may include errors, omissions, outdated material, or temporary inaccuracies.",
     ],
   },
   {
@@ -190,7 +190,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "limitation-of-liability",
     title: "Limitation of Liability",
     paragraphs: [
-      "To the fullest extent permitted by law, Studio Bahar will not be liable for any indirect, incidental, special, consequential, exemplary, or punitive damages, or for any loss of data, profits, goodwill, business opportunity, or other intangible losses arising out of or relating to your use of, inability to use, or reliance on this website.",
+      "To the fullest extent permitted by law, Flora Studio will not be liable for any indirect, incidental, special, consequential, exemplary, or punitive damages, or for any loss of data, profits, goodwill, business opportunity, or other intangible losses arising out of or relating to your use of, inability to use, or reliance on this website.",
       "These site terms address website use only and do not set the liability framework for any separate client-services agreement.",
     ],
   },
@@ -205,7 +205,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
     id: "changes-to-these-terms",
     title: "Changes to These Terms",
     paragraphs: [
-      "Studio Bahar may revise these Terms of Service from time to time. Updated terms become effective when posted on this page with a revised last-updated date.",
+      "Flora Studio may revise these Terms of Service from time to time. Updated terms become effective when posted on this page with a revised last-updated date.",
     ],
   },
 ];

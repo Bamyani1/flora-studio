@@ -33,7 +33,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: description ?? `${title}. Photography by Studio Bahar, Dayton, Ohio.`,
+    description: description ?? `${title}. Photography by Flora Studio, Dayton, Ohio.`,
   };
 }
 

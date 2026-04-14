@@ -19,7 +19,7 @@ test("contact form validates and supports submitting another message after succe
   page,
 }) => {
   await page.goto("/contact");
-  await expect(page.getByText("info@studiobahar.com")).toBeVisible();
+  await expect(page.getByText("info@floraohio.com")).toBeVisible();
 
   await page.getByRole("button", { name: "Send Message" }).click();
   await expect(page.getByText("Name must be at least 2 characters")).toBeVisible();
@@ -57,7 +57,7 @@ test("contact form surfaces a server-side delivery error", async ({ page }) => {
       url: "http://127.0.0.1:3101",
     },
   ]);
-  await page.goto("/contact");
+  await page.goto("/contact", { waitUntil: "networkidle" });
   await expect(page.getByRole("button", { name: "Send Message" })).toBeVisible();
   await fillValidContactForm(page);
 

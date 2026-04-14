@@ -8,15 +8,13 @@ test("banner persists until a choice is made and cancel restores it", async ({ p
 
   await page.getByRole("button", { name: "Customize" }).click();
 
-  await expect(
-    page.getByRole("dialog", { name: "Choose non-essential categories" }),
-  ).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Choose non-essential categories" })).toBeVisible();
 
   await page.keyboard.press("Escape");
 
-  await expect(
-    page.getByRole("dialog", { name: "Choose non-essential categories" }),
-  ).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Choose non-essential categories" })).toHaveCount(
+    0,
+  );
   await expect(page.getByRole("region", { name: "Cookie preferences banner" })).toBeVisible();
 });
 
@@ -26,9 +24,7 @@ test("saving consent stores the choice and exposes the preferences trigger", asy
   await expect(page.getByRole("region", { name: "Cookie preferences banner" })).toBeVisible();
   await page.getByRole("button", { name: "Customize" }).click();
 
-  await expect(
-    page.getByRole("dialog", { name: "Choose non-essential categories" }),
-  ).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Choose non-essential categories" })).toBeVisible();
 
   await page.getByRole("checkbox", { name: "Analytics consent" }).check();
   await page.getByRole("button", { name: "Save choices" }).click();
@@ -37,7 +33,7 @@ test("saving consent stores the choice and exposes the preferences trigger", asy
   await expect(page.getByRole("region", { name: "Cookie preferences banner" })).toHaveCount(0);
 
   const cookies = await page.context().cookies();
-  const consentCookie = cookies.find((cookie) => cookie.name === "bahar_consent");
+  const consentCookie = cookies.find((cookie) => cookie.name === "flora_consent");
   expect(consentCookie).toBeDefined();
 
   await page.reload();

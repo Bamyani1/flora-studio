@@ -11,11 +11,11 @@ import { HEADER_NAV_ITEMS, isNavItemActive } from "@/lib/navigation";
 import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
-import { StudioBaharLogo, type StudioBaharLogoHandle } from "@/components/ui/StudioBaharLogo";
+import { FloraStudioLogo, type FloraStudioLogoHandle } from "@/components/ui/FloraStudioLogo";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<StudioBaharLogoHandle>(null);
+  const logoRef = useRef<FloraStudioLogoHandle>(null);
   const branchRef = useRef<SVGSVGElement>(null);
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
@@ -154,10 +154,10 @@ export function Header() {
         <div className="w-1/2 flex flex-col items-start md:w-1/3 md:items-center relative">
           <TransitionLink
             href="/"
-            aria-label="Studio Bahar"
+            aria-label="Flora Studio"
             className="relative flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-500"
           >
-            <StudioBaharLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
+            <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
           </TransitionLink>
           <svg
             ref={branchRef}

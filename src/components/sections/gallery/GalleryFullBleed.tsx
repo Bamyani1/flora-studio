@@ -160,7 +160,7 @@ export function GalleryFullBleed({
       {/* Vertical text branding */}
       <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden lg:block">
         <span className="font-label text-[8px] tracking-[1em] text-[var(--color-on-surface-variant)]/30 uppercase [writing-mode:vertical-lr] rotate-180">
-          Studio Bahar {album.year ?? ""}
+          Flora Studio {album.year ?? ""}
         </span>
       </div>
     </section>

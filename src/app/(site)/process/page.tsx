@@ -8,7 +8,7 @@ import { getProcessPageContent, getSiteSettings } from "@/lib/site-content";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "From conversation to delivery. How we work at Studio Bahar. Four phases, one standard: nothing leaves until it's worth keeping.",
+    "From conversation to delivery. How we work at Flora Studio. Four phases, one standard: nothing leaves until it's worth keeping.",
 };
 
 export default async function ProcessPage() {
@@ -32,7 +32,7 @@ export default async function ProcessPage() {
       <ProcessExperience
         heroImage={{
           src: resolveImageUrl(processPage.hero.image) ?? "",
-          alt: processPage.hero.image.alt ?? "Studio Bahar process hero",
+          alt: processPage.hero.image.alt ?? "Flora Studio process hero",
         }}
         heroTitleLine1={processPage.hero.titleLine1}
         heroTitleLine2={processPage.hero.titleLine2}

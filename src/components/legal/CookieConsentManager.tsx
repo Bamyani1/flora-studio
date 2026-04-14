@@ -177,7 +177,7 @@ export function CookieConsentManager() {
                 Cookie Preferences
               </p>
               <p className="text-sm leading-relaxed text-muted md:text-base">
-                Essential site technologies are always enabled. If Studio Bahar activates future
+                Essential site technologies are always enabled. If Flora Studio activates future
                 analytics or marketing tools, you can manage those categories here before they are
                 used.
               </p>
@@ -265,7 +265,7 @@ export function CookieConsentManager() {
                       Analytics
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-muted">
-                      Controls future site-measurement tools if Studio Bahar adds them later.
+                      Controls future site-measurement tools if Flora Studio adds them later.
                     </p>
                   </div>
                   <input
@@ -290,7 +290,7 @@ export function CookieConsentManager() {
                       Marketing
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-muted">
-                      Controls future advertising or remarketing tools if Studio Bahar adds them
+                      Controls future advertising or remarketing tools if Flora Studio adds them
                       later.
                     </p>
                   </div>

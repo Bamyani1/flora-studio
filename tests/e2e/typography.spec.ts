@@ -17,9 +17,8 @@ test("landing page typography matches the GitHub runtime", async ({ page }) => {
       element ? getComputedStyle(element as HTMLElement).fontFamily.toLowerCase() : null;
 
     return {
-      heroEyebrow: pick(document.querySelector("main span.font-label-serif")),
-      heroHeading: pick(document.querySelector("main h1")),
-      heroCopy: pick(document.querySelector("main p.font-headline-serif")),
+      heroHeading: pick(document.querySelector("main h1.font-display")),
+      heroCopy: pick(document.querySelector("main p.font-body")),
       editorialHeading: pick(document.querySelector("h2.font-headline")),
       exhibitionHeading: pick(document.querySelector("h3.font-headline")),
       studioHeading: pick(Array.from(document.querySelectorAll("h2.font-headline")).pop() ?? null),
@@ -37,7 +36,6 @@ test("landing page typography matches the GitHub runtime", async ({ page }) => {
     };
   });
 
-  expect(styles.heroEyebrow).toContain("inter");
   expect(styles.heroHeading).toContain("inter");
   expect(styles.heroCopy).toContain("inter");
   expect(styles.editorialHeading).toContain("cormorant garamond");

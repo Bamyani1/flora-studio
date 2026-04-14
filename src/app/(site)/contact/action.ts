@@ -27,14 +27,14 @@ function buildAutoReplyText(data: ContactFormData, contactEmail: string) {
   return [
     `Hi ${data.name},`,
     "",
-    "Thanks for reaching out to Studio Bahar.",
+    "Thanks for reaching out to Flora Studio.",
     "We received your message and will follow up within 24 hours.",
     "",
     `Inquiry type: ${data.photographyType}`,
     "",
     "If you need to add anything else before then, just reply to this email.",
     "",
-    "Studio Bahar",
+    "Flora Studio",
     contactEmail,
   ].join("\n");
 }
@@ -110,7 +110,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
     });
 
     await transporter.sendMail({
-      from: `Studio Bahar <${contactEmail}>`,
+      from: `Flora Studio <${contactEmail}>`,
       to: contactEmail,
       replyTo: parsed.data.email,
       subject: `New inquiry from ${parsed.data.name}: ${parsed.data.photographyType}`,
@@ -123,9 +123,9 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       }
 
       await transporter.sendMail({
-        from: `Studio Bahar <${contactEmail}>`,
+        from: `Flora Studio <${contactEmail}>`,
         to: parsed.data.email,
-        subject: "We received your message | Studio Bahar",
+        subject: "We received your message | Flora Studio",
         text: buildAutoReplyText(parsed.data, contactEmail),
       });
     } catch (err) {

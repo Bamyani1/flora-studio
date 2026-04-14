@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { publicEnv } from "@/lib/public-env";
 
-export const alt = "Studio Bahar photography album";
+export const alt = "Flora Studio photography album";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -129,7 +129,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
               lineHeight: 1,
             }}
           >
-            STUDIO BAHAR
+            FLORA STUDIO
           </div>
         </div>
       </div>,
@@ -168,7 +168,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           color: "#8B7355",
         }}
       >
-        STUDIO BAHAR
+        FLORA STUDIO
       </div>
     </div>,
     { ...size },
