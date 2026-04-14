@@ -83,7 +83,6 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       return { success: false, error: DELIVERY_FAILURE_MESSAGE };
     }
 
-    console.log("[Contact] Stub delivery mode enabled. Skipping email send.");
     return { success: true };
   }
 
@@ -93,7 +92,6 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       return { success: false, error: DELIVERY_FAILURE_MESSAGE };
     }
 
-    console.log("[Contact] Missing SMTP credentials outside production. Skipping email send.");
     return { success: true };
   }
 
