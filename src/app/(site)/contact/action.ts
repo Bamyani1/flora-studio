@@ -7,7 +7,10 @@ import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 export type ContactActionResult = { success: true } | { success: false; error: string };
 
 const DELIVERY_FAILURE_MESSAGE = "Failed to send message. Please try again later.";
+const THROTTLE_MESSAGE = "Please wait a moment before submitting again.";
 const CONTACT_TEST_FAILURE_COOKIE = "__contact_delivery_test";
+const THROTTLE_COOKIE = "__contact_throttle";
+const THROTTLE_WINDOW_SEC = 60;
 
 type ContactDeliveryTestFailureMode = "primary" | "auto-reply";
 
@@ -56,6 +59,35 @@ async function getDeliveryTestFailureMode(
   return null;
 }
 
+function shouldEnforceThrottle(): boolean {
+  return (
+    process.env.NODE_ENV === "production" && process.env.CONTENT_RUNTIME_MODE !== "e2e"
+  );
+}
+
+async function isThrottled(): Promise<boolean> {
+  if (!shouldEnforceThrottle()) return false;
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(THROTTLE_COOKIE)?.value;
+  if (!raw) return false;
+  const lastMs = Number(raw);
+  if (!Number.isFinite(lastMs)) return false;
+  const elapsedSec = Math.floor((Date.now() - lastMs) / 1000);
+  return elapsedSec >= 0 && elapsedSec < THROTTLE_WINDOW_SEC;
+}
+
+async function markSubmitted(): Promise<void> {
+  if (!shouldEnforceThrottle()) return;
+  const cookieStore = await cookies();
+  cookieStore.set(THROTTLE_COOKIE, String(Date.now()), {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    maxAge: THROTTLE_WINDOW_SEC,
+    path: "/",
+  });
+}
+
 export async function submitContactForm(data: ContactFormData): Promise<ContactActionResult> {
   const parsed = contactFormSchema.safeParse(data);
   const isProduction = process.env.NODE_ENV === "production";
@@ -67,6 +99,10 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
   if (parsed.data.website?.trim()) {
     console.warn("[Contact] Honeypot field was filled. Skipping delivery.");
     return { success: true };
+  }
+
+  if (await isThrottled()) {
+    return { success: false, error: THROTTLE_MESSAGE };
   }
 
   const deliveryTestFailureMode = await getDeliveryTestFailureMode(isProduction);
@@ -96,6 +132,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
   }
 
   try {
+    await markSubmitted();
     const nodemailer = await import("nodemailer");
     const transporter = nodemailer.createTransport({
       host: "smtp.mail.me.com",

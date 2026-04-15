@@ -4,6 +4,10 @@ import { publicEnv } from "@/lib/public-env";
 const SITE_NAME = "Flora Studio";
 const SITE_URL = publicEnv.siteUrl;
 
+export function jsonLdString(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {

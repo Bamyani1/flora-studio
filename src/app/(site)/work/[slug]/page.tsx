@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
-import { breadcrumbJsonLd, imageGalleryJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, imageGalleryJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
@@ -65,11 +65,11 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     <main id="main-content">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <AlbumHero
         title={album.title}

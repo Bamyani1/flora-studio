@@ -1,4 +1,4 @@
-import { breadcrumbJsonLd, personJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, jsonLdString, personJsonLd } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { getAboutPageContent, getSiteSettings } from "@/lib/site-content";
 import { AboutPageClient } from "@/components/about/AboutPageClient";
@@ -21,11 +21,11 @@ export default async function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <AboutPageClient content={aboutPage} />
     </>

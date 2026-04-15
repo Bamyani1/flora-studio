@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ProcessExperience } from "@/components/process-reference/ProcessExperience";
 import { resolveImageUrl } from "@/lib/image-url";
-import { breadcrumbJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { getProcessPageContent, getSiteSettings } from "@/lib/site-content";
 
@@ -27,7 +27,7 @@ export default async function ProcessPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <ProcessExperience
         heroImage={{

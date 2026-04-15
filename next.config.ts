@@ -14,9 +14,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
-  logging: {
-    fetches: { fullUrl: true },
-  },
 };
 
 export default nextConfig;

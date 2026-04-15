@@ -1,4 +1,4 @@
-import { localBusinessJsonLd } from "@/lib/metadata";
+import { jsonLdString, localBusinessJsonLd } from "@/lib/metadata";
 import { getHomePageContent, getSiteSettings } from "@/lib/site-content";
 import { resolveImageUrl } from "@/lib/image-url";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
@@ -27,7 +27,7 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(localBusinessJsonLd(siteSettings.sameAs)),
+          __html: jsonLdString(localBusinessJsonLd(siteSettings.sameAs)),
         }}
       />
       <main id="main-content">

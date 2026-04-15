@@ -3,7 +3,7 @@ import { getAllAlbums } from "@/lib/albums";
 import { buildGalleryLayout } from "@/lib/gallery-layout";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
-import { breadcrumbJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { GalleryHero } from "@/components/sections/gallery";
@@ -39,7 +39,7 @@ export default async function WorkPage() {
       <>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
         />
         <main
           id="main-content"
@@ -70,7 +70,7 @@ export default async function WorkPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <main id="main-content">
         {sections.map((section) => {

@@ -19,7 +19,7 @@ describe("sanity fetch client", () => {
     process.env = {
       ...originalEnv,
       NODE_ENV: "production",
-      NEXT_PUBLIC_SANITY_PROJECT_ID: "tm8qd2gj",
+      NEXT_PUBLIC_SANITY_PROJECT_ID: "test-project-1234",
       NEXT_PUBLIC_SANITY_DATASET: "production",
       NEXT_PUBLIC_SANITY_API_VERSION: "2024-07-11",
       SANITY_READ_TOKEN: "viewer-token",
@@ -39,7 +39,7 @@ describe("sanity fetch client", () => {
 
     expect(mockCreateClient).toHaveBeenCalledWith(
       expect.objectContaining({
-        projectId: "tm8qd2gj",
+        projectId: "test-project-1234",
         dataset: "production",
         apiVersion: "2024-07-11",
         perspective: "published",

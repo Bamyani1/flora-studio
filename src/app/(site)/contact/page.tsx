@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Instagram } from "lucide-react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { CinematicContactForm } from "@/components/ui/CinematicContactForm";
-import { breadcrumbJsonLd } from "@/lib/metadata";
+import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { getContactPageContent, getSiteSettings } from "@/lib/site-content";
 import type { SocialLink } from "@/types/content";
@@ -38,7 +38,7 @@ export default async function ContactPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <main
         id="main-content"
