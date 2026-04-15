@@ -1,0 +1,24 @@
+Photography Copyright Notice — separate from the MIT LICENSE
+================================================================
+
+All photographs under public/images/ are © 2026 Mostafa Anwari,
+all rights reserved. The MIT LICENSE in this repository applies
+only to source code, configuration, and written documentation.
+
+The sample images committed here are intentionally downscaled,
+low-quality copies (max 1600px longest edge, JPEG quality 65)
+provided solely so contributors can run the site locally without
+Sanity credentials. They are NOT licensed for:
+
+  - reproduction
+  - redistribution
+  - derivative works
+  - training of machine-learning models
+  - commercial use
+  - any use beyond local development of this specific project
+
+Full-resolution originals live in a private Sanity dataset and are
+served to production visitors via cdn.sanity.io. Any use of those
+originals requires written permission from the copyright holder.
+
+For licensing inquiries, visit https://floraohio.com.

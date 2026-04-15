@@ -141,6 +141,13 @@ The _Darkroom Moss_ palette and every visual value are defined as CSS custom pro
 
 <br />
 
+## License
+
+- **Code, configuration, and documentation** are released under the MIT License. See [`LICENSE`](LICENSE).
+- **Photography** in `public/images/` is &copy; 2026 Mostafa Anwari, all rights reserved. The sample images checked in here are intentionally downscaled (max 1600px, q65) and licensed only for local development of this specific project &mdash; not for reproduction, redistribution, derivative works, ML training, or commercial use. Full-resolution originals live in a private Sanity dataset. See [`LICENSE-IMAGES`](LICENSE-IMAGES) for details.
+
+<br />
+
 ---
 
 <div align="center">
