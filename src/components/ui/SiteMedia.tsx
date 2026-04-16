@@ -26,6 +26,7 @@ export function SiteMedia({
   loading,
   blurDataURL,
   onLoad,
+  quality = 90,
   label = PLACEHOLDER_MEDIA_LABEL,
   ...rest
 }: SiteMediaProps) {
@@ -46,6 +47,7 @@ export function SiteMedia({
         sizes={sizes}
         priority={priority}
         loading={loading}
+        quality={quality}
         placeholder={blurDataURL ? "blur" : undefined}
         blurDataURL={blurDataURL}
         onLoad={onLoad}
