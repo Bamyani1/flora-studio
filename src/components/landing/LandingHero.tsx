@@ -244,8 +244,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
               src={resolveImageUrl(media)}
               alt={media.alt ?? ""}
               fill
-              className="object-cover"
-              style={{ objectPosition: media.objectPosition ?? "center top" }}
+              className="object-cover hero-media-crop"
+              style={{
+                objectPosition: media.objectPosition ?? "center top",
+                ...({ "--mobile-pos": media.mobileObjectPosition ?? media.objectPosition ?? "center top" } as React.CSSProperties),
+              }}
               priority={index === 0}
               loading={index === 0 ? undefined : "eager"}
               quality={90}

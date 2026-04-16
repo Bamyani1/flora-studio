@@ -280,9 +280,10 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
           `home.heroMediaCycle[${index}]`,
           keyFor("hero-media", index + 1),
         );
-        return image.objectPosition
-          ? { ...uploaded, objectPosition: image.objectPosition }
-          : uploaded;
+        const extra: Record<string, string> = {};
+        if (image.objectPosition) extra.objectPosition = image.objectPosition;
+        if (image.mobileObjectPosition) extra.mobileObjectPosition = image.mobileObjectPosition;
+        return Object.keys(extra).length > 0 ? { ...uploaded, ...extra } : uploaded;
       }),
     ),
     editorialImage: await requireImage(content.editorial.image, "home.editorialImage"),
