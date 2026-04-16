@@ -10,8 +10,10 @@ export const contactFormSchema = z.object({
       errorMap: () => ({ message: "Please select a photography type" }),
     },
   ),
-  preferredDate: z.string().optional(),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  preferredDate: z.string().min(1, "Please pick an ideal date"),
+  alternateDates: z.array(z.string()).max(2).optional(),
+  location: z.string().min(2, "Please add a location (or 'flexible')"),
+  message: z.string().optional(),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;

@@ -36,6 +36,8 @@ const validPayload = {
   name: "Ava Reed",
   email: "ava@example.com",
   photographyType: "milestones" as const,
+  preferredDate: "2026-06-14",
+  location: "Dayton, Ohio",
   message: "I would love to book a graduation session this spring.",
 };
 
@@ -147,6 +149,7 @@ describe("submitContactForm", () => {
         from: `Flora Studio <${contactEmail}>`,
         to: contactEmail,
         replyTo: "ava@example.com",
+        text: expect.stringContaining("Preferred date: 2026-06-14"),
       }),
     );
     expect(mockSendMail).toHaveBeenNthCalledWith(
@@ -155,8 +158,79 @@ describe("submitContactForm", () => {
         from: `Flora Studio <${contactEmail}>`,
         to: "ava@example.com",
         subject: "We received your message | Flora Studio",
+        text: expect.stringContaining("Location: Dayton, Ohio"),
       }),
     );
+  });
+
+  it("includes alternate dates in the email when provided", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+    mockSendMail.mockResolvedValue({});
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        alternateDates: ["2026-06-21", "2026-06-28"],
+      }),
+    ).resolves.toEqual({ success: true });
+
+    expect(mockSendMail).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        text: expect.stringContaining("Alternate dates: 2026-06-21, 2026-06-28"),
+      }),
+    );
+  });
+
+  it("rejects submissions missing the required location field", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        location: "",
+      }),
+    ).resolves.toEqual({
+      success: false,
+      error: "Invalid form data. Please check your inputs.",
+    });
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("rejects submissions missing the required preferred date", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        preferredDate: "",
+      }),
+    ).resolves.toEqual({
+      success: false,
+      error: "Invalid form data. Please check your inputs.",
+    });
+    expect(mockSendMail).not.toHaveBeenCalled();
   });
 
   it("returns a user-facing error when the non-production test cookie forces a primary failure", async () => {

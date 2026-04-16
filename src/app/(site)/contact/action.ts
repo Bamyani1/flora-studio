@@ -15,29 +15,44 @@ const THROTTLE_WINDOW_SEC = 60;
 type ContactDeliveryTestFailureMode = "primary" | "auto-reply";
 
 function buildNotificationEmailText(data: ContactFormData) {
-  return [
+  const lines: string[] = [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
     `Type: ${data.photographyType}`,
-    data.preferredDate ? `Preferred Date: ${data.preferredDate}` : null,
-    `\nMessage:\n${data.message}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
+    `Preferred date: ${data.preferredDate}`,
+  ];
+
+  if (data.alternateDates && data.alternateDates.length > 0) {
+    lines.push(`Alternate dates: ${data.alternateDates.join(", ")}`);
+  }
+
+  lines.push(`Location: ${data.location}`);
+
+  lines.push("", "Message:", data.message?.trim() || "(none provided)");
+
+  return lines.join("\n");
 }
 
 function buildAutoReplyText(data: ContactFormData, contactEmail: string) {
+  const alternateLine =
+    data.alternateDates && data.alternateDates.length > 0
+      ? data.alternateDates.join(", ")
+      : "—";
+
   return [
     `Hi ${data.name},`,
     "",
-    "Thanks for reaching out to Flora Studio.",
-    "We received your message and will follow up within 24 hours.",
+    "We received your inquiry and will follow up within 24 hours.",
     "",
-    `Inquiry type: ${data.photographyType}`,
+    "Here's what we have on our end:",
+    `· Session: ${data.photographyType}`,
+    `· Preferred date: ${data.preferredDate}`,
+    `· Alternate dates: ${alternateLine}`,
+    `· Location: ${data.location}`,
     "",
-    "If you need to add anything else before then, just reply to this email.",
+    "Reply to this email if anything needs to change.",
     "",
-    "Flora Studio",
+    "— Flora Studio",
     contactEmail,
   ].join("\n");
 }

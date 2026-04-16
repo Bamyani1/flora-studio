@@ -3,10 +3,11 @@ import { expect, test } from "@playwright/test";
 const CONTACT_TEST_FAILURE_COOKIE = "__contact_delivery_test";
 
 async function fillValidContactForm(page: import("@playwright/test").Page) {
+  await page.locator("#photographyType").selectOption("milestones");
+  await page.locator("#preferredDate").fill("2026-06-14");
+  await page.locator("#location").fill("Dayton, Ohio");
   await page.locator("#sender").fill("Ava Reed");
   await page.locator("#reply_to").fill("ava@example.com");
-  await page.locator("#photographyType").selectOption("milestones");
-  await page.locator("#message").fill("I would love to book a graduation session this spring.");
 }
 
 test("landing page typography matches the GitHub runtime", async ({ page }) => {
@@ -103,7 +104,7 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
     const label = document.querySelector("label[for='sender']");
     const input = document.querySelector("#sender") as HTMLInputElement | null;
     const submitLabel = Array.from(document.querySelectorAll("button span")).find((element) =>
-      element.textContent?.includes("Send Message"),
+      element.textContent?.includes("Send inquiry"),
     );
     const heading = document.querySelector("[data-form-heading]");
 
@@ -133,15 +134,17 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
   expect(pristineStyles.label?.fontFamily).toContain("inter");
   expect(pristineStyles.label?.textTransform).toBe("uppercase");
   expect(pristineStyles.input?.fontFamily).toContain("inter");
-  expect(pristineStyles.input?.textTransform).toBe("uppercase");
+  expect(pristineStyles.input?.textTransform).toBe("capitalize");
   expect(pristineStyles.placeholder?.fontFamily).toContain("inter");
-  expect(pristineStyles.placeholder?.textTransform).toBe("uppercase");
+  expect(pristineStyles.placeholder?.textTransform).toBe("capitalize");
   expect(pristineStyles.submitLabel?.fontFamily).toContain("inter");
   expect(pristineStyles.submitLabel?.textTransform).toBe("uppercase");
   expect(pristineStyles.heading?.fontFamily).toContain("inter");
   expect(pristineStyles.pageHeading?.fontFamily).toContain("inter");
 
-  await page.getByRole("button", { name: "Send Message" }).click();
+  // Trigger an inline email error via blur and verify its typography.
+  await page.locator("#reply_to").fill("bad-email");
+  await page.locator("#sender").focus();
   await expect(page.getByText("Please enter a valid email address")).toBeVisible();
 
   const validationStyles = await page.evaluate(() => {
@@ -169,7 +172,7 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
   ]);
   await page.goto("/contact", { waitUntil: "networkidle" });
   await fillValidContactForm(page);
-  await page.getByRole("button", { name: "Send Message" }).click();
+  await page.getByRole("button", { name: /send inquiry/i }).click();
 
   const failureBanner = page.getByRole("alert").filter({
     hasText: "Failed to send message. Please try again later.",
@@ -187,7 +190,7 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
   await page.context().clearCookies();
   await page.goto("/contact", { waitUntil: "networkidle" });
   await fillValidContactForm(page);
-  await page.getByRole("button", { name: "Send Message" }).click();
+  await page.getByRole("button", { name: /send inquiry/i }).click();
   await expect(page.getByRole("heading", { name: "Message received" })).toBeVisible();
 
   const successStyles = await page.evaluate(() => {
