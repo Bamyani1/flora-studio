@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
 /* ============================================
    FLORA STUDIO — Design Token System
    ============================================ */
