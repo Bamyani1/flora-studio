@@ -83,6 +83,12 @@ export const imageWithAlt = defineType({
       type: "string",
       description: "CSS object-position value (e.g. '50% 48%')",
     }),
+    defineField({
+      name: "mobileObjectPosition",
+      title: "Mobile Object Position",
+      type: "string",
+      description: "CSS object-position for mobile viewports",
+    }),
   ],
 });
 

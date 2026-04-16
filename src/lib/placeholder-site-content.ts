@@ -35,6 +35,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
       {
         ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Graduation portrait in library"),
         objectPosition: "60% 46%",
+        mobileObjectPosition: "44% 47%",
       },
       {
         ...localImageFromPublicPath(
@@ -42,6 +43,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
           "Senior portrait on park bench at golden hour",
         ),
         objectPosition: "38% 44%",
+        mobileObjectPosition: "71% 43%",
       },
       {
         ...localImageFromPublicPath(
@@ -49,6 +51,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
           "Cinematic close-up portrait at sunset",
         ),
         objectPosition: "40% 32%",
+        mobileObjectPosition: "34% 34%",
       },
       {
         ...localImageFromPublicPath(
@@ -56,6 +59,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
           "Graduation portrait reaching for book in library",
         ),
         objectPosition: "37% 38%",
+        mobileObjectPosition: "39% 34%",
       },
       {
         ...localImageFromPublicPath(
@@ -63,6 +67,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
           "Senior portrait on stone steps",
         ),
         objectPosition: "40% 28%",
+        mobileObjectPosition: "39% 29%",
       },
     ],
   },

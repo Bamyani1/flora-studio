@@ -26,6 +26,7 @@ export interface SiteSettings {
 
 export interface HeroMediaItem extends SanityImage {
   objectPosition?: string;
+  mobileObjectPosition?: string;
 }
 
 export interface HomeHeroContent {
