@@ -26,11 +26,10 @@ export function SiteMedia({
   loading,
   blurDataURL,
   onLoad,
-  quality = 90,
   label = PLACEHOLDER_MEDIA_LABEL,
   ...rest
 }: SiteMediaProps) {
-  const decorative = alt.length === 0;
+  const decorative = !alt || alt.length === 0;
   const isPlaceholder = !src || (typeof src === "string" && src.startsWith("placeholder://"));
   const [hasError, setHasError] = useState(false);
 
@@ -47,7 +46,6 @@ export function SiteMedia({
         sizes={sizes}
         priority={priority}
         loading={loading}
-        quality={quality}
         placeholder={blurDataURL ? "blur" : undefined}
         blurDataURL={blurDataURL}
         onLoad={onLoad}

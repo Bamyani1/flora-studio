@@ -33,22 +33,36 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     description: "Photography with intention.",
     mediaCycle: [
       {
-        ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Flora Studio hero photograph"),
-        objectPosition: "50% 48%",
+        ...localImageFromPublicPath("/images/hero/hero-01.jpg", "Graduation portrait in library"),
+        objectPosition: "60% 46%",
+      },
+      {
+        ...localImageFromPublicPath(
+          "/images/hero/hero-02.jpg",
+          "Senior portrait on park bench at golden hour",
+        ),
+        objectPosition: "38% 44%",
       },
       {
         ...localImageFromPublicPath(
           "/images/hero/hero-03.jpg",
-          "Flora Studio editorial photograph",
+          "Cinematic close-up portrait at sunset",
         ),
-        objectPosition: "50% 44%",
+        objectPosition: "40% 32%",
       },
       {
         ...localImageFromPublicPath(
           "/images/hero/hero-04.jpg",
-          "Flora Studio portfolio photograph",
+          "Graduation portrait reaching for book in library",
         ),
-        objectPosition: "50% 30%",
+        objectPosition: "37% 38%",
+      },
+      {
+        ...localImageFromPublicPath(
+          "/images/hero/hero-05.jpg",
+          "Senior portrait on stone steps",
+        ),
+        objectPosition: "40% 28%",
       },
     ],
   },
