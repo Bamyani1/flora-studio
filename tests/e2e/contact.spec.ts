@@ -13,7 +13,7 @@ async function fillValidContactForm(page: import("@playwright/test").Page) {
 test("contact form validates and supports submitting another message after success", async ({
   page,
 }) => {
-  await page.goto("/contact");
+  await page.goto("/contact", { waitUntil: "networkidle" });
   await expect(page.getByRole("main").getByText("info@floraohio.com")).toBeVisible();
 
   await page.getByRole("button", { name: /send inquiry/i }).click();
