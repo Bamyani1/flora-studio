@@ -462,7 +462,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                             alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
                             fill
                             sizes="(max-width: 1023px) 100vw, 0px"
-                            className="object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-1000"
+                            className="object-cover object-center can-hover:grayscale can-hover:group-hover:grayscale-0 transition-all duration-1000"
                           />
                         </div>
                       </div>
@@ -522,7 +522,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             >
               <SiteMedia
                 alt={content.process.image.alt ?? ""}
-                className="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
+                className="w-full h-full object-cover can-hover:grayscale can-hover:brightness-50 can-hover:group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
                 src={resolveImageUrl(content.process.image)}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
