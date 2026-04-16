@@ -32,15 +32,21 @@ export function useContactForm<TData extends ContactFormData>({ getData }: UseCo
   const [submitted, setSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  const validateField = useCallback((name: ContactFieldName, value: string) => {
-    const fieldSchema = contactFormSchema.shape[name];
-    const result = fieldSchema.safeParse(value);
+  const validateField = useCallback(
+    (name: ContactFieldName, value: string): string | undefined => {
+      const fieldSchema = contactFormSchema.shape[name];
+      const result = fieldSchema.safeParse(value);
+      const error = result.success ? undefined : result.error.errors[0]?.message;
 
-    setFieldErrors((current) => ({
-      ...current,
-      [name]: result.success ? undefined : result.error.errors[0]?.message,
-    }));
-  }, []);
+      setFieldErrors((current) => ({
+        ...current,
+        [name]: error,
+      }));
+
+      return error;
+    },
+    [],
+  );
 
   const handleBlur = useCallback(
     (name: ContactFieldName) =>

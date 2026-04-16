@@ -50,7 +50,7 @@ export default async function ContactPage() {
         {/* Floating two-panel card */}
         <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
           {/* Left Panel — Branding */}
-          <div className="relative flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[45%] md:justify-between md:gap-0 md:px-14 md:py-14">
+          <div className="relative flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[39.5%] md:justify-between md:gap-0 md:px-14 md:py-14">
             {/* Subtle top glow */}
             <div
               className="pointer-events-none absolute inset-0"
@@ -115,7 +115,7 @@ export default async function ContactPage() {
 
           {/* Right Panel — Form */}
           <div
-            className="relative flex min-h-0 w-full flex-col overflow-y-auto border-l border-border/10 bg-surface-lowest md:w-[55%]"
+            className="relative flex min-h-0 w-full flex-col overflow-y-auto border-l border-border/10 bg-surface-lowest md:w-[60.5%]"
             data-lenis-prevent
           >
             <div className="flex flex-1 flex-col px-8 pt-10 pb-6 md:px-14 md:pt-14 md:pb-8">

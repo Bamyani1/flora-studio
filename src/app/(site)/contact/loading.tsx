@@ -8,7 +8,7 @@ export default function ContactLoading() {
 
       <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
         {/* Left Panel */}
-        <div className="flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[45%] md:justify-between md:gap-0 md:px-14 md:py-14">
+        <div className="flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[39.5%] md:justify-between md:gap-0 md:px-14 md:py-14">
           {/* Top */}
           <div>
             <div className={`mb-8 h-3 w-24 ${sk}`} />
@@ -36,7 +36,7 @@ export default function ContactLoading() {
         </div>
 
         {/* Right Panel */}
-        <div className="flex w-full flex-col border-l border-border/10 bg-surface-lowest px-8 pt-10 pb-6 md:w-[55%] md:px-14 md:pt-14 md:pb-8">
+        <div className="flex w-full flex-col border-l border-border/10 bg-surface-lowest px-8 pt-10 pb-6 md:w-[60.5%] md:px-14 md:pt-14 md:pb-8">
           <div className={`mb-4 h-3 w-28 ${sk}`} />
           <div className={`mb-10 h-8 w-64 ${sk}`} />
 
@@ -46,8 +46,10 @@ export default function ContactLoading() {
               <div className={`h-11 w-full ${sk}`} />
             </div>
             <div className={`h-11 w-full ${sk}`} />
-            <div className={`h-28 w-full ${sk}`} />
-            <div className={`h-12 w-full ${sk}`} />
+            <div className={`h-11 w-full ${sk}`} />
+            <div className={`h-11 w-full ${sk}`} />
+            <div className={`h-24 w-full ${sk}`} />
+            <div className={`h-14 w-full ${sk}`} />
           </div>
         </div>
       </div>

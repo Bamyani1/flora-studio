@@ -20,7 +20,9 @@ function ContactFormHarness() {
         name: formData.get("name") as string,
         email: formData.get("email") as string,
         photographyType: formData.get("photographyType") as ContactFormData["photographyType"],
-        message: formData.get("message") as string,
+        preferredDate: (formData.get("preferredDate") as string) || "",
+        location: (formData.get("location") as string) || "",
+        message: (formData.get("message") as string) || undefined,
       }),
     });
 
@@ -42,11 +44,23 @@ function ContactFormHarness() {
       {fieldErrors.name ? <div role="alert">{fieldErrors.name}</div> : null}
       <input aria-label="Email" name="email" onBlur={handleBlur("email")} />
       {fieldErrors.email ? <div role="alert">{fieldErrors.email}</div> : null}
-      <select aria-label="Photography Type" name="photographyType" onBlur={handleBlur("photographyType")}>
+      <select
+        aria-label="Photography Type"
+        name="photographyType"
+        onBlur={handleBlur("photographyType")}
+      >
         <option value="">Select one</option>
         <option value="milestones">Milestones</option>
       </select>
       {fieldErrors.photographyType ? <div role="alert">{fieldErrors.photographyType}</div> : null}
+      <input
+        aria-label="Preferred Date"
+        name="preferredDate"
+        onBlur={handleBlur("preferredDate")}
+      />
+      {fieldErrors.preferredDate ? <div role="alert">{fieldErrors.preferredDate}</div> : null}
+      <input aria-label="Location" name="location" onBlur={handleBlur("location")} />
+      {fieldErrors.location ? <div role="alert">{fieldErrors.location}</div> : null}
       <textarea aria-label="Message" name="message" onBlur={handleBlur("message")} />
       {fieldErrors.message ? <div role="alert">{fieldErrors.message}</div> : null}
       <button type="submit">{isPending ? "Sending" : "Submit"}</button>
@@ -77,6 +91,8 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },
     });
@@ -97,6 +113,8 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },
     });
@@ -111,6 +129,8 @@ describe("useContactForm", () => {
     expect(screen.getByLabelText("Name")).toHaveValue("");
     expect(screen.getByLabelText("Email")).toHaveValue("");
     expect(screen.getByLabelText("Photography Type")).toHaveValue("");
+    expect(screen.getByLabelText("Preferred Date")).toHaveValue("");
+    expect(screen.getByLabelText("Location")).toHaveValue("");
     expect(screen.getByLabelText("Message")).toHaveValue("");
     expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
   });
@@ -128,6 +148,8 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },
     });

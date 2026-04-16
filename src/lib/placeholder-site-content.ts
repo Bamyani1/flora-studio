@@ -245,5 +245,5 @@ export const PLACEHOLDER_CONTACT_PAGE: ContactPageContent = {
   _id: "contactPage",
   titleLine1: "Get in",
   titleLine2: "touch.",
-  description: "Have a vision in mind? We'd love to hear about it.",
+  description: "Every session starts with a conversation.",
 };
