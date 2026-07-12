@@ -161,7 +161,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   <ul
                     data-step-text
                     data-timeline-animate
-                    className="mt-6 space-y-3 font-label text-[10px] uppercase tracking-widest text-on-surface-variant/90"
+                    className="mt-6 space-y-3 eyebrow text-on-surface-variant/90"
                   >
                     {metaItems.map((item) => (
                       <li
@@ -223,7 +223,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                           src={img.src}
                           alt={img.alt}
                           className="h-full w-full"
-                          imageClassName="can-hover:grayscale transition-all duration-1000 group-hover:scale-110 can-hover:group-hover:grayscale-0"
+                          imageClassName="transition-transform duration-1000 can-hover:group-hover:scale-110"
                         />
                       </div>
                     ))}
@@ -249,9 +249,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                         src={step.images[0].src}
                         alt={step.images[0].alt}
                         className="h-full w-full"
-                        imageClassName="can-hover:grayscale transition-all duration-1000 group-hover:scale-105 can-hover:group-hover:grayscale-0"
+                        imageClassName="transition-transform duration-1000 can-hover:group-hover:scale-105"
                       />
-                      <div className="pointer-events-none absolute inset-0 bg-black/20 transition-colors duration-700 group-hover:bg-transparent" />
                     </div>
                   </div>
                 )}

@@ -120,7 +120,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
       <div ref={contentRef} className="relative z-10 px-4 text-center">
         <h1
           data-hero-child
-          className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-8xl"
+          className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-6xl lg:text-7xl"
         >
           {titleLine1} <br />
           <span className="italic font-light">{titleLine2}</span>

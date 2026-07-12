@@ -85,7 +85,7 @@ export default async function ContactPage() {
           own scrollbar can clip fields and hide validation errors entirely */}
       <main
         id="main-content"
-        className="relative flex min-h-screen flex-col overflow-hidden bg-background px-4 pt-24 pb-10 sm:px-[5%] md:px-[10%] md:pt-[140px] md:pb-20"
+        className="relative flex min-h-screen flex-col overflow-hidden bg-background px-[var(--container-padding-x)] pt-24 pb-10 md:px-[var(--container-padding-x-wide)] md:pt-[140px] md:pb-20"
       >
         {/* Grain overlay */}
         <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
@@ -106,7 +106,7 @@ export default async function ContactPage() {
             {/* Top content */}
             <div className="relative z-10">
               <FadeIn>
-                <h1 className="mb-6 font-display text-4xl font-light uppercase leading-[0.9] text-text-heading md:text-[48px]">
+                <h1 className="mb-6 font-display text-4xl font-light uppercase leading-[0.9] text-text-heading md:text-5xl">
                   <span className="italic">{contactPage.titleLine1}</span>
                   <br />
                   <span className="font-bold not-italic">{contactPage.titleLine2}</span>

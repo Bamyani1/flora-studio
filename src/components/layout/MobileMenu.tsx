@@ -243,7 +243,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
               rel="noopener noreferrer"
               aria-label={link.label}
               onClick={handleLinkClick}
-              className="font-label text-[10px] uppercase tracking-[0.15em] text-[var(--color-header-link-muted)] transition-colors hover:text-[var(--color-header-link-active)]"
+              className="eyebrow text-[var(--color-header-link-muted)] transition-colors hover:text-[var(--color-header-link-active)]"
             >
               {link.label}
             </a>
