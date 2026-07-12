@@ -38,7 +38,13 @@
     ".next-playwright/types/**/*.ts",
     ".next-playwright/dev/types/**/*.ts",
     ".next-playwright-consent/types/**/*.ts",
-    ".next-playwright-consent/dev/types/**/*.ts"
+    ".next-playwright-consent/dev/types/**/*.ts",
+    ".next-consent-dev/types/**/*.ts",
+    ".next-consent-dev/dev/types/**/*.ts",
+    ".next-dev-qa/types/**/*.ts",
+    ".next-dev-qa/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

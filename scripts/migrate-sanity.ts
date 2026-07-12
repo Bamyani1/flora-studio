@@ -300,7 +300,7 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
     exhibitionImage: await requireImage(content.exhibition.image, "home.exhibitionImage"),
     exhibitionCta: linkField(content.exhibition.cta),
     studioImage: await requireImage(content.studio.image, "home.studioImage"),
-    studioCtaEyebrow: "Work With Us",
+    studioCtaEyebrow: content.studio.ctaEyebrow,
     studioCtaLabel: content.studio.ctaLabel,
     studioCta: linkField(content.studio.cta),
   };

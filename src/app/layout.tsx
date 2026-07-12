@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <noscript>
-          <style>{`[data-animate],[data-form-animate],[data-contact-animate],[data-about-animate],.folio-reveal,.folio-reveal-label{opacity:1!important;visibility:visible!important;transform:none!important}`}</style>
+          <style>{`[data-animate],[data-form-animate],[data-contact-animate],[data-about-animate],[data-site-header],.folio-reveal,.folio-reveal-label{opacity:1!important;visibility:visible!important;transform:none!important}`}</style>
         </noscript>
       </head>
       <body className="grain-overlay bg-background font-body text-text antialiased">
