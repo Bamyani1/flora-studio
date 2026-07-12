@@ -88,7 +88,7 @@ async function isThrottled(): Promise<boolean> {
   const lastMs = Number(raw);
   if (!Number.isFinite(lastMs)) return false;
   const elapsedSec = Math.floor((Date.now() - lastMs) / 1000);
-  return elapsedSec >= 0 && elapsedSec < THROTTLE_WINDOW_SEC;
+  return elapsedSec < THROTTLE_WINDOW_SEC;
 }
 
 async function markSubmitted(): Promise<void> {
@@ -153,6 +153,10 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       host: "smtp.mail.me.com",
       port: 587,
       secure: false,
+      requireTLS: true,
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
       auth: {
         user: smtpUser,
         pass: smtpPass,

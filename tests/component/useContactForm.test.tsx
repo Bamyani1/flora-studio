@@ -81,6 +81,16 @@ describe("useContactForm", () => {
     expect(screen.getByText("Please enter a valid email address")).toBeInTheDocument();
   });
 
+  it("validates the transformed name field on blur", () => {
+    render(<ContactFormHarness />);
+
+    fireEvent.blur(screen.getByLabelText("Name"), { target: { value: "A" } });
+    expect(screen.getByText("Name must be at least 2 characters")).toBeInTheDocument();
+
+    fireEvent.blur(screen.getByLabelText("Name"), { target: { value: "A".repeat(101) } });
+    expect(screen.getByText("Name must be 100 characters or fewer")).toBeInTheDocument();
+  });
+
   it("marks the form as submitted after a successful send", async () => {
     mockSubmitContactForm.mockResolvedValue({ success: true });
 

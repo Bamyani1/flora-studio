@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const COOKIE_CONSENT_COOKIE_NAME = "flora_consent";
 export const COOKIE_CONSENT_MAX_AGE = 60 * 60 * 24 * 365;
+export const COOKIE_CONSENT_CHANGE_EVENT = "flora:consent-changed";
 
 export type CookieConsentCategory = "essential" | "analytics" | "marketing";
 

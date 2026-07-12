@@ -5,6 +5,7 @@ import { useLenis } from "lenis/react";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { publicEnv } from "@/lib/public-env";
 import {
+  COOKIE_CONSENT_CHANGE_EVENT,
   buildCookieConsentCookieString,
   createCookieConsentState,
   readCookieConsent,
@@ -142,6 +143,7 @@ export function CookieConsentManager() {
         nextConsent,
         window.location.protocol === "https:",
       );
+      window.dispatchEvent(new Event(COOKIE_CONSENT_CHANGE_EVENT));
       setConsentState({
         bannerVisible: false,
         consent: nextConsent,
