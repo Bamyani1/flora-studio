@@ -4,13 +4,15 @@ import { type ComponentPropsWithRef, type ElementType, type ReactNode } from "re
 import { cn } from "@/lib/utils";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 
+// Hover states gated to fine pointers — a tap on touch latches :hover styles
 const variantClasses = {
-  primary: "bg-primary text-background hover:bg-primary-muted",
-  outline: "border border-border bg-transparent text-text hover:border-border-hover",
+  primary: "bg-primary text-background can-hover:hover:bg-primary-muted",
+  outline: "border border-border bg-transparent text-text can-hover:hover:border-border-hover",
   "outline-accent":
-    "border border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary",
-  "outline-subtle": "border border-white/35 bg-transparent text-white hover:border-white/70 hover:bg-white/5",
-  ghost: "bg-transparent text-text hover:text-text-heading",
+    "border border-primary bg-transparent text-primary can-hover:hover:bg-primary/10 can-hover:hover:text-primary",
+  "outline-subtle":
+    "border border-white/35 bg-transparent text-white can-hover:hover:border-white/70 can-hover:hover:bg-white/5",
+  ghost: "bg-transparent text-text can-hover:hover:text-text-heading",
 } as const;
 
 const sizeClasses = {

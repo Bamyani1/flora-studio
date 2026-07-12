@@ -234,12 +234,12 @@ function TitleContent({ title, count }: { title: string; count: number }) {
         {title}
       </h2>
       <div className="folio-reveal-label mt-6 h-px bg-primary" style={{ width: 60 }} />
-      <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted">
+      <span className="folio-reveal-label mt-4 eyebrow text-muted">
         {imageCountLabel(count)}
       </span>
       <div className="folio-reveal-label mt-12 flex flex-col items-center gap-3">
         <div className="h-10 w-px bg-primary/30" />
-        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted">
+        <span className="eyebrow text-muted">
           Scroll
         </span>
       </div>
@@ -551,14 +551,14 @@ function VideoContent({ videoUrl }: { videoUrl: string }) {
         className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
       />
       <div className="folio-reveal-label mt-4 flex items-center gap-4">
-        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted">
+        <span className="eyebrow text-muted">
           [ FILM ]
         </span>
         <button
           type="button"
           onClick={toggle}
           aria-label={playing ? "Pause film" : "Play film"}
-          className="font-label text-[10px] uppercase tracking-[0.2em] text-primary transition-colors duration-300 can-hover:hover:text-text"
+          className="eyebrow text-primary transition-colors duration-300 can-hover:hover:text-text"
         >
           {playing ? "Pause" : "Play"}
         </button>
@@ -573,7 +573,7 @@ function ColophonContent() {
   return (
     <div className="flex flex-col items-center justify-center py-[10vh]">
       <span className="folio-reveal text-sm text-primary">&#9670;</span>
-      <span className="folio-reveal-label mt-8 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
+      <span className="folio-reveal-label mt-8 eyebrow text-muted">
         Published by
       </span>
       <span className="folio-reveal-label mt-3 font-display text-2xl font-light italic text-text">
@@ -815,7 +815,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           textShadow: "0 1px 6px rgba(16, 19, 12, 0.9)",
         }}
       >
-        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-text">
+        <span className="eyebrow text-text">
           <span ref={plateRef}>{padIndex(1)}</span>
           <span className="text-muted"> / {padIndex(images.length)}</span>
         </span>

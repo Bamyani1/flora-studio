@@ -131,14 +131,14 @@ export function Header() {
               <span
                 className={`text-[11px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
                   isNavItemActive(pathname, item.href)
-                    ? "text-white"
-                    : "text-white/60 hover:text-white"
+                    ? "text-[var(--color-header-link-active)]"
+                    : "text-[var(--color-header-link-muted)] can-hover:hover:text-[var(--color-header-link-active)]"
                 }`}
               >
                 {item.label}
               </span>
               <span
-                className={`absolute -bottom-2 left-0 w-full h-[1px] bg-white transition-transform duration-500 origin-left ${
+                className={`absolute -bottom-2 left-0 w-full h-[1px] bg-[var(--color-header-cta-bg)] transition-transform duration-500 origin-left ${
                   isNavItemActive(pathname, item.href)
                     ? "scale-x-100"
                     : "scale-x-0 group-hover:scale-x-100"
@@ -155,7 +155,8 @@ export function Header() {
             aria-label="Flora Studio"
             className="relative flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-500"
           >
-            <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
+            {/* Bone, not ember — the CTA is the header's single accent owner */}
+            <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-[var(--color-header-link-active)]" />
           </TransitionLink>
           <svg
             ref={branchRef}
@@ -206,7 +207,7 @@ export function Header() {
         {/* Pseudo-element grows the tap target to ~44px without inflating the visual box */}
         <button
           type="button"
-          className="md:hidden relative text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+          className="md:hidden relative eyebrow text-[var(--color-header-link-active)] border border-[color:var(--color-header-border)] px-4 py-1.5 can-hover:hover:bg-primary can-hover:hover:text-background transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
           onClick={() => useUIStore.getState().setMenuOpen(true)}
           aria-label="Open menu"
           aria-expanded={menuOpen}

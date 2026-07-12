@@ -14,7 +14,7 @@ export function Footer({
     <footer
       data-footer
       className={[
-        "flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-8 py-20 md:flex-row md:px-16",
+        "flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-[var(--container-padding-x)] py-[var(--section-padding-y)] md:flex-row",
         className,
       ]
         .filter(Boolean)
@@ -23,7 +23,7 @@ export function Footer({
       {/* Left — Logo + Copyright */}
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
         <FloraStudioLogo width={120} className="text-text" />
-        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-muted">
+        <div className="eyebrow text-muted">
           &copy; {new Date().getFullYear()} Flora Studio. All rights reserved.
         </div>
       </div>
@@ -35,7 +35,7 @@ export function Footer({
             <Link
               key={item.href}
               href={item.href}
-              className="inline-block py-3 -my-3 font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
+              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
             >
               {item.label}
             </Link>
@@ -46,7 +46,7 @@ export function Footer({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block py-3 -my-3 font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
+              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
             >
               {link.label}
             </a>
@@ -57,7 +57,7 @@ export function Footer({
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block py-3 -my-3 font-label text-[9px] uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-text"
+              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
             >
               {link.label}
             </Link>

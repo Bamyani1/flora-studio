@@ -105,7 +105,7 @@ export function SiteMedia({
       />
       <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center px-6">
         <div className="border border-primary/30 bg-background/60 px-4 py-3 backdrop-blur-sm">
-          <span className="font-label text-[10px] uppercase tracking-[0.35em] text-primary">
+          <span className="eyebrow text-primary">
             {label}
           </span>
         </div>

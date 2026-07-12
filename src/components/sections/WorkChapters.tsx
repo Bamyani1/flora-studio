@@ -165,7 +165,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                 >
                   <span
                     data-chapter-text
-                    className="font-label text-[10px] uppercase tracking-[0.2em] text-primary"
+                    className="eyebrow text-primary"
                   >
                     {padIndex(i + 1)} / {padIndex(total)}
                   </span>
@@ -186,7 +186,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   </h2>
                   <p
                     data-chapter-text
-                    className="mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-text/80"
+                    className="mt-4 eyebrow text-text/80"
                   >
                     {metaLine(album)}
                   </p>
@@ -213,7 +213,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
             className="group/tick flex h-6 items-center justify-end gap-2"
           >
             <span
-              className={`font-label text-[9px] tracking-[0.2em] text-primary transition-opacity duration-300 ${
+              className={`eyebrow text-primary transition-opacity duration-300 ${
                 active === i ? "opacity-100" : "opacity-0"
               }`}
             >

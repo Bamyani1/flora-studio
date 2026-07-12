@@ -5,6 +5,7 @@ import { resolveImageUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 import { WorkChapters } from "@/components/sections/WorkChapters";
 
 export const metadata: Metadata = {
@@ -41,7 +42,7 @@ export default async function WorkPage() {
           className="flex min-h-screen items-center justify-center bg-surface px-6 py-24 text-center"
         >
           <div className="max-w-2xl">
-            <p className="font-label text-[10px] uppercase tracking-[0.3em] text-primary">Work</p>
+            <p className="eyebrow text-primary">Work</p>
             <h1 className="mt-6 font-display text-4xl text-text-heading md:text-5xl">
               No published albums right now.
             </h1>
@@ -49,12 +50,15 @@ export default async function WorkPage() {
               The work archive is being updated. Check back soon or get in touch if you want to
               discuss a session.
             </p>
-            <TransitionLink
+            <Button
+              as={TransitionLink}
               href="/contact"
-              className="mt-10 inline-flex min-h-[44px] items-center border border-border px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors hover:border-border-hover hover:text-text-heading"
+              variant="outline"
+              size="xs"
+              className="mt-10 min-h-[44px]"
             >
-              Contact
-            </TransitionLink>
+              Get in touch
+            </Button>
           </div>
         </main>
       </>

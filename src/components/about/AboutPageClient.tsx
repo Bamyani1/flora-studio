@@ -276,7 +276,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
           <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
-            <h1 className="font-display text-5xl md:text-[8rem] text-on-surface leading-[0.9] tracking-tighter mb-10">
+            <h1 className="font-display text-5xl md:text-8xl text-on-surface leading-[0.9] tracking-tighter mb-10">
               <StaggeredText text={content.hero.titleLine1} />
               <span data-about-animate="blur-in" className="italic text-primary block mt-4">
                 {content.hero.titleLine2}
@@ -445,7 +445,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                             alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
                             fill
                             sizes="(max-width: 1023px) 100vw, 0px"
-                            className="object-cover object-center can-hover:grayscale can-hover:group-hover:grayscale-0 transition-all duration-1000"
+                            className="object-cover object-center transition-transform duration-1000"
                           />
                         </div>
                       </div>
@@ -500,7 +500,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             >
               <SiteMedia
                 alt={content.process.image.alt ?? ""}
-                className="w-full h-full object-cover can-hover:grayscale can-hover:brightness-50 can-hover:group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
+                className="w-full h-full object-cover transition-transform duration-[2s] scale-110 can-hover:group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
                 src={resolveImageUrl(content.process.image)}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
@@ -515,7 +515,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
         <section className="py-40 md:py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
-            <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
+            <h2 className="font-display text-6xl md:text-8xl tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text={content.cta.titleLine1} />
               <span
                 data-about-animate="fade-up"

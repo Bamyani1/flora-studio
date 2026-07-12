@@ -2,6 +2,16 @@
 
 @custom-variant can-hover (@media (hover: hover) and (pointer: fine));
 
+/* The signature 10px uppercase label. One spec — size, face, and tracking —
+   so the eyebrow idiom can't drift per component; color is set at call sites
+   (text-primary for accent, text-muted for quiet). */
+@utility eyebrow {
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+}
+
 /* ============================================
    FLORA STUDIO — Design Token System
    ============================================ */
@@ -49,6 +59,8 @@
   --text-5xl: 3.5rem; /* 56px */
   --text-6xl: 4.5rem; /* 72px */
   --text-7xl: 6rem; /* 96px */
+  --text-8xl: 8rem; /* 128px — display giants (About) */
+  --text-9xl: 9rem; /* 144px */
 
   /* --- Typography: Font Weights --- */
   --font-thin: 200;
@@ -66,6 +78,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
+  --tracking-eyebrow: 0.2em; /* the approved 10px-label grammar (chapters, folio counter) */
   --tracking-hero: 0.12em; /* FLORA STUDIO wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
@@ -119,6 +132,7 @@
   --section-padding-y-mobile: 4rem; /* 64px on mobile */
   --container-padding-x: 2rem; /* 32px horizontal page padding */
   --container-padding-x-mobile: 1rem; /* 16px on mobile */
+  --container-padding-x-wide: clamp(1rem, 10vw, 9rem); /* roomy gutter for card pages (contact) */
   --header-height: 5rem; /* 80px — expanded at top */
   --header-height-compact: 3.5rem; /* 56px — on scroll */
   --header-py-expanded: 1.25rem; /* 20px */
