@@ -10,6 +10,21 @@ import type {
   ProcessStepContent,
 } from "@/types/content";
 
+function hasImageSource(image: SanityImage | null | undefined): boolean {
+  return Boolean(image && (image.asset?._ref || image.asset?.url || image.url));
+}
+
+function requireImage(image: SanityImage | null | undefined, field: string): SanityImage {
+  if (!image || !hasImageSource(image)) {
+    throw new Error(`${field} missing image asset`);
+  }
+  return image;
+}
+
+function filterImages<T extends SanityImage>(images: T[] | null | undefined): T[] {
+  return (images ?? []).filter((image) => hasImageSource(image));
+}
+
 export interface RawHomePage {
   _id: string;
   heroEyebrow: string;
@@ -31,6 +46,7 @@ export interface RawHomePage {
   exhibitionImage: SanityImage;
   exhibitionCta: LinkField;
   studioImage: SanityImage;
+  studioCtaEyebrow: string;
   studioCtaLabel: string;
   studioCta: LinkField;
 }
@@ -43,10 +59,10 @@ export function mapHomePageContent(doc: RawHomePage): HomePageContent {
       titleLine1: doc.heroTitleLine1,
       titleLine2: doc.heroTitleLine2,
       description: doc.heroDescription,
-      mediaCycle: doc.heroMediaCycle,
+      mediaCycle: filterImages(doc.heroMediaCycle),
     },
     editorial: {
-      image: doc.editorialImage,
+      image: requireImage(doc.editorialImage, "homePage.editorialImage"),
       titleLine1: doc.editorialTitleLine1,
       titleLine2Lead: doc.editorialTitleLine2Lead,
       titleLine2Muted: doc.editorialTitleLine2Muted,
@@ -60,10 +76,11 @@ export function mapHomePageContent(doc: RawHomePage): HomePageContent {
       titleLine2: doc.exhibitionTitleLine2,
       description: doc.exhibitionDescription,
       cta: doc.exhibitionCta,
-      image: doc.exhibitionImage,
+      image: requireImage(doc.exhibitionImage, "homePage.exhibitionImage"),
     },
     studio: {
-      image: doc.studioImage,
+      image: requireImage(doc.studioImage, "homePage.studioImage"),
+      ctaEyebrow: doc.studioCtaEyebrow,
       ctaLabel: doc.studioCtaLabel,
       cta: doc.studioCta,
     },
@@ -116,14 +133,17 @@ export function mapAboutPageContent(doc: RawAboutPage): AboutPageContent {
       eyebrow: doc.teamEyebrow,
       title: doc.teamTitle,
       description: doc.teamDescription,
-      members: doc.teamMembers,
+      members: (doc.teamMembers ?? []).map((member) => ({
+        ...member,
+        portrait: hasImageSource(member.portrait) ? member.portrait : null,
+      })),
     },
     process: {
       eyebrow: doc.processEyebrow,
       title: doc.processTitle,
       description: doc.processDescription,
       cards: doc.processCards,
-      image: doc.processImage,
+      image: requireImage(doc.processImage, "aboutPage.processImage"),
     },
     cta: {
       eyebrow: doc.ctaEyebrow,
@@ -153,13 +173,16 @@ export function mapProcessPageContent(doc: RawProcessPage): ProcessPageContent {
     hero: {
       titleLine1: doc.heroTitleLine1,
       titleLine2: doc.heroTitleLine2,
-      image: doc.heroImage,
+      image: requireImage(doc.heroImage, "processPage.heroImage"),
     },
     intro: {
       title: doc.introTitle,
       description: doc.introDescription,
     },
-    steps: doc.steps,
+    steps: (doc.steps ?? []).map((step) => ({
+      ...step,
+      images: filterImages(step.images),
+    })),
     contactCta: {
       heading: doc.contactHeading,
       buttonLabel: doc.contactButtonLabel,

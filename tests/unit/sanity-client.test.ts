@@ -63,12 +63,30 @@ describe("sanity fetch client", () => {
     );
   });
 
-  it("throws when the project is configured but SANITY_READ_TOKEN is missing", async () => {
+  it("uses the CDN for tokenless published reads in production", async () => {
     delete process.env.SANITY_READ_TOKEN;
 
     const { sanityFetch } = await import("@/sanity/client");
 
-    await expect(sanityFetch({ query: "*[_type == 'album']" })).rejects.toMatchObject({
+    await sanityFetch({ query: "*[_type == 'album']" });
+
+    expect(mockCreateClient).toHaveBeenCalledWith(
+      expect.objectContaining({
+        perspective: "published",
+        token: undefined,
+        useCdn: true,
+      }),
+    );
+  });
+
+  it("throws when preview reads are missing SANITY_READ_TOKEN", async () => {
+    delete process.env.SANITY_READ_TOKEN;
+
+    const { sanityFetch } = await import("@/sanity/client");
+
+    await expect(
+      sanityFetch({ query: "*[_type == 'album']", perspective: "previewDrafts" }),
+    ).rejects.toMatchObject({
       name: "SanityConfigurationError",
       message: "Missing SANITY_READ_TOKEN for server-side Sanity reads.",
     });

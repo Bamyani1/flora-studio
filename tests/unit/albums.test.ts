@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  PLACEHOLDER_ALL_ALBUMS,
-  PLACEHOLDER_ALBUM_MAP,
-  PLACEHOLDER_FEATURED_ALBUMS,
-} from "@/lib/placeholder-data";
+import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
 import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "@/lib/e2e-content";
 
 vi.mock("server-only", () => ({}));
@@ -25,14 +21,6 @@ describe("album loaders", () => {
     const { getAllAlbums } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).resolves.toEqual(PLACEHOLDER_ALL_ALBUMS);
-  });
-
-  it("returns a featured album from placeholders", async () => {
-    const { getFeaturedAlbum } = await import("@/lib/albums");
-
-    const result = await getFeaturedAlbum();
-
-    expect(PLACEHOLDER_FEATURED_ALBUMS).toContainEqual(result);
   });
 
   it("returns placeholder album slugs", async () => {
@@ -60,13 +48,11 @@ describe("album loaders", () => {
   it("returns deterministic fixture content in e2e mode", async () => {
     process.env.CONTENT_RUNTIME_MODE = "e2e";
 
-    const { getAllAlbums, getAlbumBySlug, getAlbumSlugs, getFeaturedAlbum } =
-      await import("@/lib/albums");
+    const { getAllAlbums, getAlbumBySlug, getAlbumSlugs } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).resolves.toEqual(E2E_ALBUMS);
     await expect(getAlbumSlugs()).resolves.toEqual([{ slug: E2E_PRIMARY_ALBUM_SLUG }]);
     await expect(getAlbumBySlug(E2E_PRIMARY_ALBUM_SLUG)).resolves.toEqual(E2E_ALBUMS[0]);
-    await expect(getFeaturedAlbum()).resolves.toEqual(E2E_ALBUMS[0]);
   });
 
   it("returns null for non-fixture album slugs in e2e mode", async () => {

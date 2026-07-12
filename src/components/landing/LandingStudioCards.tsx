@@ -8,11 +8,12 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 
 interface LandingStudioCardsProps {
+  ctaEyebrow: string;
   ctaLabel: string;
   ctaHref: string;
 }
 
-export function LandingStudioCards({ ctaLabel, ctaHref }: LandingStudioCardsProps) {
+export function LandingStudioCards({ ctaEyebrow, ctaLabel, ctaHref }: LandingStudioCardsProps) {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -71,8 +72,11 @@ export function LandingStudioCards({ ctaLabel, ctaHref }: LandingStudioCardsProp
         </p>
       </div>
 
-      {/* Right — CTA button */}
-      <div ref={rightRef} className="flex md:justify-end">
+      {/* Right — eyebrow + CTA button */}
+      <div ref={rightRef} className="flex flex-col items-start md:items-end">
+        <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px] mb-6">
+          {ctaEyebrow}
+        </span>
         <TransitionLink
           href={ctaHref}
           className="inline-block bg-text px-10 py-5 font-label text-xs uppercase tracking-[0.2em] text-surface-deep transition-colors duration-500 hover:bg-text/85"

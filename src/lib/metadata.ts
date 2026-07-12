@@ -10,6 +10,9 @@ export function jsonLdString(data: unknown): string {
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: `${SITE_NAME} | Photography that's worth keeping`,
     template: `%s | ${SITE_NAME}`,

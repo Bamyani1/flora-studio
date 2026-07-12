@@ -98,7 +98,8 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         (() => {
           const seen = new Set<string>();
           const galleryImages = [...album.images, album.heroImage].filter((img) => {
-            const key = img.url ?? img.asset._ref;
+            const key = img.url ?? img.asset?._ref;
+            if (!key) return false;
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
