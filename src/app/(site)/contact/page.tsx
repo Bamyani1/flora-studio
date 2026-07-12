@@ -26,7 +26,8 @@ function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
   const phoneHref = `tel:+1${siteSettings.phone.replace(/\D/g, "")}`;
 
   return (
-    <FadeIn delay={0.2}>
+    // Mount reveal: the studio's contact details must never wait on a scroll trigger
+    <FadeIn delay={0.2} immediate>
       <p className="mb-1 font-body text-base text-text-heading">{siteSettings.location}</p>
       <p className="mt-3 font-body text-sm text-muted">
         <a

@@ -4,7 +4,7 @@ import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "../../src/lib/e2e-content";
 const ROUTE_ASSERTIONS = [
   { route: "/", text: "Every frame," },
   { route: "/about", text: "Who We" },
-  { route: "/process", text: "Our Process:" },
+  { route: "/process", text: "Frame by" },
   { route: "/contact", text: "Get in" },
 ] as const;
 
