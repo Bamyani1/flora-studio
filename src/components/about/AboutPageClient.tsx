@@ -414,18 +414,18 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                         <div className="flex items-start md:items-center justify-between gap-4">
                           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
                             <span
-                              className={`font-mono text-sm transition-colors duration-500 group-hover:text-primary ${active ? "text-primary" : "text-primary/40"}`}
+                              className={`font-mono text-sm transition-colors duration-500 can-hover:group-hover:text-primary ${active ? "text-primary/40 lg:text-primary" : "text-primary/40"}`}
                             >
                               0{index + 1}
                             </span>
                             <h3
-                              className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight group-hover:text-white ${active ? "text-white" : "text-on-surface"}`}
+                              className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight can-hover:group-hover:text-white ${active ? "text-on-surface lg:text-white" : "text-on-surface"}`}
                             >
                               {member.name}
                             </h3>
                           </div>
                           <div
-                            className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
+                            className={`w-10 h-10 rounded-full border hidden lg:flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
                           >
                             <ChevronRight
                               className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
@@ -460,9 +460,9 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-64 px-6 bg-surface-container-lowest md:px-12">
-          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
-            <div className="order-2 md:order-1 space-y-20">
+        <section className="py-24 md:py-64 px-6 bg-surface-container-lowest md:px-12">
+          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32 items-center">
+            <div className="space-y-10 md:space-y-20">
               <div className="space-y-8">
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
                   <StaggeredText text={content.process.title} />
@@ -496,7 +496,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             </div>
             <div
               data-about-animate="process-image"
-              className="order-1 md:order-2 aspect-square relative group overflow-hidden"
+              className="aspect-square relative group overflow-hidden"
             >
               <SiteMedia
                 alt={content.process.image.alt ?? ""}
@@ -513,7 +513,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
+        <section className="py-40 md:py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
             <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text={content.cta.titleLine1} />

@@ -46,7 +46,7 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-center">
-          <div ref={textColRef} className="order-2 md:order-1 w-full md:w-1/2">
+          <div ref={textColRef} className="w-full md:w-1/2">
             <h3 className="font-headline text-5xl md:text-7xl italic text-white mb-8 leading-tight">
               {content.titleLine1}
               <br />
@@ -66,7 +66,7 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
             </Button>
           </div>
 
-          <div className="order-1 md:order-2 w-full md:w-1/2">
+          <div className="w-full md:w-1/2">
             <CinematicImageReveal
               src={resolveImageUrl(content.image)}
               alt={content.image.alt ?? ""}
