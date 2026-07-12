@@ -104,6 +104,7 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
       "/images/game-day/hero.jpg",
       "Flora Studio game day action photograph",
     ),
+    ctaEyebrow: "Work With Us",
     ctaLabel: "Inquire for 2026",
     cta: {
       label: "Inquire for 2026",

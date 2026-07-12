@@ -32,7 +32,7 @@ export default async function ProcessPage() {
       <ProcessExperience
         heroImage={{
           src: resolveImageUrl(processPage.hero.image) ?? "",
-          alt: processPage.hero.image.alt ?? "Flora Studio process hero",
+          alt: processPage.hero.image?.alt ?? "Flora Studio process hero",
         }}
         heroTitleLine1={processPage.hero.titleLine1}
         heroTitleLine2={processPage.hero.titleLine2}
@@ -40,7 +40,7 @@ export default async function ProcessPage() {
         introDescription={processPage.intro.description}
         steps={processPage.steps.map((step) => ({
           ...step,
-          images: step.images.map((image) => ({
+          images: (step.images ?? []).map((image) => ({
             src: resolveImageUrl(image) ?? "",
             alt: image.alt ?? `${step.title} image`,
           })),

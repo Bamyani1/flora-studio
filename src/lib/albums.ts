@@ -1,9 +1,5 @@
 import { normalizeImage } from "@/lib/image-url";
-import {
-  PLACEHOLDER_ALL_ALBUMS,
-  PLACEHOLDER_ALBUM_MAP,
-  PLACEHOLDER_FEATURED_ALBUMS,
-} from "@/lib/placeholder-data";
+import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
 import { E2E_ALBUMS, getE2EAlbumBySlug } from "@/lib/e2e-content";
 import {
   getContentRuntimeMode,
@@ -11,12 +7,7 @@ import {
   resolveContentAvailabilityFailure,
 } from "@/lib/content-runtime.server";
 import { sanityFetch } from "@/sanity/client";
-import {
-  ALBUMS_QUERY,
-  ALBUM_BY_SLUG_QUERY,
-  ALBUM_SLUGS_QUERY,
-  FEATURED_ALBUMS_QUERY,
-} from "@/sanity/queries";
+import { ALBUMS_QUERY, ALBUM_BY_SLUG_QUERY, ALBUM_SLUGS_QUERY } from "@/sanity/queries";
 import type { Album, AlbumMeta } from "@/types/project";
 
 export interface AlbumNavigationItem {
@@ -81,32 +72,6 @@ export async function getAllAlbums(): Promise<AlbumMeta[]> {
     return albums.map(normalizeAlbumMeta);
   } catch (error) {
     return resolveContentAvailabilityFailure("albums", error, () => PLACEHOLDER_ALL_ALBUMS);
-  }
-}
-
-export async function getFeaturedAlbum(): Promise<AlbumMeta | null> {
-  const pick = <T>(arr: T[]): T => {
-    const now = new Date();
-    const dayOfYear = Math.floor(
-      (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000,
-    );
-    return arr[dayOfYear % arr.length];
-  };
-
-  if (isE2EContentRuntime()) {
-    const featuredAlbum = E2E_ALBUMS.find((album) => album.featured) ?? E2E_ALBUMS[0] ?? null;
-    return featuredAlbum ? normalizeAlbumMeta(featuredAlbum) : null;
-  }
-  if (!shouldFetchFromSanity()) return pick(PLACEHOLDER_FEATURED_ALBUMS);
-
-  try {
-    const albums = await sanityFetch<AlbumMeta[]>({ query: FEATURED_ALBUMS_QUERY });
-    if (albums.length === 0) return null;
-    return normalizeAlbumMeta(pick(albums));
-  } catch (error) {
-    return resolveContentAvailabilityFailure("featuredAlbum", error, () =>
-      pick(PLACEHOLDER_FEATURED_ALBUMS),
-    );
   }
 }
 

@@ -20,6 +20,7 @@ export async function LandingStudio({ content }: LandingStudioProps) {
             src={resolveImageUrl(content.image)}
             alt={content.image.alt ?? ""}
             className="w-full"
+            sizes="(min-width: 1200px) 1104px, calc(100vw - 3rem)"
             width={dims?.width ?? 2041}
             height={dims?.height ?? 3200}
           />
@@ -28,7 +29,11 @@ export async function LandingStudio({ content }: LandingStudioProps) {
 
       {/* CTA section */}
       <section className="bg-surface-deep py-28 md:py-40">
-        <LandingStudioCards ctaLabel={content.ctaLabel} ctaHref={content.cta.href} />
+        <LandingStudioCards
+          ctaEyebrow={content.ctaEyebrow}
+          ctaLabel={content.ctaLabel}
+          ctaHref={content.cta.href}
+        />
       </section>
     </>
   );
