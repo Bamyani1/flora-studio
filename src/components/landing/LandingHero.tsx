@@ -311,11 +311,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         />
 
         <div className="flex flex-col text-shadow-hero">
-          <h1 className="font-display font-light leading-[1.2] tracking-[0.04em] text-[clamp(0.9rem,2vw,1.8rem)] text-white/65 mb-1">
+          <h1 className="font-display font-light leading-[1.2] tracking-[0.04em] text-[clamp(0.9rem,2vw,1.8rem)] text-white/90 mb-1">
             <span ref={line1Ref} data-animate>
               {content.titleLine1}{" "}
             </span>
-            <span ref={line2Ref} data-animate className="text-hero-gold/55 italic">
+            <span ref={line2Ref} data-animate className="text-hero-gold italic">
               {content.titleLine2}
             </span>
           </h1>
@@ -323,7 +323,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
           <p
             ref={descRef}
             data-animate
-            className="font-body font-light text-[clamp(0.65rem,0.9vw,0.8rem)] uppercase tracking-[0.25em] text-hero-muted/60"
+            className="font-body font-light text-[clamp(0.75rem,0.9vw,0.8rem)] uppercase tracking-[0.25em] text-hero-muted/90"
           >
             {content.description}
           </p>

@@ -28,7 +28,7 @@ export function AlbumHero({ title, category, year, location, heroImage, blurData
       <ImageReveal className="absolute inset-0">
         <SiteMedia
           src={heroSrc}
-          alt={`${title} hero`}
+          alt={heroImage?.alt || title}
           fill
           priority
           quality={90}
@@ -40,6 +40,17 @@ export function AlbumHero({ title, category, year, location, heroImage, blurData
 
       {/* Dark overlay for text legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+
+      {/* Localized scrim behind the title block — guarantees legibility over
+          bright hero photographs where the global gradient thins out */}
+      <div
+        className="absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(ellipse 58% 42% at 16% 96%, color-mix(in srgb, var(--color-background) 82%, transparent), transparent 72%)",
+        }}
+      />
 
       {/* Content overlay */}
       <div className="absolute inset-x-0 bottom-0 px-[var(--container-padding-x)] pb-[var(--space-16)]">
@@ -54,7 +65,7 @@ export function AlbumHero({ title, category, year, location, heroImage, blurData
 
         {metaParts.length > 0 && (
           <FadeIn delay={0.5}>
-            <p className="mt-[var(--space-4)] font-label text-sm uppercase tracking-wider text-muted">
+            <p className="mt-[var(--space-4)] font-label text-sm uppercase tracking-wider text-text/80">
               {metaParts.join(" \u2022 ")}
             </p>
           </FadeIn>

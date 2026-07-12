@@ -227,19 +227,19 @@ function TitleContent({ title, count }: { title: string; count: number }) {
         className="folio-title-text text-center font-display font-light uppercase leading-[0.95]"
         style={{
           fontSize: "clamp(4rem, 10vw, 8rem)",
-          WebkitTextStroke: "1.5px color-mix(in srgb, var(--color-text) 40%, transparent)",
+          WebkitTextStroke: "1.5px color-mix(in srgb, var(--color-text) 55%, transparent)",
           color: "transparent",
         }}
       >
         {title}
       </h2>
       <div className="folio-reveal-label mt-6 h-px bg-primary" style={{ width: 60 }} />
-      <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
+      <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted">
         {imageCountLabel(count)}
       </span>
       <div className="folio-reveal-label mt-12 flex flex-col items-center gap-3">
         <div className="h-10 w-px bg-primary/30" />
-        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
+        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted">
           Scroll
         </span>
       </div>
@@ -594,7 +594,11 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const plateRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
 
-  const pages = buildFolioPages(images, videoUrl);
+  // Alt fallbacks describe the work, not the layout slot ("Photograph 03")
+  const describedImages = images.map((img, i) =>
+    img.alt ? img : { ...img, alt: `${title}, photograph ${i + 1}` },
+  );
+  const pages = buildFolioPages(describedImages, videoUrl);
 
   useGSAP(
     () => {
@@ -805,7 +809,11 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         ref={counterRef}
         aria-hidden="true"
         className="pointer-events-none invisible fixed bottom-4 left-4 z-30 opacity-0 md:bottom-8 md:left-8"
-        style={{ marginBottom: "env(safe-area-inset-bottom)" }}
+        style={{
+          marginBottom: "env(safe-area-inset-bottom)",
+          // The counter floats over plates of unpredictable brightness
+          textShadow: "0 1px 6px rgba(16, 19, 12, 0.9)",
+        }}
       >
         <span className="font-label text-[10px] uppercase tracking-[0.2em] text-text">
           <span ref={plateRef}>{padIndex(1)}</span>

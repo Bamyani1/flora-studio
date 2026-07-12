@@ -120,9 +120,9 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
             <article
               key={album._id}
               data-chapter
-              className={`relative overflow-hidden ${i === 0 ? "h-svh" : "h-[78svh] md:h-[92vh]"}${
-                i > 1 ? " chapter-panel-deferred" : ""
-              }`}
+              className={`relative overflow-hidden scroll-mt-[var(--header-height)] ${
+                i === 0 ? "h-svh" : "h-[78svh] md:h-[92vh]"
+              }${i > 1 ? " chapter-panel-deferred" : ""}`}
             >
               <TransitionLink
                 href={`/work/${album.slug.current}`}
@@ -131,7 +131,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                 <div className="chapter-cover absolute inset-0">
                   <SiteMedia
                     src={resolveImageUrl(album.coverImage)}
-                    alt={album.coverImage.alt || `${album.title} cover`}
+                    alt={album.coverImage.alt || album.title}
                     fill
                     priority={i === 0}
                     quality={85}
@@ -144,6 +144,18 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                 <div
                   className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"
                   aria-hidden="true"
+                />
+
+                {/* Directional scrim biased toward the text corner — the global
+                    gradient alone can't guarantee legibility over bright covers */}
+                <div
+                  className="absolute inset-0"
+                  aria-hidden="true"
+                  style={{
+                    background: `radial-gradient(ellipse 62% 46% at ${
+                      alignRight ? "82%" : "18%"
+                    } 96%, color-mix(in srgb, var(--color-background) 82%, transparent), transparent 72%)`,
+                  }}
                 />
 
                 <div
@@ -174,7 +186,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   </h2>
                   <p
                     data-chapter-text
-                    className="mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted"
+                    className="mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-text/80"
                   >
                     {metaLine(album)}
                   </p>
@@ -189,7 +201,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
       <nav
         ref={railRef}
         aria-label="Album chapters"
-        className="invisible fixed right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-end gap-3 opacity-0 lg:flex"
+        className="invisible fixed right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-end gap-1.5 opacity-0 lg:flex"
       >
         {albums.map((album, i) => (
           <button
@@ -198,7 +210,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
             onClick={() => scrollToChapter(i)}
             aria-label={`Chapter ${i + 1}: ${album.title}`}
             aria-current={active === i ? "true" : undefined}
-            className="group/tick flex h-4 items-center justify-end gap-2"
+            className="group/tick flex h-6 items-center justify-end gap-2"
           >
             <span
               className={`font-label text-[9px] tracking-[0.2em] text-primary transition-opacity duration-300 ${

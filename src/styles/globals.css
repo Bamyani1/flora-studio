@@ -373,7 +373,11 @@ html.lenis body {
 
 /* --- Focus Visible — consistent keyboard focus ring --- */
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 4px;
 }

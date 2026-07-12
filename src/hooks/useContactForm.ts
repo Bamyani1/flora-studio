@@ -29,6 +29,7 @@ function mapIssuesToFieldErrors(data: ContactFormData): ContactFieldErrors {
 export function useContactForm<TData extends ContactFormData>({ getData }: UseContactFormOptions<TData>) {
   const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
+  const [errorSummary, setErrorSummary] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
@@ -61,15 +62,32 @@ export function useContactForm<TData extends ContactFormData>({ getData }: UseCo
       event.preventDefault();
       setFormError(null);
 
-      const data = getData(new FormData(event.currentTarget));
+      const form = event.currentTarget;
+      const data = getData(new FormData(form));
       const errors = mapIssuesToFieldErrors(data);
 
       if (Object.keys(errors).length > 0) {
         setFieldErrors(errors);
+        const count = Object.keys(errors).length;
+        setErrorSummary(count === 1 ? "1 field needs attention" : `${count} fields need attention`);
+
+        // Move the user to the first problem — an error rendered below the
+        // fold (or inside a scrolled panel) is otherwise invisible.
+        window.requestAnimationFrame(() => {
+          for (const el of form.querySelectorAll<HTMLElement>("[data-field]")) {
+            const field = el.dataset.field as ContactFieldName;
+            if (errors[field]) {
+              el.focus();
+              el.scrollIntoView({ block: "center" });
+              break;
+            }
+          }
+        });
         return;
       }
 
       setFieldErrors({});
+      setErrorSummary(null);
       setIsPending(true);
 
       let result: ContactActionResult;
@@ -94,12 +112,14 @@ export function useContactForm<TData extends ContactFormData>({ getData }: UseCo
   const resetSubmitted = useCallback(() => {
     setFieldErrors({});
     setFormError(null);
+    setErrorSummary(null);
     setSubmitted(false);
   }, []);
 
   return {
     fieldErrors,
     formError,
+    errorSummary,
     submitted,
     isPending,
     validateField,

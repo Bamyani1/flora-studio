@@ -117,7 +117,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
           <h2 className="mb-6 font-display text-4xl font-light tracking-tight text-[var(--process-on-surface)] md:text-6xl">
             {title}
           </h2>
-          <p className="mx-auto max-w-2xl font-body leading-relaxed text-on-surface-variant/70">
+          <p className="mx-auto max-w-2xl font-body leading-relaxed text-on-surface-variant/90">
             {description}
           </p>
         </div>
@@ -161,7 +161,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   <ul
                     data-step-text
                     data-timeline-animate
-                    className="mt-6 space-y-3 font-label text-[10px] uppercase tracking-widest text-on-surface-variant/75"
+                    className="mt-6 space-y-3 font-label text-[10px] uppercase tracking-widest text-on-surface-variant/90"
                   >
                     {metaItems.map((item) => (
                       <li
@@ -199,7 +199,9 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   data-timeline-animate
                   className="flex h-12 w-12 items-center justify-center border border-primary/20 bg-[var(--process-surface-container)] backdrop-blur-md"
                 >
-                  <span className="font-display text-xl italic text-[var(--process-primary)]">
+                  {/* Lining Inter figures — italic serif digits misread ("01" → "OI"),
+                      and bone clears AA where 20px ember measured 3.8:1 */}
+                  <span className="font-label text-sm tracking-[0.15em] text-text">
                     {step.id}
                   </span>
                 </div>
@@ -256,7 +258,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               </div>
 
               <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 md:hidden">
-                <span className="font-display text-sm italic text-[var(--process-on-primary)]">
+                <span className="font-label text-sm tracking-[0.1em] text-[var(--process-on-primary)]">
                   {step.id}
                 </span>
               </div>

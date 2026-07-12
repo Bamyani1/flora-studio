@@ -10,11 +10,24 @@ import { PHOTOGRAPHY_TYPE_OPTIONS, type ContactFormData } from "@/lib/validation
 
 const photographyOptions = [{ value: "", label: "Select one" }, ...PHOTOGRAPHY_TYPE_OPTIONS];
 
-const labelClass = "block font-label text-xs uppercase tracking-wider text-primary/70 mb-2";
+// Labels in bone (ember at /70 measured ~3.1:1 — fails AA for 12px text, and
+// ten ember touchpoints in one column dilute the single-accent system);
+// resting borders at muted/70 clear the 3:1 non-text floor on the panel.
+const labelClass = "block font-label text-xs uppercase tracking-wider text-text mb-2";
 const inputClass =
-  "w-full bg-transparent border border-border/30 rounded-sm px-4 py-3 font-body text-text tracking-wider text-sm focus:border-primary/40 focus:outline-2 focus:outline-primary focus:outline-offset-2 transition-colors duration-300 placeholder:text-muted/40 placeholder:tracking-wider placeholder:text-sm";
+  "w-full bg-transparent border border-muted/70 rounded-sm px-4 py-3 font-body text-text text-sm focus:border-primary focus:outline-2 focus:outline-primary focus:outline-offset-2 transition-colors duration-300 placeholder:text-muted/70 placeholder:text-sm";
 
 const MAX_ALTERNATE_DATES = 2;
+
+// Callback ref: applied client-side only, so the prerendered HTML doesn't bake
+// in the build date. Booking a shoot in the past is never a valid inquiry.
+function setMinToday(el: HTMLInputElement | null) {
+  if (!el) return;
+  const now = new Date();
+  el.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+    now.getDate(),
+  ).padStart(2, "0")}`;
+}
 
 function extractFormData(formData: FormData): ContactFormData {
   const alternateDates = formData
@@ -43,6 +56,7 @@ export function CinematicContactForm() {
   const {
     fieldErrors,
     formError,
+    errorSummary,
     submitted,
     isPending,
     validateField,
@@ -181,6 +195,12 @@ export function CinematicContactForm() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="space-y-6">
+          {/* One polite summary for screen readers — the individual field
+              alerts firing all at once announce as a jumble */}
+          <p className="sr-only" role="status" aria-live="polite">
+            {errorSummary}
+          </p>
+
           {/* Honeypot */}
           <div
             aria-hidden="true"
@@ -221,8 +241,9 @@ export function CinematicContactForm() {
                 name="sender"
                 type="text"
                 required
-                autoComplete="off"
-                className={`${inputClass} capitalize`}
+                autoComplete="name"
+                data-field="name"
+                className={inputClass}
                 aria-invalid={!!fieldErrors.name}
                 aria-describedby={fieldErrors.name ? "sender-error" : undefined}
                 onChange={handleFieldChange("name")}
@@ -243,7 +264,8 @@ export function CinematicContactForm() {
                 name="reply_to"
                 type="email"
                 required
-                autoComplete="off"
+                autoComplete="email"
+                data-field="email"
                 className={inputClass}
                 aria-invalid={!!fieldErrors.email}
                 aria-describedby={fieldErrors.email ? "reply-to-error" : undefined}
@@ -273,6 +295,7 @@ export function CinematicContactForm() {
                   id="photographyType"
                   name="photographyType"
                   required
+                  data-field="photographyType"
                   className={`${inputClass} cursor-pointer appearance-none pr-10`}
                   defaultValue=""
                   aria-invalid={!!fieldErrors.photographyType}
@@ -312,13 +335,13 @@ export function CinematicContactForm() {
 
             <div className="group">
               <div className="mb-2 flex items-baseline justify-between">
-                <label htmlFor="preferredDate" className="block font-label text-xs uppercase tracking-wider text-primary/70">
+                <label htmlFor="preferredDate" className="font-label text-xs uppercase tracking-wider text-text">
                   Ideal date
                 </label>
                 {alternateDateIds.length < MAX_ALTERNATE_DATES && (
                   <button
                     type="button"
-                    className="font-label text-xs uppercase tracking-wider text-primary/70 transition-colors hover:text-primary"
+                    className="font-label text-xs uppercase tracking-wider text-primary transition-colors can-hover:hover:text-text"
                     onClick={addAlternateDate}
                   >
                     + Add an alternate date
@@ -330,6 +353,8 @@ export function CinematicContactForm() {
                 name="preferredDate"
                 type="date"
                 required
+                ref={setMinToday}
+                data-field="preferredDate"
                 className={`${inputClass} [color-scheme:dark]`}
                 aria-invalid={!!fieldErrors.preferredDate}
                 aria-describedby={fieldErrors.preferredDate ? "preferred-date-error" : undefined}
@@ -348,19 +373,20 @@ export function CinematicContactForm() {
                 <div className="mb-2 flex items-baseline justify-between">
                   <label
                     htmlFor={id}
-                    className="block font-label text-xs uppercase tracking-wider text-primary/70"
+                    className="font-label text-xs uppercase tracking-wider text-text"
                   >
-                    {`Alternate date ${index + 1}`}
+                    {`Alternate date ${index + 1}`}{" "}
+                    <span className="text-muted">(optional)</span>
                   </label>
                   <button
                     type="button"
-                    className="font-label text-xs uppercase tracking-wider text-muted transition-colors hover:text-primary"
+                    className="font-label text-xs uppercase tracking-wider text-muted transition-colors can-hover:hover:text-primary"
                     onClick={() => removeAlternateDate(id)}
                   >
                     Remove
                   </button>
                 </div>
-                <input id={id} name="alternateDates" type="date" className={`${inputClass} [color-scheme:dark]`} />
+                <input id={id} name="alternateDates" type="date" ref={setMinToday} className={`${inputClass} [color-scheme:dark]`} />
               </div>
             ))}
 
@@ -373,7 +399,8 @@ export function CinematicContactForm() {
                 name="location"
                 type="text"
                 required
-                autoComplete="off"
+                autoComplete="address-level2"
+                data-field="location"
                 placeholder="City, venue, or flexible"
                 className={inputClass}
                 aria-invalid={!!fieldErrors.location}
@@ -397,13 +424,14 @@ export function CinematicContactForm() {
           >
             <div className="group">
               <label htmlFor="message" className={labelClass}>
-                Anything else?
+                Anything else? <span className="text-muted">(optional)</span>
               </label>
               <textarea
                 id="message"
                 name="message"
                 rows={4}
-                placeholder="Vibe, references, anything specific you'd want us to know."
+                placeholder="Mood, references, or anything you'd want us to know."
+                data-field="message"
                 className={`${inputClass} resize-none`}
                 aria-invalid={!!fieldErrors.message}
                 aria-describedby={fieldErrors.message ? "message-error" : undefined}
@@ -419,14 +447,17 @@ export function CinematicContactForm() {
           </div>
 
           <div data-form-animate data-form-submit style={{ opacity: 0 }}>
+            {/* Solid ember at rest (the /80 tint measured 3.9:1 — below AA); the
+                shimmer only spins while hovered on fine pointers so touch devices
+                don't run two conic gradients forever */}
             <button
               type="submit"
               disabled={isPending}
-              className="group relative w-full overflow-hidden p-[3px] bg-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
+              className="group relative w-full overflow-hidden p-[3px] bg-primary disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,color-mix(in_srgb,white_40%,transparent)_95%,color-mix(in_srgb,white_70%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
-              <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,color-mix(in_srgb,white_30%,transparent)_95%,color-mix(in_srgb,white_60%,transparent)_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="relative z-10 flex w-full items-center justify-center bg-primary/80 py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 group-hover:bg-primary">
+              <span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,color-mix(in_srgb,white_40%,transparent)_95%,color-mix(in_srgb,white_70%,transparent)_100%)] opacity-0 can-hover:group-hover:opacity-100 can-hover:group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-500 blur-md" />
+              <span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,color-mix(in_srgb,white_30%,transparent)_95%,color-mix(in_srgb,white_60%,transparent)_100%)] opacity-0 can-hover:group-hover:opacity-100 can-hover:group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-500" />
+              <span className="relative z-10 flex w-full items-center justify-center bg-primary py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 can-hover:group-hover:bg-primary-muted">
                 {isPending ? "Sending..." : "Send inquiry"}
               </span>
             </button>

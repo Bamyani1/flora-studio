@@ -9,7 +9,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     category: "milestones",
     description:
       "Cap, gown, and the quiet confidence of crossing a threshold. A portrait session marking the moment everything changes.",
-    coverImage: localImageFromPublicPath("/images/the-graduate/cover.jpg", "The Graduate cover"),
+    coverImage: localImageFromPublicPath("/images/the-graduate/cover.jpg", "The Graduate"),
   },
   {
     _id: "album-4",
@@ -18,7 +18,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     category: "motion",
     description:
       "Tournament basketball at its peak. The press tables, the practice courts, and the tension that builds before every tip-off.",
-    coverImage: localImageFromPublicPath("/images/march-madness/cover.jpg", "March Madness cover"),
+    coverImage: localImageFromPublicPath("/images/march-madness/cover.jpg", "March Madness"),
   },
   {
     _id: "album-6",
@@ -27,7 +27,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     category: "motion",
     description:
       "Friday night energy on the college gridiron. Helmets clash, plays unfold, and the crowd carries the team through every quarter.",
-    coverImage: localImageFromPublicPath("/images/under-the-lights/cover.jpg", "Under the Lights cover"),
+    coverImage: localImageFromPublicPath("/images/under-the-lights/cover.jpg", "Under the Lights"),
   },
   {
     _id: "album-9",
@@ -36,7 +36,7 @@ export const PLACEHOLDER_FEATURED_ALBUMS: AlbumMeta[] = [
     category: "landscape",
     description:
       "Mountains, mist, and the silence between peaks. The first volume of an ongoing landscape series across the American West.",
-    coverImage: localImageFromPublicPath("/images/nature-vol-i/cover.jpg", "Nature Vol. I cover"),
+    coverImage: localImageFromPublicPath("/images/nature-vol-i/cover.jpg", "Nature Vol. I"),
   },
 ];
 
@@ -50,8 +50,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     location: "Ohio",
     order: 1,
     featured: true,
-    coverImage: localImageFromPublicPath("/images/the-graduate/cover.jpg", "The Graduate cover"),
-    heroImage: localImageFromPublicPath("/images/the-graduate/hero.jpg", "The Graduate hero"),
+    coverImage: localImageFromPublicPath("/images/the-graduate/cover.jpg", "The Graduate"),
+    heroImage: localImageFromPublicPath("/images/the-graduate/hero.jpg", "The Graduate"),
     description:
       "Cap, gown, and the quiet confidence of crossing a threshold. A portrait session marking the moment everything changes.",
     narrative:
@@ -66,8 +66,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "Ohio",
     order: 2,
-    coverImage: localImageFromPublicPath("/images/milestone/cover.jpg", "Milestone cover"),
-    heroImage: localImageFromPublicPath("/images/milestone/hero.jpg", "Milestone hero"),
+    coverImage: localImageFromPublicPath("/images/milestone/cover.jpg", "Milestone"),
+    heroImage: localImageFromPublicPath("/images/milestone/hero.jpg", "Milestone"),
     description:
       "Four years in the making. A graduation session built around natural light, personal style, and the weight of what's been earned.",
     narrative:
@@ -83,8 +83,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "Dayton, Ohio",
     order: 3,
-    coverImage: localImageFromPublicPath("/images/game-day/cover.jpg", "Game Day cover"),
-    heroImage: localImageFromPublicPath("/images/game-day/hero.jpg", "Game Day hero"),
+    coverImage: localImageFromPublicPath("/images/game-day/cover.jpg", "Game Day"),
+    heroImage: localImageFromPublicPath("/images/game-day/hero.jpg", "Game Day"),
     description:
       "The energy of game day from the best seat in the house. Capturing the crowd, the players, and the moments between the whistles.",
     narrative:
@@ -100,8 +100,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     location: "Dayton, Ohio",
     order: 4,
     featured: true,
-    coverImage: localImageFromPublicPath("/images/march-madness/cover.jpg", "March Madness cover"),
-    heroImage: localImageFromPublicPath("/images/march-madness/hero.jpg", "March Madness hero"),
+    coverImage: localImageFromPublicPath("/images/march-madness/cover.jpg", "March Madness"),
+    heroImage: localImageFromPublicPath("/images/march-madness/hero.jpg", "March Madness"),
     description:
       "Tournament basketball at its peak. The press tables, the practice courts, and the tension that builds before every tip-off.",
     narrative:
@@ -116,8 +116,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "Dayton, Ohio",
     order: 5,
-    coverImage: localImageFromPublicPath("/images/miami-vs-smu/cover.jpg", "Miami vs SMU cover"),
-    heroImage: localImageFromPublicPath("/images/miami-vs-smu/hero.jpg", "Miami vs SMU hero"),
+    coverImage: localImageFromPublicPath("/images/miami-vs-smu/cover.jpg", "Miami vs SMU"),
+    heroImage: localImageFromPublicPath("/images/miami-vs-smu/hero.jpg", "Miami vs SMU"),
     description:
       "Conference play under the lights. A rivalry game captured from the sideline. Fast breaks, contested shots, and the roar of a packed arena.",
     narrative:
@@ -133,8 +133,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     location: "Dayton, Ohio",
     order: 6,
     featured: true,
-    coverImage: localImageFromPublicPath("/images/under-the-lights/cover.jpg", "Under the Lights cover"),
-    heroImage: localImageFromPublicPath("/images/under-the-lights/hero.jpg", "Under the Lights hero"),
+    coverImage: localImageFromPublicPath("/images/under-the-lights/cover.jpg", "Under the Lights"),
+    heroImage: localImageFromPublicPath("/images/under-the-lights/hero.jpg", "Under the Lights"),
     description:
       "Friday night energy on the college gridiron. Helmets clash, plays unfold, and the crowd carries the team through every quarter.",
     narrative:
@@ -149,8 +149,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "Dayton, Ohio",
     order: 7,
-    coverImage: localImageFromPublicPath("/images/ud-basketball/cover.jpg", "UD Basketball cover"),
-    heroImage: localImageFromPublicPath("/images/ud-basketball/hero.jpg", "UD Basketball hero"),
+    coverImage: localImageFromPublicPath("/images/ud-basketball/cover.jpg", "UD Basketball"),
+    heroImage: localImageFromPublicPath("/images/ud-basketball/hero.jpg", "UD Basketball"),
     description:
       "Dayton Flyers basketball from the student section. The chants, the energy, and the community that fills UD Arena.",
     narrative:
@@ -165,8 +165,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "Texas",
     order: 8,
-    coverImage: localImageFromPublicPath("/images/texas-cheer/cover.jpg", "Texas Cheer cover"),
-    heroImage: localImageFromPublicPath("/images/texas-cheer/hero.jpg", "Texas Cheer hero"),
+    coverImage: localImageFromPublicPath("/images/texas-cheer/cover.jpg", "Texas Cheer"),
+    heroImage: localImageFromPublicPath("/images/texas-cheer/hero.jpg", "Texas Cheer"),
     description:
       "Sideline energy and school spirit. Cheerleaders, pep squads, and the moments that make game day unforgettable.",
     narrative:
@@ -182,8 +182,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     location: "United States",
     order: 9,
     featured: true,
-    coverImage: localImageFromPublicPath("/images/nature-vol-i/cover.jpg", "Nature Vol. I cover"),
-    heroImage: localImageFromPublicPath("/images/nature-vol-i/hero.jpg", "Nature Vol. I hero"),
+    coverImage: localImageFromPublicPath("/images/nature-vol-i/cover.jpg", "Nature Vol. I"),
+    heroImage: localImageFromPublicPath("/images/nature-vol-i/hero.jpg", "Nature Vol. I"),
     description:
       "Mountains, mist, and the silence between peaks. The first volume of an ongoing landscape series across the American West.",
     narrative:
@@ -198,8 +198,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "United States",
     order: 10,
-    coverImage: localImageFromPublicPath("/images/nature-vol-ii/cover.jpg", "Nature Vol. II cover"),
-    heroImage: localImageFromPublicPath("/images/nature-vol-ii/hero.jpg", "Nature Vol. II hero"),
+    coverImage: localImageFromPublicPath("/images/nature-vol-ii/cover.jpg", "Nature Vol. II"),
+    heroImage: localImageFromPublicPath("/images/nature-vol-ii/hero.jpg", "Nature Vol. II"),
     description:
       "Forests, waterways, and the quiet drama of the American interior. The second volume pushes deeper into unfamiliar terrain.",
     narrative:
@@ -214,8 +214,8 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     year: 2025,
     location: "United States",
     order: 11,
-    coverImage: localImageFromPublicPath("/images/nature-vol-iii/cover.jpg", "Nature Vol. III cover"),
-    heroImage: localImageFromPublicPath("/images/nature-vol-iii/hero.jpg", "Nature Vol. III hero"),
+    coverImage: localImageFromPublicPath("/images/nature-vol-iii/cover.jpg", "Nature Vol. III"),
+    heroImage: localImageFromPublicPath("/images/nature-vol-iii/hero.jpg", "Nature Vol. III"),
     description:
       "Canyons, open sky, and the vast geometry of the Southwest. The third volume completes the first arc of the landscape series.",
     narrative:

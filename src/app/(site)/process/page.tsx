@@ -42,7 +42,7 @@ export default async function ProcessPage() {
           ...step,
           images: (step.images ?? []).map((image) => ({
             src: resolveImageUrl(image) ?? "",
-            alt: image.alt ?? `${step.title} image`,
+            alt: image.alt ?? step.title,
           })),
         }))}
         contactHeading={processPage.contactCta.heading}
