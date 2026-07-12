@@ -10,7 +10,7 @@ import type { SiteSettings, SocialLink } from "@/types/content";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Flora Studio in Dayton, Ohio. Available for milestones, gatherings, motion, portraits, and professional photography.",
+    "Get in touch with Flora Studio in Dayton, Ohio. Available for weddings and graduations, events, sports, portraits, and commercial photography.",
 };
 
 function SocialIcon({ icon }: Pick<SocialLink, "icon">) {

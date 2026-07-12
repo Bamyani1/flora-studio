@@ -11,7 +11,7 @@ import { WorkChapters } from "@/components/sections/WorkChapters";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Browse the portfolio of Flora Studio. Milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
+    "Browse the portfolio of Flora Studio. Weddings and graduations, events, sports, portraits, and commercial photography captured in Dayton, Ohio.",
 };
 
 export default async function WorkPage() {

@@ -25,17 +25,23 @@ export function useMagnetic(
     if (!el || !enabled) return;
 
     let cachedRect: DOMRect | null = null;
+    let frame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
 
     const handleMouseEnter = () => {
       cachedRect = el.getBoundingClientRect();
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    // Coalesce mousemove into one rAF (high-poll mice fire at 120Hz+, and each
+    // uncoalesced event would spawn/overwrite a tween) — same pattern as CustomCursor
+    const applyPull = () => {
+      frame = 0;
       if (!cachedRect) cachedRect = el.getBoundingClientRect();
       const centerX = cachedRect.left + cachedRect.width / 2;
       const centerY = cachedRect.top + cachedRect.height / 2;
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
+      const dx = pointerX - centerX;
+      const dy = pointerY - centerY;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < radius) {
@@ -47,6 +53,12 @@ export function useMagnetic(
           overwrite: true,
         });
       }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      pointerX = e.clientX;
+      pointerY = e.clientY;
+      if (!frame) frame = requestAnimationFrame(applyPull);
     };
 
     const handleMouseLeave = () => {
@@ -70,6 +82,7 @@ export function useMagnetic(
     window.addEventListener("resize", handleResize);
 
     return () => {
+      if (frame) cancelAnimationFrame(frame);
       el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);

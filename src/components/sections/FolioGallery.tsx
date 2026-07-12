@@ -793,24 +793,12 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
 
   return (
     <section ref={sectionRef} className="relative bg-background" aria-label="Photo gallery">
-      {/* Sticky overlays */}
+      {/* Sticky overlays — the grain is the same tiled PNG the rest of the site
+          uses; a full-viewport feTurbulence filter is one of the most expensive
+          SVG primitives to keep composited across the longest scroll page */}
       <div className="sticky top-0 z-50 h-0 overflow-visible pointer-events-none">
         <div className="h-screen w-full">
-          <svg
-            className="absolute inset-0 h-full w-full opacity-[0.03]"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <filter id="folio-grain">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.65"
-                numOctaves={3}
-                stitchTiles="stitch"
-              />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#folio-grain)" />
-          </svg>
+          <div className="grain-medium absolute inset-0 opacity-[0.03]" aria-hidden="true" />
 
           <div
             className="absolute inset-0"
