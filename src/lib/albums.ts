@@ -54,6 +54,16 @@ function buildAlbumNavigation(
   };
 }
 
+// Folio plate count: gallery images excluding the hero (which renders at the page top)
+function folioImageCount(album: Album): number {
+  const key = (img: Album["heroImage"]) => img.url ?? img.asset?._ref;
+  const heroKey = album.heroImage ? key(album.heroImage) : undefined;
+  return album.images.filter((img) => {
+    const k = key(img);
+    return Boolean(k) && k !== heroKey;
+  }).length;
+}
+
 function normalizeAlbumMeta(album: AlbumMeta): AlbumMeta {
   return {
     ...album,
@@ -64,11 +74,14 @@ function normalizeAlbumMeta(album: AlbumMeta): AlbumMeta {
 export async function getAllAlbums(): Promise<AlbumMeta[]> {
   if (isE2EContentRuntime()) {
     return E2E_ALBUMS.map((album) =>
-      normalizeAlbumMeta({ ...album, imageCount: album.images.length }),
+      normalizeAlbumMeta({ ...album, imageCount: folioImageCount(album) }),
     );
   }
   if (!shouldFetchFromSanity()) {
-    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({ ...album, imageCount: album.images.length }));
+    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({
+      ...album,
+      imageCount: folioImageCount(album),
+    }));
   }
 
   try {
