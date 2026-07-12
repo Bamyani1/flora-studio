@@ -56,18 +56,20 @@ export const branchReveal = {
 };
 
 // --------------------------------------------------
-// imageReveal — Two-part: colored overlay slides away, image scales down
+// imageReveal — Darkroom fade: the photograph resolves up from near-black
+// with a slight exposure ramp, like a print developing
 // --------------------------------------------------
 export const imageReveal = {
-  overlay: {
-    from: { scaleX: 1, transformOrigin: "left center" },
-    to: { scaleX: 0, transformOrigin: "right center", duration: 0.8, ease: easings.smoothInOut },
-  },
   image: {
-    from: { scale: 1.3 },
-    to: { scale: 1, duration: 1.2, ease: easings.smooth },
+    from: { autoAlpha: 0, scale: 1.06, filter: "brightness(0.3) saturate(0.85)" },
+    to: {
+      autoAlpha: 1,
+      scale: 1,
+      filter: "brightness(1) saturate(1)",
+      duration: 1.6,
+      ease: easings.smooth,
+    },
   },
-  overlayColor: "#c97b2a",
   scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
 };
 
@@ -141,28 +143,6 @@ export const scrollIndicatorPulse = {
     from: { autoAlpha: 0 },
     to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth, delay: 0.5 },
   },
-};
-
-// --------------------------------------------------
-// collectionCardReveal — Orange overlay wipe + clip-path reveal + label fade
-// --------------------------------------------------
-export const collectionCardReveal = {
-  overlay: {
-    from: { scaleX: 1, transformOrigin: "left center" },
-    to: { scaleX: 0, transformOrigin: "right center", duration: 0.8, ease: easings.smoothInOut },
-  },
-  image: {
-    from: { clipPath: "inset(0% 100% 0% 0%)" },
-    to: { clipPath: "inset(0% 0% 0% 0%)", duration: 1.0, ease: easings.smooth },
-  },
-  label: {
-    from: { y: 15, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.6, ease: easings.smooth },
-  },
-  stagger: 0.15,
-  labelDelay: 0.6,
-  overlayColor: "#c97b2a",
-  scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
 };
 
 // --------------------------------------------------
@@ -613,14 +593,13 @@ export const reducedMotionFallbacks = {
   textRevealWords: "all words at full opacity, no scrub",
   clipRevealUp: "instant clip-path: inset(0%), no animation",
   clipRevealLeft: "instant clip-path: inset(0%), no animation",
-  imageReveal: "no overlay animation, image visible immediately at scale 1",
+  imageReveal: "no darkroom fade, image visible immediately at scale 1",
   parallaxLayer: "disabled — no Y translation",
   magneticPull: "disabled — no cursor following",
   staggerGrid: "instant autoAlpha: 1, no stagger delay",
   navOverlayOpen: "instant visibility toggle, no stagger",
   navOverlayClose: "instant visibility toggle",
   scrollIndicatorPulse: "visible but static, no pulse animation",
-  collectionCardReveal: "overlay scaleX: 0, clip-path fully open, labels visible immediately",
   exhibitionParallax: "disabled — no scroll-driven scale",
   timelinePhaseReveal:
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
