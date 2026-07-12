@@ -136,8 +136,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               }`}
             >
               <div
-                className={`group mb-8 w-full text-right md:mb-0 md:w-1/2 ${
-                  step.align === "left" ? "md:pr-24" : "md:pl-24 md:text-left"
+                className={`group mb-8 w-full md:mb-0 md:w-1/2 ${
+                  step.align === "left" ? "text-left md:pr-24 md:text-right" : "md:pl-24"
                 }`}
               >
                 <h3
@@ -166,8 +166,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                     {metaItems.map((item) => (
                       <li
                         key={item}
-                        className={`flex items-center justify-end gap-3 ${
-                          step.align === "right" ? "md:justify-start" : ""
+                        className={`flex items-center gap-3 ${
+                          step.align === "left" ? "md:justify-end" : ""
                         }`}
                       >
                         <span className="h-[1px] w-1.5 bg-[var(--process-primary)]" /> {item}
