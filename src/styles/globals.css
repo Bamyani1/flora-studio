@@ -154,6 +154,21 @@
   html {
     --font-label: var(--font-body);
   }
+
+  /* iOS Safari gives date inputs an intrinsic shadow-content width that can
+     beat width: 100% and push the field past the viewport edge. */
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    /* iOS centers the picked value and sizes it intrinsically */
+    text-align: left;
+    min-width: 0;
+  }
 }
 
 /* --- Z-Index Scale — outside @theme so var() resolves at runtime --- */
