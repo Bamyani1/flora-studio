@@ -23,11 +23,27 @@ function SocialIcon({ icon }: Pick<SocialLink, "icon">) {
 }
 
 function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
+  const phoneHref = `tel:+1${siteSettings.phone.replace(/\D/g, "")}`;
+
   return (
     <FadeIn delay={0.2}>
       <p className="mb-1 font-body text-base text-text-heading">{siteSettings.location}</p>
-      <p className="mt-3 font-body text-sm text-muted">{siteSettings.email}</p>
-      <p className="font-body text-sm text-muted">{siteSettings.phone}</p>
+      <p className="mt-3 font-body text-sm text-muted">
+        <a
+          href={`mailto:${siteSettings.email}`}
+          className="inline-block py-1 transition-colors can-hover:hover:text-primary"
+        >
+          {siteSettings.email}
+        </a>
+      </p>
+      <p className="font-body text-sm text-muted">
+        <a
+          href={phoneHref}
+          className="inline-block py-1 transition-colors can-hover:hover:text-primary"
+        >
+          {siteSettings.phone}
+        </a>
+      </p>
 
       <div className="mt-8 flex space-x-6">
         {siteSettings.socialLinks.map((link) => (
@@ -37,7 +53,7 @@ function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
-            className="text-muted/60 transition-colors hover:text-primary"
+            className="inline-block p-2 -m-2 text-muted transition-colors can-hover:hover:text-primary"
           >
             <SocialIcon icon={link.icon} />
           </a>
@@ -65,9 +81,11 @@ export default async function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
+      {/* The page scrolls normally on desktop: a viewport-locked panel with its
+          own scrollbar can clip fields and hide validation errors entirely */}
       <main
         id="main-content"
-        className="relative flex min-h-screen flex-col overflow-hidden bg-background px-4 pt-24 pb-10 sm:px-[5%] md:h-screen md:min-h-0 md:px-[10%] md:pt-[140px] md:pb-20"
+        className="relative flex min-h-screen flex-col overflow-hidden bg-background px-4 pt-24 pb-10 sm:px-[5%] md:px-[10%] md:pt-[140px] md:pb-20"
       >
         {/* Grain overlay */}
         <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
@@ -109,10 +127,7 @@ export default async function ContactPage() {
           </div>
 
           {/* Right Panel — Form */}
-          <div
-            className="relative flex min-h-0 w-full flex-col overflow-y-auto border-l border-border/10 bg-surface-lowest md:w-[60.5%]"
-            data-lenis-prevent
-          >
+          <div className="relative flex w-full flex-col border-l border-border/10 bg-surface-lowest md:w-[60.5%]">
             <div className="flex flex-1 flex-col px-8 pt-10 pb-6 md:px-14 md:pt-14 md:pb-8">
               <CinematicContactForm />
             </div>

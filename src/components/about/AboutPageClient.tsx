@@ -285,7 +285,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
             <p
               data-about-animate="hero-subtitle"
-              className="font-body text-xl md:text-2xl text-on-surface-variant/60 max-w-2xl leading-relaxed font-light"
+              className="font-body text-xl md:text-2xl text-on-surface-variant/85 max-w-2xl leading-relaxed font-light"
             >
               {content.hero.description}
             </p>
@@ -310,7 +310,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
             <div data-about-animate="fade-up" className="flex items-center gap-6 mb-24">
               <span className="w-12 h-[1px] bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px]">
+              <span className="font-label uppercase tracking-[0.5em] text-hero-gold text-[10px]">
                 {content.manifesto.eyebrow}
               </span>
               <span className="w-12 h-[1px] bg-primary/40"></span>
@@ -350,7 +350,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
               <h2 className="font-display text-4xl md:text-6xl tracking-tighter mb-4 text-on-surface">
                 {content.team.title}
               </h2>
-              <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-lg text-base font-light">
+              <p className="font-body text-on-surface-variant/85 leading-relaxed max-w-lg text-base font-light">
                 {content.team.description}
               </p>
             </div>
@@ -434,7 +434,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                         </div>
 
                         <div className="flex items-center gap-6 md:pl-14">
-                          <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-primary transition-colors duration-500">
+                          <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-hero-gold transition-colors duration-500">
                             {member.role}
                           </span>
                         </div>
@@ -487,7 +487,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                     <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">
                       {card.title}
                     </h4>
-                    <p className="font-body text-sm text-on-surface-variant/50 leading-loose">
+                    <p className="font-body text-sm text-on-surface-variant/85 leading-loose">
                       {card.description}
                     </p>
                   </div>

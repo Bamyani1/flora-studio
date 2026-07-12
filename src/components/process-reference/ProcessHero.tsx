@@ -131,6 +131,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
             <a
               ref={chevronRef}
               href="#process"
+              aria-label="Skip to process steps"
               onClick={(event) => {
                 event.preventDefault();
                 document
@@ -139,7 +140,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
               }}
               className="interactive cursor-pointer flex items-center justify-center"
             >
-              <ChevronDown className="h-6 w-6 text-[var(--process-primary)]" />
+              <ChevronDown aria-hidden="true" className="h-6 w-6 text-[var(--process-primary)]" />
             </a>
           </ProcessMagnetic>
           <div className="h-[1px] w-24 bg-gradient-to-r from-[var(--process-outline-variant)] via-[var(--process-outline-variant)] to-transparent" />

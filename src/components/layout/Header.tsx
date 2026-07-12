@@ -203,9 +203,10 @@ export function Header() {
         </div>
 
         {/* Mobile toggle */}
+        {/* Pseudo-element grows the tap target to ~44px without inflating the visual box */}
         <button
           type="button"
-          className="md:hidden text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
+          className="md:hidden relative text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
           onClick={() => useUIStore.getState().setMenuOpen(true)}
           aria-label="Open menu"
           aria-expanded={menuOpen}

@@ -408,7 +408,8 @@ export const headerShrink = {
     height: "3.5rem",
     paddingTop: "0.625rem",
     paddingBottom: "0.625rem",
-    backgroundColor: "rgba(17,18,16,0.55)",
+    // Opaque enough that light imagery scrolling underneath can't wash out the nav
+    backgroundColor: "rgba(17,18,16,0.85)",
     borderColor: "rgba(255,255,255,0.2)",
     borderRadius: "2px",
     backdropFilter: "blur(16px)",
