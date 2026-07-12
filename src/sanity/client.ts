@@ -68,7 +68,7 @@ export async function sanityFetch<T>({
   query,
   params,
   perspective = "published",
-  revalidate = 60,
+  revalidate = 300,
 }: SanityFetchOptions): Promise<T> {
   const client = getSanityClient({ perspective });
 
