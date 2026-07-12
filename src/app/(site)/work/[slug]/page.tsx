@@ -48,6 +48,19 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     ? await generateLqipDataUrl(heroUrl)
     : await generateLocalLqipDataUrl(heroUrl);
 
+  // The hero has pride of place at the top of the page — keep it out of the folio
+  const imageKey = (img: { url?: string; asset?: { _ref: string } }) =>
+    img.url ?? img.asset?._ref;
+  const heroKey = album.heroImage ? imageKey(album.heroImage) : undefined;
+  const seen = new Set<string>();
+  const galleryImages = (album.images ?? []).filter((img) => {
+    const key = imageKey(img);
+    if (!key || key === heroKey) return false;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
@@ -94,20 +107,9 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 &&
-        (() => {
-          const seen = new Set<string>();
-          const galleryImages = [...album.images, album.heroImage].filter((img) => {
-            const key = img.url ?? img.asset?._ref;
-            if (!key) return false;
-            if (seen.has(key)) return false;
-            seen.add(key);
-            return true;
-          });
-          return (
-            <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
-          );
-        })()}
+      {galleryImages.length > 0 && (
+        <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
+      )}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

@@ -1,8 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
 import { E2E_ALBUMS, E2E_PRIMARY_ALBUM_SLUG } from "@/lib/e2e-content";
+import type { Album, SanityImage } from "@/types/project";
 
 vi.mock("server-only", () => ({}));
+
+// Mirrors folioImageCount in @/lib/albums: gallery images excluding the page hero
+function expectedFolioCount(album: Album): number {
+  const key = (img: SanityImage) => img.url ?? img.asset?._ref;
+  const heroKey = album.heroImage ? key(album.heroImage) : undefined;
+  return album.images.filter((img) => Boolean(key(img)) && key(img) !== heroKey).length;
+}
 
 const originalEnv = { ...process.env };
 
@@ -21,7 +29,7 @@ describe("album loaders", () => {
     const { getAllAlbums } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).resolves.toEqual(
-      PLACEHOLDER_ALL_ALBUMS.map((a) => ({ ...a, imageCount: a.images.length })),
+      PLACEHOLDER_ALL_ALBUMS.map((a) => ({ ...a, imageCount: expectedFolioCount(a) })),
     );
   });
 
@@ -53,7 +61,7 @@ describe("album loaders", () => {
     const { getAllAlbums, getAlbumBySlug, getAlbumSlugs } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).resolves.toEqual(
-      E2E_ALBUMS.map((a) => ({ ...a, imageCount: a.images.length })),
+      E2E_ALBUMS.map((a) => ({ ...a, imageCount: expectedFolioCount(a) })),
     );
     await expect(getAlbumSlugs()).resolves.toEqual([{ slug: E2E_PRIMARY_ALBUM_SLUG }]);
     await expect(getAlbumBySlug(E2E_PRIMARY_ALBUM_SLUG)).resolves.toEqual(E2E_ALBUMS[0]);
