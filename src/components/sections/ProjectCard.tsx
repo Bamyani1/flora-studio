@@ -13,7 +13,8 @@ import { getImageDimensions, resolveImageUrl } from "@/lib/image-url";
 
 interface ProjectCardProps {
   album: AlbumMeta;
-  index: number;
+  /** Position in the full archive — the featured hero album is 01 */
+  number: number;
   large?: boolean;
   eagerImage?: boolean;
   gridSide?: "left" | "right";
@@ -21,6 +22,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({
   album,
+  number,
   large = false,
   eagerImage = false,
   gridSide,
@@ -31,6 +33,16 @@ export function ProjectCard({
   const dims = getImageDimensions(album.coverImage);
   const isPortrait = dims ? dims.height > dims.width : false;
   const coverSrc = resolveImageUrl(album.coverImage);
+
+  const metaLine = [
+    categoryLabel,
+    album.year,
+    album.imageCount
+      ? `${album.imageCount} photograph${album.imageCount === 1 ? "" : "s"}`
+      : undefined,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   useGSAP(
     () => {
@@ -74,18 +86,31 @@ export function ProjectCard({
               alt={album.coverImage.alt || `${album.title} cover`}
               fill
               loading={eagerImage ? "eager" : undefined}
-              className="object-cover"
+              className="object-cover transition-transform duration-700 can-hover:group-hover:scale-105"
               sizes={large ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 768px) 33vw, 100vw"}
             />
           </div>
+        </div>
 
-          {/* Info panel — slides up from bottom on hover */}
-          <div className="absolute inset-x-0 bottom-0 px-6 py-5 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.33,1,0.68,1)]">
-            <h3 className="font-display text-xl text-white font-bold">{album.title}</h3>
-            <span className="block mt-1 font-label text-[10px] uppercase tracking-[0.2em] text-white/80">
-              {categoryLabel}
+        {/* Museum label — always visible; hover only accents it */}
+        <div className="mt-4">
+          <div className="flex items-baseline gap-3">
+            <span className="font-label text-[10px] tracking-[0.2em] text-primary/70">
+              {String(number).padStart(2, "0")}
+            </span>
+            <h3 className="font-display text-lg text-text-heading transition-colors md:text-xl can-hover:group-hover:text-primary">
+              {album.title}
+            </h3>
+            <span
+              aria-hidden="true"
+              className="ml-auto text-muted transition-all duration-300 can-hover:group-hover:translate-x-1 can-hover:group-hover:text-primary"
+            >
+              &rarr;
             </span>
           </div>
+          <p className="mt-1.5 font-label text-[10px] uppercase tracking-[0.2em] text-muted">
+            {metaLine}
+          </p>
         </div>
       </div>
     </TransitionLink>

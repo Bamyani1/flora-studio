@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { folioReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { resolveImageUrl } from "@/lib/image-url";
@@ -237,6 +237,12 @@ function TitleContent({ title, count }: { title: string; count: number }) {
       <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
         {imageCountLabel(count)}
       </span>
+      <div className="folio-reveal-label mt-12 flex flex-col items-center gap-3">
+        <div className="h-10 w-px bg-primary/30" />
+        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
+          Scroll
+        </span>
+      </div>
     </div>
   );
 }
@@ -545,6 +551,8 @@ function ColophonContent() {
 
 export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const counterRef = useRef<HTMLDivElement>(null);
+  const plateRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
 
   const pages = buildFolioPages(images, videoUrl);
@@ -599,6 +607,49 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           });
         }
       });
+
+      // Plate counter — wayfinding, so its triggers run under reduced motion too
+      const counterEl = counterRef.current;
+      const plateEl = plateRef.current;
+      if (counterEl && plateEl) {
+        gsap.set(counterEl, { autoAlpha: 0 });
+
+        const photoPages = Array.from(pageEls).filter((p) => Number(p.dataset.plate) > 0);
+
+        photoPages.forEach((pageEl) => {
+          const plateNum = Number(pageEl.dataset.plate);
+          ScrollTrigger.create({
+            trigger: pageEl,
+            start: "top 60%",
+            end: "bottom 60%",
+            onToggle: (self) => {
+              if (self.isActive) plateEl.textContent = padIndex(plateNum);
+            },
+          });
+        });
+
+        const firstPhoto = photoPages[0];
+        const lastPhoto = photoPages[photoPages.length - 1];
+        if (firstPhoto && lastPhoto) {
+          ScrollTrigger.create({
+            trigger: firstPhoto,
+            start: "top 70%",
+            endTrigger: lastPhoto,
+            end: "bottom 55%",
+            onToggle: (self) => {
+              if (reduced) {
+                gsap.set(counterEl, { autoAlpha: self.isActive ? 1 : 0 });
+              } else {
+                gsap.to(counterEl, {
+                  autoAlpha: self.isActive ? 1 : 0,
+                  duration: 0.4,
+                  overwrite: "auto",
+                });
+              }
+            },
+          });
+        }
+      }
     },
     { scope: sectionRef, dependencies: [reduced] },
   );
@@ -638,6 +689,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
       {pages.map((page, i) => (
         <div
           key={i}
+          data-plate={page.imageIndex}
           className="folio-page relative overflow-hidden"
           style={{
             minHeight: page.layout === "title" ? "100vh" : undefined,
@@ -686,6 +738,19 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           {page.layout === "colophon" && <ColophonContent />}
         </div>
       ))}
+
+      {/* Plate counter — fixed wayfinding while scrolling the folio */}
+      <div
+        ref={counterRef}
+        aria-hidden="true"
+        className="pointer-events-none invisible fixed bottom-4 left-4 z-30 opacity-0 md:bottom-8 md:left-8"
+        style={{ marginBottom: "env(safe-area-inset-bottom)" }}
+      >
+        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-text">
+          <span ref={plateRef}>{padIndex(1)}</span>
+          <span className="text-muted"> / {padIndex(images.length)}</span>
+        </span>
+      </div>
     </section>
   );
 }

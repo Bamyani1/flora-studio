@@ -2,7 +2,8 @@ import { defineQuery } from "next-sanity";
 
 export const ALBUMS_QUERY = defineQuery(
   `*[_type == "album"] | order(order asc) {
-    _id, title, slug, category, year, location, coverImage
+    _id, title, slug, category, year, location, coverImage,
+    "imageCount": count(images)
   }`,
 );
 

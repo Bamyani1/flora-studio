@@ -89,23 +89,28 @@ export default async function WorkPage() {
           return (
             <section key="gallery-grid" className="relative w-full bg-surface">
               <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-px md:[grid-auto-flow:dense]">
-                {section.albums.map((album, albumIdx) => {
-                  const groupIndex = Math.floor(albumIdx / 3);
-                  const isLarge = albumIdx % 3 === 0;
-                  const side = groupIndex % 2 === 0 ? "left" : "right";
+              <div className="relative z-10 px-4 py-16 md:px-10 md:py-24">
+                <p className="mb-10 font-label text-[10px] uppercase tracking-[0.2em] text-muted md:mb-14">
+                  [ {albums.length} ALBUM{albums.length === 1 ? "" : "S"} ]
+                </p>
+                <div className="grid grid-cols-1 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-20 md:[grid-auto-flow:dense]">
+                  {section.albums.map((album, albumIdx) => {
+                    const groupIndex = Math.floor(albumIdx / 3);
+                    const isLarge = albumIdx % 3 === 0;
+                    const side = groupIndex % 2 === 0 ? "left" : "right";
 
-                  return (
-                    <ProjectCard
-                      key={album._id}
-                      album={album}
-                      index={albumIdx}
-                      large={isLarge}
-                      gridSide={isLarge ? side : undefined}
-                      eagerImage={albumIdx < 3}
-                    />
-                  );
-                })}
+                    return (
+                      <ProjectCard
+                        key={album._id}
+                        album={album}
+                        number={albumIdx + 2}
+                        large={isLarge}
+                        gridSide={isLarge ? side : undefined}
+                        eagerImage={albumIdx < 3}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </section>
           );

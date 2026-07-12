@@ -17,10 +17,12 @@ describe("album loaders", () => {
     process.env = { ...originalEnv };
   });
 
-  it("returns placeholder albums directly", async () => {
+  it("returns placeholder albums with derived image counts", async () => {
     const { getAllAlbums } = await import("@/lib/albums");
 
-    await expect(getAllAlbums()).resolves.toEqual(PLACEHOLDER_ALL_ALBUMS);
+    await expect(getAllAlbums()).resolves.toEqual(
+      PLACEHOLDER_ALL_ALBUMS.map((a) => ({ ...a, imageCount: a.images.length })),
+    );
   });
 
   it("returns placeholder album slugs", async () => {
@@ -50,7 +52,9 @@ describe("album loaders", () => {
 
     const { getAllAlbums, getAlbumBySlug, getAlbumSlugs } = await import("@/lib/albums");
 
-    await expect(getAllAlbums()).resolves.toEqual(E2E_ALBUMS);
+    await expect(getAllAlbums()).resolves.toEqual(
+      E2E_ALBUMS.map((a) => ({ ...a, imageCount: a.images.length })),
+    );
     await expect(getAlbumSlugs()).resolves.toEqual([{ slug: E2E_PRIMARY_ALBUM_SLUG }]);
     await expect(getAlbumBySlug(E2E_PRIMARY_ALBUM_SLUG)).resolves.toEqual(E2E_ALBUMS[0]);
   });
