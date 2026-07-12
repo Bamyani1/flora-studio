@@ -39,6 +39,9 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
             type: "lines",
             mask: "lines",
             autoSplit: true,
+            onSplit: (self) => {
+              if (!useUIStore.getState().menuOpen) gsap.set(self.lines, { yPercent: 100 });
+            },
           }),
       );
 
@@ -55,15 +58,21 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     { scope: containerRef },
   );
 
+  // Scroll lock — paired stop/start so a lenis instance swap can't leak a stopped instance
+  useEffect(() => {
+    if (!menuOpen) return;
+    lenis?.stop();
+    return () => {
+      lenis?.start();
+    };
+  }, [menuOpen, lenis]);
+
   // Open / close animations
   useEffect(() => {
     if (!containerRef.current || !backdropRef.current) return;
 
     const ctx = gsap.context(() => {
       if (menuOpen) {
-        // Lock scroll
-        lenis?.stop();
-
         // Show container
         gsap.set(containerRef.current, { autoAlpha: 1, pointerEvents: "auto" });
 
@@ -93,8 +102,6 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
             }
             // Reset will-change
             if (backdropRef.current) backdropRef.current.style.willChange = "auto";
-            // Unlock scroll
-            lenis?.start();
           },
         });
 
@@ -116,7 +123,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [menuOpen, lenis]);
+  }, [menuOpen]);
 
   // Escape key
   useEffect(() => {
