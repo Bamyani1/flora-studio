@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cormorantGaramond, inter } from "@/lib/fonts";
 import { baseMetadata } from "@/lib/metadata";
 import "@/styles/globals.css";
@@ -10,6 +10,12 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.webmanifest",
+};
+
+// Tint the browser chrome to the canonical olive — the dark brand otherwise
+// sits under a default-light address bar on mobile
+export const viewport: Viewport = {
+  themeColor: "#242820",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

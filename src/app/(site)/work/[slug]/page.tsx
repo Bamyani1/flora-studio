@@ -79,7 +79,11 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     title: album.title,
     description: album.description,
     slug,
-    imageCount: album.images?.length ?? 0,
+    // numberOfItems matches the folio plate count shown on the page
+    imageCount: galleryImages.length,
+    images: galleryImages
+      .map((img) => ({ url: resolveImageUrl(img) ?? "", caption: img.alt }))
+      .filter((img) => img.url),
   });
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: SITE_URL },

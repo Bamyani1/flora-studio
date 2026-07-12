@@ -1,11 +1,11 @@
 {
   "name": "Flora Studio",
   "short_name": "Flora Studio",
-  "description": "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",
+  "description": "Photography studio based in Dayton, Ohio. Weddings and graduations, events, sports, portraits, and commercial photography with intention.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1e1f1c",
-  "theme_color": "#1e1f1c",
+  "background_color": "#242820",
+  "theme_color": "#242820",
   "icons": [
     {
       "src": "/icon-192.png",
