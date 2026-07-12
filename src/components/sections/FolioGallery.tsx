@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { folioReveal, withWillChange } from "@/lib/animations";
@@ -510,20 +510,59 @@ function DetailCropContent({ image, index }: { image: ImageType; index: number }
 /* ── Video ── */
 
 function VideoContent({ videoUrl }: { videoUrl: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const reduced = useReducedMotion();
+  const [playing, setPlaying] = useState(false);
+
+  // Autoplay is a JS decision so the film can honor prefers-reduced-motion:
+  // reduced-motion visitors get a paused first frame and an explicit Play.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (reduced) {
+      video.pause();
+    } else if (video.paused) {
+      video.play().catch(() => {});
+    }
+  }, [reduced]);
+
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-[2vh]">
       <video
+        ref={videoRef}
         src={videoUrl}
-        autoPlay
         muted
         loop
         playsInline
-        aria-label="Album video presentation"
+        preload="metadata"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        aria-label="Album film"
         className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
       />
-      <span className="folio-reveal-label mt-4 font-label text-[11px] uppercase tracking-[0.16em] text-muted">
-        [ FILM ]
-      </span>
+      <div className="folio-reveal-label mt-4 flex items-center gap-4">
+        <span className="font-label text-[10px] uppercase tracking-[0.2em] text-muted">
+          [ FILM ]
+        </span>
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? "Pause film" : "Play film"}
+          className="font-label text-[10px] uppercase tracking-[0.2em] text-primary transition-colors duration-300 can-hover:hover:text-text"
+        >
+          {playing ? "Pause" : "Play"}
+        </button>
+      </div>
     </div>
   );
 }
@@ -617,15 +656,22 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         const photoPages = Array.from(pageEls).filter((p) => Number(p.dataset.plate) > 0);
 
         photoPages.forEach((pageEl) => {
-          const plateNum = Number(pageEl.dataset.plate);
-          ScrollTrigger.create({
-            trigger: pageEl,
-            start: "top 60%",
-            end: "bottom 60%",
-            onToggle: (self) => {
-              if (self.isActive) plateEl.textContent = padIndex(plateNum);
-            },
-          });
+          const startPlate = Number(pageEl.dataset.plate);
+          const plateCount = Math.max(1, Number(pageEl.dataset.plateCount) || 1);
+
+          // Multi-image pages get one slice per photograph so the running
+          // counter touches every integer instead of skipping diptych partners.
+          // Function-based positions recompute on refresh (deferred pages reflow).
+          for (let i = 0; i < plateCount; i++) {
+            ScrollTrigger.create({
+              trigger: pageEl,
+              start: () => `top+=${(i / plateCount) * pageEl.offsetHeight} 60%`,
+              end: () => `top+=${((i + 1) / plateCount) * pageEl.offsetHeight} 60%`,
+              onToggle: (self) => {
+                if (self.isActive) plateEl.textContent = padIndex(startPlate + i);
+              },
+            });
+          }
         });
 
         const firstPhoto = photoPages[0];
@@ -650,6 +696,21 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           });
         }
       }
+
+      // content-visibility placeholders under-estimate true page heights; as
+      // pages realize on scroll the document reflows and every trigger below
+      // the folio (album nav, footer) goes stale — recompute when that happens.
+      let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+      const resizeObserver = new ResizeObserver(() => {
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+      });
+      resizeObserver.observe(el);
+
+      return () => {
+        clearTimeout(refreshTimer);
+        resizeObserver.disconnect();
+      };
     },
     { scope: sectionRef, dependencies: [reduced] },
   );
@@ -690,14 +751,14 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         <div
           key={i}
           data-plate={page.imageIndex}
-          className="folio-page relative overflow-hidden"
+          data-plate-count={page.images.length}
+          className={`folio-page relative overflow-hidden${i > 1 ? " folio-page-deferred" : ""}`}
           style={{
             minHeight: page.layout === "title" ? "100vh" : undefined,
             borderTop:
               i > 0
                 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
                 : undefined,
-            ...(i > 1 ? { contentVisibility: "auto", containIntrinsicSize: "auto 80vh" } : {}),
           }}
         >
           {page.layout === "title" && <TitleContent title={title} count={images.length} />}

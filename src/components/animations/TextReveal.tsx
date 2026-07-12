@@ -37,6 +37,10 @@ export function TextReveal({
         return;
       }
 
+      // Clear the CSS [data-animate] opacity — the split animation moves the
+      // lines/words, so the container itself must be visible for any of it to show
+      gsap.set(ref.current, { autoAlpha: 1 });
+
       if (variant === "lines") {
         const split = new SplitText(ref.current, textRevealLines.splitConfig);
 

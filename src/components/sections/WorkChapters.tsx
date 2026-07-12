@@ -120,12 +120,9 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
             <article
               key={album._id}
               data-chapter
-              className={`relative overflow-hidden ${i === 0 ? "h-svh" : "h-[78svh] md:h-[92vh]"}`}
-              style={
-                i > 1
-                  ? { contentVisibility: "auto", containIntrinsicSize: "auto 78vh" }
-                  : undefined
-              }
+              className={`relative overflow-hidden ${i === 0 ? "h-svh" : "h-[78svh] md:h-[92vh]"}${
+                i > 1 ? " chapter-panel-deferred" : ""
+              }`}
             >
               <TransitionLink
                 href={`/work/${album.slug.current}`}

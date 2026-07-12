@@ -287,6 +287,27 @@
   contain: layout style paint;
 }
 
+/* Deferred below-fold rendering. Intrinsic-size hints approximate real page
+   heights per breakpoint so the scrollbar stays stable while pages realize;
+   FolioGallery additionally refreshes ScrollTrigger when realized pages change
+   the document height, so triggers below the folio never go stale. */
+.folio-page-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 78svh;
+}
+.chapter-panel-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 78svh;
+}
+@media (min-width: 768px) {
+  .folio-page-deferred {
+    contain-intrinsic-size: auto 98vh;
+  }
+  .chapter-panel-deferred {
+    contain-intrinsic-size: auto 92vh;
+  }
+}
+
 /* --- Reduced Motion Preferences --- */
 /* Anti-FOUC: hide elements before GSAP initializes */
 [data-animate],

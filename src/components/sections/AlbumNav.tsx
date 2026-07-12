@@ -1,4 +1,3 @@
-import { FadeIn } from "@/components/animations/FadeIn";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 
 interface AlbumNavProps {
@@ -6,6 +5,9 @@ interface AlbumNavProps {
   next?: { title: string; slug: string };
 }
 
+// No scroll-gated reveal here: this nav sits below the folio, whose deferred
+// rendering reflows the document — a play-once trigger can cache a stale
+// position and leave the album hand-off permanently invisible.
 export function AlbumNav({ previous, next }: AlbumNavProps) {
   if (!previous && !next) return null;
 
@@ -15,12 +17,8 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
       aria-label="Album navigation"
     >
       {previous ? (
-        <FadeIn>
-          <TransitionLink
-
-            href={`/work/${previous.slug}`}
-            className="group block"
-          >
+        <div>
+          <TransitionLink href={`/work/${previous.slug}`} className="group block">
             <span className="font-label text-xs uppercase tracking-wider text-muted">
               Previous
             </span>
@@ -29,18 +27,14 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
               {previous.title}
             </span>
           </TransitionLink>
-        </FadeIn>
+        </div>
       ) : (
         <div />
       )}
 
       {next ? (
-        <FadeIn className="text-right">
-          <TransitionLink
-
-            href={`/work/${next.slug}`}
-            className="group block"
-          >
+        <div className="text-right">
+          <TransitionLink href={`/work/${next.slug}`} className="group block">
             <span className="font-label text-xs uppercase tracking-wider text-muted">
               Next
             </span>
@@ -49,7 +43,7 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
               <span className="inline-block transition-transform duration-300 group-hover:translate-x-1 ml-2">&rarr;</span>
             </span>
           </TransitionLink>
-        </FadeIn>
+        </div>
       ) : (
         <div />
       )}

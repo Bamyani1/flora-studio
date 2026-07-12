@@ -234,7 +234,9 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       {/* Grain overlay */}
       <div className="grain-medium absolute inset-0 z-grain opacity-[0.02]" aria-hidden="true" />
 
-      {/* Full-bleed image */}
+      {/* Full-bleed image. Layer 0 stays visible so its blur placeholder paints
+          immediately (and the photograph still shows without JS); the cycle
+          layers are revealed by the crossfade timeline. */}
       <div ref={bgContainerRef} className="absolute inset-0">
         {content.mediaCycle.map((media, index) => (
           <div
@@ -243,7 +245,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
               imageLayerRefs.current[index] = el;
             }}
             className="absolute inset-0"
-            style={{ visibility: "hidden" }}
+            style={index === 0 ? undefined : { visibility: "hidden" }}
           >
             <SiteMedia
               src={resolveImageUrl(media)}

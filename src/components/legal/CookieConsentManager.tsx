@@ -179,11 +179,11 @@ export function CookieConsentManager() {
                 Cookie Preferences
               </p>
               <p className="text-sm leading-relaxed text-muted md:text-base">
-                Essential site technologies are always enabled. If Flora Studio activates future
-                analytics or marketing tools, you can manage those categories here before they are
-                used.
+                Essential technologies are always on; they keep the site working. Analytics and
+                marketing stay off unless you enable them here.
               </p>
             </div>
+            {/* Accept and Reject carry equal visual weight — consent must not be nudged */}
             <div className="flex flex-col gap-3 md:flex-row">
               <button
                 type="button"
@@ -194,7 +194,7 @@ export function CookieConsentManager() {
               </button>
               <button
                 type="button"
-                className={actionClass}
+                className={primaryActionClass}
                 onClick={() => saveConsent({ analytics: false, marketing: false })}
               >
                 Reject non-essential
@@ -315,7 +315,7 @@ export function CookieConsentManager() {
               </button>
               <button
                 type="button"
-                className={actionClass}
+                className={primaryActionClass}
                 onClick={() => saveConsent({ analytics: false, marketing: false })}
               >
                 Reject non-essential
@@ -332,11 +332,12 @@ export function CookieConsentManager() {
         </div>
       ) : null}
 
+      {/* Trigger stacks above BackToTop, which owns the bottom-right corner */}
       {triggerVisible ? (
         <button
           ref={triggerRef}
           type="button"
-          className="fixed right-4 bottom-4 z-cookie-trigger border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 hover:border-primary hover:text-primary"
+          className="fixed right-4 bottom-20 z-cookie-trigger border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 hover:border-primary hover:text-primary md:right-8 md:bottom-24"
           onClick={() => openPreferences("trigger")}
         >
           Cookie Preferences

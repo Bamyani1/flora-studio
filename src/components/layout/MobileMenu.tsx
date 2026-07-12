@@ -58,12 +58,32 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     { scope: containerRef },
   );
 
-  // Scroll lock — paired stop/start so a lenis instance swap can't leak a stopped instance
+  // Scroll lock — paired stop/start so a lenis instance swap can't leak a stopped
+  // instance. The position:fixed body lock is the engine-agnostic fallback: iOS
+  // Safari ignores overflow:hidden for touch scrolling when Lenis isn't intercepting.
   useEffect(() => {
     if (!menuOpen) return;
     lenis?.stop();
+
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
     return () => {
       lenis?.start();
+      Object.assign(body.style, previous);
+      window.scrollTo({ top: scrollY, behavior: "instant" });
     };
   }, [menuOpen, lenis]);
 
@@ -152,12 +172,8 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
       className="fixed inset-0 z-50"
       style={{ opacity: 0, visibility: "hidden", pointerEvents: "none" }}
     >
-      {/* Backdrop */}
-      <div
-        ref={backdropRef}
-        className="absolute inset-0 bg-background/95 backdrop-blur-xl"
-        style={{ opacity: 0 }}
-      />
+      {/* Backdrop — fully opaque so the page (and fixed header) can't ghost through */}
+      <div ref={backdropRef} className="absolute inset-0 bg-background" style={{ opacity: 0 }} />
 
       {/* Content */}
       <div className="relative flex h-full flex-col justify-between px-[var(--container-padding-x)] py-[var(--header-height)]">

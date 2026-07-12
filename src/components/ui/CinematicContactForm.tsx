@@ -6,17 +6,9 @@ import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
 import { contactFormReveal } from "@/lib/animations";
 import { useContactForm } from "@/hooks/useContactForm";
-import type { ContactFormData } from "@/lib/validations";
+import { PHOTOGRAPHY_TYPE_OPTIONS, type ContactFormData } from "@/lib/validations";
 
-const photographyOptions = [
-  { value: "", label: "Select one" },
-  { value: "milestones", label: "Wedding or graduation" },
-  { value: "gatherings", label: "Event or party" },
-  { value: "motion", label: "Sports or action" },
-  { value: "landscape", label: "Landscape" },
-  { value: "portraits", label: "Portrait" },
-  { value: "professional", label: "Headshot or commercial" },
-];
+const photographyOptions = [{ value: "", label: "Select one" }, ...PHOTOGRAPHY_TYPE_OPTIONS];
 
 const labelClass = "block font-label text-xs uppercase tracking-wider text-primary/70 mb-2";
 const inputClass =
