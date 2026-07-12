@@ -162,14 +162,14 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   </span>
                   <h2
                     data-chapter-text
-                    className="mt-3 font-headline text-5xl italic leading-none text-text-heading transition-colors duration-500 md:text-8xl can-hover:group-hover:text-primary"
+                    className="mt-3 font-headline text-4xl italic leading-none text-text-heading transition-colors duration-500 md:text-7xl can-hover:group-hover:text-primary"
                   >
                     {titleHead && `${titleHead} `}
                     <span className="whitespace-nowrap">
                       {titleTail}{" "}
                       <span
                         aria-hidden="true"
-                        className="inline-block transition-transform duration-300 can-hover:group-hover:translate-x-2"
+                        className="inline-block align-middle text-[0.45em] not-italic text-primary transition-transform duration-300 can-hover:group-hover:translate-x-1"
                       >
                         &rarr;
                       </span>
