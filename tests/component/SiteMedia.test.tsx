@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { SiteMedia } from "@/components/ui/SiteMedia";
 
 describe("SiteMedia", () => {
@@ -36,7 +36,7 @@ describe("SiteMedia", () => {
     expect(img).toBeInTheDocument();
   });
 
-  it("does not render an img element for placeholder sources", () => {
+  it("fires onLoad for placeholder sources without rendering an img element", async () => {
     const onLoad = vi.fn();
     const { container } = render(
       <SiteMedia src="placeholder://flora-studio/test" alt="Placeholder" fill onLoad={onLoad} />,
@@ -45,6 +45,44 @@ describe("SiteMedia", () => {
     // Placeholder renders a div with role="img", not an <img> element
     const img = container.querySelector("img");
     expect(img).not.toBeInTheDocument();
-    expect(onLoad).not.toHaveBeenCalled();
+    await waitFor(() => expect(onLoad).toHaveBeenCalled());
+  });
+
+  it("fires onLoad exactly once per src across rerenders", async () => {
+    const onLoad = vi.fn();
+    const { rerender } = render(
+      <SiteMedia src="placeholder://flora-studio/one" alt="Placeholder" fill onLoad={onLoad} />,
+    );
+
+    await waitFor(() => expect(onLoad).toHaveBeenCalledTimes(1));
+
+    rerender(
+      <SiteMedia src="placeholder://flora-studio/one" alt="Placeholder" fill onLoad={onLoad} />,
+    );
+    expect(onLoad).toHaveBeenCalledTimes(1);
+
+    rerender(
+      <SiteMedia src="placeholder://flora-studio/two" alt="Placeholder" fill onLoad={onLoad} />,
+    );
+    await waitFor(() => expect(onLoad).toHaveBeenCalledTimes(2));
+  });
+
+  it("resets to the real-image branch when src changes after an error", async () => {
+    const { container, rerender } = render(
+      <SiteMedia src="/images/hero/broken.jpg" alt="Hero" fill />,
+    );
+
+    const img = container.querySelector("img");
+    expect(img).toBeInTheDocument();
+
+    fireEvent.error(img!);
+    await waitFor(() =>
+      expect(container.querySelector("[data-media-placeholder]")).toBeInTheDocument(),
+    );
+    expect(container.querySelector("img")).not.toBeInTheDocument();
+
+    rerender(<SiteMedia src="/images/hero/hero-01.jpg" alt="Hero" fill />);
+    await waitFor(() => expect(container.querySelector("img")).toBeInTheDocument());
+    expect(container.querySelector("[data-media-placeholder]")).not.toBeInTheDocument();
   });
 });

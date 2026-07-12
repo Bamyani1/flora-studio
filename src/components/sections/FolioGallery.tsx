@@ -82,7 +82,7 @@ function padIndex(n: number): string {
 type Orientation = "landscape" | "portrait";
 
 function getDims(img: ImageType): { w: number; h: number } {
-  const m = img.asset._ref.match(/(\d+)x(\d+)/);
+  const m = img?.asset?._ref?.match(/(\d+)x(\d+)/);
   return m ? { w: +m[1], h: +m[2] } : { w: 3, h: 2 };
 }
 

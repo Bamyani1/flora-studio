@@ -206,6 +206,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         crossfadeTlRef.current = crossfade;
       }
 
+      // Images that loaded before this effect ran (or before a timeline
+      // re-creation) never re-fire onLoad, so re-check the count here.
+      if (loadedCountRef.current >= 1) playEntrance();
+      if (loadedCountRef.current >= totalImages) crossfadeTlRef.current?.play();
+
       // Timeout fallback: play entrance after 3s even if first image hasn't loaded
       fallbackTimerRef.current = setTimeout(() => {
         if (entranceTlRef.current?.paused()) playEntrance();
@@ -233,7 +238,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       <div ref={bgContainerRef} className="absolute inset-0">
         {content.mediaCycle.map((media, index) => (
           <div
-            key={`${media.asset._ref}-${index}`}
+            key={`${media.asset?._ref ?? media.url ?? "hero"}-${index}`}
             ref={(el) => {
               imageLayerRefs.current[index] = el;
             }}
@@ -250,7 +255,6 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
                 ...({ "--mobile-pos": media.mobileObjectPosition ?? media.objectPosition ?? "center top" } as React.CSSProperties),
               }}
               priority={index === 0}
-              loading={index === 0 ? undefined : "eager"}
               quality={90}
               sizes="100vw"
               blurDataURL={index === 0 ? blurDataURL : undefined}
@@ -317,7 +321,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
           <p
             ref={descRef}
             data-animate
-            className="font-body font-light text-[clamp(0.4rem,0.5vw,0.5rem)] uppercase tracking-[0.25em] text-hero-muted/25"
+            className="font-body font-light text-[clamp(0.65rem,0.9vw,0.8rem)] uppercase tracking-[0.25em] text-hero-muted/60"
           >
             {content.description}
           </p>
