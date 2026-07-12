@@ -151,7 +151,7 @@ export function CinematicContactForm() {
         aria-live="polite"
       >
         <h2 className="font-display text-3xl italic text-text-heading md:text-4xl">
-          Message received
+          Inquiry received
         </h2>
         <p className="mt-4 text-sm uppercase tracking-widest text-muted">
           We&apos;ll get back to you within 24 hours.
@@ -163,7 +163,7 @@ export function CinematicContactForm() {
           className="mt-8"
           onClick={handleReset}
         >
-          Send another message
+          Send another inquiry
         </Button>
       </div>
     );
@@ -174,7 +174,7 @@ export function CinematicContactForm() {
       <div className="flex-1">
         {/* On phones the page h1 ("Get in touch.") stacks directly above the form,
             so this panel heading only renders from md up. */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <span
             data-form-animate
             data-form-label
@@ -265,6 +265,7 @@ export function CinematicContactForm() {
                 type="email"
                 required
                 autoComplete="email"
+                placeholder="you@example.com"
                 data-field="email"
                 className={inputClass}
                 aria-invalid={!!fieldErrors.email}

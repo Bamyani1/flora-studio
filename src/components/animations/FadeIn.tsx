@@ -14,6 +14,9 @@ interface FadeInProps {
   direction?: "up" | "left" | "right";
   blur?: boolean;
   scale?: number;
+  /** Play on mount instead of on scroll — for content pinned to the bottom of
+   *  a full-viewport hero, whose resting position sits below the trigger line */
+  immediate?: boolean;
   className?: string;
   as?: React.ElementType;
 }
@@ -26,6 +29,7 @@ export function FadeIn({
   direction = "up",
   blur = false,
   scale,
+  immediate = false,
   className,
   as: Tag = "div",
 }: FadeInProps) {
@@ -58,16 +62,20 @@ export function FadeIn({
         ...(blur && { filter: blurReveal.to.filter }),
         ...(scale !== undefined && { scale: 1 }),
         delay,
-        scrollTrigger: {
-          trigger: ref.current,
-          ...preset.scrollTrigger,
-        },
+        ...(immediate
+          ? {}
+          : {
+              scrollTrigger: {
+                trigger: ref.current,
+                ...preset.scrollTrigger,
+              },
+            }),
       };
 
       gsap.set(ref.current, fromVars);
       gsap.fromTo(ref.current, fromVars, toVars);
     },
-    { scope: ref, dependencies: [reduced, delay, duration, y, direction, blur, scale] },
+    { scope: ref, dependencies: [reduced, delay, duration, y, direction, blur, scale, immediate] },
   );
 
   return (

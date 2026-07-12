@@ -50,13 +50,14 @@ export function LandingEditorial({ content }: LandingEditorialProps) {
   }, [reducedMotion]);
 
   return (
-    <section className="relative py-32 md:py-52 px-6 md:px-24">
+    <section className="relative py-20 md:py-36 px-6 md:px-24">
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="max-w-7xl mx-auto flex flex-col items-center">
+        {/* Height-capped so a portrait frame can't stretch to two viewports of scroll */}
         <CinematicImageReveal
           src={resolveImageUrl(content.image)}
           alt={content.image.alt ?? ""}
-          className="w-full mb-24 md:mb-32"
+          className="w-full max-h-[85vh] mb-16 md:mb-24"
           overlay={true}
           sizes="(min-width: 1280px) 1280px, 100vw"
           width={dims?.width ?? 2133}
@@ -64,21 +65,22 @@ export function LandingEditorial({ content }: LandingEditorialProps) {
         />
 
         <div className="max-w-4xl text-center flex flex-col items-center">
+          {/* Tight delays — long staggers left a half-rendered headline at normal scroll speed */}
           <h2 className="font-headline text-4xl md:text-6xl text-white leading-tight mb-10">
             <RevealText text={content.titleLine1} />
             <br />
-            <RevealText text={content.titleLine2Lead} delay={0.2} />{" "}
+            <RevealText text={content.titleLine2Lead} delay={0.08} />{" "}
             <span className="italic text-white/70">
-              <RevealText text={content.titleLine2Muted} delay={0.3} />
+              <RevealText text={content.titleLine2Muted} delay={0.14} />
             </span>{" "}
             <span className="text-primary">
-              <RevealText text={content.titleLine2Accent} delay={0.4} />
+              <RevealText text={content.titleLine2Accent} delay={0.2} />
             </span>
           </h2>
 
           <p
             ref={descRef}
-            className="font-body text-white/60 text-lg md:text-xl leading-relaxed mb-16 max-w-2xl"
+            className="font-body text-white/75 text-lg md:text-xl leading-relaxed mb-16 max-w-2xl text-left md:text-center"
           >
             {content.description}
           </p>

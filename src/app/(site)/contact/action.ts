@@ -183,7 +183,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       await transporter.sendMail({
         from: `Flora Studio <${contactEmail}>`,
         to: parsed.data.email,
-        subject: "We received your message | Flora Studio",
+        subject: "We received your inquiry | Flora Studio",
         text: buildAutoReplyText(parsed.data, contactEmail),
       });
     } catch (err) {

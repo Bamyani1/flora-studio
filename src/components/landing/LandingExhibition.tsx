@@ -40,7 +40,7 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
   }, [reducedMotion]);
 
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section className="py-24 md:py-36 relative overflow-hidden">
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="absolute inset-0 bg-background transform -skew-y-3 origin-top-left z-0"></div>
 

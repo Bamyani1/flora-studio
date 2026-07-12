@@ -6,6 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { chapterReveal, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 import { CATEGORY_META } from "@/lib/categories";
 import { resolveImageUrl } from "@/lib/image-url";
 import { SiteMedia } from "@/components/ui/SiteMedia";
@@ -36,6 +37,7 @@ function metaLine(album: AlbumMeta): string {
 export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLElement>(null);
+  const mobileTagRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const reduced = useReducedMotion();
   const total = albums.length;
@@ -82,19 +84,21 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
         }
       });
 
-      // Rail visibility follows the chapters container
-      const rail = railRef.current;
-      if (rail) {
-        gsap.set(rail, { autoAlpha: 0 });
+      // Rail + mobile position tag visibility follows the chapters container
+      const wayfinders = [railRef.current, mobileTagRef.current].filter(
+        Boolean,
+      ) as HTMLElement[];
+      if (wayfinders.length) {
+        gsap.set(wayfinders, { autoAlpha: 0 });
         ScrollTrigger.create({
           trigger: root,
           start: "top 60%",
           end: "bottom 85%",
           onToggle: (self) => {
             if (reduced) {
-              gsap.set(rail, { autoAlpha: self.isActive ? 1 : 0 });
+              gsap.set(wayfinders, { autoAlpha: self.isActive ? 1 : 0 });
             } else {
-              gsap.to(rail, {
+              gsap.to(wayfinders, {
                 autoAlpha: self.isActive ? 1 : 0,
                 duration: 0.4,
                 overwrite: "auto",
@@ -116,13 +120,17 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
           const titleWords = album.title.split(" ");
           const titleTail = titleWords.pop();
           const titleHead = titleWords.join(" ");
+          // Syncopate the panel heights so eleven chapters don't tick by like a
+          // metronome — every third non-hero panel drops to a shorter beat
+          const panelHeight =
+            i === 0 ? "h-svh" : i % 3 === 2 ? "h-[78svh] md:h-[76vh]" : "h-[78svh] md:h-[92vh]";
           return (
             <article
               key={album._id}
               data-chapter
-              className={`relative overflow-hidden scroll-mt-[var(--header-height)] ${
-                i === 0 ? "h-svh" : "h-[78svh] md:h-[92vh]"
-              }${i > 1 ? " chapter-panel-deferred" : ""}`}
+              className={`relative overflow-hidden scroll-mt-[var(--header-height)] ${panelHeight}${
+                i > 1 ? " chapter-panel-deferred" : ""
+              }`}
             >
               <TransitionLink
                 href={`/work/${album.slug.current}`}
@@ -159,7 +167,7 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                 />
 
                 <div
-                  className={`absolute inset-x-0 bottom-0 flex flex-col p-6 pb-10 md:p-16 ${
+                  className={`absolute inset-x-0 bottom-0 flex flex-col px-7 pt-6 pb-10 md:p-16 ${
                     alignRight ? "items-end text-right" : "items-start"
                   }`}
                 >
@@ -190,19 +198,39 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   >
                     {metaLine(album)}
                   </p>
+                  {/* Touch affordance — every other "this opens" cue is hover-gated */}
+                  <span
+                    data-chapter-text
+                    className="mt-5 inline-flex items-center gap-2 eyebrow text-primary can-hover:hidden"
+                  >
+                    View album <span aria-hidden="true">&rarr;</span>
+                  </span>
                 </div>
               </TransitionLink>
+
+              {/* Entry masthead — announces the page as the index, not an album */}
+              {i === 0 && (
+                <div className="pointer-events-none absolute inset-x-0 top-[calc(var(--header-height)+1.5rem)] z-10 flex justify-center">
+                  <p className="eyebrow text-text/80">
+                    Selected work &mdash; {total} collections
+                  </p>
+                </div>
+              )}
             </article>
           );
         })}
       </div>
 
-      {/* Chapter rail — desktop wayfinding + jump navigation */}
+      {/* Chapter rail — wayfinding + jump navigation from tablet up. The cap
+          label names the column; hovering a tick reveals which album it jumps to. */}
       <nav
         ref={railRef}
         aria-label="Album chapters"
-        className="invisible fixed right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-end gap-1.5 opacity-0 lg:flex"
+        className="invisible fixed right-5 top-1/2 z-30 hidden -translate-y-1/2 flex-col items-end gap-1.5 opacity-0 md:flex"
       >
+        <span className="mb-2 eyebrow text-primary" aria-hidden="true">
+          {padIndex(active + 1)} / {padIndex(total)}
+        </span>
         {albums.map((album, i) => (
           <button
             key={album._id}
@@ -212,21 +240,50 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
             aria-current={active === i ? "true" : undefined}
             className="group/tick flex h-6 items-center justify-end gap-2"
           >
-            <span
-              className={`eyebrow text-primary transition-opacity duration-300 ${
-                active === i ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {padIndex(i + 1)}
+            <span className="eyebrow whitespace-nowrap text-text opacity-0 transition-opacity duration-300 can-hover:group-hover/tick:opacity-100">
+              {album.title}
             </span>
             <span
               className={`h-px transition-all duration-300 group-hover/tick:bg-primary ${
-                active === i ? "w-8 bg-primary" : "w-4 bg-text/30"
+                active === i ? "w-8 bg-primary" : "w-4 bg-text/50"
               }`}
             />
           </button>
         ))}
       </nav>
+
+      {/* Mobile position tag — the rail's phone-sized counterpart */}
+      <div
+        ref={mobileTagRef}
+        aria-hidden="true"
+        className="pointer-events-none invisible fixed bottom-4 left-4 z-30 opacity-0 md:hidden"
+        style={{
+          marginBottom: "env(safe-area-inset-bottom)",
+          textShadow: "0 1px 6px rgba(16, 19, 12, 0.9)",
+        }}
+      >
+        <span className="eyebrow text-text">
+          {padIndex(active + 1)}
+          <span className="text-muted"> / {padIndex(total)}</span>
+        </span>
+      </div>
+
+      {/* Outro — close the sequence with a next step instead of dropping
+          straight from the last cover into the site footer */}
+      <section className="flex flex-col items-center bg-background px-6 py-[var(--section-padding-y)] text-center">
+        <p className="eyebrow text-primary">The archive, in person</p>
+        <h2 className="mt-6 font-headline text-3xl italic text-text-heading md:text-5xl">
+          Every collection starts with a conversation.
+        </h2>
+        <Button
+          as={TransitionLink}
+          href="/contact"
+          size="xs"
+          className="mt-10"
+        >
+          Start a project
+        </Button>
+      </section>
     </>
   );
 }

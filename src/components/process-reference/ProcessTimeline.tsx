@@ -105,15 +105,17 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
     { scope: sectionRef, dependencies: [reduced] },
   );
 
+  const stepTotal = String(steps.length).padStart(2, "0");
+
   return (
     <section
       ref={sectionRef}
       id="process"
-      className="overflow-hidden bg-[var(--process-surface)] py-32"
+      className="overflow-hidden bg-[var(--process-surface)] py-20 md:py-32"
       style={{ scrollMarginTop: "calc(var(--header-height) + var(--space-12))" }}
     >
       <div className="mx-auto max-w-[1440px] px-8 md:px-16">
-        <div ref={headerRef} data-timeline-animate className="mb-32 text-center">
+        <div ref={headerRef} data-timeline-animate className="mb-16 text-center md:mb-24">
           <h2 className="mb-6 font-display text-4xl font-light tracking-tight text-[var(--process-on-surface)] md:text-6xl">
             {title}
           </h2>
@@ -131,13 +133,13 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               key={step.id}
               data-step
               data-step-align={step.align}
-              className={`relative mb-24 md:mb-48 flex flex-col items-center last:mb-0 md:flex-row ${
-                step.align === "right" ? "md:flex-row-reverse" : ""
+              className={`relative mb-20 lg:mb-28 flex flex-col items-start last:mb-0 lg:flex-row ${
+                step.align === "right" ? "lg:flex-row-reverse" : ""
               }`}
             >
               <div
-                className={`group mb-8 w-full md:mb-0 md:w-1/2 ${
-                  step.align === "left" ? "text-left md:pr-24 md:text-right" : "md:pl-24"
+                className={`group mb-8 w-full lg:mb-0 lg:w-1/2 ${
+                  step.align === "left" ? "text-left lg:pr-24 lg:text-right" : "lg:pl-24"
                 }`}
               >
                 <h3
@@ -151,7 +153,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   data-step-text
                   data-timeline-animate
                   className={`max-w-md font-body leading-relaxed text-[var(--process-on-surface-variant)] ${
-                    step.align === "left" ? "md:ml-auto" : ""
+                    step.align === "left" ? "lg:ml-auto" : ""
                   }`}
                 >
                   {step.description}
@@ -167,7 +169,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                       <li
                         key={item}
                         className={`flex items-center gap-3 ${
-                          step.align === "left" ? "md:justify-end" : ""
+                          step.align === "left" ? "lg:justify-end" : ""
                         }`}
                       >
                         <span className="h-[1px] w-1.5 bg-[var(--process-primary)]" /> {item}
@@ -182,9 +184,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                       <Button
                         as={Link}
                         href={step.action.href}
-                        variant="outline-subtle"
+                        variant="outline-accent"
                         size="xs"
-                        className="border-white/30 text-[var(--process-on-surface)] hover:border-[var(--process-primary)] hover:text-[var(--process-primary)]"
                       >
                         {step.action.label}
                       </Button>
@@ -193,16 +194,18 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                 )}
               </div>
 
-              <div className="absolute left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center justify-center md:flex">
+              <div className="absolute left-1/2 top-2 z-10 hidden -translate-x-1/2 flex-col items-center justify-center lg:flex">
                 <div
                   data-step-badge
                   data-timeline-animate
-                  className="flex h-12 w-12 items-center justify-center border border-primary/20 bg-[var(--process-surface-container)] backdrop-blur-md"
+                  className="flex h-12 min-w-12 items-center justify-center border border-primary/20 bg-[var(--process-surface-container)] px-2 backdrop-blur-md"
                 >
                   {/* Lining Inter figures — italic serif digits misread ("01" → "OI"),
-                      and bone clears AA where 20px ember measured 3.8:1 */}
-                  <span className="font-label text-sm tracking-[0.15em] text-text">
+                      and bone clears AA where 20px ember measured 3.8:1. The
+                      "NN / NN" form ties the timeline into the site-wide grammar. */}
+                  <span className="whitespace-nowrap font-label text-xs tracking-[0.15em] text-text">
                     {step.id}
+                    <span className="text-[var(--process-primary)]"> / {stepTotal}</span>
                   </span>
                 </div>
               </div>
@@ -210,7 +213,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               <div
                 data-step-image
                 data-timeline-animate
-                className={`w-full md:w-1/2 ${step.align === "left" ? "md:pl-24" : "md:pr-24"}`}
+                className={`w-full lg:w-1/2 ${step.align === "left" ? "lg:pl-24" : "lg:pr-24"}`}
               >
                 {step.layout === "grid" ? (
                   <div className="grid grid-cols-2 gap-4">
@@ -241,8 +244,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                         step.layout === "single"
                           ? "aspect-[4/3]"
                           : step.layout === "bordered"
-                            ? "aspect-video"
-                            : "aspect-[21/9]"
+                            ? "aspect-[4/3] md:aspect-video"
+                            : "aspect-[3/2] md:aspect-[21/9]"
                       }`}
                     >
                       <ProcessParallaxImage
@@ -256,9 +259,9 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                 )}
               </div>
 
-              <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 md:hidden">
-                <span className="font-label text-sm tracking-[0.1em] text-[var(--process-on-primary)]">
-                  {step.id}
+              <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 lg:hidden">
+                <span className="whitespace-nowrap font-label text-sm tracking-[0.1em] text-[var(--process-on-primary)]">
+                  {step.id} / {stepTotal}
                 </span>
               </div>
             </div>

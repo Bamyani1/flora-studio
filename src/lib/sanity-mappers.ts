@@ -88,6 +88,7 @@ export interface RawAboutPage {
   heroTitleLine1: string;
   heroTitleLine2: string;
   heroDescription: string;
+  heroImage?: SanityImage | null;
   manifestoEyebrow: string;
   manifestoQuotePrefix: string;
   manifestoQuoteAccent: string;
@@ -111,6 +112,7 @@ export function mapAboutPageContent(doc: RawAboutPage): AboutPageContent {
       titleLine1: doc.heroTitleLine1,
       titleLine2: doc.heroTitleLine2,
       description: doc.heroDescription,
+      image: doc.heroImage ?? undefined,
     },
     manifesto: {
       eyebrow: doc.manifestoEyebrow,

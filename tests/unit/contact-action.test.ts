@@ -161,7 +161,7 @@ describe("submitContactForm", () => {
       expect.objectContaining({
         from: `Flora Studio <${contactEmail}>`,
         to: "ava@example.com",
-        subject: "We received your message | Flora Studio",
+        subject: "We received your inquiry | Flora Studio",
         text: expect.stringContaining("Location: Dayton, Ohio"),
       }),
     );

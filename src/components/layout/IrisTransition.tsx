@@ -113,6 +113,8 @@ export const IrisTransition = forwardRef<IrisTransitionHandle>(function IrisTran
       className="pointer-events-none fixed inset-0 z-100"
       style={{ visibility: "hidden" }}
     >
+      {/* An ember hairline on each blade's leading edge makes the shutter
+          mechanism legible — without it the eight blades read as a flat wipe */}
       {Array.from({ length: STRIP_COUNT }, (_, i) => (
         <div
           key={i}
@@ -125,6 +127,7 @@ export const IrisTransition = forwardRef<IrisTransitionHandle>(function IrisTran
             left: `${i * STRIP_WIDTH}%`,
             transform: "scaleX(0)",
             transformOrigin: "left center",
+            borderRight: "1px solid color-mix(in srgb, var(--color-primary) 22%, transparent)",
           }}
         />
       ))}

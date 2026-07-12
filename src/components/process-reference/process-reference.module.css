@@ -41,14 +41,14 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    color-mix(in srgb, var(--color-primary) 30%, transparent) 10%,
-    color-mix(in srgb, var(--color-primary) 30%, transparent) 90%,
+    color-mix(in srgb, var(--color-primary) 55%, transparent) 10%,
+    color-mix(in srgb, var(--color-primary) 55%, transparent) 90%,
     transparent
   );
   z-index: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .timelineRule::before {
     display: none;
   }

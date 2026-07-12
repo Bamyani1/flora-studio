@@ -40,6 +40,12 @@ export function Footer({
               {item.label}
             </Link>
           ))}
+          <Link
+            href="/contact"
+            className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
+          >
+            Contact
+          </Link>
           {socialLinks.map((link) => (
             <a
               key={link.label}

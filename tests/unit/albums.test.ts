@@ -83,14 +83,45 @@ describe("album loaders", () => {
     const result = await getAlbumWithNavigation(targetSlug);
 
     expect(result.album).toEqual(PLACEHOLDER_ALBUM_MAP[targetSlug]);
-    expect(result.previous).toEqual({
+    expect(result.previous).toMatchObject({
       title: PLACEHOLDER_ALL_ALBUMS[0].title,
       slug: PLACEHOLDER_ALL_ALBUMS[0].slug.current,
+      position: 1,
+      total: PLACEHOLDER_ALL_ALBUMS.length,
+      wraps: false,
     });
-    expect(result.next).toEqual({
+    expect(result.next).toMatchObject({
       title: PLACEHOLDER_ALL_ALBUMS[2].title,
       slug: PLACEHOLDER_ALL_ALBUMS[2].slug.current,
+      position: 3,
+      wraps: false,
     });
+  });
+
+  it("marks the hand-off as wrapping at the archive boundaries", async () => {
+    const firstSlug = PLACEHOLDER_ALL_ALBUMS[0].slug.current;
+    const lastSlug = PLACEHOLDER_ALL_ALBUMS[PLACEHOLDER_ALL_ALBUMS.length - 1].slug.current;
+
+    const { getAlbumWithNavigation } = await import("@/lib/albums");
+
+    const first = await getAlbumWithNavigation(firstSlug);
+    expect(first.previous?.wraps).toBe(true);
+    expect(first.next?.wraps).toBe(false);
+
+    const last = await getAlbumWithNavigation(lastSlug);
+    expect(last.next?.wraps).toBe(true);
+  });
+
+  it("detects a multi-volume series from album titles", async () => {
+    const { getAlbumWithNavigation } = await import("@/lib/albums");
+
+    const result = await getAlbumWithNavigation("nature-vol-ii");
+
+    expect(result.series).toMatchObject({ name: "Nature", position: 2 });
+    expect(result.series?.volumes.map((v) => v.numeral)).toEqual(["I", "II", "III"]);
+
+    const nonSeries = await getAlbumWithNavigation("the-graduate");
+    expect(nonSeries.series).toBeNull();
   });
 
   it("returns null neighbors when slug is missing from album list", async () => {
@@ -98,7 +129,7 @@ describe("album loaders", () => {
 
     const result = await getAlbumWithNavigation("nonexistent");
 
-    expect(result).toEqual({ album: null, previous: null, next: null });
+    expect(result).toEqual({ album: null, previous: null, next: null, series: null });
   });
 
   it("keeps fallback albums on the shared media model", () => {

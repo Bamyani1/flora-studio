@@ -91,9 +91,9 @@ export default async function ContactPage() {
         <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
 
         {/* Floating two-panel card */}
-        <div className="relative flex flex-1 flex-col overflow-hidden md:flex-row">
+        <div className="relative flex flex-1 flex-col overflow-hidden lg:flex-row">
           {/* Left Panel — Branding */}
-          <div className="relative flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 md:w-[39.5%] md:justify-between md:gap-0 md:px-14 md:py-14">
+          <div className="relative flex w-full flex-col gap-8 bg-surface-deep px-8 py-10 lg:w-[39.5%] lg:justify-between lg:gap-0 lg:px-14 lg:py-14">
             {/* Subtle top glow */}
             <div
               className="pointer-events-none absolute inset-0"
@@ -121,20 +121,20 @@ export default async function ContactPage() {
             </div>
 
             {/* Bottom content — desktop only; on phones it moves below the form */}
-            <div className="relative z-10 hidden md:block">
+            <div className="relative z-10 hidden lg:block">
               <StudioInfo siteSettings={siteSettings} />
             </div>
           </div>
 
           {/* Right Panel — Form */}
-          <div className="relative flex w-full flex-col border-l border-border/10 bg-surface-lowest md:w-[60.5%]">
-            <div className="flex flex-1 flex-col px-8 pt-10 pb-6 md:px-14 md:pt-14 md:pb-8">
+          <div className="relative flex w-full flex-col border-l border-border/10 bg-surface-lowest lg:w-[60.5%]">
+            <div className="flex flex-1 flex-col px-8 pt-10 pb-6 lg:px-14 lg:pt-14 lg:pb-8">
               <CinematicContactForm />
             </div>
           </div>
 
           {/* Studio info — mobile only, after the form */}
-          <div className="relative border-t border-border/10 bg-surface-deep px-8 py-10 md:hidden">
+          <div className="relative border-t border-border/10 bg-surface-deep px-8 py-10 lg:hidden">
             <StudioInfo siteSettings={siteSettings} />
           </div>
         </div>

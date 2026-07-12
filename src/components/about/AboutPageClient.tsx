@@ -76,7 +76,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
     if (reduced || isHovering || teamMembers.length <= 1) return;
     const interval = setInterval(() => {
       setActiveMember((prev) => (prev + 1) % teamMembers.length);
-    }, 3000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [reduced, isHovering, teamMembers.length]);
 
@@ -292,10 +292,32 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           </div>
         </section>
 
+        {/* The opening proof: a full-bleed photograph before any more words */}
+        {content.hero.image && (
+          <section className="relative h-[52vh] overflow-hidden md:h-[68vh]">
+            <SiteMedia
+              src={resolveImageUrl(content.hero.image)}
+              alt={content.hero.image.alt ?? ""}
+              fill
+              sizes="100vw"
+              quality={90}
+              className="object-cover"
+            />
+            <div
+              className="pointer-events-none absolute inset-0"
+              aria-hidden="true"
+              style={{
+                background:
+                  "linear-gradient(to bottom, color-mix(in srgb, var(--color-background) 45%, transparent), transparent 30%, transparent 70%, color-mix(in srgb, var(--color-surface-container-lowest) 65%, transparent))",
+              }}
+            />
+          </section>
+        )}
+
         <div className="w-full h-1 bg-surface-container-lowest"></div>
         <div className="scene-divider"></div>
 
-        <section className="py-48 md:py-64 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
+        <section className="py-36 md:py-48 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
           <div
             data-about-animate="bg-text"
             data-target-opacity="0.03"
@@ -460,8 +482,8 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-24 md:py-64 px-6 bg-surface-container-lowest md:px-12">
-          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-32 items-center">
+        <section className="py-24 md:py-44 px-6 bg-surface-container-lowest md:px-12">
+          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 xl:gap-32 items-center">
             <div className="space-y-10 md:space-y-20">
               <div className="space-y-8">
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
@@ -513,7 +535,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-40 md:py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
+        <section className="py-32 md:py-48 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
             <h2 className="font-display text-6xl md:text-8xl tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text={content.cta.titleLine1} />
@@ -525,13 +547,12 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                 {content.cta.titleLine2}
               </span>
             </h2>
-            <div data-about-animate="fade-up" data-delay="1.5" className="pt-12">
+            <div data-about-animate="fade-up" data-delay="0.2" className="pt-12">
               <Button
                 as={TransitionLink}
                 href={content.cta.cta.href}
-                variant="outline-accent"
-                size="sm"
-                className="gap-2 font-semibold"
+                size="lg"
+                className="gap-2 px-10 font-label text-xs uppercase tracking-[0.2em]"
               >
                 {content.cta.cta.label} <span aria-hidden="true">&rarr;</span>
               </Button>
@@ -539,7 +560,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           </div>
           <div
             data-about-animate="bg-text"
-            data-target-opacity="0.03"
+            data-target-opacity="0.07"
             data-from-scale="0.8"
             data-duration="3"
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
