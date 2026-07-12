@@ -10,8 +10,8 @@ export function LandingFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
 
       {/* Left — Logo + Copyright */}
       <div className="relative z-10 mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <FloraStudioLogo width={120} className="text-neutral-200" />
-        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+        <FloraStudioLogo width={120} className="text-text" />
+        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-muted">
           &copy; {new Date().getFullYear()} Flora Studio. All rights reserved.
         </div>
       </div>
@@ -25,14 +25,14 @@ export function LandingFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
             >
               {link.label}
             </a>
           ))}
           <Link
             href="/work"
-            className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+            className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
           >
             Journal
           </Link>
@@ -42,7 +42,7 @@ export function LandingFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-text"
             >
               {link.label}
             </Link>

@@ -11,10 +11,10 @@ export function ProcessFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
   ] as const;
 
   return (
-    <footer className="flex w-full flex-col items-end justify-between border-t border-white/5 bg-zinc-950 px-8 py-20 md:flex-row md:px-16">
+    <footer className="flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-8 py-20 md:flex-row md:px-16">
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <FloraStudioLogo width={120} className="text-neutral-200" />
-        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+        <FloraStudioLogo width={120} className="text-text" />
+        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-muted">
           © {new Date().getFullYear()} Flora Studio. All rights reserved.
         </div>
       </div>
@@ -27,14 +27,14 @@ export function ProcessFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+                  className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
                 >
                   {link.label}
                 </a>
               ) : (
                 <Link
                   href={link.href}
-                  className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+                  className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
                 >
                   {link.label}
                 </Link>
@@ -47,7 +47,7 @@ export function ProcessFooter({ socialLinks }: { socialLinks: SocialLink[] }) {
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-text"
             >
               {link.label}
             </Link>

@@ -103,7 +103,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
             left: 0,
             right: 0,
             height: "45%",
-            background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)",
+            background: "linear-gradient(to top, rgba(36,40,32,0.85), transparent)",
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
@@ -112,7 +112,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         >
           <div
             style={{
-              color: "#F5F0EB",
+              color: "#e8dfd4",
               fontSize: 48,
               fontWeight: 300,
               letterSpacing: "0.05em",
@@ -123,7 +123,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           </div>
           <div
             style={{
-              color: "#8B7355",
+              color: "#c97b2a",
               fontSize: 14,
               letterSpacing: "0.2em",
               lineHeight: 1,
@@ -147,8 +147,8 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#121212",
-        color: "#F5F0EB",
+        backgroundColor: "#242820",
+        color: "#e8dfd4",
       }}
     >
       <div
@@ -165,7 +165,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         style={{
           fontSize: 16,
           marginTop: 40,
-          color: "#8B7355",
+          color: "#c97b2a",
         }}
       >
         FLORA STUDIO
