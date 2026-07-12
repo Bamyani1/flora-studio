@@ -18,7 +18,7 @@ export default function WorkLoading() {
               }`}
             >
               <div className={`h-2 w-14 bg-surface-elevated ${sk}`} />
-              <div className={`mt-3 h-10 w-64 bg-surface-elevated md:h-16 md:w-96 ${sk}`} />
+              <div className={`mt-3 h-8 w-56 bg-surface-elevated md:h-12 md:w-80 ${sk}`} />
               <div className={`mt-4 h-2 w-40 bg-surface-elevated ${sk}`} />
             </div>
           </section>
