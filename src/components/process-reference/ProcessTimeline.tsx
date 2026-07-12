@@ -123,7 +123,10 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
         </div>
 
         <div className={styles.timelineRule}>
-          {steps.map((step) => (
+          {steps.map((step) => {
+            // meta and metaList carry the same kind of content — render them identically
+            const metaItems = step.metaList ?? (step.meta ? [step.meta] : undefined);
+            return (
             <div
               key={step.id}
               data-step
@@ -154,24 +157,19 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   {step.description}
                 </p>
 
-                {step.meta && (
-                  <span
-                    data-step-text
-                    data-timeline-animate
-                    className="mt-6 block font-label text-[10px] uppercase tracking-[0.3em] text-on-surface-variant/55"
-                  >
-                    {step.meta}
-                  </span>
-                )}
-
-                {step.metaList && (
+                {metaItems && (
                   <ul
                     data-step-text
                     data-timeline-animate
                     className="mt-6 space-y-3 font-label text-[10px] uppercase tracking-widest text-on-surface-variant/75"
                   >
-                    {step.metaList.map((item) => (
-                      <li key={item} className="flex items-center gap-3">
+                    {metaItems.map((item) => (
+                      <li
+                        key={item}
+                        className={`flex items-center gap-3 ${
+                          step.align === "left" ? "md:justify-end" : ""
+                        }`}
+                      >
                         <span className="h-[1px] w-1.5 bg-[var(--process-primary)]" /> {item}
                       </li>
                     ))}
@@ -257,17 +255,14 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                 )}
               </div>
 
-              <div
-                className={`absolute top-0 md:hidden ${
-                  step.align === "left" ? "left-0" : "right-0"
-                } -translate-y-full bg-[var(--process-primary)] px-3 py-1`}
-              >
+              <div className="absolute left-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 md:hidden">
                 <span className="font-display text-sm italic text-[var(--process-on-primary)]">
                   {step.id}
                 </span>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
