@@ -234,10 +234,7 @@ function TitleContent({ title, count }: { title: string; count: number }) {
         {title}
       </h2>
       <div className="folio-reveal-label mt-6 h-px bg-primary" style={{ width: 60 }} />
-      <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted">
-        Flora Studio
-      </span>
-      <span className="folio-reveal-label mt-2 font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
+      <span className="folio-reveal-label mt-4 font-label text-[10px] uppercase tracking-[0.2em] text-muted/60">
         {imageCountLabel(count)}
       </span>
     </div>

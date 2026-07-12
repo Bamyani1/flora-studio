@@ -24,7 +24,6 @@ function brokenImage(): SanityImage {
 function buildRawHomePage(overrides: Partial<RawHomePage> = {}): RawHomePage {
   return {
     _id: "homePage",
-    heroEyebrow: "Photography with intention",
     heroTitleLine1: "Every frame,",
     heroTitleLine2: "earned.",
     heroDescription: "Photography with intention.",
@@ -36,7 +35,6 @@ function buildRawHomePage(overrides: Partial<RawHomePage> = {}): RawHomePage {
     editorialTitleLine2Accent: "light.",
     editorialDescription: "Editorial description.",
     editorialCta: { label: "See the work", href: "/work" },
-    exhibitionEyebrow: "EXHIBITION 01",
     exhibitionTitleLine1: "Before",
     exhibitionTitleLine2: "the Game",
     exhibitionDescription: "Exhibition description.",
@@ -53,7 +51,6 @@ function buildRawHomePage(overrides: Partial<RawHomePage> = {}): RawHomePage {
 function buildRawAboutPage(overrides: Partial<RawAboutPage> = {}): RawAboutPage {
   return {
     _id: "aboutPage",
-    heroEyebrow: "Flora Studio",
     heroTitleLine1: "Who We",
     heroTitleLine2: "Are.",
     heroDescription: "Hero description.",
@@ -61,20 +58,16 @@ function buildRawAboutPage(overrides: Partial<RawAboutPage> = {}): RawAboutPage 
     manifestoQuotePrefix: "We make every",
     manifestoQuoteAccent: "frame",
     manifestoQuoteSuffix: "count.",
-    manifestoFooterLabel: "Our Approach",
-    teamEyebrow: "The People",
     teamTitle: "The Team",
     teamDescription: "Team description.",
     teamMembers: [
       { name: "Mostafa Bamyani", role: "Photographer & Designer", portrait: refImage("image-portrait") },
       { name: "Mortaza Anwari", role: "Photographer", portrait: brokenImage() },
     ],
-    processEyebrow: "How It Works",
     processTitle: "How we work.",
     processDescription: "Process description.",
     processCards: [{ title: "Selection", description: "Card description." }],
     processImage: refImage("image-about-process"),
-    ctaEyebrow: "What's next",
     ctaTitleLine1: "Let's make",
     ctaTitleLine2: "something.",
     cta: { label: "Get in touch", href: "/contact" },

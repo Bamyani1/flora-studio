@@ -24,10 +24,7 @@ function SocialIcon({ icon }: Pick<SocialLink, "icon">) {
 
 function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
   return (
-    <FadeIn delay={0.3}>
-      <span className="mb-4 block font-label text-xs uppercase tracking-wider text-primary">
-        {siteSettings.studioName}
-      </span>
+    <FadeIn delay={0.2}>
       <p className="mb-1 font-body text-base text-text-heading">{siteSettings.location}</p>
       <p className="mt-3 font-body text-sm text-muted">{siteSettings.email}</p>
       <p className="font-body text-sm text-muted">{siteSettings.phone}</p>
@@ -91,12 +88,6 @@ export default async function ContactPage() {
             {/* Top content */}
             <div className="relative z-10">
               <FadeIn>
-                <span className="mb-8 block font-label text-xs uppercase tracking-wider text-primary">
-                  {siteSettings.studioName}
-                </span>
-              </FadeIn>
-
-              <FadeIn delay={0.1}>
                 <h1 className="mb-6 font-display text-4xl font-light uppercase leading-[0.9] text-text-heading md:text-[48px]">
                   <span className="italic">{contactPage.titleLine1}</span>
                   <br />
@@ -104,7 +95,7 @@ export default async function ContactPage() {
                 </h1>
               </FadeIn>
 
-              <FadeIn delay={0.2}>
+              <FadeIn delay={0.1}>
                 <p className="max-w-[340px] font-body text-base leading-relaxed text-muted">
                   {contactPage.description}
                 </p>

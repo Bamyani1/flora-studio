@@ -47,9 +47,6 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-center">
           <div ref={textColRef} className="order-2 md:order-1 w-full md:w-1/2">
-            <span className="text-primary font-label text-[10px] tracking-[0.5em] mb-6 block">
-              {content.eyebrow}
-            </span>
             <h3 className="font-headline text-5xl md:text-7xl italic text-white mb-8 leading-tight">
               {content.titleLine1}
               <br />

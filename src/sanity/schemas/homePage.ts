@@ -6,12 +6,6 @@ export const homePage = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "heroEyebrow",
-      title: "Hero Eyebrow",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "heroTitleLine1",
       title: "Hero Title Line 1",
       type: "string",
@@ -76,12 +70,6 @@ export const homePage = defineType({
       name: "editorialCta",
       title: "Editorial CTA",
       type: "ctaLink",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "exhibitionEyebrow",
-      title: "Exhibition Eyebrow",
-      type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({

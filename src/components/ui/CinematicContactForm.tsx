@@ -166,23 +166,27 @@ export function CinematicContactForm() {
   return (
     <div ref={containerRef} className="flex h-full flex-col">
       <div className="flex-1">
-        <span
-          data-form-animate
-          data-form-label
-          className="mb-4 block font-label text-xs uppercase tracking-wider text-primary"
-          style={{ opacity: 0 }}
-        >
-          Book a Session
-        </span>
+        {/* On phones the page h1 ("Get in touch.") stacks directly above the form,
+            so this panel heading only renders from md up. */}
+        <div className="hidden md:block">
+          <span
+            data-form-animate
+            data-form-label
+            className="mb-4 block font-label text-xs uppercase tracking-wider text-primary"
+            style={{ opacity: 0 }}
+          >
+            Book a Session
+          </span>
 
-        <h2
-          data-form-animate
-          data-form-heading
-          className="mb-10 font-display text-3xl font-light leading-tight text-text-heading md:text-4xl"
-          style={{ opacity: 0 }}
-        >
-          Tell us about your vision
-        </h2>
+          <h2
+            data-form-animate
+            data-form-heading
+            className="mb-10 font-display text-3xl font-light leading-tight text-text-heading md:text-4xl"
+            style={{ opacity: 0 }}
+          >
+            Tell us about your vision
+          </h2>
+        </div>
 
         <form onSubmit={handleSubmit} noValidate className="space-y-6">
           {/* Honeypot */}

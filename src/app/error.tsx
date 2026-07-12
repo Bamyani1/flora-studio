@@ -21,7 +21,7 @@ export default function Error({
       </div>
 
       <div className="relative z-10 flex flex-col items-center">
-        <p className="font-label text-sm uppercase tracking-widest text-primary">Error</p>
+        <p className="font-label text-sm uppercase tracking-widest text-primary">500</p>
         <h1 className="mt-4 font-display text-5xl font-normal text-text-heading md:text-6xl">
           Something went wrong
         </h1>

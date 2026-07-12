@@ -512,12 +512,6 @@ export const landingHeroGridSequence = {
       position: 0.3,
     },
     {
-      target: "eyebrow",
-      from: { autoAlpha: 0, y: 15 },
-      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
-      position: 0.6,
-    },
-    {
       target: "headline",
       from: { autoAlpha: 0, y: 15 },
       to: { autoAlpha: 1, y: 0, duration: 1.0, ease: "back.out(1.4)" },
@@ -555,12 +549,6 @@ export const landingHeroEditorialSequence = {
       from: { autoAlpha: 0, scale: 1.04 },
       to: { autoAlpha: 1, scale: 1, duration: 1.2, ease: easings.smooth },
       position: 0.8,
-    },
-    {
-      target: "eyebrow",
-      from: { autoAlpha: 0, x: -20 },
-      to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
-      position: 1.0,
     },
     {
       target: "headlineLine1",

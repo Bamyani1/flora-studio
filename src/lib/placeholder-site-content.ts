@@ -27,7 +27,6 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
 export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
   _id: "homePage",
   hero: {
-    eyebrow: "Photography with intention",
     titleLine1: "Every frame,",
     titleLine2: "earned.",
     description: "Photography with intention.",
@@ -85,7 +84,6 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     },
   },
   exhibition: {
-    eyebrow: "EXHIBITION 01",
     titleLine1: "Before",
     titleLine2: "the Game",
     description:
@@ -116,7 +114,6 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
 export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
   _id: "aboutPage",
   hero: {
-    eyebrow: "Flora Studio",
     titleLine1: "Who We",
     titleLine2: "Are.",
     description:
@@ -127,10 +124,8 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     quotePrefix: "We show up prepared, stay present, and make every",
     quoteAccent: "frame",
     quoteSuffix: "count. No shortcuts, no templates. Just intention behind everything we do.",
-    footerLabel: "Our Approach",
   },
   team: {
-    eyebrow: "The People",
     title: "The Team",
     description:
       "Three photographers with a shared commitment to craft and a habit of paying close attention.",
@@ -159,7 +154,6 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     ],
   },
   process: {
-    eyebrow: "How It Works",
     title: "How we work.",
     description:
       "We grade and refine every image by hand to get the tone, mood, and consistency right. Not filtered, not batch-processed, not rushed.",
@@ -178,7 +172,6 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     image: localImageFromPublicPath("/images/about-process.jpg", "Flora Studio creative process"),
   },
   cta: {
-    eyebrow: "What's next",
     titleLine1: "Let's make",
     titleLine2: "something.",
     cta: {
