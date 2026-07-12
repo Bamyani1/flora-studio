@@ -228,9 +228,6 @@ export function CookieConsentManager() {
             className="w-full max-w-2xl border border-border bg-surface-lowest p-6 shadow-[0_20px_60px_color-mix(in_srgb,black_35%,transparent)]"
           >
             <div className="space-y-2">
-              <p className="font-label text-xs uppercase tracking-[0.2em] text-primary">
-                Cookie Preferences
-              </p>
               <h2
                 id="cookie-preferences-title"
                 className="font-display text-3xl font-light text-text-heading"

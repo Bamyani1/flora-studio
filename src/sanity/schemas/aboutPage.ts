@@ -6,12 +6,6 @@ export const aboutPage = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "heroEyebrow",
-      title: "Hero Eyebrow",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "heroTitleLine1",
       title: "Hero Title Line 1",
       type: "string",
@@ -54,18 +48,6 @@ export const aboutPage = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "manifestoFooterLabel",
-      title: "Manifesto Footer Label",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "teamEyebrow",
-      title: "Team Eyebrow",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "teamTitle",
       title: "Team Title",
       type: "string",
@@ -83,12 +65,6 @@ export const aboutPage = defineType({
       type: "array",
       of: [defineArrayMember({ type: "teamMember" })],
       validation: (rule) => rule.required().min(1),
-    }),
-    defineField({
-      name: "processEyebrow",
-      title: "Process Eyebrow",
-      type: "string",
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "processTitle",
@@ -113,12 +89,6 @@ export const aboutPage = defineType({
       name: "processImage",
       title: "Process Image",
       type: "imageWithAlt",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "ctaEyebrow",
-      title: "CTA Eyebrow",
-      type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({

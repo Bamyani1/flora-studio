@@ -131,14 +131,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         const animType = htmlEl.dataset.aboutAnimate;
 
         switch (animType) {
-          case "hero-divider":
-            gsap.fromTo(
-              htmlEl,
-              { autoAlpha: 0, width: 0 },
-              { autoAlpha: 1, width: "100%", duration: 1.5, ease: "power2.inOut" },
-            );
-            break;
-
           case "blur-in":
             gsap.fromTo(
               htmlEl,
@@ -270,24 +262,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             );
             break;
 
-          case "letter-spacing":
-            gsap.fromTo(
-              htmlEl,
-              { autoAlpha: 0, letterSpacing: "0em" },
-              {
-                autoAlpha: 1,
-                letterSpacing: "0.8em",
-                duration: 1.5,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: htmlEl,
-                  start: "top 85%",
-                  toggleActions: "play none none none",
-                },
-              },
-            );
-            break;
-
           default:
             break;
         }
@@ -302,17 +276,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
           <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
-            <div
-              data-about-animate="hero-divider"
-              className="flex items-center justify-center gap-4 mb-10"
-            >
-              <span className="w-12 h-px bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                {content.hero.eyebrow}
-              </span>
-              <span className="w-12 h-px bg-primary/40"></span>
-            </div>
-
             <h1 className="font-display text-5xl md:text-[8rem] text-on-surface leading-[0.9] tracking-tighter mb-10">
               <StaggeredText text={content.hero.titleLine1} />
               <span data-about-animate="blur-in" className="italic text-primary block mt-4">
@@ -368,9 +331,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
               data-delay="0.6"
               className="mt-24 flex flex-col items-center gap-6"
             >
-              <span className="font-label uppercase tracking-[0.4em] text-xs text-on-surface-variant/60">
-                {content.manifesto.footerLabel}
-              </span>
               <div className="flex gap-2">
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
@@ -387,9 +347,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           <div className="max-w-screen-2xl mx-auto relative z-20">
             {/* Section intro — full width above the grid */}
             <div data-about-animate="fade-left" className="mb-12 md:mb-16">
-              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-4">
-                {content.team.eyebrow}
-              </span>
               <h2 className="font-display text-4xl md:text-6xl tracking-tighter mb-4 text-on-surface">
                 {content.team.title}
               </h2>
@@ -507,11 +464,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
             <div className="order-2 md:order-1 space-y-20">
               <div className="space-y-8">
-                <div data-about-animate="fade-left" className="flex items-center gap-4">
-                  <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                    {content.process.eyebrow}
-                  </span>
-                </div>
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
                   <StaggeredText text={content.process.title} />
                 </h2>
@@ -563,12 +515,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
         <section className="py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
-            <span
-              data-about-animate="letter-spacing"
-              className="font-label uppercase text-primary/40 text-[11px] block"
-            >
-              {content.cta.eyebrow}
-            </span>
             <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text={content.cta.titleLine1} />
               <span

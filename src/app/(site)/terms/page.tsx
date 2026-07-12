@@ -13,10 +13,7 @@ export default function TermsPage() {
     <main id="main-content">
       <section className="px-[var(--container-padding-x)] pt-[var(--header-height)] pb-[var(--section-padding-y)]">
         <div className="mx-auto max-w-[var(--max-width-content)] pt-[var(--space-16)]">
-          <p className="font-label text-xs uppercase tracking-[0.3em] text-primary">
-            Terms of Service
-          </p>
-          <h1 className="mt-6 font-display text-3xl font-light text-text-heading md:text-4xl">
+          <h1 className="font-display text-3xl font-light text-text-heading md:text-4xl">
             Terms of Service
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted md:text-lg">

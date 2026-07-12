@@ -5,13 +5,6 @@ export default function AboutLoading() {
     <div>
       {/* Hero */}
       <section className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20">
-        {/* Eyebrow */}
-        <div className="mb-10 flex items-center gap-4">
-          <div className={`h-px w-12 ${sk}`} />
-          <div className={`h-3 w-20 ${sk}`} />
-          <div className={`h-px w-12 ${sk}`} />
-        </div>
-
         {/* Title */}
         <div className="flex flex-col items-center gap-3">
           <div className={`h-12 w-72 md:h-24 md:w-[500px] ${sk}`} />
@@ -26,7 +19,6 @@ export default function AboutLoading() {
       <section className="bg-surface px-6 py-16 md:px-12 md:py-24 lg:px-24">
         {/* Section header */}
         <div className="mb-16 flex flex-col items-center gap-3">
-          <div className={`h-3 w-16 ${sk}`} />
           <div className={`h-8 w-64 ${sk}`} />
           <div className={`h-4 w-80 max-w-full ${sk}`} />
         </div>

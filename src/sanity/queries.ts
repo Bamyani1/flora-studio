@@ -33,7 +33,6 @@ export const SITE_SETTINGS_QUERY = defineQuery(
 export const HOME_PAGE_QUERY = defineQuery(
   `*[_type == "homePage" && _id == "homePage"][0]{
     _id,
-    heroEyebrow,
     heroTitleLine1,
     heroTitleLine2,
     heroDescription,
@@ -45,7 +44,6 @@ export const HOME_PAGE_QUERY = defineQuery(
     editorialTitleLine2Accent,
     editorialDescription,
     editorialCta,
-    exhibitionEyebrow,
     exhibitionTitleLine1,
     exhibitionTitleLine2,
     exhibitionDescription,
@@ -61,7 +59,6 @@ export const HOME_PAGE_QUERY = defineQuery(
 export const ABOUT_PAGE_QUERY = defineQuery(
   `*[_type == "aboutPage" && _id == "aboutPage"][0]{
     _id,
-    heroEyebrow,
     heroTitleLine1,
     heroTitleLine2,
     heroDescription,
@@ -69,8 +66,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
     manifestoQuotePrefix,
     manifestoQuoteAccent,
     manifestoQuoteSuffix,
-    manifestoFooterLabel,
-    teamEyebrow,
     teamTitle,
     teamDescription,
     teamMembers[]{
@@ -78,7 +73,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
       role,
       portrait
     },
-    processEyebrow,
     processTitle,
     processDescription,
     processCards[]{
@@ -86,7 +80,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
       description
     },
     processImage,
-    ctaEyebrow,
     ctaTitleLine1,
     ctaTitleLine2,
     cta

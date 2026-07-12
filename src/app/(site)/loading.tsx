@@ -11,9 +11,6 @@ export default function HomeLoading() {
 
         {/* Right — content skeleton */}
         <div className="flex flex-col items-center justify-center px-6 py-12 md:items-start md:border-l md:border-white/5 md:px-12 md:py-0">
-          {/* Eyebrow */}
-          <div className={`mb-5 h-3 w-24 ${sk}`} />
-
           {/* Title lines */}
           <div className="mb-12 flex w-full flex-col items-center gap-3 md:items-start">
             <div className={`h-16 w-3/4 max-w-[480px] md:h-24 ${sk}`} />
