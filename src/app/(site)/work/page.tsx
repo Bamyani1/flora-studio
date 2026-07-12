@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
-import { buildGalleryLayout } from "@/lib/gallery-layout";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
-import { GalleryHero } from "@/components/sections/gallery";
-import { ProjectCard } from "@/components/sections/ProjectCard";
+import { WorkChapters } from "@/components/sections/WorkChapters";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -17,15 +15,12 @@ export const metadata: Metadata = {
 
 export default async function WorkPage() {
   const albums = await getAllAlbums();
-  const sections = buildGalleryLayout(albums);
 
-  const heroSection = sections.find((s) => s.type === "hero");
-  const heroImageUrl =
-    heroSection?.type === "hero" ? resolveImageUrl(heroSection.album.coverImage) : null;
-  const heroBlurDataURL = heroImageUrl?.startsWith("https://cdn.sanity.io")
-    ? await generateLqipDataUrl(heroImageUrl)
-    : heroImageUrl?.startsWith("/")
-      ? await generateLocalLqipDataUrl(heroImageUrl)
+  const firstCoverUrl = albums[0] ? resolveImageUrl(albums[0].coverImage) : null;
+  const heroBlurDataURL = firstCoverUrl?.startsWith("https://cdn.sanity.io")
+    ? await generateLqipDataUrl(firstCoverUrl)
+    : firstCoverUrl?.startsWith("/")
+      ? await generateLocalLqipDataUrl(firstCoverUrl)
       : undefined;
 
   const SITE_URL = publicEnv.siteUrl;
@@ -34,7 +29,7 @@ export default async function WorkPage() {
     { name: "Work", url: `${SITE_URL}/work` },
   ]);
 
-  if (sections.length === 0) {
+  if (albums.length === 0) {
     return (
       <>
         <script
@@ -73,48 +68,8 @@ export default async function WorkPage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <main id="main-content">
-        {sections.map((section) => {
-          if (section.type === "hero") {
-            return (
-              <GalleryHero
-                key={section.album._id}
-                album={section.album}
-                index={1}
-                priority
-                blurDataURL={heroBlurDataURL}
-              />
-            );
-          }
-
-          return (
-            <section key="gallery-grid" className="relative w-full bg-surface">
-              <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
-              <div className="relative z-10 px-4 py-16 md:px-10 md:py-24">
-                <p className="mb-10 font-label text-[10px] uppercase tracking-[0.2em] text-muted md:mb-14">
-                  [ {albums.length} ALBUM{albums.length === 1 ? "" : "S"} ]
-                </p>
-                <div className="grid grid-cols-1 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-20 md:[grid-auto-flow:dense]">
-                  {section.albums.map((album, albumIdx) => {
-                    const groupIndex = Math.floor(albumIdx / 3);
-                    const isLarge = albumIdx % 3 === 0;
-                    const side = groupIndex % 2 === 0 ? "left" : "right";
-
-                    return (
-                      <ProjectCard
-                        key={album._id}
-                        album={album}
-                        number={albumIdx + 2}
-                        large={isLarge}
-                        gridSide={isLarge ? side : undefined}
-                        eagerImage={albumIdx < 3}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            </section>
-          );
-        })}
+        <h1 className="sr-only">Work</h1>
+        <WorkChapters albums={albums} heroBlurDataURL={heroBlurDataURL} />
       </main>
     </>
   );
