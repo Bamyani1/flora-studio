@@ -97,6 +97,7 @@ export function Header() {
     <div className="fixed top-0 w-full z-50 flex justify-center pointer-events-none">
       <header
         ref={headerRef}
+        data-site-header
         className="relative w-full border-b px-6 md:px-12 flex items-center justify-between pointer-events-auto"
         style={{
           visibility: isHomePage ? "hidden" : undefined,
