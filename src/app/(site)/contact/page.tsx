@@ -5,7 +5,7 @@ import { CinematicContactForm } from "@/components/ui/CinematicContactForm";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { getContactPageContent, getSiteSettings } from "@/lib/site-content";
-import type { SocialLink } from "@/types/content";
+import type { SiteSettings, SocialLink } from "@/types/content";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -20,6 +20,34 @@ function SocialIcon({ icon }: Pick<SocialLink, "icon">) {
     default:
       return null;
   }
+}
+
+function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
+  return (
+    <FadeIn delay={0.3}>
+      <span className="mb-4 block font-label text-xs uppercase tracking-wider text-primary">
+        {siteSettings.studioName}
+      </span>
+      <p className="mb-1 font-body text-base text-text-heading">{siteSettings.location}</p>
+      <p className="mt-3 font-body text-sm text-muted">{siteSettings.email}</p>
+      <p className="font-body text-sm text-muted">{siteSettings.phone}</p>
+
+      <div className="mt-8 flex space-x-6">
+        {siteSettings.socialLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label}
+            className="text-muted/60 transition-colors hover:text-primary"
+          >
+            <SocialIcon icon={link.icon} />
+          </a>
+        ))}
+      </div>
+    </FadeIn>
+  );
 }
 
 export default async function ContactPage() {
@@ -83,33 +111,9 @@ export default async function ContactPage() {
               </FadeIn>
             </div>
 
-            {/* Bottom content */}
-            <div className="relative z-10">
-              <FadeIn delay={0.3}>
-                <span className="mb-4 block font-label text-xs uppercase tracking-wider text-primary">
-                  {siteSettings.studioName}
-                </span>
-                <p className="mb-1 font-body text-base text-text-heading">
-                  {siteSettings.location}
-                </p>
-                <p className="mt-3 font-body text-sm text-muted">{siteSettings.email}</p>
-                <p className="font-body text-sm text-muted">{siteSettings.phone}</p>
-
-                <div className="mt-8 flex space-x-6">
-                  {siteSettings.socialLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.label}
-                      className="text-muted/60 transition-colors hover:text-primary"
-                    >
-                      <SocialIcon icon={link.icon} />
-                    </a>
-                  ))}
-                </div>
-              </FadeIn>
+            {/* Bottom content — desktop only; on phones it moves below the form */}
+            <div className="relative z-10 hidden md:block">
+              <StudioInfo siteSettings={siteSettings} />
             </div>
           </div>
 
@@ -121,6 +125,11 @@ export default async function ContactPage() {
             <div className="flex flex-1 flex-col px-8 pt-10 pb-6 md:px-14 md:pt-14 md:pb-8">
               <CinematicContactForm />
             </div>
+          </div>
+
+          {/* Studio info — mobile only, after the form */}
+          <div className="relative border-t border-border/10 bg-surface-deep px-8 py-10 md:hidden">
+            <StudioInfo siteSettings={siteSettings} />
           </div>
         </div>
       </main>
