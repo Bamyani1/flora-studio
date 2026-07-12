@@ -1,8 +1,10 @@
 /**
  * Compress landing hero images in /public/images/hero/ in place.
- * Resizes to 2560px on longest edge, JPEG quality 78, progressive mozjpeg.
- * Steps down to quality 72 for any file still over 600KB.
- * Idempotent: skips files already under 600KB with longest edge <= 2560.
+ * Resizes to 2880px WIDE (not longest edge — the hero renders full-viewport-width
+ * with object-fit: cover, so width is the binding dimension; a longest-edge cap
+ * left portrait images only ~1650px wide and visibly soft on 2x displays).
+ * JPEG quality 80, progressive mozjpeg; steps down to 74 for files over 1MB.
+ * Idempotent: skips files already under 1MB with width <= 2880.
  *
  * Usage:
  *   node scripts/compress-hero.mjs
@@ -14,10 +16,10 @@ import { join } from "path";
 
 const ROOT = import.meta.dirname ? join(import.meta.dirname, "..") : process.cwd();
 const HERO_DIR = join(ROOT, "public/images/hero");
-const MAX_DIM = 2560;
-const QUALITY = 78;
-const FALLBACK_QUALITY = 72;
-const SIZE_LIMIT = 600 * 1024;
+const MAX_WIDTH = 2880;
+const QUALITY = 80;
+const FALLBACK_QUALITY = 74;
+const SIZE_LIMIT = 1024 * 1024;
 
 function formatSize(bytes) {
   return `${(bytes / 1024).toFixed(0)}KB`;
@@ -29,9 +31,8 @@ async function compressHero(fileName) {
   const input = readFileSync(filePath);
 
   const meta = await sharp(input).metadata();
-  const longest = Math.max(meta.width, meta.height);
 
-  if (input.length < SIZE_LIMIT && longest <= MAX_DIM) {
+  if (input.length < SIZE_LIMIT && meta.width <= MAX_WIDTH) {
     console.log(`  ✓ ${fileName} skipped (${formatSize(input.length)}, ${meta.width}×${meta.height})`);
     return;
   }
@@ -39,7 +40,7 @@ async function compressHero(fileName) {
   const encode = (quality) =>
     sharp(input)
       .rotate()
-      .resize({ width: MAX_DIM, height: MAX_DIM, fit: "inside", withoutEnlargement: true })
+      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
       .jpeg({ quality, mozjpeg: true, progressive: true })
       .toBuffer();
 
