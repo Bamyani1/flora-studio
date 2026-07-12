@@ -1,1 +1,0 @@
-export { GalleryHero } from "./GalleryHero";

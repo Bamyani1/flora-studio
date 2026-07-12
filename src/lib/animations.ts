@@ -276,43 +276,18 @@ export const folioReveal = {
 };
 
 // --------------------------------------------------
-// cinematicHeroReveal — Gallery hero: blur/brightness/scale entrance + parallax
+// chapterReveal — Work chapters: per-panel title-card entrance
 // --------------------------------------------------
-export const cinematicHeroReveal = {
-  /** Image only uses scale — filter work moves to overlay layers */
-  image: {
-    from: { scale: 1.08 },
-    to: { scale: 1, duration: 1.8, ease: "power3.out" },
+export const chapterReveal = {
+  cover: {
+    from: { scale: 1.06 },
+    to: { scale: 1, duration: 1.6, ease: "power3.out" },
   },
-  /** Dark overlay: simulates brightness(0.1) → brightness(1) */
-  darkOverlay: {
-    from: { autoAlpha: 0.85 },
-    to: { autoAlpha: 0, duration: 1.8, ease: "power3.out" },
+  text: {
+    from: { y: 24, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth, stagger: 0.1 },
   },
-  nav: {
-    from: { y: -20, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: easings.smooth },
-  },
-  chapterLabel: {
-    from: { y: 20, autoAlpha: 0 },
-    to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
-  },
-  titleLine: {
-    from: { y: 60, autoAlpha: 0, rotationX: -15 },
-    to: { y: 0, autoAlpha: 1, rotationX: 0, duration: 1, ease: easings.smooth, stagger: 0.15 },
-  },
-  description: {
-    from: { y: 15, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth },
-  },
-  scrollCue: {
-    from: { autoAlpha: 0 },
-    to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
-  },
-  parallax: {
-    to: { yPercent: 20, ease: "none" },
-    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
-  },
+  scrollTrigger: { start: "top 70%", toggleActions: "play none none none" },
 };
 
 // --------------------------------------------------
@@ -649,8 +624,8 @@ export const reducedMotionFallbacks = {
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
   folioReveal:
     "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
-  cinematicHeroReveal:
-    "image visible immediately at scale 1, no brightness transition, no parallax, all text visible",
+  chapterReveal:
+    "cover at scale 1, all text visible immediately, chapter rail still tracks position",
   bentoSplitReveal:
     "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
   fullBleedShowcase: "image visible at scale 1, no parallax, text visible immediately",
