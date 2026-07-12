@@ -508,9 +508,10 @@ export const landingHeroGridSequence = {
 export const landingHeroEditorialSequence = {
   steps: [
     {
+      // No autoAlpha — the layer must stay visible so the LQIP blur paints while the photo loads
       target: "bgImage",
-      from: { scale: 1.12, autoAlpha: 0 },
-      to: { scale: 1, autoAlpha: 1, duration: 2.0, ease: easings.smooth },
+      from: { scale: 1.12 },
+      to: { scale: 1, duration: 2.0, ease: easings.smooth },
       position: 0,
     },
     {

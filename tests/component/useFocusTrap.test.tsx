@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 function FocusTrapHarness({
@@ -33,13 +33,15 @@ describe("useFocusTrap", () => {
     document.body.innerHTML = "";
   });
 
-  it("focuses the first element and wraps focus within the container", () => {
+  it("focuses the first element and wraps focus within the container", async () => {
     render(<FocusTrapHarness active />);
 
     const first = screen.getByRole("button", { name: "First" });
     const last = screen.getByRole("button", { name: "Last" });
 
-    expect(first).toHaveFocus();
+    // Initial focus is deferred a frame so dialogs that reveal via sibling
+    // effects (autoAlpha) are visible before the focus attempt
+    await waitFor(() => expect(first).toHaveFocus());
 
     last.focus();
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true }));

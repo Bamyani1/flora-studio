@@ -1,85 +1,53 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
-import { publicEnv } from "@/lib/public-env";
+import { getAlbumBySlug } from "@/lib/albums";
+import { resolveImageUrl } from "@/lib/image-url";
+import { loadOgBrandFonts } from "@/lib/og-fonts";
 
-export const alt = "Flora Studio photography album";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/* ------------------------------------------------------------------ */
-/*  Lightweight Sanity fetch — bypasses server-only client chain       */
-/* ------------------------------------------------------------------ */
+// Per-album alt text on the share card ("The Graduate — Flora Studio")
+export async function generateImageMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const album = await getAlbumBySlug(slug);
+  const title = album?.title ?? "Flora Studio";
 
-const OG_ALBUM_QUERY = `*[_type == "album" && slug.current == $slug][0]{
-  title, description, heroImage, coverImage
-}`;
-
-interface OGAlbum {
-  title?: string;
-  description?: string;
-  heroImage?: { asset?: { _ref?: string; url?: string }; url?: string };
-  coverImage?: { asset?: { _ref?: string; url?: string }; url?: string };
+  return [{ id: "og", size, alt: `${title} — Flora Studio`, contentType }];
 }
 
-async function fetchAlbumForOG(slug: string): Promise<OGAlbum | null> {
-  const { sanityProjectId, sanityDataset, sanityApiVersion } = publicEnv;
-  if (!sanityProjectId) return null;
+// Resolve the album's hero to something satori can render: Sanity CDN URLs get
+// crop params; local-content paths (public/images/...) are inlined as data URIs
+// because the OG renderer has no origin to resolve relative URLs against.
+async function loadHeroSrc(url: string | null): Promise<string | null> {
+  if (!url) return null;
 
-  const token = process.env.SANITY_READ_TOKEN;
-  const url = new URL(
-    `https://${sanityProjectId}.api.sanity.io/v${sanityApiVersion}/data/query/${sanityDataset}`,
-  );
-  url.searchParams.set("query", OG_ALBUM_QUERY);
-  url.searchParams.set("$slug", `"${slug}"`);
+  if (url.startsWith("http")) {
+    return url.includes("cdn.sanity.io") ? `${url}?w=1200&h=630&fit=crop&auto=format` : url;
+  }
 
   try {
-    const res = await fetch(url.toString(), {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return (json.result as OGAlbum) ?? null;
+    const file = await readFile(path.join(process.cwd(), "public", url));
+    const ext = path.extname(url).slice(1).toLowerCase();
+    const mime = ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg";
+    return `data:${mime};base64,${file.toString("base64")}`;
   } catch {
     return null;
   }
 }
 
-/* ------------------------------------------------------------------ */
-/*  Image URL resolution (self-contained, no server-only imports)      */
-/* ------------------------------------------------------------------ */
-
-function resolveImageUrlFromRef(ref: string): string | null {
-  const { sanityProjectId, sanityDataset } = publicEnv;
-  if (!sanityProjectId) return null;
-  const match = ref.match(/^image-(.+)-(\d+x\d+)-(\w+)$/);
-  if (!match) return null;
-  const [, hash, dims, ext] = match;
-  return `https://cdn.sanity.io/images/${sanityProjectId}/${sanityDataset}/${hash}-${dims}.${ext}`;
-}
-
-function getImageUrl(album: OGAlbum): string | null {
-  const img = album.heroImage ?? album.coverImage;
-  if (!img) return null;
-  if (img.url) return img.url;
-  if (img.asset?.url) return img.asset.url;
-  if (img.asset?._ref) return resolveImageUrlFromRef(img.asset._ref);
-  return null;
-}
-
-/* ------------------------------------------------------------------ */
-/*  OG Image handler                                                   */
-/* ------------------------------------------------------------------ */
-
 export default async function OGImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const album = await fetchAlbumForOG(slug);
-  const imageUrl = album ? getImageUrl(album) : null;
-  const title = album?.title ?? "Album";
+  // Same content source as the page itself — a separate raw fetch here used to
+  // silently fail outside Sanity mode and ship a generic "Album" card.
+  const album = await getAlbumBySlug(slug);
+  const title = album?.title ?? "Flora Studio";
+  const heroSrc = await loadHeroSrc(resolveImageUrl(album?.heroImage ?? album?.coverImage));
+  const fonts = await loadOgBrandFonts();
 
-  // Photo-forward layout: full-bleed photo + gradient overlay
-  if (imageUrl) {
-    const sanityUrl = `${imageUrl}?w=1200&h=630&fit=crop&auto=format`;
-
+  // Photo-forward layout: full-bleed hero + gradient scrim
+  if (heroSrc) {
     return new ImageResponse(
       <div
         style={{
@@ -90,7 +58,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         }}
       >
         <img
-          src={sanityUrl}
+          src={heroSrc}
           width={1200}
           height={630}
           alt=""
@@ -102,20 +70,21 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
             bottom: 0,
             left: 0,
             right: 0,
-            height: "45%",
-            background: "linear-gradient(to top, rgba(36,40,32,0.85), transparent)",
+            height: "50%",
+            background: "linear-gradient(to top, rgba(36,40,32,0.9), transparent)",
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
-            padding: "0 48px 40px",
+            padding: "0 56px 44px",
           }}
         >
           <div
             style={{
+              fontFamily: '"Cormorant Garamond"',
+              fontStyle: "italic",
               color: "#e8dfd4",
-              fontSize: 48,
-              fontWeight: 300,
-              letterSpacing: "0.05em",
+              fontSize: 60,
+              fontWeight: 500,
               lineHeight: 1,
             }}
           >
@@ -123,21 +92,23 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           </div>
           <div
             style={{
+              fontFamily: "Inter",
               color: "#c97b2a",
-              fontSize: 14,
-              letterSpacing: "0.2em",
+              fontSize: 15,
+              letterSpacing: "0.25em",
               lineHeight: 1,
+              paddingBottom: 8,
             }}
           >
             FLORA STUDIO
           </div>
         </div>
       </div>,
-      { ...size },
+      { ...size, fonts },
     );
   }
 
-  // Text-only fallback (matches root OG image style)
+  // Text-only fallback — still carries the real album title and brand type
   return new ImageResponse(
     <div
       style={{
@@ -148,29 +119,33 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#242820",
-        color: "#e8dfd4",
       }}
     >
       <div
         style={{
-          fontSize: 48,
-          fontWeight: 300,
-          letterSpacing: "0.1em",
+          fontFamily: '"Cormorant Garamond"',
+          fontStyle: "italic",
+          fontSize: 72,
+          fontWeight: 500,
+          color: "#e8dfd4",
           lineHeight: 1,
         }}
       >
         {title}
       </div>
+      <div style={{ width: 64, height: 1, backgroundColor: "#c97b2a", marginTop: 36 }} />
       <div
         style={{
-          fontSize: 16,
-          marginTop: 40,
+          fontFamily: "Inter",
+          fontSize: 15,
+          letterSpacing: "0.25em",
+          marginTop: 30,
           color: "#c97b2a",
         }}
       >
         FLORA STUDIO
       </div>
     </div>,
-    { ...size },
+    { ...size, fonts },
   );
 }

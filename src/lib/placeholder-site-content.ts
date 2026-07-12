@@ -12,7 +12,7 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
   studioName: "Flora Studio",
   location: "Dayton, Ohio",
   email: "info@floraohio.com",
-  phone: "(937)-7977381",
+  phone: "(937) 797-7381",
   socialLinks: [
     {
       label: "Instagram",
