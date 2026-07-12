@@ -24,6 +24,7 @@
   --color-border-hover: #4a5244;
   --color-overlay: rgba(36, 40, 32, 0.85);
   --color-overlay-solid: #242820;
+  --color-error: #e2725b;
 
   /* --- Colors: Hero Grid Palette --- */
   --color-hero-gold: #e09438;
@@ -48,10 +49,6 @@
   --text-5xl: 3.5rem; /* 56px */
   --text-6xl: 4.5rem; /* 72px */
   --text-7xl: 6rem; /* 96px */
-  --text-hero: 8rem; /* 128px — hero display size */
-  --text-hero-mobile: 3.5rem; /* 56px — hero on mobile */
-  --text-hero-display: clamp(3rem, 13vw, 12rem); /* THE ARCHIVE size */
-  --text-footer-cta: 5rem; /* 80px — footer CTA */
 
   /* --- Typography: Font Weights --- */
   --font-thin: 200;
@@ -113,17 +110,6 @@
   --radius-lg: 0.75rem; /* 12px */
   --radius-full: 9999px;
 
-  /* --- Z-Index Scale --- */
-  --z-grain: 2;
-  --z-content: 10;
-  --z-back-to-top: 30;
-  --z-header: 50;
-  --z-skip-link: 60;
-  --z-cookie-trigger: 60;
-  --z-cookie-overlay: 70;
-  --z-cookie-modal: 80;
-  --z-cursor: 100;
-
   /* --- Layout --- */
   --max-width: 90rem; /* 1440px */
   --max-width-content: 72rem; /* 1152px */
@@ -155,7 +141,6 @@
   --color-header-cta-bg: #c97b2a;
   --color-header-cta-bg-hover: #a86520;
   --color-header-cta-text: #242820;
-  --text-nav: 0.8125rem;
   --tracking-nav-process: 0.06em;
 
   /* --- Grain: Opacity Tiers --- */
@@ -168,9 +153,52 @@
 @layer base {
   html {
     --font-label: var(--font-body);
-    --font-headline-serif: var(--font-display);
-    --font-label-serif: var(--font-v2-display);
   }
+}
+
+/* --- Z-Index Scale — outside @theme so var() resolves at runtime --- */
+:root {
+  --z-grain: 2;
+  --z-content: 10;
+  --z-back-to-top: 30;
+  --z-header: 50;
+  --z-skip-link: 60;
+  --z-cookie-trigger: 60;
+  --z-cookie-overlay: 70;
+  --z-cookie-modal: 80;
+  --z-cursor: 100;
+}
+
+@utility z-grain {
+  z-index: var(--z-grain);
+}
+
+@utility z-content {
+  z-index: var(--z-content);
+}
+
+@utility z-back-to-top {
+  z-index: var(--z-back-to-top);
+}
+
+@utility z-skip-link {
+  z-index: var(--z-skip-link);
+}
+
+@utility z-cookie-trigger {
+  z-index: var(--z-cookie-trigger);
+}
+
+@utility z-cookie-overlay {
+  z-index: var(--z-cookie-overlay);
+}
+
+@utility z-cookie-modal {
+  z-index: var(--z-cookie-modal);
+}
+
+@utility z-cursor {
+  z-index: var(--z-cursor);
 }
 
 /* --- Responsive Layout Token Overrides --- */
@@ -248,16 +276,14 @@
 /* Anti-FOUC: hide elements before GSAP initializes */
 [data-animate],
 .folio-reveal,
-.folio-reveal-label,
-.texture-card {
+.folio-reveal-label {
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
   .folio-reveal,
-  .folio-reveal-label,
-  .texture-card {
+  .folio-reveal-label {
     opacity: 1;
   }
 
