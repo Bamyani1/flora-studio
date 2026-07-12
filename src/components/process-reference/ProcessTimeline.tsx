@@ -128,7 +128,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               key={step.id}
               data-step
               data-step-align={step.align}
-              className={`relative mb-48 flex flex-col items-center last:mb-0 md:flex-row ${
+              className={`relative mb-24 md:mb-48 flex flex-col items-center last:mb-0 md:flex-row ${
                 step.align === "right" ? "md:flex-row-reverse" : ""
               }`}
             >
