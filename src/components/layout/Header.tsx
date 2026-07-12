@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { landingHeaderEntrance, headerShrink, branchReveal } from "@/lib/animations";
 import { easings } from "@/lib/easings";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -87,12 +87,9 @@ export function Header() {
 
     // Desktop-only: logo width shrink
     const logo = logoRef.current?.root;
-    ScrollTrigger.matchMedia({
-      "(min-width: 768px)": () => {
-        if (logo) {
-          tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
-        }
-      },
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      if (logo) tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
     });
   }, [reducedMotion]);
 
@@ -182,14 +179,14 @@ export function Header() {
         <div className="hidden md:flex items-center justify-end w-1/3">
           <HeaderContactAction
             label="Get in touch"
-            className="relative group p-[3px] bg-neutral-300 font-label text-[11px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
+            className="relative group p-[3px] bg-primary-muted font-label text-[11px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
           >
             {/* Outer spinning gradient glow */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#a3a3a3_95%,#e5e5e5_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#e09438_95%,#c97b2a_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
             {/* Inner spinning gradient */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#d4d4d4_95%,#737373_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#e09438_95%,#a86520_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {/* Button content */}
-            <span className="relative z-10 w-full h-full bg-neutral-200 text-black px-5 py-1.5 flex items-center justify-center gap-2">
+            <span className="relative z-10 w-full h-full bg-primary text-background px-5 py-1.5 flex items-center justify-center gap-2">
               Get in touch
               <svg
                 width="10"

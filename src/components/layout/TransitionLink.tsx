@@ -52,6 +52,9 @@ export function TransitionLink({
       // Don't transition to current page
       if (href === pathname) return;
 
+      // No overlay mounted (e.g. root error/not-found pages) — let native navigation proceed
+      if (!useUIStore.getState().overlayMounted) return;
+
       e.preventDefault();
 
       if (transitionPhase !== "idle") return;
