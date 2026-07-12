@@ -136,8 +136,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               }`}
             >
               <div
-                className={`group mb-8 w-full md:mb-0 md:w-1/2 ${
-                  step.align === "left" ? "text-left md:pr-24 md:text-right" : "md:pl-24"
+                className={`group mb-8 w-full text-right md:mb-0 md:w-1/2 ${
+                  step.align === "left" ? "md:pr-24" : "md:pl-24 md:text-left"
                 }`}
               >
                 <h3
@@ -166,8 +166,8 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                     {metaItems.map((item) => (
                       <li
                         key={item}
-                        className={`flex items-center gap-3 ${
-                          step.align === "left" ? "md:justify-end" : ""
+                        className={`flex items-center justify-end gap-3 ${
+                          step.align === "right" ? "md:justify-start" : ""
                         }`}
                       >
                         <span className="h-[1px] w-1.5 bg-[var(--process-primary)]" /> {item}
@@ -255,7 +255,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                 )}
               </div>
 
-              <div className="absolute left-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 md:hidden">
+              <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 md:hidden">
                 <span className="font-display text-sm italic text-[var(--process-on-primary)]">
                   {step.id}
                 </span>
