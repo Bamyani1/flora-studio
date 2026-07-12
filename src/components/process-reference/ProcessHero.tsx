@@ -100,7 +100,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-screen w-full items-center justify-center overflow-hidden"
+      className="relative flex h-dvh w-full items-center justify-center overflow-hidden"
     >
       <div ref={bgRef} className="absolute inset-0 z-0">
         <div ref={imageWrapperRef} className="relative h-full w-full">

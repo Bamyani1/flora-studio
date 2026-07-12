@@ -14,8 +14,8 @@ export default function OGImage() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#121212",
-        color: "#F5F0EB",
+        backgroundColor: "#242820",
+        color: "#e8dfd4",
       }}
     >
       <div
@@ -32,7 +32,7 @@ export default function OGImage() {
         style={{
           fontSize: 16,
           marginTop: 40,
-          color: "#8B7355",
+          color: "#8a9878",
         }}
       >
         Photography that&apos;s worth keeping

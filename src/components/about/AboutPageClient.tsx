@@ -73,16 +73,27 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
   // Auto-cycle portraits when not hovering
   useEffect(() => {
-    if (isHovering || teamMembers.length <= 1) return;
+    if (reduced || isHovering || teamMembers.length <= 1) return;
     const interval = setInterval(() => {
       setActiveMember((prev) => (prev + 1) % teamMembers.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [isHovering, teamMembers.length]);
+  }, [reduced, isHovering, teamMembers.length]);
 
   const prevMember = useRef(0);
   useEffect(() => {
-    if (reduced || prevMember.current === activeMember) return;
+    if (prevMember.current === activeMember) return;
+
+    if (reduced) {
+      if (imageRefs.current[prevMember.current]) {
+        gsap.set(imageRefs.current[prevMember.current], { opacity: 0 });
+      }
+      if (imageRefs.current[activeMember]) {
+        gsap.set(imageRefs.current[activeMember], { opacity: 1, scale: 1 });
+      }
+      prevMember.current = activeMember;
+      return;
+    }
 
     if (imageRefs.current[prevMember.current]) {
       gsap.to(imageRefs.current[prevMember.current], {
@@ -419,14 +430,29 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                     return (
                       <div
                         key={member.name}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={active}
                         data-about-animate="team-item"
                         data-delay={String(index * 0.1)}
+                        onClick={() => setActiveMember(index)}
+                        onFocus={() => {
+                          setActiveMember(index);
+                          setIsHovering(true);
+                        }}
+                        onBlur={() => setIsHovering(false)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            setActiveMember(index);
+                          }
+                        }}
                         onMouseEnter={() => {
                           setActiveMember(index);
                           setIsHovering(true);
                         }}
                         onMouseLeave={() => setIsHovering(false)}
-                        className="group border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3"
+                        className="group w-full text-left border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3 focus-visible:outline-2 focus-visible:outline-primary"
                       >
                         <div className="flex items-start md:items-center justify-between gap-4">
                           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">

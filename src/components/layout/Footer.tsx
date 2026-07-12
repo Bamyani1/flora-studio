@@ -22,8 +22,8 @@ export function Footer({
     >
       {/* Left — Logo + Copyright */}
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <FloraStudioLogo width={120} className="text-neutral-200" />
-        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+        <FloraStudioLogo width={120} className="text-text" />
+        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-muted">
           &copy; {new Date().getFullYear()} Flora Studio. All rights reserved.
         </div>
       </div>
@@ -35,7 +35,7 @@ export function Footer({
             <Link
               key={item.href}
               href={item.href}
-              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
             >
               {item.label}
             </Link>
@@ -46,7 +46,7 @@ export function Footer({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-text"
             >
               {link.label}
             </a>
@@ -57,7 +57,7 @@ export function Footer({
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition-colors duration-300 hover:text-neutral-200"
+              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-text"
             >
               {link.label}
             </Link>

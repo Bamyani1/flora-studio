@@ -67,7 +67,7 @@ export const imageReveal = {
     from: { scale: 1.3 },
     to: { scale: 1, duration: 1.2, ease: easings.smooth },
   },
-  overlayColor: "#ff4d00",
+  overlayColor: "#c97b2a",
   scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
 };
 
@@ -161,7 +161,7 @@ export const collectionCardReveal = {
   },
   stagger: 0.15,
   labelDelay: 0.6,
-  overlayColor: "#ff4d00",
+  overlayColor: "#c97b2a",
   scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
 };
 
