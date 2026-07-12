@@ -73,6 +73,8 @@ export interface AboutHeroContent {
   titleLine1: string;
   titleLine2: string;
   description: string;
+  /** Optional full-bleed photograph shown right after the hero text */
+  image?: SanityImage;
 }
 
 export interface AboutManifestoContent {

@@ -39,7 +39,7 @@ export async function generateMetadata({
 
 export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { album, previous, next } = await getAlbumWithNavigation(slug);
+  const { album, previous, next, series } = await getAlbumWithNavigation(slug);
 
   if (!album) notFound();
 
@@ -60,6 +60,19 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     seen.add(key);
     return true;
   });
+
+  // Per-plate LQIP so slow connections see a blur-up instead of empty panels
+  const galleryWithBlur = await Promise.all(
+    galleryImages.map(async (img) => {
+      const url = resolveImageUrl(img);
+      const blurDataURL = url?.startsWith("https://cdn.sanity.io")
+        ? await generateLqipDataUrl(url)
+        : url?.startsWith("/")
+          ? await generateLocalLqipDataUrl(url)
+          : undefined;
+      return blurDataURL ? { ...img, blurDataURL } : img;
+    }),
+  );
 
   const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
@@ -91,6 +104,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         location={album.location}
         heroImage={album.heroImage}
         blurDataURL={heroBlurDataURL}
+        series={series ?? undefined}
       />
 
       {album.narrative && (
@@ -107,8 +121,8 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {galleryImages.length > 0 && (
-        <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
+      {galleryWithBlur.length > 0 && (
+        <FolioGallery images={galleryWithBlur} title={album.title} videoUrl={album.videoUrl} />
       )}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />

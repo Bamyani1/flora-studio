@@ -442,10 +442,10 @@ export const landingHeroParallax = {
 // --------------------------------------------------
 export const landingWordReveal = {
   splitConfig: { type: "words", mask: "words", autoSplit: true } as const,
-  from: { yPercent: 120, rotation: 4, autoAlpha: 0 },
+  // No rotation — a per-word tilt on an italic display face reads busy
+  from: { yPercent: 120, autoAlpha: 0 },
   to: {
     yPercent: 0,
-    rotation: 0,
     autoAlpha: 1,
     duration: 1.2,
     ease: easings.smooth,

@@ -109,7 +109,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
             alt={image.alt}
             fill
             priority
-            className="object-cover grayscale brightness-[0.35]"
+            className="object-cover grayscale brightness-[0.5]"
             sizes="100vw"
           />
         </div>

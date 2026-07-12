@@ -204,17 +204,27 @@ export function Header() {
         </div>
 
         {/* Mobile toggle */}
-        {/* Pseudo-element grows the tap target to ~44px without inflating the visual box */}
-        <button
-          type="button"
-          className="md:hidden relative eyebrow text-[var(--color-header-link-active)] border border-[color:var(--color-header-border)] px-4 py-1.5 can-hover:hover:bg-primary can-hover:hover:text-background transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
-          onClick={() => useUIStore.getState().setMenuOpen(true)}
-          aria-label="Open menu"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-        >
-          Menu
-        </button>
+        {/* Mobile: a direct conversion path next to the menu — otherwise the only
+            inquire route is buried behind the menu or a full page of scroll.
+            Pseudo-elements grow both tap targets to ~44px without inflating the boxes. */}
+        <div className="flex items-center gap-3 md:hidden">
+          <HeaderContactAction
+            label="Book"
+            className="relative eyebrow bg-primary text-background px-4 py-1.5 before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+          >
+            Book
+          </HeaderContactAction>
+          <button
+            type="button"
+            className="relative eyebrow text-[var(--color-header-link-active)] border border-[color:var(--color-header-border)] px-4 py-1.5 can-hover:hover:bg-primary can-hover:hover:text-background transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+            onClick={() => useUIStore.getState().setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            Menu
+          </button>
+        </div>
       </header>
     </div>
   );

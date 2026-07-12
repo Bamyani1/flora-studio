@@ -3,9 +3,11 @@
 import { ImageReveal } from "@/components/animations/ImageReveal";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { TransitionLink } from "@/components/layout/TransitionLink";
 import { CATEGORY_META } from "@/lib/categories";
 import { resolveImageUrl } from "@/lib/image-url";
 import { SiteMedia } from "@/components/ui/SiteMedia";
+import type { AlbumSeries } from "@/lib/albums";
 import type { SanityImage } from "@/types/project";
 
 interface AlbumHeroProps {
@@ -15,9 +17,18 @@ interface AlbumHeroProps {
   location?: string;
   heroImage?: SanityImage;
   blurDataURL?: string;
+  series?: AlbumSeries;
 }
 
-export function AlbumHero({ title, category, year, location, heroImage, blurDataURL }: AlbumHeroProps) {
+export function AlbumHero({
+  title,
+  category,
+  year,
+  location,
+  heroImage,
+  blurDataURL,
+  series,
+}: AlbumHeroProps) {
   const categoryLabel = category ? (CATEGORY_META[category]?.label ?? category) : undefined;
   const metaParts = [categoryLabel, year, location].filter(Boolean);
   const heroSrc = resolveImageUrl(heroImage);
@@ -64,10 +75,43 @@ export function AlbumHero({ title, category, year, location, heroImage, blurData
         </TextReveal>
 
         {metaParts.length > 0 && (
-          <FadeIn delay={0.5}>
+          <FadeIn delay={0.5} immediate>
             <p className="mt-[var(--space-4)] font-label text-sm uppercase tracking-wider text-text/80">
               {metaParts.join(" \u2022 ")}
             </p>
+          </FadeIn>
+        )}
+
+        {/* A multi-volume series announces itself and lets the reader switch
+            volumes \u2014 landing on Vol. II should never hide Vol. I and III */}
+        {series && (
+          <FadeIn delay={0.65} immediate>
+            <div className="mt-[var(--space-4)] flex items-center gap-4">
+              <span className="eyebrow text-text/80">
+                {series.name} &mdash; Volume{" "}
+                {series.volumes[series.position - 1]?.numeral} of{" "}
+                {series.volumes[series.volumes.length - 1]?.numeral}
+              </span>
+              <span className="h-px w-6 bg-primary/50" aria-hidden="true" />
+              <nav aria-label={`${series.name} series volumes`} className="flex items-center gap-3">
+                {series.volumes.map((volume) =>
+                  volume.current ? (
+                    <span key={volume.slug} aria-current="page" className="eyebrow text-primary">
+                      {volume.numeral}
+                    </span>
+                  ) : (
+                    <TransitionLink
+                      key={volume.slug}
+                      href={`/work/${volume.slug}`}
+                      aria-label={volume.title}
+                      className="eyebrow py-2 -my-2 text-muted transition-colors can-hover:hover:text-text"
+                    >
+                      {volume.numeral}
+                    </TransitionLink>
+                  ),
+                )}
+              </nav>
+            </div>
           </FadeIn>
         )}
       </div>

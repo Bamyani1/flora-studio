@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { folioReveal, withWillChange } from "@/lib/animations";
+import { folioReveal, scrollIndicatorPulse, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { resolveImageUrl } from "@/lib/image-url";
 import type { SanityImage } from "@/types/project";
@@ -13,7 +13,7 @@ import { SiteMedia } from "@/components/ui/SiteMedia";
    Types
    ────────────────────────────────────────────── */
 
-type ImageType = SanityImage;
+type ImageType = SanityImage & { blurDataURL?: string };
 
 type PageLayout =
   | "title"
@@ -99,22 +99,28 @@ function getSrc(image?: ImageType | null) {
    Layout algorithm — orientation-aware editorial sequencing
    ────────────────────────────────────────────── */
 
-function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
+function buildFolioPages(images: ImageType[], videoUrl?: string, seed?: string): FolioPage[] {
   const pages: FolioPage[] = [];
   let pageNum = 1;
   let idx = 0;
   let lastLayout: PageLayout = "title";
-  let editorialSide: "left" | "right" = "left";
   let videoInserted = false;
+
+  // Per-album seed: consecutive same-orientation albums (the Nature volumes)
+  // would otherwise replay a byte-identical layout rhythm.
+  const hash = seed ? [...seed].reduce((acc, ch) => acc + ch.charCodeAt(0), 0) : 0;
+  let editorialSide: "left" | "right" = hash % 2 ? "right" : "left";
 
   // Rotation cycles for uniform-orientation albums
   const landscapeCycle: PageLayout[] = [
     "diptych",
     "panoramic",
     "full-bleed",
-    "diptych",
     "editorial-left",
+    "diptych",
+    "detail-crop",
     "panoramic",
+    "editorial-right",
   ];
   const portraitCycle: PageLayout[] = [
     "diptych",
@@ -124,7 +130,7 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
     "diptych",
     "full-bleed",
   ];
-  let cycleIdx = 0;
+  let cycleIdx = hash % landscapeCycle.length;
 
   pages.push({ layout: "title", images: [], imageIndex: 0, pageNumber: pageNum++ });
 
@@ -220,13 +226,20 @@ function buildFolioPages(images: ImageType[], videoUrl?: string): FolioPage[] {
    Page content components
    ────────────────────────────────────────────── */
 
+// Short albums get a compressed overture: a full-viewport title page in front
+// of three plates makes the ceremony outweigh the photographs.
 function TitleContent({ title, count }: { title: string; count: number }) {
+  const compact = count <= 5;
   return (
-    <div className="flex h-full min-h-screen flex-col items-center justify-center">
+    <div
+      className={`flex h-full flex-col items-center justify-center ${
+        compact ? "min-h-[60vh] py-[8vh]" : "min-h-screen"
+      }`}
+    >
       <h2
         className="folio-title-text text-center font-display font-light uppercase leading-[0.95]"
         style={{
-          fontSize: "clamp(4rem, 10vw, 8rem)",
+          fontSize: "clamp(2.75rem, 9vw, 8rem)",
           WebkitTextStroke: "1.5px color-mix(in srgb, var(--color-text) 55%, transparent)",
           color: "transparent",
         }}
@@ -238,7 +251,7 @@ function TitleContent({ title, count }: { title: string; count: number }) {
         {imageCountLabel(count)}
       </span>
       <div className="folio-reveal-label mt-12 flex flex-col items-center gap-3">
-        <div className="h-10 w-px bg-primary/30" />
+        <div className="folio-cue-line h-10 w-px bg-primary/50 origin-top" />
         <span className="eyebrow text-muted">
           Scroll
         </span>
@@ -270,6 +283,7 @@ function PanoramicContent({
         sizes="100vw"
         loading={pageNumber <= 2 ? "eager" : "lazy"}
         quality={85}
+        blurDataURL={image.blurDataURL}
       />
     </div>
   );
@@ -287,20 +301,23 @@ function FullBleedContent({
   pageNumber: number;
 }) {
   const { w, h } = getDims(image);
-  const isPortrait = h > w;
+  const ratio = (w / h).toFixed(4);
   return (
     <div className="flex flex-col items-center py-[2vh]">
+      {/* w-full + a height-derived cap: the single plate is the folio's
+          commanding presentation, so it must scale UP to the cap instead of
+          collapsing to a small source's intrinsic width */}
       <SiteMedia
         src={getSrc(image)}
         alt={image.alt || `Photograph ${padIndex(index)}`}
         width={w}
         height={h}
-        className={`folio-reveal h-auto w-auto ${
-          isPortrait ? "max-w-[88%] md:max-w-[60%]" : "max-h-[85vh] max-w-[92%] md:max-w-[78%]"
-        }`}
-        sizes={isPortrait ? "(min-width: 768px) 60vw, 88vw" : "(min-width: 768px) 78vw, 92vw"}
+        className="folio-reveal h-auto w-full"
+        style={{ maxWidth: `min(92%, calc(85vh * ${ratio}))` }}
+        sizes={h > w ? "(min-width: 768px) 62vw, 92vw" : "(min-width: 768px) 88vw, 92vw"}
         loading={pageNumber <= 2 ? "eager" : "lazy"}
         quality={85}
+        blurDataURL={image.blurDataURL}
       />
     </div>
   );
@@ -342,6 +359,7 @@ function EditorialContent({
         }
         loading="lazy"
         quality={85}
+        blurDataURL={image.blurDataURL}
       />
     </div>
   );
@@ -356,7 +374,10 @@ function StaggeredPairContent({ images, startIndex }: { images: ImageType[]; sta
   const ar1 = d1.w / d1.h;
 
   return (
-    <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
+    <div
+      className="mx-auto flex flex-col gap-3 py-[2vh] px-[4vw] lg:flex-row lg:items-start lg:gap-[1.5vw] lg:px-[5vw]"
+      style={{ maxWidth: `calc(82vh * ${(ar0 + ar1).toFixed(4)} + 12vw)` }}
+    >
       <SiteMedia
         src={getSrc(images[0])}
         alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
@@ -364,9 +385,10 @@ function StaggeredPairContent({ images, startIndex }: { images: ImageType[]; sta
         height={d0.h}
         className="folio-reveal h-auto w-full"
         style={{ flex: ar0 }}
-        sizes="(min-width: 768px) 46vw, 92vw"
+        sizes="(min-width: 1024px) 46vw, 92vw"
         loading="lazy"
         quality={85}
+        blurDataURL={images[0]?.blurDataURL}
       />
       <SiteMedia
         src={getSrc(images[1])}
@@ -375,9 +397,10 @@ function StaggeredPairContent({ images, startIndex }: { images: ImageType[]; sta
         height={d1.h}
         className="folio-reveal h-auto w-full"
         style={{ flex: ar1 }}
-        sizes="(min-width: 768px) 46vw, 92vw"
+        sizes="(min-width: 1024px) 46vw, 92vw"
         loading="lazy"
         quality={85}
+        blurDataURL={images[1]?.blurDataURL}
       />
     </div>
   );
@@ -396,7 +419,7 @@ function TrioMosaicContent({ images, startIndex }: { images: ImageType[]; startI
   const stackFlex = (r1 * r2) / (r1 + r2);
 
   return (
-    <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
+    <div className="flex flex-col gap-3 py-[2vh] px-[4vw] lg:flex-row lg:items-start lg:gap-[1.5vw] lg:px-[5vw]">
       {/* Large image */}
       <SiteMedia
         src={getSrc(images[0])}
@@ -405,21 +428,23 @@ function TrioMosaicContent({ images, startIndex }: { images: ImageType[]; startI
         height={d0.h}
         className="folio-reveal h-auto w-full"
         style={{ flex: r0 }}
-        sizes="(min-width: 768px) 55vw, 92vw"
+        sizes="(min-width: 1024px) 55vw, 92vw"
         loading="lazy"
         quality={85}
+        blurDataURL={images[0]?.blurDataURL}
       />
       {/* Stacked column */}
-      <div className="flex flex-row gap-3 md:flex-col md:gap-[1.5vw]" style={{ flex: stackFlex }}>
+      <div className="flex flex-row gap-3 lg:flex-col lg:gap-[1.5vw]" style={{ flex: stackFlex }}>
         <SiteMedia
           src={getSrc(images[1])}
           alt={images[1]?.alt || `Photograph ${padIndex(startIndex + 1)}`}
           width={d1.w}
           height={d1.h}
           className="folio-reveal h-auto w-full"
-          sizes="(min-width: 768px) 36vw, 44vw"
+          sizes="(min-width: 1024px) 36vw, 44vw"
           loading="lazy"
           quality={85}
+          blurDataURL={images[1]?.blurDataURL}
         />
         <SiteMedia
           src={getSrc(images[2])}
@@ -427,9 +452,10 @@ function TrioMosaicContent({ images, startIndex }: { images: ImageType[]; startI
           width={d2.w}
           height={d2.h}
           className="folio-reveal h-auto w-full"
-          sizes="(min-width: 768px) 36vw, 44vw"
+          sizes="(min-width: 1024px) 36vw, 44vw"
           loading="lazy"
           quality={85}
+          blurDataURL={images[2]?.blurDataURL}
         />
       </div>
     </div>
@@ -445,7 +471,13 @@ function DiptychContent({ images, startIndex }: { images: ImageType[]; startInde
   const ar1 = d1.w / d1.h;
 
   return (
-    <div className="flex flex-col gap-3 py-[2vh] px-[4vw] md:flex-row md:items-start md:gap-[1.5vw] md:px-[5vw]">
+    // Width cap keeps the pair inside one viewport height (a diptych only works
+    // when both halves are seen together); the pair goes side-by-side at lg so
+    // tablet portrait shows full-width plates instead of thumbnails.
+    <div
+      className="mx-auto flex flex-col gap-3 py-[2vh] px-[4vw] lg:flex-row lg:items-start lg:gap-[1.5vw] lg:px-[5vw]"
+      style={{ maxWidth: `calc(82vh * ${(ar0 + ar1).toFixed(4)} + 12vw)` }}
+    >
       <SiteMedia
         src={getSrc(images[0])}
         alt={images[0]?.alt || `Photograph ${padIndex(startIndex)}`}
@@ -453,9 +485,10 @@ function DiptychContent({ images, startIndex }: { images: ImageType[]; startInde
         height={d0.h}
         className="folio-reveal h-auto w-full"
         style={{ flex: ar0 }}
-        sizes="(min-width: 768px) 45vw, 92vw"
+        sizes="(min-width: 1024px) 45vw, 92vw"
         loading="lazy"
         quality={85}
+        blurDataURL={images[0]?.blurDataURL}
       />
       <SiteMedia
         src={getSrc(images[1])}
@@ -464,9 +497,10 @@ function DiptychContent({ images, startIndex }: { images: ImageType[]; startInde
         height={d1.h}
         className="folio-reveal h-auto w-full"
         style={{ flex: ar1 }}
-        sizes="(min-width: 768px) 45vw, 92vw"
+        sizes="(min-width: 1024px) 45vw, 92vw"
         loading="lazy"
         quality={85}
+        blurDataURL={images[1]?.blurDataURL}
       />
     </div>
   );
@@ -501,6 +535,7 @@ function DetailCropContent({ image, index }: { image: ImageType; index: number }
           sizes={caption ? "(min-width: 768px) 35vw, 75vw" : "(min-width: 768px) 78vw, 92vw"}
           loading="lazy"
           quality={85}
+          blurDataURL={image.blurDataURL}
         />
       </div>
     </div>
@@ -537,31 +572,36 @@ function VideoContent({ videoUrl }: { videoUrl: string }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-[2vh]">
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        aria-label="Album film"
-        className="folio-reveal h-auto w-auto max-h-[85vh] max-w-[92%] md:max-w-[78%]"
-      />
-      <div className="folio-reveal-label mt-4 flex items-center gap-4">
-        <span className="eyebrow text-muted">
-          [ FILM ]
-        </span>
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={playing ? "Pause film" : "Play film"}
-          className="eyebrow text-primary transition-colors duration-300 can-hover:hover:text-text"
-        >
-          {playing ? "Pause" : "Play"}
-        </button>
+    // The film gets a stage, not a plate: a darker letterboxed band with the
+    // caption filling the side negative space on wide screens.
+    <div className="bg-surface-abyss">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-center gap-6 py-[5vh] md:flex-row md:gap-[3vw] md:px-[5vw]">
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          aria-label="Album film"
+          className="folio-reveal h-auto w-auto max-h-[88vh] max-w-[92%] md:max-w-[70%]"
+        />
+        <div className="folio-reveal-label flex items-center gap-4 md:flex-col md:items-start md:gap-5">
+          <span className="eyebrow text-muted">
+            [ FILM ]
+          </span>
+          <div className="hidden h-px w-10 bg-primary md:block" aria-hidden="true" />
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={playing ? "Pause film" : "Play film"}
+            className="eyebrow text-primary transition-colors duration-300 can-hover:hover:text-text"
+          >
+            {playing ? "Pause" : "Play"}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -598,7 +638,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const describedImages = images.map((img, i) =>
     img.alt ? img : { ...img, alt: `${title}, photograph ${i + 1}` },
   );
-  const pages = buildFolioPages(describedImages, videoUrl);
+  const pages = buildFolioPages(describedImages, videoUrl, title);
 
   useGSAP(
     () => {
@@ -651,6 +691,14 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
         }
       });
 
+      // The title page's scroll cue breathes like the landing hero's
+      const cueLine = el.querySelector<HTMLElement>(".folio-cue-line");
+      if (cueLine && !reduced) {
+        gsap.fromTo(cueLine, scrollIndicatorPulse.line.from, {
+          ...scrollIndicatorPulse.line.to,
+        });
+      }
+
       // Plate counter — wayfinding, so its triggers run under reduced motion too
       const counterEl = counterRef.current;
       const plateEl = plateRef.current;
@@ -678,6 +726,37 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           }
         });
 
+        // Counter visibility is one derived state (in the folio range AND not
+        // over the film) — two competing triggers tweening the same element
+        // would race each other on the same scroll update.
+        let inRange = false;
+        let filmActive = false;
+        const applyCounterVisibility = () => {
+          const visible = inRange && !filmActive;
+          if (reduced) {
+            gsap.set(counterEl, { autoAlpha: visible ? 1 : 0 });
+          } else {
+            gsap.to(counterEl, {
+              autoAlpha: visible ? 1 : 0,
+              duration: 0.35,
+              overwrite: "auto",
+            });
+          }
+        };
+
+        // The film isn't a plate — the counter yields while it holds the stage
+        el.querySelectorAll<HTMLElement>(".folio-page[data-video]").forEach((videoPage) => {
+          ScrollTrigger.create({
+            trigger: videoPage,
+            start: "top 60%",
+            end: "bottom 60%",
+            onToggle: (self) => {
+              filmActive = self.isActive;
+              applyCounterVisibility();
+            },
+          });
+        });
+
         const firstPhoto = photoPages[0];
         const lastPhoto = photoPages[photoPages.length - 1];
         if (firstPhoto && lastPhoto) {
@@ -687,15 +766,8 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
             endTrigger: lastPhoto,
             end: "bottom 55%",
             onToggle: (self) => {
-              if (reduced) {
-                gsap.set(counterEl, { autoAlpha: self.isActive ? 1 : 0 });
-              } else {
-                gsap.to(counterEl, {
-                  autoAlpha: self.isActive ? 1 : 0,
-                  duration: 0.4,
-                  overwrite: "auto",
-                });
-              }
+              inRange = self.isActive;
+              applyCounterVisibility();
             },
           });
         }
@@ -756,9 +828,10 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           key={i}
           data-plate={page.imageIndex}
           data-plate-count={page.images.length}
+          data-video={page.layout === "video" ? "" : undefined}
           className={`folio-page relative overflow-hidden${i > 1 ? " folio-page-deferred" : ""}`}
           style={{
-            minHeight: page.layout === "title" ? "100vh" : undefined,
+            minHeight: page.layout === "title" ? (images.length <= 5 ? "60vh" : "100vh") : undefined,
             borderTop:
               i > 0
                 ? "1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)"
@@ -815,7 +888,10 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           textShadow: "0 1px 6px rgba(16, 19, 12, 0.9)",
         }}
       >
+        {/* "Plate" prefix keeps this counter distinct from the /work chapter
+            tag when the two denominators happen to collide */}
         <span className="eyebrow text-text">
+          <span className="text-muted">Plate </span>
           <span ref={plateRef}>{padIndex(1)}</span>
           <span className="text-muted"> / {padIndex(images.length)}</span>
         </span>

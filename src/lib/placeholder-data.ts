@@ -59,23 +59,6 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     images: autoGallery("the-graduate", "The Graduate"),
   },
   {
-    _id: "album-2",
-    title: "Milestone",
-    slug: { current: "milestone" },
-    category: "milestones",
-    year: 2025,
-    location: "Ohio",
-    order: 2,
-    coverImage: localImageFromPublicPath("/images/milestone/cover.jpg", "Milestone"),
-    heroImage: localImageFromPublicPath("/images/milestone/hero.jpg", "Milestone"),
-    description:
-      "Four years in the making. A graduation session built around natural light, personal style, and the weight of what's been earned.",
-    narrative:
-      "Some sessions you plan around the golden hour. This one planned itself. The graduate knew exactly where they wanted to stand, which steps meant the most, which view carried the memory. We followed the light and let the location do the talking. Every frame felt earned.",
-    images: autoGallery("milestone", "Milestone"),
-    videoUrl: "/videos/milestone.mp4",
-  },
-  {
     _id: "album-3",
     title: "Game Day",
     slug: { current: "game-day" },
@@ -109,20 +92,21 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     images: autoGallery("march-madness", "March Madness"),
   },
   {
-    _id: "album-5",
-    title: "Miami vs SMU",
-    slug: { current: "miami-vs-smu" },
-    category: "motion",
+    _id: "album-2",
+    title: "Milestone",
+    slug: { current: "milestone" },
+    category: "milestones",
     year: 2025,
-    location: "Dayton, Ohio",
-    order: 5,
-    coverImage: localImageFromPublicPath("/images/miami-vs-smu/cover.jpg", "Miami vs SMU"),
-    heroImage: localImageFromPublicPath("/images/miami-vs-smu/hero.jpg", "Miami vs SMU"),
+    location: "Ohio",
+    order: 2,
+    coverImage: localImageFromPublicPath("/images/milestone/cover.jpg", "Milestone"),
+    heroImage: localImageFromPublicPath("/images/milestone/hero.jpg", "Milestone"),
     description:
-      "Conference play under the lights. A rivalry game captured from the sideline. Fast breaks, contested shots, and the roar of a packed arena.",
+      "Four years in the making. A graduation session built around natural light, personal style, and the weight of what's been earned.",
     narrative:
-      "Two programs, one floor, and a crowd that won't sit down. Conference games carry a weight that preseason can't match. Every call amplified, every run met with a counter. We stayed low, shot fast, and let the game unfold. The best frames came in the spaces between plays. The glance at the clock, the huddle break, the walk back to the bench.",
-    images: autoGallery("miami-vs-smu", "Miami vs SMU"),
+      "Some sessions you plan around the golden hour. This one planned itself. The graduate knew exactly where they wanted to stand, which steps meant the most, which view carried the memory. We followed the light and let the location do the talking. Every frame felt earned.",
+    images: autoGallery("milestone", "Milestone"),
+    videoUrl: "/videos/milestone.mp4",
   },
   {
     _id: "album-6",
@@ -142,22 +126,6 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     images: autoGallery("under-the-lights", "Under the Lights"),
   },
   {
-    _id: "album-7",
-    title: "UD Basketball",
-    slug: { current: "ud-basketball" },
-    category: "motion",
-    year: 2025,
-    location: "Dayton, Ohio",
-    order: 7,
-    coverImage: localImageFromPublicPath("/images/ud-basketball/cover.jpg", "UD Basketball"),
-    heroImage: localImageFromPublicPath("/images/ud-basketball/hero.jpg", "UD Basketball"),
-    description:
-      "Dayton Flyers basketball from the student section. The chants, the energy, and the community that fills UD Arena.",
-    narrative:
-      "UD Arena has a heartbeat. You feel it in the floorboards before tip-off, in the synchronized chants that start in the student section and roll through the upper deck. This isn't just basketball. It's a city showing up. We photograph the game, but the real story is the crowd: painted faces, bucket hats, and the belief that this team is theirs.",
-    images: autoGallery("ud-basketball", "UD Basketball"),
-  },
-  {
     _id: "album-8",
     title: "Texas Cheer",
     slug: { current: "texas-cheer" },
@@ -172,6 +140,38 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
     narrative:
       "The gymnasium fills with a sound that has no studio equivalent. Raw, unfiltered energy bouncing off concrete walls and metal bleachers. Cheerleaders launch, the crowd responds, and for a few electric minutes, everyone in the building shares the same heartbeat. These are the frames that yearbooks remember.",
     images: autoGallery("texas-cheer", "Texas Cheer"),
+  },
+  {
+    _id: "album-5",
+    title: "Miami vs SMU",
+    slug: { current: "miami-vs-smu" },
+    category: "motion",
+    year: 2025,
+    location: "Dayton, Ohio",
+    order: 5,
+    coverImage: localImageFromPublicPath("/images/miami-vs-smu/cover.jpg", "Miami vs SMU"),
+    heroImage: localImageFromPublicPath("/images/miami-vs-smu/hero.jpg", "Miami vs SMU"),
+    description:
+      "Conference play under the lights. A rivalry game captured from the sideline. Fast breaks, contested shots, and the roar of a packed arena.",
+    narrative:
+      "Two programs, one floor, and a crowd that won't sit down. Conference games carry a weight that preseason can't match. Every call amplified, every run met with a counter. We stayed low, shot fast, and let the game unfold. The best frames came in the spaces between plays. The glance at the clock, the huddle break, the walk back to the bench.",
+    images: autoGallery("miami-vs-smu", "Miami vs SMU"),
+  },
+  {
+    _id: "album-7",
+    title: "UD Basketball",
+    slug: { current: "ud-basketball" },
+    category: "motion",
+    year: 2025,
+    location: "Dayton, Ohio",
+    order: 7,
+    coverImage: localImageFromPublicPath("/images/ud-basketball/cover.jpg", "UD Basketball"),
+    heroImage: localImageFromPublicPath("/images/ud-basketball/hero.jpg", "UD Basketball"),
+    description:
+      "Dayton Flyers basketball from the student section. The chants, the energy, and the community that fills UD Arena.",
+    narrative:
+      "UD Arena has a heartbeat. You feel it in the floorboards before tip-off, in the synchronized chants that start in the student section and roll through the upper deck. This isn't just basketball. It's a city showing up. We photograph the game, but the real story is the crowd: painted faces, bucket hats, and the belief that this team is theirs.",
+    images: autoGallery("ud-basketball", "UD Basketball"),
   },
   {
     _id: "album-9",
