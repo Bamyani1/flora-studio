@@ -144,13 +144,24 @@ export function GalleryHero({
           </h2>
         </TransitionLink>
 
-        <p
-          data-animate
-          className="gallery-hero-desc max-w-md font-body text-[var(--color-on-surface-variant)]/70 text-sm leading-relaxed mt-4"
-        >
-          {categoryLabel} {album.year ? `· ${album.year}` : ""}{" "}
-          {album.location ? `| ${album.location}` : ""}
-        </p>
+        <div data-animate className="gallery-hero-desc mt-4 max-w-md text-right">
+          <p className="font-body text-[var(--color-on-surface-variant)]/70 text-sm leading-relaxed">
+            {categoryLabel} {album.year ? `· ${album.year}` : ""}{" "}
+            {album.location ? `| ${album.location}` : ""}
+          </p>
+          <TransitionLink
+            href={`/work/${album.slug.current}`}
+            className="group/cta mt-5 inline-flex items-center gap-2 font-label text-[11px] uppercase tracking-[0.2em] text-text-heading decoration-primary/40 underline-offset-4 hover:text-primary hover:underline"
+          >
+            View the album
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover/cta:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </TransitionLink>
+        </div>
 
         <div data-animate className="gallery-hero-scroll mt-12 flex items-center gap-4">
           <div className="w-[1px] h-12 bg-primary/30" />

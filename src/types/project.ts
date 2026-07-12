@@ -20,6 +20,7 @@ export interface AlbumMeta {
   location?: string;
   coverImage: SanityImage;
   order?: number;
+  imageCount?: number;
 }
 
 export interface Album extends AlbumMeta {

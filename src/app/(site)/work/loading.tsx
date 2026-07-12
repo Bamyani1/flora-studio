@@ -21,17 +21,24 @@ export default function WorkLoading() {
 
       {/* Grid section */}
       <section className="bg-surface">
-        <div className="grid grid-cols-1 gap-px md:grid-cols-3">
-          {/* Large card */}
-          <div className="md:col-span-2 md:row-span-2">
-            <div className={`aspect-[3/4] w-full ${sk}`} />
-          </div>
-          {/* Smaller cards */}
-          {[...Array(5)].map((_, i) => (
-            <div key={i}>
-              <div className={`w-full ${i % 2 === 0 ? "aspect-video" : "aspect-[3/4]"} ${sk}`} />
+        <div className="px-4 py-16 md:px-10 md:py-24">
+          <div className={`mb-10 h-2 w-24 bg-surface-elevated md:mb-14 ${sk}`} />
+          <div className="grid grid-cols-1 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 md:gap-y-20">
+            {/* Large card */}
+            <div className="md:col-span-2 md:row-span-2">
+              <div className={`aspect-[3/4] w-full ${sk}`} />
+              <div className={`mt-4 h-4 w-40 bg-surface-elevated ${sk}`} />
+              <div className={`mt-2 h-2 w-56 bg-surface-elevated ${sk}`} />
             </div>
-          ))}
+            {/* Smaller cards */}
+            {[...Array(5)].map((_, i) => (
+              <div key={i}>
+                <div className={`w-full ${i % 2 === 0 ? "aspect-video" : "aspect-[3/4]"} ${sk}`} />
+                <div className={`mt-4 h-4 w-32 bg-surface-elevated ${sk}`} />
+                <div className={`mt-2 h-2 w-44 bg-surface-elevated ${sk}`} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </main>

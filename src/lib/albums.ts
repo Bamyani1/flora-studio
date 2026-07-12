@@ -63,9 +63,13 @@ function normalizeAlbumMeta(album: AlbumMeta): AlbumMeta {
 
 export async function getAllAlbums(): Promise<AlbumMeta[]> {
   if (isE2EContentRuntime()) {
-    return E2E_ALBUMS.map((album) => normalizeAlbumMeta(album));
+    return E2E_ALBUMS.map((album) =>
+      normalizeAlbumMeta({ ...album, imageCount: album.images.length }),
+    );
   }
-  if (!shouldFetchFromSanity()) return PLACEHOLDER_ALL_ALBUMS;
+  if (!shouldFetchFromSanity()) {
+    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({ ...album, imageCount: album.images.length }));
+  }
 
   try {
     const albums = await sanityFetch<AlbumMeta[]>({ query: ALBUMS_QUERY });
