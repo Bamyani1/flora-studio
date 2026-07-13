@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import { getAlbumBySlug } from "@/lib/albums";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
 import { loadOgBrandFonts } from "@/lib/og-fonts";
 
 export const size = { width: 1200, height: 630 };
@@ -24,7 +24,10 @@ async function loadHeroSrc(url: string | null): Promise<string | null> {
   if (!url) return null;
 
   if (url.startsWith("http")) {
-    return url.includes("cdn.sanity.io") ? `${url}?w=1200&h=630&fit=crop&auto=format` : url;
+    // Only ever fetch from the Sanity CDN. Passing an arbitrary CMS-supplied
+    // URL straight to satori's <img> would let a stored `url` field point the
+    // renderer's server-side fetch at any host (SSRF); reject anything else.
+    return isSanityCdnUrl(url) ? `${url}?w=1200&h=630&fit=crop&auto=format` : null;
   }
 
   try {

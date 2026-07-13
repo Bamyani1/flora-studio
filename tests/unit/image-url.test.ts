@@ -53,6 +53,28 @@ describe("image url helpers", () => {
     ).toBeNull();
   });
 
+  it("accepts only genuine https cdn.sanity.io hosts", async () => {
+    const { isSanityCdnUrl } = await import("@/lib/image-url");
+
+    expect(isSanityCdnUrl("https://cdn.sanity.io/images/p/d/abc-100x100.jpg")).toBe(true);
+    expect(isSanityCdnUrl("https://cdn.sanity.io/images/p/d/abc.jpg?w=20&blur=50")).toBe(true);
+  });
+
+  it("rejects prefix-bypass hosts and non-Sanity urls (SSRF guard)", async () => {
+    const { isSanityCdnUrl } = await import("@/lib/image-url");
+
+    // Subdomain and userinfo tricks that defeat a startsWith() prefix check.
+    expect(isSanityCdnUrl("https://cdn.sanity.io.attacker.com/x.jpg")).toBe(false);
+    expect(isSanityCdnUrl("https://cdn.sanity.io@attacker.com/x.jpg")).toBe(false);
+    // Wrong protocol, unrelated host, local path, and non-URLs.
+    expect(isSanityCdnUrl("http://cdn.sanity.io/x.jpg")).toBe(false);
+    expect(isSanityCdnUrl("https://evil.example/x.jpg")).toBe(false);
+    expect(isSanityCdnUrl("/local/path.jpg")).toBe(false);
+    expect(isSanityCdnUrl("not a url")).toBe(false);
+    expect(isSanityCdnUrl(null)).toBe(false);
+    expect(isSanityCdnUrl(undefined)).toBe(false);
+  });
+
   it("normalizes image objects with explicit urls and ref-based urls", async () => {
     process.env.NEXT_PUBLIC_SANITY_PROJECT_ID = "studio123";
 

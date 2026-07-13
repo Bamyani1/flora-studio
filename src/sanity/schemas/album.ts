@@ -16,7 +16,17 @@ export const album = defineType({
       title: "Slug",
       type: "slug",
       options: { source: "title", maxLength: 96 },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().custom((value?: { current?: string }) => {
+          const current = value?.current;
+          if (!current) return "Required";
+          // URL- and XML-safe slugs only; keeps arbitrary characters out of the
+          // sitemap <loc> and route paths at the source.
+          return (
+            /^[a-z0-9-]+$/.test(current) ||
+            "Slug may only contain lowercase letters, numbers, and hyphens"
+          );
+        }),
     }),
     defineField({
       name: "category",

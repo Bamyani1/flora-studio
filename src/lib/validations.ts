@@ -20,10 +20,15 @@ export function photographyTypeLabel(value: string): string {
   );
 }
 
+// Collapse CR/LF runs to a single space so no free-text field can carry line
+// breaks into an outgoing email — neutralizes header injection on fields that
+// reach a header and multi-line body injection on fields echoed to a recipient.
+const collapseNewlines = (value: string) => value.replace(/[\r\n]+/g, " ").trim();
+
 export const contactFormSchema = z.object({
   name: z
     .string()
-    .transform((v) => v.replace(/[\r\n]+/g, " ").trim())
+    .transform(collapseNewlines)
     .pipe(
       z
         .string()
@@ -46,16 +51,31 @@ export const contactFormSchema = z.object({
   ),
   preferredDate: z
     .string()
-    .min(1, "Please pick an ideal date")
-    .max(100, "Preferred date must be 100 characters or fewer"),
+    .transform(collapseNewlines)
+    .pipe(
+      z
+        .string()
+        .min(1, "Please pick an ideal date")
+        .max(100, "Preferred date must be 100 characters or fewer"),
+    ),
   alternateDates: z
-    .array(z.string().max(100, "Alternate dates must be 100 characters or fewer"))
+    .array(
+      z
+        .string()
+        .transform(collapseNewlines)
+        .pipe(z.string().max(100, "Alternate dates must be 100 characters or fewer")),
+    )
     .max(2)
     .optional(),
   location: z
     .string()
-    .min(2, "Please add a location (or 'flexible')")
-    .max(200, "Location must be 200 characters or fewer"),
+    .transform(collapseNewlines)
+    .pipe(
+      z
+        .string()
+        .min(2, "Please add a location (or 'flexible')")
+        .max(200, "Location must be 200 characters or fewer"),
+    ),
   message: z.string().max(5000, "Message must be 5000 characters or fewer").optional(),
 });
 

@@ -1,6 +1,6 @@
 import { jsonLdString, localBusinessJsonLd } from "@/lib/metadata";
 import { getHomePageContent, getSiteSettings } from "@/lib/site-content";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingEditorial } from "@/components/landing/LandingEditorial";
@@ -13,7 +13,7 @@ async function getHeroBlurDataUrl(homePage: Awaited<ReturnType<typeof getHomePag
   if (!firstImage) return undefined;
   const url = resolveImageUrl(firstImage);
   if (!url) return undefined;
-  if (url.startsWith("https://cdn.sanity.io")) return generateLqipDataUrl(url);
+  if (isSanityCdnUrl(url)) return generateLqipDataUrl(url);
   if (url.startsWith("/")) return generateLocalLqipDataUrl(url);
   return undefined;
 }

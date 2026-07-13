@@ -162,9 +162,67 @@ describe("submitContactForm", () => {
         from: `Flora Studio <${contactEmail}>`,
         to: "ava@example.com",
         subject: "We received your inquiry | Flora Studio",
-        text: expect.stringContaining("Location: Dayton, Ohio"),
+        text: expect.stringContaining("Session: Wedding or graduation"),
       }),
     );
+    // The auto-reply lands at the submitter-chosen address, so it must echo none
+    // of the attacker-controlled free-text fields (email-relay / phishing guard).
+    const autoReplyText = mockSendMail.mock.calls[1][0].text as string;
+    expect(autoReplyText).not.toContain("Dayton, Ohio");
+    expect(autoReplyText).not.toContain("Ava Reed");
+  });
+
+  it("keeps attacker-controlled free text out of the submitter auto-reply", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+    mockSendMail.mockResolvedValue({});
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        name: "Accounts Payable",
+        location: "Re-confirm your deposit at http://flora-billing.example/verify",
+        preferredDate: "URGENT act within 24h",
+        alternateDates: ["click http://evil.example now"],
+      }),
+    ).resolves.toEqual({ success: true });
+
+    const autoReply = mockSendMail.mock.calls[1][0];
+    const body = autoReply.text as string;
+    expect(body).not.toContain("flora-billing.example");
+    expect(body).not.toContain("evil.example");
+    expect(body).not.toContain("Accounts Payable");
+    expect(body).not.toContain("URGENT");
+  });
+
+  it("collapses CR/LF in location and preferred date before they reach any email", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+    mockSendMail.mockResolvedValue({});
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        location: "Dayton\r\nInjected: line",
+        preferredDate: "2026-06-14\nExtra",
+      }),
+    ).resolves.toEqual({ success: true });
+
+    const studioBody = mockSendMail.mock.calls[0][0].text as string;
+    expect(studioBody).toContain("Location: Dayton Injected: line");
+    expect(studioBody).toContain("Preferred date: 2026-06-14 Extra");
   });
 
   it("includes alternate dates in the email when provided", async () => {
