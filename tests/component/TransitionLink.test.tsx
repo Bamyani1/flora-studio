@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { createEvent, fireEvent, render, screen } from "@testing-library/react";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { useUIStore } from "@/stores/ui-store";
 import { mockRouter, setMockPathname } from "../setup/mockNextNavigation";
@@ -8,6 +8,7 @@ describe("TransitionLink", () => {
   beforeEach(() => {
     useUIStore.setState({
       menuOpen: false,
+      overlayMounted: true,
       transitionPhase: "idle",
       transitionSource: null,
       pendingHref: null,
@@ -45,6 +46,24 @@ describe("TransitionLink", () => {
       transitionPhase: "leaving",
       transitionSource: "link",
       pendingHref: "/work",
+    });
+  });
+
+  it("falls back to native navigation when the overlay is not mounted", () => {
+    useUIStore.setState({ overlayMounted: false });
+    setMockPathname("/about");
+
+    render(<TransitionLink href="/work">Work</TransitionLink>);
+
+    const link = screen.getByRole("link", { name: "Work" });
+    const clickEvent = createEvent.click(link);
+    fireEvent(link, clickEvent);
+
+    expect(clickEvent.defaultPrevented).toBe(false);
+    expect(useUIStore.getState()).toMatchObject({
+      transitionPhase: "idle",
+      transitionSource: null,
+      pendingHref: null,
     });
   });
 

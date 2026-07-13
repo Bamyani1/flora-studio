@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { landingHeaderEntrance, headerShrink, branchReveal } from "@/lib/animations";
 import { easings } from "@/lib/easings";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -12,6 +12,7 @@ import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
 import { FloraStudioLogo, type FloraStudioLogoHandle } from "@/components/ui/FloraStudioLogo";
+import { Button } from "@/components/ui/Button";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
@@ -87,12 +88,9 @@ export function Header() {
 
     // Desktop-only: logo width shrink
     const logo = logoRef.current?.root;
-    ScrollTrigger.matchMedia({
-      "(min-width: 768px)": () => {
-        if (logo) {
-          tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
-        }
-      },
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      if (logo) tl.fromTo(logo, headerShrink.logo.from, { ...headerShrink.logo.to, ease: "none" }, 0);
     });
   }, [reducedMotion]);
 
@@ -100,6 +98,7 @@ export function Header() {
     <div className="fixed top-0 w-full z-50 flex justify-center pointer-events-none">
       <header
         ref={headerRef}
+        data-site-header
         className="relative w-full border-b px-6 md:px-12 flex items-center justify-between pointer-events-auto"
         style={{
           visibility: isHomePage ? "hidden" : undefined,
@@ -133,17 +132,17 @@ export function Header() {
               <span
                 className={`text-[11px] font-label uppercase tracking-[0.2em] transition-colors duration-500 ${
                   isNavItemActive(pathname, item.href)
-                    ? "text-white"
-                    : "text-white/60 hover:text-white"
+                    ? "text-[var(--color-header-link-active)]"
+                    : "text-[var(--color-header-link-muted)] can-hover:hover:text-[var(--color-header-link-active)]"
                 }`}
               >
                 {item.label}
               </span>
               <span
-                className={`absolute -bottom-2 left-0 w-full h-[1px] bg-white transition-transform duration-500 origin-left ${
+                className={`absolute -bottom-2 left-0 w-full h-[1px] bg-[var(--color-header-cta-bg)] transition-transform duration-500 origin-left ${
                   isNavItemActive(pathname, item.href)
                     ? "scale-x-100"
-                    : "scale-x-0 group-hover:scale-x-100"
+                    : "scale-x-0 can-hover:group-hover:scale-x-100"
                 }`}
               />
             </TransitionLink>
@@ -155,9 +154,10 @@ export function Header() {
           <TransitionLink
             href="/"
             aria-label="Flora Studio"
-            className="relative flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-500"
+            className="relative flex items-center justify-center opacity-90 can-hover:hover:opacity-100 transition-opacity duration-500"
           >
-            <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-primary" />
+            {/* Bone, not ember — the CTA is the header's single accent owner */}
+            <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-[var(--color-header-link-active)]" />
           </TransitionLink>
           <svg
             ref={branchRef}
@@ -180,41 +180,45 @@ export function Header() {
 
         {/* Right section — desktop CTA */}
         <div className="hidden md:flex items-center justify-end w-1/3">
-          <HeaderContactAction
-            label="Get in touch"
-            className="relative group p-[3px] bg-neutral-300 font-label text-[11px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
-          >
-            {/* Outer spinning gradient glow */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#a3a3a3_95%,#e5e5e5_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
-            {/* Inner spinning gradient */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#d4d4d4_95%,#737373_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            {/* Button content */}
-            <span className="relative z-10 w-full h-full bg-neutral-200 text-black px-5 py-1.5 flex items-center justify-center gap-2">
-              Get in touch
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-                className="transform transition-transform duration-300 group-hover:translate-x-1"
-              >
-                <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </span>
-          </HeaderContactAction>
+          <Button as={HeaderContactAction} label="Get in touch" variant="primary" size="chip" glow>
+            Get in touch
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill="none"
+              className="transform transition-transform duration-300 can-hover:group-hover:translate-x-1"
+            >
+              <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </Button>
         </div>
 
         {/* Mobile toggle */}
-        <button
-          type="button"
-          className="md:hidden text-[10px] font-label uppercase tracking-[0.2em] text-white border border-white/20 px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
-          onClick={() => useUIStore.getState().setMenuOpen(true)}
-          aria-label="Open menu"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-        >
-          Menu
-        </button>
+        {/* Mobile: a direct conversion path next to the menu — otherwise the only
+            inquire route is buried behind the menu or a full page of scroll.
+            Pseudo-elements grow both tap targets to ~44px without inflating the boxes. */}
+        <div className="flex items-center gap-3 md:hidden">
+          <Button
+            as={HeaderContactAction}
+            label="Book"
+            variant="primary"
+            size="chip"
+            className="relative before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+          >
+            Book
+          </Button>
+          <button
+            type="button"
+            className="relative eyebrow text-[var(--color-header-link-active)] border border-[color:var(--color-header-border)] px-4 py-1.5 can-hover:hover:bg-primary can-hover:hover:text-background transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+            onClick={() => useUIStore.getState().setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            Menu
+          </button>
+        </div>
       </header>
     </div>
   );

@@ -40,16 +40,13 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
   }, [reducedMotion]);
 
   return (
-    <section className="py-32 md:py-40 relative">
+    <section className="py-24 md:py-36 relative overflow-hidden">
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
       <div className="absolute inset-0 bg-background transform -skew-y-3 origin-top-left z-0"></div>
 
       <div className="max-w-screen-2xl mx-auto px-6 md:px-24 relative z-10">
         <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-center">
-          <div ref={textColRef} className="order-2 md:order-1 w-full md:w-1/2">
-            <span className="text-primary font-label text-[10px] tracking-[0.5em] mb-6 block">
-              {content.eyebrow}
-            </span>
+          <div ref={textColRef} className="w-full md:w-1/2">
             <h3 className="font-headline text-5xl md:text-7xl italic text-white mb-8 leading-tight">
               {content.titleLine1}
               <br />
@@ -69,7 +66,7 @@ export function LandingExhibition({ content }: LandingExhibitionProps) {
             </Button>
           </div>
 
-          <div className="order-1 md:order-2 w-full md:w-1/2">
+          <div className="w-full md:w-1/2">
             <CinematicImageReveal
               src={resolveImageUrl(content.image)}
               alt={content.image.alt ?? ""}

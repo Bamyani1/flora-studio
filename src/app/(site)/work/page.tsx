@@ -1,31 +1,27 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
-import { buildGalleryLayout } from "@/lib/gallery-layout";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
 import { resolveImageUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
-import { GalleryHero } from "@/components/sections/gallery";
-import { ProjectCard } from "@/components/sections/ProjectCard";
+import { Button } from "@/components/ui/Button";
+import { WorkChapters } from "@/components/sections/WorkChapters";
 
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Browse the portfolio of Flora Studio. Milestones, gatherings, portraits, motion, and professional photography captured in Dayton, Ohio.",
+    "Browse the portfolio of Flora Studio. Weddings and graduations, events, sports, portraits, and commercial photography captured in Dayton, Ohio.",
 };
 
 export default async function WorkPage() {
   const albums = await getAllAlbums();
-  const sections = buildGalleryLayout(albums);
 
-  const heroSection = sections.find((s) => s.type === "hero");
-  const heroImageUrl =
-    heroSection?.type === "hero" ? resolveImageUrl(heroSection.album.coverImage) : null;
-  const heroBlurDataURL = heroImageUrl?.startsWith("https://cdn.sanity.io")
-    ? await generateLqipDataUrl(heroImageUrl)
-    : heroImageUrl?.startsWith("/")
-      ? await generateLocalLqipDataUrl(heroImageUrl)
+  const firstCoverUrl = albums[0] ? resolveImageUrl(albums[0].coverImage) : null;
+  const heroBlurDataURL = firstCoverUrl?.startsWith("https://cdn.sanity.io")
+    ? await generateLqipDataUrl(firstCoverUrl)
+    : firstCoverUrl?.startsWith("/")
+      ? await generateLocalLqipDataUrl(firstCoverUrl)
       : undefined;
 
   const SITE_URL = publicEnv.siteUrl;
@@ -34,7 +30,7 @@ export default async function WorkPage() {
     { name: "Work", url: `${SITE_URL}/work` },
   ]);
 
-  if (sections.length === 0) {
+  if (albums.length === 0) {
     return (
       <>
         <script
@@ -46,7 +42,7 @@ export default async function WorkPage() {
           className="flex min-h-screen items-center justify-center bg-surface px-6 py-24 text-center"
         >
           <div className="max-w-2xl">
-            <p className="font-label text-[10px] uppercase tracking-[0.3em] text-primary">Work</p>
+            <p className="eyebrow text-primary">Work</p>
             <h1 className="mt-6 font-display text-4xl text-text-heading md:text-5xl">
               No published albums right now.
             </h1>
@@ -54,12 +50,15 @@ export default async function WorkPage() {
               The work archive is being updated. Check back soon or get in touch if you want to
               discuss a session.
             </p>
-            <TransitionLink
+            <Button
+              as={TransitionLink}
               href="/contact"
-              className="mt-10 inline-flex min-h-[44px] items-center border border-border px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors hover:border-border-hover hover:text-text-heading"
+              variant="outline"
+              size="xs"
+              className="mt-10 min-h-[44px]"
             >
-              Contact
-            </TransitionLink>
+              Get in touch
+            </Button>
           </div>
         </main>
       </>
@@ -73,43 +72,8 @@ export default async function WorkPage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <main id="main-content">
-        {sections.map((section) => {
-          if (section.type === "hero") {
-            return (
-              <GalleryHero
-                key={section.album._id}
-                album={section.album}
-                index={1}
-                priority
-                blurDataURL={heroBlurDataURL}
-              />
-            );
-          }
-
-          return (
-            <section key="gallery-grid" className="relative w-full bg-surface">
-              <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
-              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-px md:[grid-auto-flow:dense]">
-                {section.albums.map((album, albumIdx) => {
-                  const groupIndex = Math.floor(albumIdx / 3);
-                  const isLarge = albumIdx % 3 === 0;
-                  const side = groupIndex % 2 === 0 ? "left" : "right";
-
-                  return (
-                    <ProjectCard
-                      key={album._id}
-                      album={album}
-                      index={albumIdx}
-                      large={isLarge}
-                      gridSide={isLarge ? side : undefined}
-                      eagerImage={albumIdx < 3}
-                    />
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
+        <h1 className="sr-only">Work</h1>
+        <WorkChapters albums={albums} heroBlurDataURL={heroBlurDataURL} />
       </main>
     </>
   );

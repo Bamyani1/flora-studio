@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Button } from "@/components/ui/Button";
 import { ProcessMagnetic } from "./ProcessMagnetic";
 
 export function ProcessContact({
@@ -55,7 +56,7 @@ export function ProcessContact({
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[50vh] flex-col items-center justify-center bg-[var(--process-surface-container-lowest)] px-8 py-32"
+      className="relative flex min-h-[40vh] flex-col items-center justify-center bg-[var(--process-surface-container-lowest)] px-8 py-[var(--section-padding-y)]"
       style={{ scrollMarginTop: "calc(var(--header-height) + var(--space-12))" }}
     >
       <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
@@ -66,13 +67,15 @@ export function ProcessContact({
         {heading}
       </h2>
       <ProcessMagnetic>
-        <Link
+        <Button
+          as={Link}
           href={buttonHref}
           data-contact-animate
-          className="inline-block bg-[var(--process-primary)] px-12 py-4 font-label text-[11px] uppercase tracking-[0.2em] text-[var(--process-on-primary)]"
+          size="xs"
+          className="px-12 py-4"
         >
           {buttonLabel}
-        </Link>
+        </Button>
       </ProcessMagnetic>
     </section>
   );

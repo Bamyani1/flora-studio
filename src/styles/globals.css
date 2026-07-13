@@ -2,6 +2,16 @@
 
 @custom-variant can-hover (@media (hover: hover) and (pointer: fine));
 
+/* The signature 10px uppercase label. One spec — size, face, and tracking —
+   so the eyebrow idiom can't drift per component; color is set at call sites
+   (text-primary for accent, text-muted for quiet). */
+@utility eyebrow {
+  font-family: var(--font-label);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+}
+
 /* ============================================
    FLORA STUDIO — Design Token System
    ============================================ */
@@ -24,6 +34,7 @@
   --color-border-hover: #4a5244;
   --color-overlay: rgba(36, 40, 32, 0.85);
   --color-overlay-solid: #242820;
+  --color-error: #e2725b;
 
   /* --- Colors: Hero Grid Palette --- */
   --color-hero-gold: #e09438;
@@ -48,19 +59,22 @@
   --text-5xl: 3.5rem; /* 56px */
   --text-6xl: 4.5rem; /* 72px */
   --text-7xl: 6rem; /* 96px */
-  --text-hero: 8rem; /* 128px — hero display size */
-  --text-hero-mobile: 3.5rem; /* 56px — hero on mobile */
-  --text-hero-display: clamp(3rem, 13vw, 12rem); /* THE ARCHIVE size */
-  --text-footer-cta: 5rem; /* 80px — footer CTA */
+  --text-8xl: 8rem; /* 128px — display giants (About) */
+  --text-9xl: 9rem; /* 144px */
 
-  /* --- Typography: Font Weights --- */
-  --font-thin: 200;
-  --font-light: 300;
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-black: 900;
+  /* --- Typography: Font Weights ---
+     These MUST live in the --font-weight-* namespace: in the bare --font-*
+     namespace Tailwind treats them as font FAMILIES and emits
+     `.font-light { font-family: var(--font-light) }`, which is invalid at
+     computed-value time and silently resets the family to inherited Inter on
+     any `font-display font-light` element. */
+  --font-weight-thin: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
 
   /* --- Typography: Letter Spacing --- */
   --tracking-tighter: -0.04em;
@@ -69,6 +83,7 @@
   --tracking-wide: 0.04em;
   --tracking-wider: 0.08em;
   --tracking-widest: 0.16em;
+  --tracking-eyebrow: 0.2em; /* the approved 10px-label grammar (chapters, folio counter) */
   --tracking-hero: 0.12em; /* FLORA STUDIO wordmark spacing (brand guidelines: 0.12em) */
 
   /* --- Typography: Line Heights --- */
@@ -113,17 +128,6 @@
   --radius-lg: 0.75rem; /* 12px */
   --radius-full: 9999px;
 
-  /* --- Z-Index Scale --- */
-  --z-grain: 2;
-  --z-content: 10;
-  --z-back-to-top: 30;
-  --z-header: 50;
-  --z-skip-link: 60;
-  --z-cookie-trigger: 60;
-  --z-cookie-overlay: 70;
-  --z-cookie-modal: 80;
-  --z-cursor: 100;
-
   /* --- Layout --- */
   --max-width: 90rem; /* 1440px */
   --max-width-content: 72rem; /* 1152px */
@@ -133,6 +137,7 @@
   --section-padding-y-mobile: 4rem; /* 64px on mobile */
   --container-padding-x: 2rem; /* 32px horizontal page padding */
   --container-padding-x-mobile: 1rem; /* 16px on mobile */
+  --container-padding-x-wide: clamp(1rem, 10vw, 9rem); /* roomy gutter for card pages (contact) */
   --header-height: 5rem; /* 80px — expanded at top */
   --header-height-compact: 3.5rem; /* 56px — on scroll */
   --header-py-expanded: 1.25rem; /* 20px */
@@ -155,7 +160,6 @@
   --color-header-cta-bg: #c97b2a;
   --color-header-cta-bg-hover: #a86520;
   --color-header-cta-text: #242820;
-  --text-nav: 0.8125rem;
   --tracking-nav-process: 0.06em;
 
   /* --- Grain: Opacity Tiers --- */
@@ -168,9 +172,67 @@
 @layer base {
   html {
     --font-label: var(--font-body);
-    --font-headline-serif: var(--font-display);
-    --font-label-serif: var(--font-v2-display);
   }
+
+  /* iOS Safari gives date inputs an intrinsic shadow-content width that can
+     beat width: 100% and push the field past the viewport edge. */
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  input[type="date"]::-webkit-date-and-time-value {
+    /* iOS centers the picked value and sizes it intrinsically */
+    text-align: left;
+    min-width: 0;
+  }
+}
+
+/* --- Z-Index Scale — outside @theme so var() resolves at runtime --- */
+:root {
+  --z-grain: 2;
+  --z-content: 10;
+  --z-back-to-top: 30;
+  --z-header: 50;
+  --z-skip-link: 60;
+  --z-cookie-trigger: 60;
+  --z-cookie-overlay: 70;
+  --z-cookie-modal: 80;
+  --z-cursor: 100;
+}
+
+@utility z-grain {
+  z-index: var(--z-grain);
+}
+
+@utility z-content {
+  z-index: var(--z-content);
+}
+
+@utility z-back-to-top {
+  z-index: var(--z-back-to-top);
+}
+
+@utility z-skip-link {
+  z-index: var(--z-skip-link);
+}
+
+@utility z-cookie-trigger {
+  z-index: var(--z-cookie-trigger);
+}
+
+@utility z-cookie-overlay {
+  z-index: var(--z-cookie-overlay);
+}
+
+@utility z-cookie-modal {
+  z-index: var(--z-cookie-modal);
+}
+
+@utility z-cursor {
+  z-index: var(--z-cursor);
 }
 
 /* --- Responsive Layout Token Overrides --- */
@@ -244,20 +306,39 @@
   contain: layout style paint;
 }
 
+/* Deferred below-fold rendering. Intrinsic-size hints approximate real page
+   heights per breakpoint so the scrollbar stays stable while pages realize;
+   FolioGallery additionally refreshes ScrollTrigger when realized pages change
+   the document height, so triggers below the folio never go stale. */
+.folio-page-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 78svh;
+}
+.chapter-panel-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 78svh;
+}
+@media (min-width: 768px) {
+  .folio-page-deferred {
+    contain-intrinsic-size: auto 98vh;
+  }
+  .chapter-panel-deferred {
+    contain-intrinsic-size: auto 92vh;
+  }
+}
+
 /* --- Reduced Motion Preferences --- */
 /* Anti-FOUC: hide elements before GSAP initializes */
 [data-animate],
 .folio-reveal,
-.folio-reveal-label,
-.texture-card {
+.folio-reveal-label {
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
   .folio-reveal,
-  .folio-reveal-label,
-  .texture-card {
+  .folio-reveal-label {
     opacity: 1;
   }
 
@@ -311,7 +392,11 @@ html.lenis body {
 
 /* --- Focus Visible — consistent keyboard focus ring --- */
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 4px;
 }
@@ -363,13 +448,24 @@ button:focus-visible {
 }
 
 /* --- Landing Page Utilities --- */
-.lens-flare {
-  background: radial-gradient(
-    circle at 70% 30%,
-    color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary) 5%, transparent) 30%,
-    transparent 60%
+
+/* --- Editorial Light Ray — one diagonal shaft; cross-axis softness comes from
+   gradient stops (cheaper than a large blur), lengthwise fade from the mask so
+   the core crosses the headline and dies before the body copy --- */
+.light-ray {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent) 24%,
+    color-mix(in srgb, var(--color-hero-gold) 17%, transparent) 46%,
+    color-mix(in srgb, var(--color-hero-gold) 11%, transparent) 58%,
+    color-mix(in srgb, var(--color-primary) 4%, transparent) 76%,
+    transparent 100%
   );
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 92%);
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 92%);
+  /* screen = luminance-only lift over the opaque surface-deep ground */
+  mix-blend-mode: screen;
 }
 
 .text-shadow-subtle {

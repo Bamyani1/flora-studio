@@ -100,7 +100,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-screen w-full items-center justify-center overflow-hidden"
+      className="relative flex h-dvh w-full items-center justify-center overflow-hidden"
     >
       <div ref={bgRef} className="absolute inset-0 z-0">
         <div ref={imageWrapperRef} className="relative h-full w-full">
@@ -109,7 +109,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
             alt={image.alt}
             fill
             priority
-            className="object-cover grayscale brightness-[0.35]"
+            className="object-cover grayscale brightness-[0.5]"
             sizes="100vw"
           />
         </div>
@@ -120,7 +120,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
       <div ref={contentRef} className="relative z-10 px-4 text-center">
         <h1
           data-hero-child
-          className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-8xl"
+          className="mx-auto max-w-5xl font-display text-5xl font-light leading-none tracking-tight text-[var(--process-on-surface-variant)] md:text-6xl lg:text-7xl"
         >
           {titleLine1} <br />
           <span className="italic font-light">{titleLine2}</span>
@@ -131,6 +131,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
             <a
               ref={chevronRef}
               href="#process"
+              aria-label="Skip to process steps"
               onClick={(event) => {
                 event.preventDefault();
                 document
@@ -139,7 +140,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
               }}
               className="interactive cursor-pointer flex items-center justify-center"
             >
-              <ChevronDown className="h-6 w-6 text-[var(--process-primary)]" />
+              <ChevronDown aria-hidden="true" className="h-6 w-6 text-[var(--process-primary)]" />
             </a>
           </ProcessMagnetic>
           <div className="h-[1px] w-24 bg-gradient-to-r from-[var(--process-outline-variant)] via-[var(--process-outline-variant)] to-transparent" />

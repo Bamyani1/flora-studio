@@ -269,7 +269,6 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
   return {
     _id: "homePage",
     _type: "homePage",
-    heroEyebrow: content.hero.eyebrow,
     heroTitleLine1: content.hero.titleLine1,
     heroTitleLine2: content.hero.titleLine2,
     heroDescription: content.hero.description,
@@ -293,14 +292,13 @@ async function buildHomePageDoc(content: HomePageContent): Promise<MigrationDocu
     editorialTitleLine2Accent: content.editorial.titleLine2Accent,
     editorialDescription: content.editorial.description,
     editorialCta: linkField(content.editorial.cta),
-    exhibitionEyebrow: content.exhibition.eyebrow,
     exhibitionTitleLine1: content.exhibition.titleLine1,
     exhibitionTitleLine2: content.exhibition.titleLine2,
     exhibitionDescription: content.exhibition.description,
     exhibitionImage: await requireImage(content.exhibition.image, "home.exhibitionImage"),
     exhibitionCta: linkField(content.exhibition.cta),
     studioImage: await requireImage(content.studio.image, "home.studioImage"),
-    studioCtaEyebrow: "Work With Us",
+    studioCtaEyebrow: content.studio.ctaEyebrow,
     studioCtaLabel: content.studio.ctaLabel,
     studioCta: linkField(content.studio.cta),
   };
@@ -310,7 +308,6 @@ async function buildAboutPageDoc(content: AboutPageContent): Promise<MigrationDo
   return {
     _id: "aboutPage",
     _type: "aboutPage",
-    heroEyebrow: content.hero.eyebrow,
     heroTitleLine1: content.hero.titleLine1,
     heroTitleLine2: content.hero.titleLine2,
     heroDescription: content.hero.description,
@@ -318,8 +315,6 @@ async function buildAboutPageDoc(content: AboutPageContent): Promise<MigrationDo
     manifestoQuotePrefix: content.manifesto.quotePrefix,
     manifestoQuoteAccent: content.manifesto.quoteAccent,
     manifestoQuoteSuffix: content.manifesto.quoteSuffix,
-    manifestoFooterLabel: content.manifesto.footerLabel,
-    teamEyebrow: content.team.eyebrow,
     teamTitle: content.team.title,
     teamDescription: content.team.description,
     teamMembers: await Promise.all(
@@ -338,7 +333,6 @@ async function buildAboutPageDoc(content: AboutPageContent): Promise<MigrationDo
         };
       }),
     ),
-    processEyebrow: content.process.eyebrow,
     processTitle: content.process.title,
     processDescription: content.process.description,
     processCards: content.process.cards.map((card, index) => ({
@@ -348,7 +342,6 @@ async function buildAboutPageDoc(content: AboutPageContent): Promise<MigrationDo
       description: card.description,
     })),
     processImage: await requireImage(content.process.image, "about.processImage"),
-    ctaEyebrow: content.cta.eyebrow,
     ctaTitleLine1: content.cta.titleLine1,
     ctaTitleLine2: content.cta.titleLine2,
     cta: linkField(content.cta.cta),

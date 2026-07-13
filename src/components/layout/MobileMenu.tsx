@@ -39,6 +39,9 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
             type: "lines",
             mask: "lines",
             autoSplit: true,
+            onSplit: (self) => {
+              if (!useUIStore.getState().menuOpen) gsap.set(self.lines, { yPercent: 100 });
+            },
           }),
       );
 
@@ -55,15 +58,41 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     { scope: containerRef },
   );
 
+  // Scroll lock — paired stop/start so a lenis instance swap can't leak a stopped
+  // instance. The position:fixed body lock is the engine-agnostic fallback: iOS
+  // Safari ignores overflow:hidden for touch scrolling when Lenis isn't intercepting.
+  useEffect(() => {
+    if (!menuOpen) return;
+    lenis?.stop();
+
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    return () => {
+      lenis?.start();
+      Object.assign(body.style, previous);
+      window.scrollTo({ top: scrollY, behavior: "instant" });
+    };
+  }, [menuOpen, lenis]);
+
   // Open / close animations
   useEffect(() => {
     if (!containerRef.current || !backdropRef.current) return;
 
     const ctx = gsap.context(() => {
       if (menuOpen) {
-        // Lock scroll
-        lenis?.stop();
-
         // Show container
         gsap.set(containerRef.current, { autoAlpha: 1, pointerEvents: "auto" });
 
@@ -93,8 +122,6 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
             }
             // Reset will-change
             if (backdropRef.current) backdropRef.current.style.willChange = "auto";
-            // Unlock scroll
-            lenis?.start();
           },
         });
 
@@ -116,7 +143,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [menuOpen, lenis]);
+  }, [menuOpen]);
 
   // Escape key
   useEffect(() => {
@@ -145,12 +172,8 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
       className="fixed inset-0 z-50"
       style={{ opacity: 0, visibility: "hidden", pointerEvents: "none" }}
     >
-      {/* Backdrop */}
-      <div
-        ref={backdropRef}
-        className="absolute inset-0 bg-background/95 backdrop-blur-xl"
-        style={{ opacity: 0 }}
-      />
+      {/* Backdrop — fully opaque so the page (and fixed header) can't ghost through */}
+      <div ref={backdropRef} className="absolute inset-0 bg-background" style={{ opacity: 0 }} />
 
       {/* Content */}
       <div className="relative flex h-full flex-col justify-between px-[var(--container-padding-x)] py-[var(--header-height)]">
@@ -188,7 +211,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
                 className={`menu-item-text group relative font-display text-4xl uppercase tracking-[0.06em] transition-colors ${
                   isNavItemActive(pathname, item.href)
                     ? "text-[var(--color-header-link-active)]"
-                    : "text-[var(--color-header-link-muted)] hover:text-[var(--color-header-cta-bg)]"
+                    : "text-[var(--color-header-link-muted)] can-hover:hover:text-[var(--color-header-cta-bg)]"
                 }`}
               >
                 {item.label}
@@ -196,7 +219,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
                   className={`absolute -bottom-2 left-0 h-[1px] w-full origin-left bg-[var(--color-header-cta-bg)] transition-transform duration-500 ease-out ${
                     isNavItemActive(pathname, item.href)
                       ? "scale-x-100"
-                      : "scale-x-0 group-hover:scale-x-100"
+                      : "scale-x-0 can-hover:group-hover:scale-x-100"
                   }`}
                 />
               </TransitionLink>
@@ -206,7 +229,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
           <HeaderContactAction
             label={NAV_CTA.label}
             onBeforeAction={handleLinkClick}
-            className="mt-12 inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-8 py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--color-header-cta-text)] transition-transform hover:scale-[1.02]"
+            className="mt-12 inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-8 py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--color-header-cta-text)] transition-transform can-hover:hover:scale-[1.02]"
           />
         </div>
 
@@ -220,7 +243,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
               rel="noopener noreferrer"
               aria-label={link.label}
               onClick={handleLinkClick}
-              className="font-label text-[10px] uppercase tracking-[0.15em] text-[var(--color-header-link-muted)] transition-colors hover:text-[var(--color-header-link-active)]"
+              className="eyebrow text-[var(--color-header-link-muted)] transition-colors can-hover:hover:text-[var(--color-header-link-active)]"
             >
               {link.label}
             </a>

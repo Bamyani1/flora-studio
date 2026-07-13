@@ -1,10 +1,13 @@
 import { ImageResponse } from "next/og";
+import { loadOgBrandFonts } from "@/lib/og-fonts";
 
 export const alt = "Flora Studio | Photography that's worth keeping";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OGImage() {
+export default async function OGImage() {
+  const fonts = await loadOgBrandFonts();
+
   return new ImageResponse(
     <div
       style={{
@@ -14,30 +17,36 @@ export default function OGImage() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#121212",
-        color: "#F5F0EB",
+        backgroundColor: "#242820",
       }}
     >
       <div
         style={{
-          fontSize: 64,
-          fontWeight: 300,
-          letterSpacing: "0.15em",
+          fontFamily: '"Cormorant Garamond"',
+          fontStyle: "italic",
+          fontSize: 96,
+          fontWeight: 500,
+          color: "#e8dfd4",
           lineHeight: 1,
         }}
       >
-        FLORA STUDIO
+        Flora Studio
       </div>
+      <div style={{ width: 64, height: 1, backgroundColor: "#c97b2a", marginTop: 40 }} />
       <div
         style={{
-          fontSize: 16,
-          marginTop: 40,
-          color: "#8B7355",
+          fontFamily: "Inter",
+          fontSize: 17,
+          letterSpacing: "0.25em",
+          textTransform: "uppercase",
+          color: "#e8dfd4",
+          opacity: 0.78,
+          marginTop: 32,
         }}
       >
         Photography that&apos;s worth keeping
       </div>
     </div>,
-    { ...size },
+    { ...size, fonts },
   );
 }

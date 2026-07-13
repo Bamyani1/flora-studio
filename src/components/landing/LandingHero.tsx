@@ -206,6 +206,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         crossfadeTlRef.current = crossfade;
       }
 
+      // Images that loaded before this effect ran (or before a timeline
+      // re-creation) never re-fire onLoad, so re-check the count here.
+      if (loadedCountRef.current >= 1) playEntrance();
+      if (loadedCountRef.current >= totalImages) crossfadeTlRef.current?.play();
+
       // Timeout fallback: play entrance after 3s even if first image hasn't loaded
       fallbackTimerRef.current = setTimeout(() => {
         if (entranceTlRef.current?.paused()) playEntrance();
@@ -229,16 +234,18 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       {/* Grain overlay */}
       <div className="grain-medium absolute inset-0 z-grain opacity-[0.02]" aria-hidden="true" />
 
-      {/* Full-bleed image */}
+      {/* Full-bleed image. Layer 0 stays visible so its blur placeholder paints
+          immediately (and the photograph still shows without JS); the cycle
+          layers are revealed by the crossfade timeline. */}
       <div ref={bgContainerRef} className="absolute inset-0">
         {content.mediaCycle.map((media, index) => (
           <div
-            key={`${media.asset._ref}-${index}`}
+            key={`${media.asset?._ref ?? media.url ?? "hero"}-${index}`}
             ref={(el) => {
               imageLayerRefs.current[index] = el;
             }}
             className="absolute inset-0"
-            style={{ visibility: "hidden" }}
+            style={index === 0 ? undefined : { visibility: "hidden" }}
           >
             <SiteMedia
               src={resolveImageUrl(media)}
@@ -250,7 +257,6 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
                 ...({ "--mobile-pos": media.mobileObjectPosition ?? media.objectPosition ?? "center top" } as React.CSSProperties),
               }}
               priority={index === 0}
-              loading={index === 0 ? undefined : "eager"}
               quality={90}
               sizes="100vw"
               blurDataURL={index === 0 ? blurDataURL : undefined}
@@ -295,21 +301,17 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       {/* Frame lines ref kept for GSAP parallax */}
       <div ref={frameRef} className="hidden" aria-hidden="true" />
 
-      {/* Content overlay — bottom-left, ultra-minimal */}
-      <div className="absolute inset-0 z-content flex flex-row items-end gap-3 px-6 md:px-[clamp(2rem,5vw,5rem)] pb-[clamp(3rem,6vh,6rem)]">
-        {/* Accent bar */}
-        <div
-          className="w-px h-[clamp(1rem,2.5vw,2rem)] mb-1 shrink-0"
-          style={{ background: "linear-gradient(to top, rgba(224,148,56,0.35), transparent)" }}
-          aria-hidden="true"
-        />
-
+      {/* Content overlay — bottom-left. The headline is the brand thesis: it gets
+          display scale (with its own mobile floor) and owns this corner alone. */}
+      <div className="absolute inset-0 z-content flex flex-row items-end px-6 pb-28 md:px-[clamp(2rem,5vw,5rem)] md:pb-[clamp(3rem,6vh,6rem)]">
         <div className="flex flex-col text-shadow-hero">
-          <h1 className="font-display font-light leading-[1.2] tracking-[0.04em] text-[clamp(0.9rem,2vw,1.8rem)] text-white/65 mb-1">
+          {/* Display scale: the thesis must outrank the editorial H2 (60px)
+              on desktop — only the exhibition's showpiece numeral tops it */}
+          <h1 className="font-display font-light leading-[1.15] tracking-[0.02em] text-[clamp(1.9rem,4.75vw,4.25rem)] text-white/90 mb-2">
             <span ref={line1Ref} data-animate>
               {content.titleLine1}{" "}
             </span>
-            <span ref={line2Ref} data-animate className="text-hero-gold/55 italic">
+            <span ref={line2Ref} data-animate className="text-hero-gold italic">
               {content.titleLine2}
             </span>
           </h1>
@@ -317,18 +319,18 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
           <p
             ref={descRef}
             data-animate
-            className="font-body font-light text-[clamp(0.4rem,0.5vw,0.5rem)] uppercase tracking-[0.25em] text-hero-muted/25"
+            className="font-body font-light text-[clamp(0.75rem,0.9vw,0.8rem)] uppercase tracking-[0.25em] text-hero-muted/90"
           >
             {content.description}
           </p>
         </div>
       </div>
 
-      {/* Scroll indicator — bottom-center */}
+      {/* Scroll indicator — bottom-center, on every viewport (phones need the cue most) */}
       <div
         ref={scrollCueRef}
         data-animate
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-content hidden md:flex"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-content"
         aria-hidden="true"
       >
         <span className="font-label text-[9px] tracking-[0.4em] uppercase text-white/25">

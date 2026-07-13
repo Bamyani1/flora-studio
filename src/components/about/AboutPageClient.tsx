@@ -73,16 +73,27 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
   // Auto-cycle portraits when not hovering
   useEffect(() => {
-    if (isHovering || teamMembers.length <= 1) return;
+    if (reduced || isHovering || teamMembers.length <= 1) return;
     const interval = setInterval(() => {
       setActiveMember((prev) => (prev + 1) % teamMembers.length);
-    }, 3000);
+    }, 6000);
     return () => clearInterval(interval);
-  }, [isHovering, teamMembers.length]);
+  }, [reduced, isHovering, teamMembers.length]);
 
   const prevMember = useRef(0);
   useEffect(() => {
-    if (reduced || prevMember.current === activeMember) return;
+    if (prevMember.current === activeMember) return;
+
+    if (reduced) {
+      if (imageRefs.current[prevMember.current]) {
+        gsap.set(imageRefs.current[prevMember.current], { opacity: 0 });
+      }
+      if (imageRefs.current[activeMember]) {
+        gsap.set(imageRefs.current[activeMember], { opacity: 1, scale: 1 });
+      }
+      prevMember.current = activeMember;
+      return;
+    }
 
     if (imageRefs.current[prevMember.current]) {
       gsap.to(imageRefs.current[prevMember.current], {
@@ -120,14 +131,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         const animType = htmlEl.dataset.aboutAnimate;
 
         switch (animType) {
-          case "hero-divider":
-            gsap.fromTo(
-              htmlEl,
-              { autoAlpha: 0, width: 0 },
-              { autoAlpha: 1, width: "100%", duration: 1.5, ease: "power2.inOut" },
-            );
-            break;
-
           case "blur-in":
             gsap.fromTo(
               htmlEl,
@@ -259,24 +262,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             );
             break;
 
-          case "letter-spacing":
-            gsap.fromTo(
-              htmlEl,
-              { autoAlpha: 0, letterSpacing: "0em" },
-              {
-                autoAlpha: 1,
-                letterSpacing: "0.8em",
-                duration: 1.5,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: htmlEl,
-                  start: "top 85%",
-                  toggleActions: "play none none none",
-                },
-              },
-            );
-            break;
-
           default:
             break;
         }
@@ -291,18 +276,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <section className="relative min-h-screen flex items-center justify-center px-6 pt-20 film-reel-border overflow-hidden">
           <div className="grain-medium absolute inset-0 z-grain" aria-hidden="true" />
           <div className="max-w-screen-xl w-full flex flex-col items-center text-center relative z-10">
-            <div
-              data-about-animate="hero-divider"
-              className="flex items-center justify-center gap-4 mb-10"
-            >
-              <span className="w-12 h-px bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                {content.hero.eyebrow}
-              </span>
-              <span className="w-12 h-px bg-primary/40"></span>
-            </div>
-
-            <h1 className="font-display text-5xl md:text-[8rem] text-on-surface leading-[0.9] tracking-tighter mb-10">
+            <h1 className="font-display text-5xl md:text-8xl text-on-surface leading-[0.9] tracking-tighter mb-10">
               <StaggeredText text={content.hero.titleLine1} />
               <span data-about-animate="blur-in" className="italic text-primary block mt-4">
                 {content.hero.titleLine2}
@@ -311,17 +285,39 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
 
             <p
               data-about-animate="hero-subtitle"
-              className="font-body text-xl md:text-2xl text-on-surface-variant/60 max-w-2xl leading-relaxed font-light"
+              className="font-body text-xl md:text-2xl text-on-surface-variant/85 max-w-2xl leading-relaxed font-light"
             >
               {content.hero.description}
             </p>
           </div>
         </section>
 
+        {/* The opening proof: a full-bleed photograph before any more words */}
+        {content.hero.image && (
+          <section className="relative h-[52vh] overflow-hidden md:h-[68vh]">
+            <SiteMedia
+              src={resolveImageUrl(content.hero.image)}
+              alt={content.hero.image.alt ?? ""}
+              fill
+              sizes="100vw"
+              quality={90}
+              className="object-cover"
+            />
+            <div
+              className="pointer-events-none absolute inset-0"
+              aria-hidden="true"
+              style={{
+                background:
+                  "linear-gradient(to bottom, color-mix(in srgb, var(--color-background) 45%, transparent), transparent 30%, transparent 70%, color-mix(in srgb, var(--color-surface-container-lowest) 65%, transparent))",
+              }}
+            />
+          </section>
+        )}
+
         <div className="w-full h-1 bg-surface-container-lowest"></div>
         <div className="scene-divider"></div>
 
-        <section className="py-48 md:py-64 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
+        <section className="py-36 md:py-48 px-6 bg-surface-container-lowest relative overflow-hidden flex flex-col items-center justify-center">
           <div
             data-about-animate="bg-text"
             data-target-opacity="0.03"
@@ -336,7 +332,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center">
             <div data-about-animate="fade-up" className="flex items-center gap-6 mb-24">
               <span className="w-12 h-[1px] bg-primary/40"></span>
-              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px]">
+              <span className="font-label uppercase tracking-[0.5em] text-hero-gold text-[10px]">
                 {content.manifesto.eyebrow}
               </span>
               <span className="w-12 h-[1px] bg-primary/40"></span>
@@ -357,9 +353,6 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
               data-delay="0.6"
               className="mt-24 flex flex-col items-center gap-6"
             >
-              <span className="font-label uppercase tracking-[0.4em] text-xs text-on-surface-variant/60">
-                {content.manifesto.footerLabel}
-              </span>
               <div className="flex gap-2">
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
                 <span className="w-1 h-1 rounded-full bg-primary/40"></span>
@@ -376,13 +369,10 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           <div className="max-w-screen-2xl mx-auto relative z-20">
             {/* Section intro — full width above the grid */}
             <div data-about-animate="fade-left" className="mb-12 md:mb-16">
-              <span className="font-label uppercase tracking-[0.5em] text-primary/60 text-[10px] block mb-4">
-                {content.team.eyebrow}
-              </span>
               <h2 className="font-display text-4xl md:text-6xl tracking-tighter mb-4 text-on-surface">
                 {content.team.title}
               </h2>
-              <p className="font-body text-on-surface-variant/60 leading-relaxed max-w-lg text-base font-light">
+              <p className="font-body text-on-surface-variant/85 leading-relaxed max-w-lg text-base font-light">
                 {content.team.description}
               </p>
             </div>
@@ -419,39 +409,54 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                     return (
                       <div
                         key={member.name}
+                        role="button"
+                        tabIndex={0}
+                        aria-pressed={active}
                         data-about-animate="team-item"
                         data-delay={String(index * 0.1)}
+                        onClick={() => setActiveMember(index)}
+                        onFocus={() => {
+                          setActiveMember(index);
+                          setIsHovering(true);
+                        }}
+                        onBlur={() => setIsHovering(false)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            setActiveMember(index);
+                          }
+                        }}
                         onMouseEnter={() => {
                           setActiveMember(index);
                           setIsHovering(true);
                         }}
                         onMouseLeave={() => setIsHovering(false)}
-                        className="group border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3"
+                        className="group w-full text-left border-b border-outline-variant/20 py-6 md:py-8 cursor-pointer flex flex-col gap-3 focus-visible:outline-2 focus-visible:outline-primary"
                       >
                         <div className="flex items-start md:items-center justify-between gap-4">
                           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
                             <span
-                              className={`font-mono text-sm transition-colors duration-500 group-hover:text-primary ${active ? "text-primary" : "text-primary/40"}`}
+                              className={`font-mono text-sm transition-colors duration-500 can-hover:group-hover:text-primary ${active ? "text-primary/40 lg:text-primary" : "text-primary/40"}`}
                             >
                               0{index + 1}
                             </span>
                             <h3
-                              className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight group-hover:text-white ${active ? "text-white" : "text-on-surface"}`}
+                              className={`font-display text-3xl md:text-4xl lg:text-5xl transition-colors duration-500 tracking-tight can-hover:group-hover:text-white ${active ? "text-on-surface lg:text-white" : "text-on-surface"}`}
                             >
                               {member.name}
                             </h3>
                           </div>
                           <div
-                            className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
+                            className={`w-10 h-10 rounded-full border hidden lg:flex items-center justify-center transition-all duration-500 shrink-0 can-hover:group-hover:border-primary can-hover:group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
                           >
                             <ChevronRight
-                              className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
+                              className={`w-4 h-4 transition-colors duration-500 can-hover:group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
                             />
                           </div>
                         </div>
 
                         <div className="flex items-center gap-6 md:pl-14">
-                          <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-primary transition-colors duration-500">
+                          <span className="font-label uppercase tracking-[0.3em] text-[10px] md:text-xs text-hero-gold transition-colors duration-500">
                             {member.role}
                           </span>
                         </div>
@@ -462,7 +467,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                             alt={member.portrait?.alt ?? `Portrait of ${member.name}`}
                             fill
                             sizes="(max-width: 1023px) 100vw, 0px"
-                            className="object-cover object-center can-hover:grayscale can-hover:group-hover:grayscale-0 transition-all duration-1000"
+                            className="object-cover object-center transition-transform duration-1000"
                           />
                         </div>
                       </div>
@@ -477,15 +482,10 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-64 px-6 bg-surface-container-lowest md:px-12">
-          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
-            <div className="order-2 md:order-1 space-y-20">
+        <section className="py-24 md:py-44 px-6 bg-surface-container-lowest md:px-12">
+          <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 xl:gap-32 items-center">
+            <div className="space-y-10 md:space-y-20">
               <div className="space-y-8">
-                <div data-about-animate="fade-left" className="flex items-center gap-4">
-                  <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px]">
-                    {content.process.eyebrow}
-                  </span>
-                </div>
                 <h2 className="font-display italic text-primary text-5xl md:text-7xl block tracking-tighter">
                   <StaggeredText text={content.process.title} />
                 </h2>
@@ -509,7 +509,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                     <h4 className="font-label uppercase tracking-widest text-primary text-xs font-bold">
                       {card.title}
                     </h4>
-                    <p className="font-body text-sm text-on-surface-variant/50 leading-loose">
+                    <p className="font-body text-sm text-on-surface-variant/85 leading-loose">
                       {card.description}
                     </p>
                   </div>
@@ -518,16 +518,16 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
             </div>
             <div
               data-about-animate="process-image"
-              className="order-1 md:order-2 aspect-square relative group overflow-hidden"
+              className="aspect-square relative group overflow-hidden"
             >
               <SiteMedia
                 alt={content.process.image.alt ?? ""}
-                className="w-full h-full object-cover can-hover:grayscale can-hover:brightness-50 can-hover:group-hover:brightness-90 transition-all duration-[2s] scale-110 group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
+                className="w-full h-full object-cover transition-transform duration-[2s] scale-110 can-hover:group-hover:scale-100 shadow-[0_0_80px_color-mix(in_srgb,black_80%,transparent)]"
                 src={resolveImageUrl(content.process.image)}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
-              <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 group-hover:border-[12px]"></div>
+              <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 can-hover:group-hover:border-[12px]"></div>
             </div>
           </div>
         </section>
@@ -535,15 +535,9 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
         <div className="scene-divider"></div>
         <div className="w-full h-1 bg-surface-container-lowest"></div>
 
-        <section className="py-72 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
+        <section className="py-32 md:py-48 px-6 bg-surface text-center film-reel-border relative overflow-hidden md:px-12">
           <div className="relative z-10 max-w-4xl mx-auto space-y-16">
-            <span
-              data-about-animate="letter-spacing"
-              className="font-label uppercase text-primary/40 text-[11px] block"
-            >
-              {content.cta.eyebrow}
-            </span>
-            <h2 className="font-display text-6xl md:text-[9rem] tracking-tighter text-on-surface leading-[0.85]">
+            <h2 className="font-display text-6xl md:text-8xl tracking-tighter text-on-surface leading-[0.85]">
               <StaggeredText text={content.cta.titleLine1} />
               <span
                 data-about-animate="fade-up"
@@ -553,13 +547,12 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                 {content.cta.titleLine2}
               </span>
             </h2>
-            <div data-about-animate="fade-up" data-delay="1.5" className="pt-12">
+            <div data-about-animate="fade-up" data-delay="0.2" className="pt-12">
               <Button
                 as={TransitionLink}
                 href={content.cta.cta.href}
-                variant="outline-accent"
-                size="sm"
-                className="gap-2 font-semibold"
+                size="lg"
+                className="gap-2 px-10 font-label text-xs uppercase tracking-[0.2em]"
               >
                 {content.cta.cta.label} <span aria-hidden="true">&rarr;</span>
               </Button>
@@ -567,7 +560,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
           </div>
           <div
             data-about-animate="bg-text"
-            data-target-opacity="0.03"
+            data-target-opacity="0.07"
             data-from-scale="0.8"
             data-duration="3"
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"

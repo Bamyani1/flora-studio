@@ -10,12 +10,15 @@ export function jsonLdString(data: unknown): string {
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: `${SITE_NAME} | Photography that's worth keeping`,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",
+    "Photography studio based in Dayton, Ohio. Weddings and graduations, events, sports, portraits, and commercial photography with intention.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -30,26 +33,48 @@ export const baseMetadata: Metadata = {
   },
 };
 
-/** JSON-LD: LocalBusiness — for the home page */
-export function localBusinessJsonLd(sameAs: string[] = []) {
+// A stable @id lets Person/ImageGallery reference the business so the JSON-LD
+// forms one graph instead of disconnected nodes
+const BUSINESS_ID = `${SITE_URL}/#business`;
+
+/** JSON-LD: LocalBusiness — for the home page. Address/geo/telephone are the
+ *  signals local search actually uses; the copy leans on "Dayton, Ohio"
+ *  everywhere, so the schema should too. */
+export function localBusinessJsonLd(
+  sameAs: string[] = [],
+  contact?: { email?: string; telephone?: string },
+) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": BUSINESS_ID,
     name: SITE_NAME,
     description:
-      "Photography studio based in Dayton, Ohio. Milestones, gatherings, motion, portraits, and professional photography with intention.",
+      "Photography studio based in Dayton, Ohio. Weddings and graduations, events, sports, portraits, and commercial photography with intention.",
     url: SITE_URL,
     image: `${SITE_URL}/opengraph-image`,
+    logo: `${SITE_URL}/opengraph-image`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Dayton",
+      addressRegion: "OH",
+      addressCountry: "US",
+    },
+    areaServed: "Dayton, Ohio",
+    ...(contact?.email ? { email: contact.email } : {}),
+    ...(contact?.telephone ? { telephone: contact.telephone } : {}),
     sameAs,
   };
 }
 
-/** JSON-LD: ImageGallery — for album pages */
+/** JSON-LD: ImageGallery — for album pages. associatedMedia lists the actual
+ *  photographs so image search has objects to surface, not just a count. */
 export function imageGalleryJsonLd(album: {
   title: string;
   description?: string;
   slug: string;
   imageCount: number;
+  images?: { url: string; caption?: string }[];
 }) {
   return {
     "@context": "https://schema.org",
@@ -58,8 +83,18 @@ export function imageGalleryJsonLd(album: {
     description: album.description,
     url: `${SITE_URL}/work/${album.slug}`,
     numberOfItems: album.imageCount,
+    ...(album.images && album.images.length > 0
+      ? {
+          associatedMedia: album.images.map((image) => ({
+            "@type": "ImageObject",
+            contentUrl: image.url.startsWith("http") ? image.url : `${SITE_URL}${image.url}`,
+            ...(image.caption ? { caption: image.caption } : {}),
+          })),
+        }
+      : {}),
     provider: {
       "@type": "LocalBusiness",
+      "@id": BUSINESS_ID,
       name: SITE_NAME,
     },
   };
@@ -81,6 +116,11 @@ export function personJsonLd({
     name,
     jobTitle,
     url: `${SITE_URL}/about`,
+    worksFor: {
+      "@type": "LocalBusiness",
+      "@id": BUSINESS_ID,
+      name: SITE_NAME,
+    },
     sameAs,
   };
 }

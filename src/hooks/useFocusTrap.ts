@@ -16,41 +16,43 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>, 
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const container = containerRef.current;
-    const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-    const firstFocusable = focusableElements[0];
 
-    // Focus the first element
-    firstFocusable?.focus();
+    // Focus after the frame in which sibling effects reveal the container —
+    // focusing a child while the dialog is still visibility:hidden is a silent no-op.
+    const focusFrame = window.requestAnimationFrame(() => {
+      const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      focusableElements[0]?.focus();
+    });
 
+    // Fully managed Tab cycling: WebKit's native Tab skips plain links, so
+    // relying on browser tab order would hop from the last button straight out
+    // of the dialog. Moving focus ourselves keeps every engine on the same loop.
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Tab") return;
 
       // Re-query in case DOM changed
-      const currentFocusable = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-      if (currentFocusable.length === 0) {
-        e.preventDefault();
-        return;
-      }
+      const currentFocusable = Array.from(
+        container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+      );
+      e.preventDefault();
+      if (currentFocusable.length === 0) return;
 
-      const first = currentFocusable[0];
-      const last = currentFocusable[currentFocusable.length - 1];
+      const activeIndex = currentFocusable.indexOf(document.activeElement as HTMLElement);
+      const nextIndex = e.shiftKey
+        ? activeIndex <= 0
+          ? currentFocusable.length - 1
+          : activeIndex - 1
+        : activeIndex === -1 || activeIndex === currentFocusable.length - 1
+          ? 0
+          : activeIndex + 1;
 
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
+      currentFocusable[nextIndex]?.focus();
     };
 
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       // Return focus to the element that had it before
       if (previousFocusRef.current?.isConnected) {

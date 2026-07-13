@@ -46,7 +46,10 @@ function getSanityClient(options: {
   }
 
   const perspective = options.perspective ?? "published";
-  const token = options.token ?? getRequiredSanityReadToken();
+  // Private datasets set SANITY_READ_TOKEN; tokenless published reads use the CDN in production.
+  const token =
+    options.token ??
+    (perspective === "published" ? process.env.SANITY_READ_TOKEN : getRequiredSanityReadToken());
   const useCdn =
     options.useCdn ??
     (!token && perspective === "published" && process.env.NODE_ENV === "production");
@@ -65,7 +68,7 @@ export async function sanityFetch<T>({
   query,
   params,
   perspective = "published",
-  revalidate = 60,
+  revalidate = 300,
 }: SanityFetchOptions): Promise<T> {
   const client = getSanityClient({ perspective });
 

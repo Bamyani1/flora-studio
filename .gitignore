@@ -7,10 +7,8 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/.next-playwright/
-/.next-playwright-consent/
+# next.js (any NEXT_DIST_DIR variant — Tailwind's source scanner skips ignored dirs)
+/.next*/
 /out/
 
 # production

@@ -5,10 +5,21 @@ describe("ui-store transitions", () => {
   beforeEach(() => {
     useUIStore.setState({
       menuOpen: false,
+      overlayMounted: false,
       transitionPhase: "idle",
       transitionSource: null,
       pendingHref: null,
     });
+  });
+
+  it("tracks overlay mount state", () => {
+    expect(useUIStore.getState().overlayMounted).toBe(false);
+
+    useUIStore.getState().setOverlayMounted(true);
+    expect(useUIStore.getState().overlayMounted).toBe(true);
+
+    useUIStore.getState().setOverlayMounted(false);
+    expect(useUIStore.getState().overlayMounted).toBe(false);
   });
 
   it("requests link transitions only while idle", () => {

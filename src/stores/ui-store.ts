@@ -5,10 +5,12 @@ export type TransitionSource = "link" | "history" | null;
 
 interface UIState {
   menuOpen: boolean;
+  overlayMounted: boolean;
   transitionPhase: TransitionPhase;
   transitionSource: TransitionSource;
   pendingHref: string | null;
   setMenuOpen: (open: boolean) => void;
+  setOverlayMounted: (mounted: boolean) => void;
   requestRouteTransition: (href: string) => void;
   startHistoryTransition: () => void;
   beginEnterTransition: () => void;
@@ -17,10 +19,12 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   menuOpen: false,
+  overlayMounted: false,
   transitionPhase: "idle",
   transitionSource: null,
   pendingHref: null,
   setMenuOpen: (open) => set({ menuOpen: open }),
+  setOverlayMounted: (mounted) => set({ overlayMounted: mounted }),
   requestRouteTransition: (href) =>
     set((state) => {
       if (state.transitionPhase !== "idle") return state;

@@ -27,7 +27,12 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLdString(localBusinessJsonLd(siteSettings.sameAs)),
+          __html: jsonLdString(
+            localBusinessJsonLd(siteSettings.sameAs, {
+              email: siteSettings.email,
+              telephone: `+1${siteSettings.phone.replace(/\D/g, "")}`,
+            }),
+          ),
         }}
       />
       <main id="main-content">

@@ -56,18 +56,20 @@ export const branchReveal = {
 };
 
 // --------------------------------------------------
-// imageReveal — Two-part: colored overlay slides away, image scales down
+// imageReveal — Darkroom fade: the photograph resolves up from near-black
+// with a slight exposure ramp, like a print developing
 // --------------------------------------------------
 export const imageReveal = {
-  overlay: {
-    from: { scaleX: 1, transformOrigin: "left center" },
-    to: { scaleX: 0, transformOrigin: "right center", duration: 0.8, ease: easings.smoothInOut },
-  },
   image: {
-    from: { scale: 1.3 },
-    to: { scale: 1, duration: 1.2, ease: easings.smooth },
+    from: { autoAlpha: 0, scale: 1.06, filter: "brightness(0.3) saturate(0.85)" },
+    to: {
+      autoAlpha: 1,
+      scale: 1,
+      filter: "brightness(1) saturate(1)",
+      duration: 1.6,
+      ease: easings.smooth,
+    },
   },
-  overlayColor: "#ff4d00",
   scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
 };
 
@@ -141,37 +143,6 @@ export const scrollIndicatorPulse = {
     from: { autoAlpha: 0 },
     to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth, delay: 0.5 },
   },
-};
-
-// --------------------------------------------------
-// collectionCardReveal — Orange overlay wipe + clip-path reveal + label fade
-// --------------------------------------------------
-export const collectionCardReveal = {
-  overlay: {
-    from: { scaleX: 1, transformOrigin: "left center" },
-    to: { scaleX: 0, transformOrigin: "right center", duration: 0.8, ease: easings.smoothInOut },
-  },
-  image: {
-    from: { clipPath: "inset(0% 100% 0% 0%)" },
-    to: { clipPath: "inset(0% 0% 0% 0%)", duration: 1.0, ease: easings.smooth },
-  },
-  label: {
-    from: { y: 15, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.6, ease: easings.smooth },
-  },
-  stagger: 0.15,
-  labelDelay: 0.6,
-  overlayColor: "#ff4d00",
-  scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
-};
-
-// --------------------------------------------------
-// exhibitionParallax — Scroll-driven image scale for exhibition section
-// --------------------------------------------------
-export const exhibitionParallax = {
-  from: { scale: 1.1 },
-  to: { scale: 1, ease: "none" },
-  scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
 };
 
 // --------------------------------------------------
@@ -276,49 +247,20 @@ export const folioReveal = {
 };
 
 // --------------------------------------------------
-// cinematicHeroReveal — Gallery hero: blur/brightness/scale entrance + parallax
+// chapterReveal — Work chapters: per-panel title-card entrance
 // --------------------------------------------------
-export const cinematicHeroReveal = {
-  /** Image only uses scale — filter work moves to overlay layers */
-  image: {
-    from: { scale: 1.08 },
-    to: { scale: 1, duration: 1.8, ease: "power3.out" },
+export const chapterReveal = {
+  cover: {
+    from: { scale: 1.06 },
+    to: { scale: 1, duration: 1.6, ease: "power3.out" },
   },
-  /** Dark overlay: simulates brightness(0.1) → brightness(1) */
-  darkOverlay: {
-    from: { autoAlpha: 0.85 },
-    to: { autoAlpha: 0, duration: 1.8, ease: "power3.out" },
+  text: {
+    from: { y: 24, autoAlpha: 0 },
+    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth, stagger: 0.1 },
   },
-  nav: {
-    from: { y: -20, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: easings.smooth },
-  },
-  chapterLabel: {
-    from: { y: 20, autoAlpha: 0 },
-    to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
-  },
-  titleLine: {
-    from: { y: 60, autoAlpha: 0, rotationX: -15 },
-    to: { y: 0, autoAlpha: 1, rotationX: 0, duration: 1, ease: easings.smooth, stagger: 0.15 },
-  },
-  description: {
-    from: { y: 15, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth },
-  },
-  scrollCue: {
-    from: { autoAlpha: 0 },
-    to: { autoAlpha: 1, duration: 0.8, ease: easings.smooth },
-  },
-  parallax: {
-    to: { yPercent: 20, ease: "none" },
-    scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
-  },
+  scrollTrigger: { start: "top 70%", toggleActions: "play none none none" },
 };
 
-// --------------------------------------------------
-// bentoSplitReveal — Gallery bento: grayscale→color crossfade + parallax + text
-// Two-layer approach: static grayscale base + GPU-compositable opacity reveal.
-// --------------------------------------------------
 // --------------------------------------------------
 // contactFormReveal — Contact form entrance (~2s)
 // --------------------------------------------------
@@ -347,60 +289,6 @@ export const contactFormReveal = {
     submit: 0.9,
   },
   totalDuration: 1.6,
-};
-
-export const bentoSplitReveal = {
-  /** Wrapper: GPU-compositable scale + parallax */
-  imageWrapper: {
-    from: { scale: 1.1, yPercent: -10 },
-    to: { scale: 1, yPercent: 10, ease: "none" },
-  },
-  /** Color layer fades in over static grayscale base */
-  colorReveal: {
-    from: { opacity: 0 },
-    to: { opacity: 1, ease: "none" },
-  },
-  /** Static filter applied once via CSS — never animated */
-  grayFilter: "grayscale(100%) brightness(0.5)",
-  /** Shared ScrollTrigger config for the timeline */
-  scrollTrigger: { start: "top 80%", end: "bottom top", scrub: true },
-  text: {
-    from: { y: 40, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, stagger: 0.15, duration: 1.2, ease: easings.smooth },
-    scrollTrigger: { start: "top 60%", toggleActions: "play none none none" },
-  },
-};
-
-// --------------------------------------------------
-// fullBleedShowcase — Gallery full-bleed: centered image parallax + text
-// --------------------------------------------------
-export const fullBleedShowcase = {
-  image: {
-    from: { scale: 1.1, yPercent: -10 },
-    to: { scale: 1, yPercent: 10, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
-  },
-  text: {
-    from: { y: 50, autoAlpha: 0, scale: 0.9 },
-    to: { y: 0, autoAlpha: 1, scale: 1, duration: 1.5, ease: easings.smooth },
-    scrollTrigger: { start: "top 50%", toggleActions: "play none none none" },
-  },
-};
-
-// --------------------------------------------------
-// textureCardReveal — Gallery texture cards: entrance + inner parallax
-// --------------------------------------------------
-export const textureCardReveal = {
-  card: {
-    from: { y: 100, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 1.5, ease: easings.smooth },
-    scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
-  },
-  image: {
-    from: { scale: 1.15, yPercent: -5 },
-    to: { scale: 1, yPercent: 5, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
-  },
 };
 
 // --------------------------------------------------
@@ -433,7 +321,8 @@ export const headerShrink = {
     height: "3.5rem",
     paddingTop: "0.625rem",
     paddingBottom: "0.625rem",
-    backgroundColor: "rgba(17,18,16,0.55)",
+    // Opaque enough that light imagery scrolling underneath can't wash out the nav
+    backgroundColor: "rgba(17,18,16,0.85)",
     borderColor: "rgba(255,255,255,0.2)",
     borderRadius: "2px",
     backdropFilter: "blur(16px)",
@@ -466,16 +355,27 @@ export const landingHeroParallax = {
 // --------------------------------------------------
 export const landingWordReveal = {
   splitConfig: { type: "words", mask: "words", autoSplit: true } as const,
-  from: { yPercent: 120, rotation: 4, autoAlpha: 0 },
+  // No rotation — a per-word tilt on an italic display face reads busy
+  from: { yPercent: 120, autoAlpha: 0 },
   to: {
     yPercent: 0,
-    rotation: 0,
     autoAlpha: 1,
     duration: 1.2,
     ease: easings.smooth,
     stagger: 0.04,
   },
   scrollTrigger: { start: "top 90%", toggleActions: "play none none none" },
+};
+
+// --------------------------------------------------
+// editorialLightRay — single shaft settles over the headline after the words land
+// --------------------------------------------------
+export const editorialLightRay = {
+  // y drifts along the beam's own (rotated) axis — the rotation lives on a
+  // static wrapper so GSAP never fights the CSS transform
+  from: { autoAlpha: 0, y: -24 },
+  to: { autoAlpha: 1, y: 0, duration: 2.4, ease: easings.smooth },
+  scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
 };
 
 // --------------------------------------------------
@@ -512,12 +412,6 @@ export const landingHeroGridSequence = {
       position: 0.3,
     },
     {
-      target: "eyebrow",
-      from: { autoAlpha: 0, y: 15 },
-      to: { autoAlpha: 1, y: 0, duration: 0.8, ease: easings.smooth },
-      position: 0.6,
-    },
-    {
       target: "headline",
       from: { autoAlpha: 0, y: 15 },
       to: { autoAlpha: 1, y: 0, duration: 1.0, ease: "back.out(1.4)" },
@@ -539,9 +433,10 @@ export const landingHeroGridSequence = {
 export const landingHeroEditorialSequence = {
   steps: [
     {
+      // No autoAlpha — the layer must stay visible so the LQIP blur paints while the photo loads
       target: "bgImage",
-      from: { scale: 1.12, autoAlpha: 0 },
-      to: { scale: 1, autoAlpha: 1, duration: 2.0, ease: easings.smooth },
+      from: { scale: 1.12 },
+      to: { scale: 1, duration: 2.0, ease: easings.smooth },
       position: 0,
     },
     {
@@ -555,12 +450,6 @@ export const landingHeroEditorialSequence = {
       from: { autoAlpha: 0, scale: 1.04 },
       to: { autoAlpha: 1, scale: 1, duration: 1.2, ease: easings.smooth },
       position: 0.8,
-    },
-    {
-      target: "eyebrow",
-      from: { autoAlpha: 0, x: -20 },
-      to: { autoAlpha: 1, x: 0, duration: 0.8, ease: easings.smooth },
-      position: 1.0,
     },
     {
       target: "headlineLine1",
@@ -648,25 +537,19 @@ export const reducedMotionFallbacks = {
   textRevealWords: "all words at full opacity, no scrub",
   clipRevealUp: "instant clip-path: inset(0%), no animation",
   clipRevealLeft: "instant clip-path: inset(0%), no animation",
-  imageReveal: "no overlay animation, image visible immediately at scale 1",
+  imageReveal: "no darkroom fade, image visible immediately at scale 1",
   parallaxLayer: "disabled — no Y translation",
   magneticPull: "disabled — no cursor following",
   staggerGrid: "instant autoAlpha: 1, no stagger delay",
   navOverlayOpen: "instant visibility toggle, no stagger",
   navOverlayClose: "instant visibility toggle",
   scrollIndicatorPulse: "visible but static, no pulse animation",
-  collectionCardReveal: "overlay scaleX: 0, clip-path fully open, labels visible immediately",
-  exhibitionParallax: "disabled — no scroll-driven scale",
   timelinePhaseReveal:
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
   folioReveal:
     "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
-  cinematicHeroReveal:
-    "image visible immediately at scale 1, no brightness transition, no parallax, all text visible",
-  bentoSplitReveal:
-    "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
-  fullBleedShowcase: "image visible at scale 1, no parallax, text visible immediately",
-  textureCardReveal: "cards visible immediately, no parallax, no stagger",
+  chapterReveal:
+    "cover at scale 1, all text visible immediately, chapter rail still tracks position",
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
@@ -674,6 +557,7 @@ export const reducedMotionFallbacks = {
     "all elements visible immediately, no choreography, no clip-path, no parallax",
   landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
+  editorialLightRay: "beam statically visible at ambient opacity immediately, no drift",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
   scrollApertureProgress: "blades at open position, no scroll-linked rotation",
   irisTransition: "instant opacity toggle, no blade animation",

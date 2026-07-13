@@ -39,7 +39,7 @@ export async function generateMetadata({
 
 export default async function AlbumPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { album, previous, next } = await getAlbumWithNavigation(slug);
+  const { album, previous, next, series } = await getAlbumWithNavigation(slug);
 
   if (!album) notFound();
 
@@ -48,12 +48,42 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     ? await generateLqipDataUrl(heroUrl)
     : await generateLocalLqipDataUrl(heroUrl);
 
+  // The hero has pride of place at the top of the page — keep it out of the folio
+  const imageKey = (img: { url?: string; asset?: { _ref: string } }) =>
+    img.url ?? img.asset?._ref;
+  const heroKey = album.heroImage ? imageKey(album.heroImage) : undefined;
+  const seen = new Set<string>();
+  const galleryImages = (album.images ?? []).filter((img) => {
+    const key = imageKey(img);
+    if (!key || key === heroKey) return false;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Per-plate LQIP so slow connections see a blur-up instead of empty panels
+  const galleryWithBlur = await Promise.all(
+    galleryImages.map(async (img) => {
+      const url = resolveImageUrl(img);
+      const blurDataURL = url?.startsWith("https://cdn.sanity.io")
+        ? await generateLqipDataUrl(url)
+        : url?.startsWith("/")
+          ? await generateLocalLqipDataUrl(url)
+          : undefined;
+      return blurDataURL ? { ...img, blurDataURL } : img;
+    }),
+  );
+
   const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
     description: album.description,
     slug,
-    imageCount: album.images?.length ?? 0,
+    // numberOfItems matches the folio plate count shown on the page
+    imageCount: galleryImages.length,
+    images: galleryImages
+      .map((img) => ({ url: resolveImageUrl(img) ?? "", caption: img.alt }))
+      .filter((img) => img.url),
   });
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: SITE_URL },
@@ -78,6 +108,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         location={album.location}
         heroImage={album.heroImage}
         blurDataURL={heroBlurDataURL}
+        series={series ?? undefined}
       />
 
       {album.narrative && (
@@ -94,19 +125,14 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      {album.images?.length > 0 &&
-        (() => {
-          const seen = new Set<string>();
-          const galleryImages = [...album.images, album.heroImage].filter((img) => {
-            const key = img.url ?? img.asset._ref;
-            if (seen.has(key)) return false;
-            seen.add(key);
-            return true;
-          });
-          return (
-            <FolioGallery images={galleryImages} title={album.title} videoUrl={album.videoUrl} />
-          );
-        })()}
+      {galleryWithBlur.length > 0 && (
+        <FolioGallery
+          images={galleryWithBlur}
+          title={album.title}
+          videoUrl={album.videoUrl}
+          videoPosterUrl={album.videoPosterUrl}
+        />
+      )}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />
     </main>

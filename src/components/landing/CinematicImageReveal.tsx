@@ -88,8 +88,10 @@ export function CinematicImageReveal({
           priority={priority}
         />
       </div>
+      {/* Hover-only dim on fine pointers. The old permanent 20% darkening meant
+          touch users never saw the photograph at full brightness. */}
       {overlay && (
-        <div className="absolute inset-0 bg-black/20 transition-colors duration-1000 hover:bg-transparent" />
+        <div className="absolute inset-0 bg-transparent transition-colors duration-1000 can-hover:hover:bg-black/10" />
       )}
     </div>
   );
