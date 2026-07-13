@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
@@ -18,7 +18,7 @@ export default async function WorkPage() {
   const albums = await getAllAlbums();
 
   const firstCoverUrl = albums[0] ? resolveImageUrl(albums[0].coverImage) : null;
-  const heroBlurDataURL = firstCoverUrl?.startsWith("https://cdn.sanity.io")
+  const heroBlurDataURL = isSanityCdnUrl(firstCoverUrl)
     ? await generateLqipDataUrl(firstCoverUrl)
     : firstCoverUrl?.startsWith("/")
       ? await generateLocalLqipDataUrl(firstCoverUrl)

@@ -11,7 +11,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   const albumRoutes = slugs.map((s) => ({
-    url: `${SITE_URL}/work/${s.slug}`,
+    // Percent-encode the CMS slug: Next's sitemap serializer interpolates the
+    // URL into <loc> without XML-escaping, so a slug carrying XML metacharacters
+    // could otherwise inject <url>/<loc> nodes or malform the document.
+    url: `${SITE_URL}/work/${encodeURIComponent(s.slug)}`,
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.7,

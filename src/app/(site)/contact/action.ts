@@ -37,24 +37,21 @@ function buildNotificationEmailText(data: ContactFormData) {
   return lines.join("\n");
 }
 
+// The auto-reply is delivered to the address the submitter typed, which is not
+// verified to be theirs. To stop this authenticated, DMARC-aligned mailbox from
+// being used to relay attacker text to arbitrary recipients, the body echoes NO
+// free-text fields — only the session type, which is constrained to the fixed
+// PHOTOGRAPHY_TYPE_OPTIONS enum. The studio's own notification email (to the
+// studio inbox) still carries every detail.
 function buildAutoReplyText(data: ContactFormData, contactEmail: string) {
-  const alternateLine =
-    data.alternateDates && data.alternateDates.length > 0
-      ? data.alternateDates.join(", ")
-      : "—";
-
   return [
-    `Hi ${data.name},`,
+    "Hi there,",
     "",
-    "We received your inquiry and will follow up within 24 hours.",
+    "Thanks — we received your inquiry and will follow up within 24 hours.",
     "",
-    "Here's what we have on our end:",
     `· Session: ${photographyTypeLabel(data.photographyType)}`,
-    `· Preferred date: ${data.preferredDate}`,
-    `· Alternate dates: ${alternateLine}`,
-    `· Location: ${data.location}`,
     "",
-    "Reply to this email if anything needs to change.",
+    "If any details need to change, just reply to this email.",
     "",
     "— Flora Studio",
     contactEmail,
