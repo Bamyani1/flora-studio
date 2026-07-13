@@ -29,7 +29,7 @@ export function RevealText({ text, className = "", delay = 0 }: RevealTextProps)
       const split = new SplitText(el, landingWordReveal.splitConfig);
 
       gsap.set(el, { autoAlpha: 1 }); // Clear CSS [data-animate] opacity; words handle their own visibility
-      gsap.set(split.words, { yPercent: 120, rotation: 4, autoAlpha: 0 });
+      gsap.set(split.words, landingWordReveal.from);
 
       gsap.to(split.words, {
         ...landingWordReveal.to,
