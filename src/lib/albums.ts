@@ -170,7 +170,12 @@ export async function getAlbumSlugs(): Promise<{ slug: string }[]> {
   }
 }
 
-export async function getAlbumBySlug(slug: string): Promise<Album | null> {
+export async function getAlbumBySlug(slug: string | undefined): Promise<Album | null> {
+  // Next collects metadata for the [slug] OG route once with empty params during
+  // build; without this guard that reaches Sanity as `$slug: undefined` and the
+  // query is rejected ("param $slug referenced, but not provided"), failing the
+  // production build.
+  if (!slug) return null;
   if (isE2EContentRuntime()) {
     return getE2EAlbumBySlug(slug);
   }
