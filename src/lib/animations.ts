@@ -336,14 +336,14 @@ export const headerShrink = {
 };
 
 // --------------------------------------------------
-// landingHeroParallax — Ambient Ken Burns zoom + scroll-driven parallax fade
+// landingHeroParallax — Per-frame Ken Burns zoom + scroll-driven parallax fade
 // --------------------------------------------------
 export const landingHeroParallax = {
-  kenBurns: {
-    from: { scale: 1 },
-    to: { scale: 1.06, duration: 10, ease: "none" },
-    delay: 2.1,
-  },
+  // Every image in the hero cycle drifts from fromScale → toScale across its
+  // on-screen span. Applied per-layer inside the crossfade timeline (LandingHero)
+  // so each frame zooms — unlike the old one-shot tween on the shared container,
+  // which only ever animated the first frame before freezing at max scale.
+  imageZoom: { fromScale: 1, toScale: 1.08 },
   scroll: {
     to: { yPercent: 30, ease: "none" },
     scrollTrigger: { start: "top top", end: "bottom top", scrub: true },
@@ -555,7 +555,7 @@ export const reducedMotionFallbacks = {
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
   landingHeroEditorialSequence:
     "all elements visible immediately, no choreography, no clip-path, no parallax",
-  landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
+  landingHeroParallax: "no per-frame zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
   editorialLightRay: "beam statically visible at ambient opacity immediately, no drift",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
