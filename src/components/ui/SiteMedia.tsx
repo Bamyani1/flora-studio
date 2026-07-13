@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { ImageProps } from "next/image";
 import { PLACEHOLDER_MEDIA_LABEL } from "@/lib/site-media";
 import { cn } from "@/lib/utils";
 
-type SiteMediaProps = Omit<ImageProps, "src" | "loader" | "placeholder" | "blurDataURL"> & {
+type SiteMediaProps = Omit<
+  ImageProps,
+  "src" | "loader" | "placeholder" | "blurDataURL" | "onLoad"
+> & {
   src?: ImageProps["src"] | null;
   label?: string;
   blurDataURL?: string;
-  onLoad?: ImageProps["onLoad"];
+  onLoad?: (event?: React.SyntheticEvent<HTMLImageElement>) => void;
 };
 
 export function SiteMedia({
@@ -32,6 +35,21 @@ export function SiteMedia({
   const decorative = !alt || alt.length === 0;
   const isPlaceholder = !src || (typeof src === "string" && src.startsWith("placeholder://"));
   const [hasError, setHasError] = useState(false);
+  const notifiedSrcRef = useRef<ImageProps["src"] | null | undefined>(undefined);
+  const [lastSrc, setLastSrc] = useState(src);
+
+  if (lastSrc !== src) {
+    setLastSrc(src);
+    if (hasError) setHasError(false);
+  }
+
+  useEffect(() => {
+    if (!isPlaceholder && !hasError) return;
+    const srcKey = src ?? null;
+    if (notifiedSrcRef.current === srcKey) return;
+    notifiedSrcRef.current = srcKey;
+    onLoad?.();
+  }, [src, isPlaceholder, hasError, onLoad]);
 
   if (!isPlaceholder && !hasError) {
     return (
@@ -87,7 +105,7 @@ export function SiteMedia({
       />
       <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center px-6">
         <div className="border border-primary/30 bg-background/60 px-4 py-3 backdrop-blur-sm">
-          <span className="font-label text-[10px] uppercase tracking-[0.35em] text-primary">
+          <span className="eyebrow text-primary">
             {label}
           </span>
         </div>

@@ -79,6 +79,13 @@ export const album = defineType({
       description: "Path to a video file (e.g. /videos/milestone.mp4)",
     }),
     defineField({
+      name: "videoPosterUrl",
+      title: "Video poster URL",
+      type: "string",
+      description:
+        "Still shown before the film plays (e.g. /videos/milestone-poster.jpg) — ideally its first frame",
+    }),
+    defineField({
       name: "featured",
       title: "Featured",
       type: "boolean",

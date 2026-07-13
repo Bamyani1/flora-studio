@@ -50,10 +50,18 @@ async function processImage(srcPath, destPath, opts = {}) {
   const meta = await sharp(srcPath).metadata();
   const { width, height } = meta;
 
-  const longest = Math.max(width, height);
   let resizeOpts = undefined;
-  if (longest > maxDim) {
-    resizeOpts = width >= height ? { width: maxDim } : { height: maxDim };
+  if (opts.coverBox) {
+    // Full-bleed hero/cover slots render with object-fit: cover across the
+    // viewport; a longest-edge cap leaves portrait sources too narrow (soft on
+    // 2x displays). Cover a 2880x2560 box instead so either orientation fills
+    // a Retina 1440pt viewport 1:1.
+    resizeOpts = { width: 2880, height: 2560, fit: "outside", withoutEnlargement: true };
+  } else {
+    const longest = Math.max(width, height);
+    if (longest > maxDim) {
+      resizeOpts = width >= height ? { width: maxDim } : { height: maxDim };
+    }
   }
 
   const result = await sharp(srcPath)
@@ -81,7 +89,8 @@ async function processFolder(srcFolder, destFolder, fileMap) {
     }
     if (VALIDATE_ONLY) continue;
     try {
-      const dims = await processImage(srcPath, destPath);
+      const coverBox = destFile === "hero.jpg" || destFile === "cover.jpg";
+      const dims = await processImage(srcPath, destPath, { coverBox });
       console.log(`  ✓ ${destFile} (${dims.width}×${dims.height})`);
     } catch (err) {
       console.error(`  ✗ ${srcFile}: ${err.message}`);
@@ -140,6 +149,7 @@ async function main() {
       "DSC_0645.jpg",
       "",
       "studio-hero.jpg",
+      { coverBox: true },
     );
   }
 
@@ -161,6 +171,7 @@ async function main() {
       "DSC09831.jpg",
       "process",
       "hero.jpg",
+      { coverBox: true },
     );
     await processSingle("Graduation-1", "DSC_0520.jpg", "process", "01.jpg");
     await processSingle("graduation-2", "DSC02086_fullres.jpg", "process", "02.jpg");

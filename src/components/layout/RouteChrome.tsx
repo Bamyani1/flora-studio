@@ -24,7 +24,15 @@ export function RouteChrome({
 
   return (
     <>
-      <Header />
+      {/* The header must leave the tab order (inert) and fade out while the
+          menu dialog is open — otherwise its wordmark/MENU button double up
+          behind the overlay and keyboard focus can escape to it. */}
+      <div
+        inert={menuOpen || undefined}
+        className={`transition-opacity duration-200 ${menuOpen ? "opacity-0" : "opacity-100"}`}
+      >
+        <Header />
+      </div>
       <MobileMenu socialLinks={socialLinks} />
       <div inert={menuOpen || undefined}>
         {children}

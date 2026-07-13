@@ -12,6 +12,9 @@ interface TextRevealProps {
   stagger?: number;
   delay?: number;
   scrub?: boolean;
+  /** Play on mount instead of a scroll trigger — for text that must be
+      visible at rest (hero titles) regardless of viewport height */
+  immediate?: boolean;
   className?: string;
   as?: React.ElementType;
 }
@@ -22,6 +25,7 @@ export function TextReveal({
   stagger,
   delay,
   scrub = false,
+  immediate = false,
   className,
   as: Tag = "div",
 }: TextRevealProps) {
@@ -37,6 +41,10 @@ export function TextReveal({
         return;
       }
 
+      // Clear the CSS [data-animate] opacity — the split animation moves the
+      // lines/words, so the container itself must be visible for any of it to show
+      gsap.set(ref.current, { autoAlpha: 1 });
+
       if (variant === "lines") {
         const split = new SplitText(ref.current, textRevealLines.splitConfig);
 
@@ -45,10 +53,12 @@ export function TextReveal({
           ...withWillChange(),
           ...(stagger !== undefined && { stagger }),
           ...(delay !== undefined && { delay }),
-          scrollTrigger: {
-            trigger: ref.current,
-            ...textRevealLines.scrollTrigger,
-          },
+          ...(!immediate && {
+            scrollTrigger: {
+              trigger: ref.current,
+              ...textRevealLines.scrollTrigger,
+            },
+          }),
         });
 
         return () => split.revert();
@@ -62,16 +72,18 @@ export function TextReveal({
         ...withWillChange("opacity"),
         ...(stagger !== undefined && { stagger }),
         ...(delay !== undefined && { delay }),
-        scrollTrigger: {
-          trigger: ref.current,
-          ...textRevealWords.scrollTrigger,
-          ...(scrub && { scrub: true }),
-        },
+        ...(!immediate && {
+          scrollTrigger: {
+            trigger: ref.current,
+            ...textRevealWords.scrollTrigger,
+            ...(scrub && { scrub: true }),
+          },
+        }),
       });
 
       return () => split.revert();
     },
-    { scope: ref, dependencies: [reduced, variant, stagger, delay, scrub] },
+    { scope: ref, dependencies: [reduced, variant, stagger, delay, scrub, immediate] },
   );
 
   return (

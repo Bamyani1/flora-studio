@@ -16,7 +16,7 @@ export function LegalDocument({ sections }: { sections: LegalSection[] }) {
               <li key={section.id}>
                 <a
                   href={`#${section.id}`}
-                  className="font-label text-xs uppercase tracking-[0.15em] text-muted transition-colors duration-300 hover:text-primary"
+                  className="font-label text-xs uppercase tracking-[0.15em] text-muted transition-colors duration-300 can-hover:hover:text-text"
                 >
                   {section.title}
                 </a>

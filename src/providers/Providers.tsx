@@ -30,6 +30,7 @@ function LenisGsapSync() {
     return () => {
       removeScrollListener();
       gsap.ticker.remove(callback);
+      gsap.ticker.lagSmoothing(500, 33);
     };
   }, [lenis]);
 

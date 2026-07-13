@@ -137,6 +137,10 @@ describe("submitContactForm", () => {
       host: "smtp.mail.me.com",
       port: 587,
       secure: false,
+      requireTLS: true,
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
       auth: {
         user: smtpUser,
         pass: "app-specific-password",
@@ -157,7 +161,7 @@ describe("submitContactForm", () => {
       expect.objectContaining({
         from: `Flora Studio <${contactEmail}>`,
         to: "ava@example.com",
-        subject: "We received your message | Flora Studio",
+        subject: "We received your inquiry | Flora Studio",
         text: expect.stringContaining("Location: Dayton, Ohio"),
       }),
     );
@@ -229,6 +233,73 @@ describe("submitContactForm", () => {
     ).resolves.toEqual({
       success: false,
       error: "Invalid form data. Please check your inputs.",
+    });
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("rejects submissions with an over-length name", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        name: "A".repeat(101),
+      }),
+    ).resolves.toEqual({
+      success: false,
+      error: "Invalid form data. Please check your inputs.",
+    });
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("strips CR/LF from the name before it reaches the email subject", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+    mockSendMail.mockResolvedValue({});
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({
+        ...validPayload,
+        name: "Ava\r\nBcc: attacker@example.com\nReed",
+      }),
+    ).resolves.toEqual({ success: true });
+
+    const subject = mockSendMail.mock.calls[0][0].subject as string;
+    expect(subject).not.toMatch(/[\r\n]/);
+    expect(subject).toContain("Ava Bcc: attacker@example.com Reed");
+  });
+
+  it("treats a future throttle timestamp as throttled in production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("CONTENT_RUNTIME_MODE", "");
+    mockCookieGet.mockImplementation((name: string) =>
+      name === "__contact_throttle" ? { value: String(Date.now() + 120_000) } : undefined,
+    );
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(submitContactForm(validPayload)).resolves.toEqual({
+      success: false,
+      error: "Please wait a moment before submitting again.",
     });
     expect(mockSendMail).not.toHaveBeenCalled();
   });

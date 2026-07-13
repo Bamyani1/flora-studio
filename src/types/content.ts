@@ -30,7 +30,6 @@ export interface HeroMediaItem extends SanityImage {
 }
 
 export interface HomeHeroContent {
-  eyebrow: string;
   titleLine1: string;
   titleLine2: string;
   description: string;
@@ -48,7 +47,6 @@ export interface HomeEditorialContent {
 }
 
 export interface HomeExhibitionContent {
-  eyebrow: string;
   titleLine1: string;
   titleLine2: string;
   description: string;
@@ -58,6 +56,7 @@ export interface HomeExhibitionContent {
 
 export interface HomeStudioContent {
   image: SanityImage;
+  ctaEyebrow: string;
   ctaLabel: string;
   cta: LinkField;
 }
@@ -71,10 +70,11 @@ export interface HomePageContent {
 }
 
 export interface AboutHeroContent {
-  eyebrow: string;
   titleLine1: string;
   titleLine2: string;
   description: string;
+  /** Optional full-bleed photograph shown right after the hero text */
+  image?: SanityImage;
 }
 
 export interface AboutManifestoContent {
@@ -82,7 +82,6 @@ export interface AboutManifestoContent {
   quotePrefix: string;
   quoteAccent: string;
   quoteSuffix: string;
-  footerLabel: string;
 }
 
 export interface AboutTeamMember {
@@ -92,7 +91,6 @@ export interface AboutTeamMember {
 }
 
 export interface AboutTeamContent {
-  eyebrow: string;
   title: string;
   description: string;
   members: AboutTeamMember[];
@@ -104,7 +102,6 @@ export interface AboutProcessCard {
 }
 
 export interface AboutProcessContent {
-  eyebrow: string;
   title: string;
   description: string;
   cards: AboutProcessCard[];
@@ -112,7 +109,6 @@ export interface AboutProcessContent {
 }
 
 export interface AboutCtaContent {
-  eyebrow: string;
   titleLine1: string;
   titleLine2: string;
   cta: LinkField;

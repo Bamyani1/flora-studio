@@ -37,7 +37,7 @@ test("landing page typography matches the GitHub runtime", async ({ page }) => {
     };
   });
 
-  expect(styles.heroHeading).toContain("inter");
+  expect(styles.heroHeading).toContain("cormorant garamond");
   expect(styles.heroCopy).toContain("inter");
   expect(styles.editorialHeading).toContain("cormorant garamond");
   expect(styles.exhibitionHeading).toContain("cormorant garamond");
@@ -72,7 +72,7 @@ test("about, work, and process headings match the GitHub runtime", async ({ page
       element ? getComputedStyle(element as HTMLElement).fontFamily.toLowerCase() : null;
 
     return {
-      heroHeading: pick(document.querySelector("h2.font-display")),
+      heroHeading: pick(document.querySelector("h2.font-headline")),
     };
   });
 
@@ -87,14 +87,14 @@ test("about, work, and process headings match the GitHub runtime", async ({ page
       heroHeading: pick(document.querySelector("main h1.font-display")),
       sectionHeading: pick(document.querySelector("main h2.font-display")),
       firstPhaseTitle: pick(document.querySelector("main h3.font-display")),
-      firstPhaseIndex: pick(document.querySelector("main span.font-display")),
+      firstPhaseIndex: pick(document.querySelector("main [data-step-badge] span")),
     };
   });
 
-  expect(process.heroHeading).toContain("inter");
-  expect(process.sectionHeading).toContain("inter");
+  expect(process.heroHeading).toContain("cormorant garamond");
+  expect(process.sectionHeading).toContain("cormorant garamond");
   expect(process.firstPhaseTitle).toContain("cormorant garamond");
-  expect(process.firstPhaseIndex).toContain("cormorant garamond");
+  expect(process.firstPhaseIndex).toContain("inter");
 });
 
 test("contact page typography matches the GitHub runtime", async ({ page }) => {
@@ -134,13 +134,13 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
   expect(pristineStyles.label?.fontFamily).toContain("inter");
   expect(pristineStyles.label?.textTransform).toBe("uppercase");
   expect(pristineStyles.input?.fontFamily).toContain("inter");
-  expect(pristineStyles.input?.textTransform).toBe("capitalize");
+  expect(pristineStyles.input?.textTransform).toBe("none");
   expect(pristineStyles.placeholder?.fontFamily).toContain("inter");
-  expect(pristineStyles.placeholder?.textTransform).toBe("capitalize");
+  expect(pristineStyles.placeholder?.textTransform).toBe("none");
   expect(pristineStyles.submitLabel?.fontFamily).toContain("inter");
   expect(pristineStyles.submitLabel?.textTransform).toBe("uppercase");
-  expect(pristineStyles.heading?.fontFamily).toContain("inter");
-  expect(pristineStyles.pageHeading?.fontFamily).toContain("inter");
+  expect(pristineStyles.heading?.fontFamily).toContain("cormorant garamond");
+  expect(pristineStyles.pageHeading?.fontFamily).toContain("cormorant garamond");
 
   // Trigger an inline email error via blur and verify its typography.
   await page.locator("#reply_to").fill("bad-email");
@@ -191,7 +191,7 @@ test("contact page typography matches the GitHub runtime", async ({ page }) => {
   await page.goto("/contact", { waitUntil: "networkidle" });
   await fillValidContactForm(page);
   await page.getByRole("button", { name: /send inquiry/i }).click();
-  await expect(page.getByRole("heading", { name: "Message received" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Inquiry received" })).toBeVisible();
 
   const successStyles = await page.evaluate(() => {
     const successCopy = Array.from(document.querySelectorAll("[role='status'] p")).find((element) =>

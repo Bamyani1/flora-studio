@@ -2,7 +2,11 @@
 
 import { cookies } from "next/headers";
 import { getContactServerConfig } from "@/lib/contact-config.server";
-import { contactFormSchema, type ContactFormData } from "@/lib/validations";
+import {
+  contactFormSchema,
+  photographyTypeLabel,
+  type ContactFormData,
+} from "@/lib/validations";
 
 export type ContactActionResult = { success: true } | { success: false; error: string };
 
@@ -18,7 +22,7 @@ function buildNotificationEmailText(data: ContactFormData) {
   const lines: string[] = [
     `Name: ${data.name}`,
     `Email: ${data.email}`,
-    `Type: ${data.photographyType}`,
+    `Type: ${photographyTypeLabel(data.photographyType)}`,
     `Preferred date: ${data.preferredDate}`,
   ];
 
@@ -45,7 +49,7 @@ function buildAutoReplyText(data: ContactFormData, contactEmail: string) {
     "We received your inquiry and will follow up within 24 hours.",
     "",
     "Here's what we have on our end:",
-    `· Session: ${data.photographyType}`,
+    `· Session: ${photographyTypeLabel(data.photographyType)}`,
     `· Preferred date: ${data.preferredDate}`,
     `· Alternate dates: ${alternateLine}`,
     `· Location: ${data.location}`,
@@ -88,7 +92,7 @@ async function isThrottled(): Promise<boolean> {
   const lastMs = Number(raw);
   if (!Number.isFinite(lastMs)) return false;
   const elapsedSec = Math.floor((Date.now() - lastMs) / 1000);
-  return elapsedSec >= 0 && elapsedSec < THROTTLE_WINDOW_SEC;
+  return elapsedSec < THROTTLE_WINDOW_SEC;
 }
 
 async function markSubmitted(): Promise<void> {
@@ -153,6 +157,10 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       host: "smtp.mail.me.com",
       port: 587,
       secure: false,
+      requireTLS: true,
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
       auth: {
         user: smtpUser,
         pass: smtpPass,
@@ -163,7 +171,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       from: `Flora Studio <${contactEmail}>`,
       to: contactEmail,
       replyTo: parsed.data.email,
-      subject: `New inquiry from ${parsed.data.name}: ${parsed.data.photographyType}`,
+      subject: `New inquiry from ${parsed.data.name}: ${photographyTypeLabel(parsed.data.photographyType)}`,
       text: buildNotificationEmailText(parsed.data),
     });
 
@@ -175,7 +183,7 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       await transporter.sendMail({
         from: `Flora Studio <${contactEmail}>`,
         to: parsed.data.email,
-        subject: "We received your message | Flora Studio",
+        subject: "We received your inquiry | Flora Studio",
         text: buildAutoReplyText(parsed.data, contactEmail),
       });
     } catch (err) {

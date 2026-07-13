@@ -14,7 +14,7 @@ export function Footer({
     <footer
       data-footer
       className={[
-        "flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-8 py-20 md:flex-row md:px-16",
+        "flex w-full flex-col items-end justify-between border-t border-white/5 bg-surface-abyss px-[var(--container-padding-x)] py-[var(--section-padding-y)] md:flex-row",
         className,
       ]
         .filter(Boolean)
@@ -22,31 +22,38 @@ export function Footer({
     >
       {/* Left — Logo + Copyright */}
       <div className="mb-12 flex w-full flex-col gap-8 md:mb-0 md:w-auto">
-        <FloraStudioLogo width={120} className="text-neutral-200" />
-        <div className="font-label text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+        <FloraStudioLogo width={120} className="text-text" />
+        <div className="eyebrow text-muted">
           &copy; {new Date().getFullYear()} Flora Studio. All rights reserved.
         </div>
       </div>
 
-      {/* Right — Social + Journal, then Legal */}
+      {/* Right — Social + Journal, then Legal. Pseudo-element insets grow each
+          10px link to a ~46px tap target without changing the layout. */}
       <div className="flex flex-col items-start gap-8 md:items-end">
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-10">
           {PRIMARY_NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {item.label}
             </Link>
           ))}
+          <Link
+            href="/contact"
+            className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
+          >
+            Contact
+          </Link>
           {socialLinks.map((link) => (
             <a
               key={link.label}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block font-label text-[10px] uppercase tracking-[0.15em] text-neutral-600 transition-colors duration-300 hover:text-neutral-200"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {link.label}
             </a>
@@ -57,7 +64,7 @@ export function Footer({
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block font-label text-[9px] uppercase tracking-[0.16em] text-neutral-500 transition-colors duration-300 hover:text-neutral-200"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {link.label}
             </Link>

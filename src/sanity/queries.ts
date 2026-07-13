@@ -2,7 +2,8 @@ import { defineQuery } from "next-sanity";
 
 export const ALBUMS_QUERY = defineQuery(
   `*[_type == "album"] | order(order asc) {
-    _id, title, slug, category, year, location, coverImage
+    _id, title, slug, category, year, location, coverImage,
+    "imageCount": count(images[asset._ref != ^.heroImage.asset._ref])
   }`,
 );
 
@@ -15,7 +16,7 @@ export const FEATURED_ALBUMS_QUERY = defineQuery(
 export const ALBUM_BY_SLUG_QUERY = defineQuery(
   `*[_type == "album" && slug.current == $slug][0] {
     _id, title, slug, category, year, location, description,
-    coverImage, heroImage, images[], narrative, featured, order, videoUrl
+    coverImage, heroImage, images[], narrative, featured, order, videoUrl, videoPosterUrl
   }`,
 );
 
@@ -33,7 +34,6 @@ export const SITE_SETTINGS_QUERY = defineQuery(
 export const HOME_PAGE_QUERY = defineQuery(
   `*[_type == "homePage" && _id == "homePage"][0]{
     _id,
-    heroEyebrow,
     heroTitleLine1,
     heroTitleLine2,
     heroDescription,
@@ -45,7 +45,6 @@ export const HOME_PAGE_QUERY = defineQuery(
     editorialTitleLine2Accent,
     editorialDescription,
     editorialCta,
-    exhibitionEyebrow,
     exhibitionTitleLine1,
     exhibitionTitleLine2,
     exhibitionDescription,
@@ -61,7 +60,6 @@ export const HOME_PAGE_QUERY = defineQuery(
 export const ABOUT_PAGE_QUERY = defineQuery(
   `*[_type == "aboutPage" && _id == "aboutPage"][0]{
     _id,
-    heroEyebrow,
     heroTitleLine1,
     heroTitleLine2,
     heroDescription,
@@ -69,8 +67,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
     manifestoQuotePrefix,
     manifestoQuoteAccent,
     manifestoQuoteSuffix,
-    manifestoFooterLabel,
-    teamEyebrow,
     teamTitle,
     teamDescription,
     teamMembers[]{
@@ -78,7 +74,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
       role,
       portrait
     },
-    processEyebrow,
     processTitle,
     processDescription,
     processCards[]{
@@ -86,7 +81,6 @@ export const ABOUT_PAGE_QUERY = defineQuery(
       description
     },
     processImage,
-    ctaEyebrow,
     ctaTitleLine1,
     ctaTitleLine2,
     cta

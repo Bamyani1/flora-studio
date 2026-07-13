@@ -16,12 +16,21 @@ export function TransitionOverlay() {
   const previousPathnameRef = useRef(pathname);
   const fallbackTimeoutRef = useRef<number | null>(null);
   const refreshTimeoutRef = useRef<number | null>(null);
+  const staleAtMountRef = useRef(useUIStore.getState().transitionPhase !== "idle");
   const transitionPhase = useUIStore((s) => s.transitionPhase);
   const transitionSource = useUIStore((s) => s.transitionSource);
   const startHistoryTransition = useUIStore((s) => s.startHistoryTransition);
   const beginEnterTransition = useUIStore((s) => s.beginEnterTransition);
   const finishTransition = useUIStore((s) => s.finishTransition);
+  const setOverlayMounted = useUIStore((s) => s.setOverlayMounted);
   const reduced = useReducedMotion();
+
+  useEffect(() => {
+    setOverlayMounted(true);
+    return () => {
+      setOverlayMounted(false);
+    };
+  }, [setOverlayMounted]);
 
   const clearFallback = useCallback(() => {
     if (!fallbackTimeoutRef.current) return;
@@ -107,6 +116,18 @@ export function TransitionOverlay() {
   }, [startHistoryTransition]);
 
   useEffect(() => {
+    // A transition phase present when the overlay first mounts is always stale
+    // (e.g. a link transition that landed on the root 404/error page unmounted
+    // the previous overlay mid-flight); acting on it would replay the failed
+    // navigation, so consume it and reset instead.
+    if (staleAtMountRef.current) {
+      staleAtMountRef.current = false;
+      if (transitionPhase !== "idle") {
+        hardReset();
+        return;
+      }
+    }
+
     if (transitionPhase === "idle") {
       clearFallback();
       setHiddenState();

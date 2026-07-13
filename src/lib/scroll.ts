@@ -2,7 +2,9 @@ import type { LenisOptions } from "lenis";
 
 export type ScrollMode = "lenis" | "native";
 
-const NATIVE_SCROLL_ROUTE_PREFIXES: string[] = [];
+// Reading/form routes where smooth scroll adds nothing: legal documents are plain
+// prose, and Lenis fights native input/select scrolling on the contact form.
+const NATIVE_SCROLL_ROUTE_PREFIXES: string[] = ["/privacy", "/terms", "/contact"];
 
 // Shared scroll profile for the entire site. Keep this direct enough to feel attached
 // to user input while preserving a cinematic glide on longer gestures.

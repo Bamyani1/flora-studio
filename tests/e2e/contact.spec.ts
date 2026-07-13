@@ -14,7 +14,13 @@ test("contact form validates and supports submitting another message after succe
   page,
 }) => {
   await page.goto("/contact", { waitUntil: "networkidle" });
-  await expect(page.getByRole("main").getByText("info@floraohio.com")).toBeVisible();
+  await expect(
+    page
+      .getByRole("main")
+      .getByRole("link", { name: "info@floraohio.com" })
+      .filter({ visible: true })
+      .first(),
+  ).toBeVisible();
 
   await page.getByRole("button", { name: /send inquiry/i }).click();
   await expect(page.getByText("Name must be at least 2 characters")).toBeVisible();
@@ -26,9 +32,9 @@ test("contact form validates and supports submitting another message after succe
   await fillValidContactForm(page);
   await page.getByRole("button", { name: /send inquiry/i }).click();
 
-  await expect(page.getByRole("heading", { name: "Message received" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Inquiry received" })).toBeVisible();
 
-  await page.getByRole("button", { name: "Send another message" }).click();
+  await page.getByRole("button", { name: "Send another inquiry" }).click();
 
   await expect(page.getByLabel("Full Name")).toBeVisible();
   await expect(page.getByRole("button", { name: /send inquiry/i })).toBeVisible();
@@ -41,7 +47,7 @@ test("contact form validates and supports submitting another message after succe
   await fillValidContactForm(page);
   await page.getByRole("button", { name: /send inquiry/i }).click();
 
-  await expect(page.getByRole("heading", { name: "Message received" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Inquiry received" })).toBeVisible();
 });
 
 test("contact form surfaces a server-side delivery error", async ({ page }) => {
@@ -59,5 +65,5 @@ test("contact form surfaces a server-side delivery error", async ({ page }) => {
   await page.getByRole("button", { name: /send inquiry/i }).click();
 
   await expect(page.getByText("Failed to send message. Please try again later.")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Message received" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Inquiry received" })).toHaveCount(0);
 });

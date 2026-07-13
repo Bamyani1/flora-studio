@@ -20,6 +20,7 @@ export interface AlbumMeta {
   location?: string;
   coverImage: SanityImage;
   order?: number;
+  imageCount?: number;
 }
 
 export interface Album extends AlbumMeta {
@@ -28,4 +29,5 @@ export interface Album extends AlbumMeta {
   narrative?: string;
   featured?: boolean;
   videoUrl?: string;
+  videoPosterUrl?: string;
 }

@@ -12,7 +12,7 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
   studioName: "Flora Studio",
   location: "Dayton, Ohio",
   email: "info@floraohio.com",
-  phone: "(937)-7977381",
+  phone: "(937) 797-7381",
   socialLinks: [
     {
       label: "Instagram",
@@ -27,7 +27,6 @@ export const PLACEHOLDER_SITE_SETTINGS: SiteSettings = {
 export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
   _id: "homePage",
   hero: {
-    eyebrow: "Photography with intention",
     titleLine1: "Every frame,",
     titleLine2: "earned.",
     description: "Photography with intention.",
@@ -72,7 +71,12 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     ],
   },
   editorial: {
-    image: localImageFromPublicPath("/images/studio-hero.jpg", "Flora Studio featured work"),
+    // A different world from the hero cycle's library frames — the homepage's
+    // first two image moments shouldn't repeat one subject
+    image: localImageFromPublicPath(
+      "/images/milestone/hero.jpg",
+      "Graduate at golden hour in front of a columned hall",
+    ),
     titleLine1: "We pay attention",
     titleLine2Lead: "to",
     titleLine2Muted: "the",
@@ -85,18 +89,18 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
     },
   },
   exhibition: {
-    eyebrow: "EXHIBITION 01",
     titleLine1: "Before",
     titleLine2: "the Game",
     description:
       "An empty arena holds every game it's ever seen. The silence before tip-off, the geometry of the court, and the weight of what's about to happen.",
     cta: {
-      label: "Explore Exhibition",
-      href: "/work",
+      label: "View the album",
+      href: "/work/march-madness",
     },
+    // The copy is about the hush of an empty arena — the image must be too
     image: localImageFromPublicPath(
-      "/images/editorial-hero.jpg",
-      "Flora Studio editorial photograph",
+      "/images/march-madness/cover.jpg",
+      "Quiet arena before tip-off, scoreboard glowing over empty seats",
     ),
   },
   studio: {
@@ -104,9 +108,10 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
       "/images/game-day/hero.jpg",
       "Flora Studio game day action photograph",
     ),
-    ctaLabel: "Inquire for 2026",
+    ctaEyebrow: "Now booking",
+    ctaLabel: "Check availability",
     cta: {
-      label: "Inquire for 2026",
+      label: "Check availability",
       href: "/contact",
     },
   },
@@ -115,21 +120,23 @@ export const PLACEHOLDER_HOME_PAGE: HomePageContent = {
 export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
   _id: "aboutPage",
   hero: {
-    eyebrow: "Flora Studio",
     titleLine1: "Who We",
     titleLine2: "Are.",
     description:
       "A photography studio built on patience, precision, and the belief that everyone has something worth photographing.",
+    // A photography studio's About must show photography before it explains it
+    image: localImageFromPublicPath(
+      "/images/nature-vol-i/hero.jpg",
+      "Landscape from the Nature series",
+    ),
   },
   manifesto: {
     eyebrow: "Our Approach",
     quotePrefix: "We show up prepared, stay present, and make every",
     quoteAccent: "frame",
     quoteSuffix: "count. No shortcuts, no templates. Just intention behind everything we do.",
-    footerLabel: "Our Approach",
   },
   team: {
-    eyebrow: "The People",
     title: "The Team",
     description:
       "Three photographers with a shared commitment to craft and a habit of paying close attention.",
@@ -158,10 +165,9 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     ],
   },
   process: {
-    eyebrow: "How It Works",
     title: "How we work.",
     description:
-      "We grade and refine every image by hand to get the tone, mood, and consistency right. Not filtered, not batch-processed, not rushed.",
+      "The quiet half of the craft happens after the shoot — choosing what stays, then grading it until the set holds together.",
     cards: [
       {
         title: "Selection",
@@ -177,7 +183,6 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
     image: localImageFromPublicPath("/images/about-process.jpg", "Flora Studio creative process"),
   },
   cta: {
-    eyebrow: "What's next",
     titleLine1: "Let's make",
     titleLine2: "something.",
     cta: {
@@ -190,8 +195,8 @@ export const PLACEHOLDER_ABOUT_PAGE: AboutPageContent = {
 export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
   _id: "processPage",
   hero: {
-    titleLine1: "Our Process:",
-    titleLine2: "Frame by Frame",
+    titleLine1: "Frame by",
+    titleLine2: "frame.",
     image: localImageFromPublicPath("/images/process/hero.jpg", "Flora Studio process hero"),
   },
   intro: {
@@ -205,7 +210,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       title: "Conversation",
       description:
         "Every session starts with a conversation. We learn about you, the occasion, the setting, and the feeling you want to walk away with. From there, we plan.",
-      meta: "Phase: Planning & Scope",
+      meta: "Phase: Planning",
       images: [
         localImageFromPublicPath("/images/process/01.jpg", "Planning and conversation phase"),
       ],
@@ -217,7 +222,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       title: "Presence",
       description:
         "On the day, we work with intention. Reading the light, directing when it helps, staying ready for the moments that can't be planned. Every frame is composed, not just taken.",
-      metaList: ["Phase: The Shoot"],
+      meta: "Phase: Shooting",
       images: [localImageFromPublicPath("/images/process/02.jpg", "On location during the shoot")],
       layout: "bordered",
       align: "right",
@@ -239,6 +244,7 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       title: "Refinement",
       description:
         "Each selected image is graded by hand for tone, mood, and consistency. The final collection is delivered as a cohesive set. Something worth coming back to.",
+      meta: "Phase: Delivery",
       images: [
         localImageFromPublicPath("/images/process/04a.jpg", "Refinement, portrait tones"),
         localImageFromPublicPath("/images/process/04b.jpg", "Refinement, interior shadows"),
@@ -248,14 +254,14 @@ export const PLACEHOLDER_PROCESS_PAGE: ProcessPageContent = {
       layout: "grid",
       align: "right",
       action: {
-        label: "View Work",
+        label: "View work",
         href: "/work",
       },
     },
   ],
   contactCta: {
-    heading: "Get In Touch",
-    buttonLabel: "Contact",
+    heading: "Start the conversation",
+    buttonLabel: "Get in touch",
     buttonHref: "/contact",
   },
 };
