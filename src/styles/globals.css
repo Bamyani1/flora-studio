@@ -448,13 +448,24 @@ textarea:focus-visible,
 }
 
 /* --- Landing Page Utilities --- */
-.lens-flare {
-  background: radial-gradient(
-    circle at 70% 30%,
-    color-mix(in srgb, var(--color-primary) 15%, transparent) 0%,
-    color-mix(in srgb, var(--color-primary) 5%, transparent) 30%,
-    transparent 60%
+
+/* --- Editorial Light Ray — one diagonal shaft; cross-axis softness comes from
+   gradient stops (cheaper than a large blur), lengthwise fade from the mask so
+   the core crosses the headline and dies before the body copy --- */
+.light-ray {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-primary) 5%, transparent) 24%,
+    color-mix(in srgb, var(--color-hero-gold) 17%, transparent) 46%,
+    color-mix(in srgb, var(--color-hero-gold) 11%, transparent) 58%,
+    color-mix(in srgb, var(--color-primary) 4%, transparent) 76%,
+    transparent 100%
   );
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 92%);
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 92%);
+  /* screen = luminance-only lift over the opaque surface-deep ground */
+  mix-blend-mode: screen;
 }
 
 .text-shadow-subtle {

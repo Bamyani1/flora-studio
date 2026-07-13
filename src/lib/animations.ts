@@ -368,6 +368,17 @@ export const landingWordReveal = {
 };
 
 // --------------------------------------------------
+// editorialLightRay — single shaft settles over the headline after the words land
+// --------------------------------------------------
+export const editorialLightRay = {
+  // y drifts along the beam's own (rotated) axis — the rotation lives on a
+  // static wrapper so GSAP never fights the CSS transform
+  from: { autoAlpha: 0, y: -24 },
+  to: { autoAlpha: 1, y: 0, duration: 2.4, ease: easings.smooth },
+  scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
+};
+
+// --------------------------------------------------
 // cinematicImageReveal — Clip-path reveal + scrub parallax
 // --------------------------------------------------
 export const cinematicImageReveal = {
@@ -546,6 +557,7 @@ export const reducedMotionFallbacks = {
     "all elements visible immediately, no choreography, no clip-path, no parallax",
   landingHeroParallax: "no ambient zoom, no scroll parallax/fade",
   landingWordReveal: "all words visible immediately, no rotation/stagger",
+  editorialLightRay: "beam statically visible at ambient opacity immediately, no drift",
   cinematicImageReveal: "clip-path fully open, no parallax, image visible immediately",
   scrollApertureProgress: "blades at open position, no scroll-linked rotation",
   irisTransition: "instant opacity toggle, no blade animation",
