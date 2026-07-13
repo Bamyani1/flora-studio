@@ -32,10 +32,10 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const scrollLineRef = useRef<HTMLDivElement>(null);
 
-  // Image-load gating: entrance + Ken Burns wait for first image, crossfade waits for all
+  // Image-load gating: the entrance choreography waits for the first image; the
+  // crossfade + per-frame zoom cycle waits for every image.
   const loadedCountRef = useRef(0);
   const entranceTlRef = useRef<gsap.core.Timeline | null>(null);
-  const kenBurnsTweenRef = useRef<gsap.core.Tween | null>(null);
   const crossfadeTlRef = useRef<gsap.core.Timeline | null>(null);
   const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -43,12 +43,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
   const reducedMotion = useReducedMotion();
 
   const playEntrance = useCallback(() => {
-    if (fallbackTimerRef.current) {
-      clearTimeout(fallbackTimerRef.current);
-      fallbackTimerRef.current = null;
-    }
     entranceTlRef.current?.play();
-    kenBurnsTweenRef.current?.play();
   }, []);
 
   const handleImageLoad = useCallback(() => {
@@ -119,19 +114,10 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         });
       }
 
-      // Ken Burns — paused until first image loads
+      // Scroll parallax on the shared image container — scroll-driven, set up
+      // immediately. The Ken Burns zoom now lives per-frame inside the crossfade
+      // timeline below, so every image zooms rather than only the first.
       if (bgContainerRef.current) {
-        kenBurnsTweenRef.current = gsap.fromTo(
-          bgContainerRef.current,
-          landingHeroParallax.kenBurns.from,
-          {
-            ...landingHeroParallax.kenBurns.to,
-            delay: landingHeroParallax.kenBurns.delay,
-            paused: true,
-          },
-        );
-
-        // Scroll parallax — set up immediately (scroll-driven)
         const container = bgContainerRef.current;
         gsap.to(container, {
           ...landingHeroParallax.scroll.to,
@@ -175,34 +161,59 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
         });
       }
 
-      // Crossfade cycle — paused until all images loaded
+      // Crossfade + per-frame Ken Burns — paused until all images loaded.
       if (layers.length > 1) {
         const hold = 6;
         const fade = 1.5;
         const interval = hold + fade;
+        const period = layers.length * interval;
+        const { fromScale, toScale } = landingHeroParallax.imageZoom;
         const crossfade = gsap.timeline({ repeat: -1, paused: true });
 
         for (let i = 0; i < layers.length; i++) {
           const pos = i * interval;
           crossfade.to(
             layers[i],
-            {
-              autoAlpha: 0,
-              duration: fade,
-              ease: "power1.inOut",
-            },
+            { autoAlpha: 0, duration: fade, ease: "power1.inOut" },
             pos + hold,
           );
           crossfade.to(
             layers[(i + 1) % layers.length],
-            {
-              autoAlpha: 1,
-              duration: fade,
-              ease: "power1.inOut",
-            },
+            { autoAlpha: 1, duration: fade, ease: "power1.inOut" },
             pos + hold,
           );
         }
+
+        // Each frame drifts fromScale → toScale across its full on-screen span
+        // (fade-in + hold + fade-out). The scale resets the instant a frame starts
+        // fading in — while it is still transparent — so the reset is never seen.
+        // Layer 0 is the only frame visible at the loop seam, so its zoom is split
+        // into two segments that meet at the same scale across the boundary.
+        const zoomSpan = interval + fade;
+        for (let i = 1; i < layers.length; i++) {
+          crossfade.fromTo(
+            layers[i],
+            { scale: fromScale },
+            { scale: toScale, duration: zoomSpan, ease: "none" },
+            (i - 1) * interval + hold,
+          );
+        }
+        const wrapEnter = (layers.length - 1) * interval + hold;
+        const tailDur = period - wrapEnter;
+        const seamScale = fromScale + (toScale - fromScale) * (tailDur / zoomSpan);
+        crossfade.fromTo(
+          layers[0],
+          { scale: fromScale },
+          { scale: seamScale, duration: tailDur, ease: "none" },
+          wrapEnter,
+        );
+        crossfade.fromTo(
+          layers[0],
+          { scale: seamScale },
+          { scale: toScale, duration: zoomSpan - tailDur, ease: "none" },
+          0,
+        );
+
         crossfadeTlRef.current = crossfade;
       }
 
@@ -211,9 +222,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
       if (loadedCountRef.current >= 1) playEntrance();
       if (loadedCountRef.current >= totalImages) crossfadeTlRef.current?.play();
 
-      // Timeout fallback: play entrance after 3s even if first image hasn't loaded
+      // Timeout fallback: start the entrance and the crossfade/zoom cycle even if
+      // some images never fire onLoad, so the hero never sits frozen on frame one.
       fallbackTimerRef.current = setTimeout(() => {
         if (entranceTlRef.current?.paused()) playEntrance();
+        if (crossfadeTlRef.current?.paused()) crossfadeTlRef.current.play();
       }, IMAGE_LOAD_TIMEOUT_MS);
 
       return () => {
