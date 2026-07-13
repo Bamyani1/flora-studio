@@ -107,6 +107,9 @@ export const PLACEHOLDER_ALL_ALBUMS: Album[] = [
       "Some sessions you plan around the golden hour. This one planned itself. The graduate knew exactly where they wanted to stand, which steps meant the most, which view carried the memory. We followed the light and let the location do the talking. Every frame felt earned.",
     images: autoGallery("milestone", "Milestone"),
     videoUrl: "/videos/milestone.mp4",
+    // First frame of the film, exported as a still so a photograph paints
+    // before (or without) the video itself
+    videoPosterUrl: "/videos/milestone-poster.jpg",
   },
   {
     _id: "album-6",

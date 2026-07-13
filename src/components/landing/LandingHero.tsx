@@ -305,7 +305,9 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
           display scale (with its own mobile floor) and owns this corner alone. */}
       <div className="absolute inset-0 z-content flex flex-row items-end px-6 pb-28 md:px-[clamp(2rem,5vw,5rem)] md:pb-[clamp(3rem,6vh,6rem)]">
         <div className="flex flex-col text-shadow-hero">
-          <h1 className="font-display font-light leading-[1.15] tracking-[0.02em] text-[clamp(1.9rem,3.4vw,3.25rem)] text-white/90 mb-2">
+          {/* Display scale: the thesis must outrank the editorial H2 (60px)
+              on desktop — only the exhibition's showpiece numeral tops it */}
+          <h1 className="font-display font-light leading-[1.15] tracking-[0.02em] text-[clamp(1.9rem,4.75vw,4.25rem)] text-white/90 mb-2">
             <span ref={line1Ref} data-animate>
               {content.titleLine1}{" "}
             </span>

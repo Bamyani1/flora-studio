@@ -203,7 +203,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                   {/* Lining Inter figures — italic serif digits misread ("01" → "OI"),
                       and bone clears AA where 20px ember measured 3.8:1. The
                       "NN / NN" form ties the timeline into the site-wide grammar. */}
-                  <span className="whitespace-nowrap font-label text-xs tracking-[0.15em] text-text">
+                  <span className="whitespace-nowrap font-label text-base tabular-nums tracking-[0.15em] text-text">
                     {step.id}
                     <span className="text-[var(--process-primary)]"> / {stepTotal}</span>
                   </span>
@@ -260,7 +260,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               </div>
 
               <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 lg:hidden">
-                <span className="whitespace-nowrap font-label text-sm tracking-[0.1em] text-[var(--process-on-primary)]">
+                <span className="whitespace-nowrap font-label text-base tabular-nums tracking-[0.1em] text-[var(--process-on-primary)]">
                   {step.id} / {stepTotal}
                 </span>
               </div>

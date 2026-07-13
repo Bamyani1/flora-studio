@@ -43,8 +43,8 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
                 {previous.wraps ? "From the end" : "Previous"} &middot;{" "}
                 {padIndex(previous.position)} / {padIndex(previous.total)}
               </span>
-              <span className="mt-2 block font-display text-lg italic text-text-heading transition-colors group-hover:text-primary md:text-xl">
-                <span className="mr-2 inline-block not-italic transition-transform duration-300 group-hover:-translate-x-1">
+              <span className="mt-2 block font-display text-lg italic text-text-heading transition-colors can-hover:group-hover:text-primary md:text-xl">
+                <span className="mr-2 inline-block not-italic transition-transform duration-300 can-hover:group-hover:-translate-x-1">
                   &larr;
                 </span>
                 {previous.title}
@@ -82,9 +82,9 @@ export function AlbumNav({ previous, next }: AlbumNavProps) {
                 {next.wraps ? "Back to the start" : "Next"} &middot; {padIndex(next.position)} /{" "}
                 {padIndex(next.total)}
               </span>
-              <span className="mt-2 block font-display text-lg italic text-text-heading transition-colors group-hover:text-primary md:text-xl">
+              <span className="mt-2 block font-display text-lg italic text-text-heading transition-colors can-hover:group-hover:text-primary md:text-xl">
                 {next.title}
-                <span className="ml-2 inline-block not-italic transition-transform duration-300 group-hover:translate-x-1">
+                <span className="ml-2 inline-block not-italic transition-transform duration-300 can-hover:group-hover:translate-x-1">
                   &rarr;
                 </span>
               </span>

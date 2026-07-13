@@ -34,13 +34,13 @@ export default function Error({
         <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
           <button
             onClick={reset}
-            className="inline-flex min-h-[44px] items-center border border-border px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors hover:border-border-hover hover:text-text-heading"
+            className="inline-flex min-h-[44px] items-center border border-border px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors can-hover:hover:border-border-hover can-hover:hover:text-text-heading"
           >
             Try again
           </button>
           <TransitionLink
             href="/"
-            className="inline-flex min-h-[44px] items-center border border-border/50 px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors hover:border-border-hover hover:text-text-heading"
+            className="inline-flex min-h-[44px] items-center border border-border/50 px-6 py-3 font-label text-sm uppercase tracking-wider text-text transition-colors can-hover:hover:border-border-hover can-hover:hover:text-text-heading"
           >
             Go home
           </TransitionLink>

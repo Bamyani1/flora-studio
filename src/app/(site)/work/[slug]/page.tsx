@@ -126,7 +126,12 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
       )}
 
       {galleryWithBlur.length > 0 && (
-        <FolioGallery images={galleryWithBlur} title={album.title} videoUrl={album.videoUrl} />
+        <FolioGallery
+          images={galleryWithBlur}
+          title={album.title}
+          videoUrl={album.videoUrl}
+          videoPosterUrl={album.videoPosterUrl}
+        />
       )}
 
       <AlbumNav previous={previous ?? undefined} next={next ?? undefined} />

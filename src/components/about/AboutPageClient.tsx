@@ -447,10 +447,10 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                             </h3>
                           </div>
                           <div
-                            className={`w-10 h-10 rounded-full border hidden lg:flex items-center justify-center transition-all duration-500 shrink-0 group-hover:border-primary group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
+                            className={`w-10 h-10 rounded-full border hidden lg:flex items-center justify-center transition-all duration-500 shrink-0 can-hover:group-hover:border-primary can-hover:group-hover:bg-primary ${active ? "border-primary bg-primary" : "border-outline-variant/20"}`}
                           >
                             <ChevronRight
-                              className={`w-4 h-4 transition-colors duration-500 group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
+                              className={`w-4 h-4 transition-colors duration-500 can-hover:group-hover:text-on-primary ${active ? "text-on-primary" : "text-on-surface-variant/40"}`}
                             />
                           </div>
                         </div>
@@ -527,7 +527,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
-              <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 group-hover:border-[12px]"></div>
+              <div className="absolute inset-0 border-[24px] border-surface-container-lowest mix-blend-multiply pointer-events-none transition-all duration-1000 can-hover:group-hover:border-[12px]"></div>
             </div>
           </div>
         </section>

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { chapterReveal, withWillChange } from "@/lib/animations";
+import { chapterReveal, scrollIndicatorPulse, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
@@ -83,6 +83,12 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
           tl.fromTo(texts, chapterReveal.text.from, { ...chapterReveal.text.to }, 0.2);
         }
       });
+
+      // The first chapter's scroll cue breathes like the landing hero's
+      const cueLine = root.querySelector<HTMLElement>(".work-cue-line");
+      if (cueLine && !reduced) {
+        gsap.fromTo(cueLine, scrollIndicatorPulse.line.from, { ...scrollIndicatorPulse.line.to });
+      }
 
       // Rail + mobile position tag visibility follows the chapters container
       const wayfinders = [railRef.current, mobileTagRef.current].filter(
@@ -214,6 +220,20 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   <p className="eyebrow text-text/80">
                     Selected work &mdash; {total} collections
                   </p>
+                </div>
+              )}
+
+              {/* Scroll cue — same grammar as the landing hero, so the first
+                  panel reads as the opening of a sequence, not a lone album */}
+              {i === 0 && (
+                <div
+                  className="pointer-events-none absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3"
+                  aria-hidden="true"
+                >
+                  <span className="font-label text-[9px] uppercase tracking-[0.4em] text-white/40">
+                    Scroll
+                  </span>
+                  <div className="work-cue-line h-8 w-px origin-top bg-white/25" />
                 </div>
               )}
             </article>

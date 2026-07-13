@@ -12,6 +12,7 @@ import { TransitionLink } from "./TransitionLink";
 import { HeaderContactAction } from "./HeaderContactAction";
 import { useUIStore } from "@/stores/ui-store";
 import { FloraStudioLogo, type FloraStudioLogoHandle } from "@/components/ui/FloraStudioLogo";
+import { Button } from "@/components/ui/Button";
 
 export function Header() {
   const headerRef = useRef<HTMLElement>(null);
@@ -141,7 +142,7 @@ export function Header() {
                 className={`absolute -bottom-2 left-0 w-full h-[1px] bg-[var(--color-header-cta-bg)] transition-transform duration-500 origin-left ${
                   isNavItemActive(pathname, item.href)
                     ? "scale-x-100"
-                    : "scale-x-0 group-hover:scale-x-100"
+                    : "scale-x-0 can-hover:group-hover:scale-x-100"
                 }`}
               />
             </TransitionLink>
@@ -153,7 +154,7 @@ export function Header() {
           <TransitionLink
             href="/"
             aria-label="Flora Studio"
-            className="relative flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-500"
+            className="relative flex items-center justify-center opacity-90 can-hover:hover:opacity-100 transition-opacity duration-500"
           >
             {/* Bone, not ember — the CTA is the header's single accent owner */}
             <FloraStudioLogo ref={logoRef} className="w-[140px] md:w-[180px] text-[var(--color-header-link-active)]" />
@@ -179,28 +180,18 @@ export function Header() {
 
         {/* Right section — desktop CTA */}
         <div className="hidden md:flex items-center justify-end w-1/3">
-          <HeaderContactAction
-            label="Get in touch"
-            className="relative group p-[3px] bg-primary-muted font-label text-[11px] uppercase tracking-[0.2em] overflow-hidden inline-flex"
-          >
-            {/* Outer spinning gradient glow */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,#e09438_95%,#c97b2a_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
-            {/* Inner spinning gradient */}
-            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,#e09438_95%,#a86520_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            {/* Button content */}
-            <span className="relative z-10 w-full h-full bg-primary text-background px-5 py-1.5 flex items-center justify-center gap-2">
-              Get in touch
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-                className="transform transition-transform duration-300 group-hover:translate-x-1"
-              >
-                <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </span>
-          </HeaderContactAction>
+          <Button as={HeaderContactAction} label="Get in touch" variant="primary" size="chip" glow>
+            Get in touch
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              fill="none"
+              className="transform transition-transform duration-300 can-hover:group-hover:translate-x-1"
+            >
+              <path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </Button>
         </div>
 
         {/* Mobile toggle */}
@@ -208,12 +199,15 @@ export function Header() {
             inquire route is buried behind the menu or a full page of scroll.
             Pseudo-elements grow both tap targets to ~44px without inflating the boxes. */}
         <div className="flex items-center gap-3 md:hidden">
-          <HeaderContactAction
+          <Button
+            as={HeaderContactAction}
             label="Book"
-            className="relative eyebrow bg-primary text-background px-4 py-1.5 before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
+            variant="primary"
+            size="chip"
+            className="relative before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"
           >
             Book
-          </HeaderContactAction>
+          </Button>
           <button
             type="button"
             className="relative eyebrow text-[var(--color-header-link-active)] border border-[color:var(--color-header-border)] px-4 py-1.5 can-hover:hover:bg-primary can-hover:hover:text-background transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-['']"

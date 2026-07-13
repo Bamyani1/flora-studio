@@ -6,6 +6,7 @@ import { gsap } from "@/lib/gsap";
 import { fadeUp, withWillChange } from "@/lib/animations";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { TransitionLink } from "@/components/layout/TransitionLink";
+import { Button } from "@/components/ui/Button";
 
 interface LandingStudioCardsProps {
   ctaEyebrow: string;
@@ -77,12 +78,9 @@ export function LandingStudioCards({ ctaEyebrow, ctaLabel, ctaHref }: LandingStu
         <span className="font-label uppercase tracking-[0.5em] text-primary text-[10px] mb-6">
           {ctaEyebrow}
         </span>
-        <TransitionLink
-          href={ctaHref}
-          className="inline-block bg-text px-10 py-5 font-label text-xs uppercase tracking-[0.2em] text-surface-deep transition-colors duration-500 hover:bg-text/85"
-        >
+        <Button as={TransitionLink} href={ctaHref} variant="bone" size="xs" className="px-10 py-5">
           {ctaLabel}
-        </TransitionLink>
+        </Button>
       </div>
     </div>
   );

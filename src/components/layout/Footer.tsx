@@ -28,21 +28,22 @@ export function Footer({
         </div>
       </div>
 
-      {/* Right — Social + Journal, then Legal */}
+      {/* Right — Social + Journal, then Legal. Pseudo-element insets grow each
+          10px link to a ~46px tap target without changing the layout. */}
       <div className="flex flex-col items-start gap-8 md:items-end">
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-10">
           {PRIMARY_NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {item.label}
             </Link>
           ))}
           <Link
             href="/contact"
-            className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
+            className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
           >
             Contact
           </Link>
@@ -52,7 +53,7 @@ export function Footer({
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {link.label}
             </a>
@@ -63,7 +64,7 @@ export function Footer({
             <Link
               key={link.href}
               href={link.href}
-              className="inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text"
+              className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {link.label}
             </Link>
