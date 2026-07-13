@@ -2,11 +2,12 @@ import "server-only";
 
 import { existsSync } from "fs";
 import { join } from "path";
+import { isSanityCdnUrl } from "@/lib/image-url";
 
 export async function generateLqipDataUrl(
   imageUrl: string | null | undefined,
 ): Promise<string | undefined> {
-  if (!imageUrl || !imageUrl.startsWith("https://cdn.sanity.io")) return undefined;
+  if (!isSanityCdnUrl(imageUrl)) return undefined;
 
   const lqipUrl = `${imageUrl}?w=20&blur=50&q=30&fit=crop&auto=format`;
 

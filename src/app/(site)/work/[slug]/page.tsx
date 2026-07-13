@@ -4,7 +4,7 @@ import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/alb
 import { breadcrumbJsonLd, imageGalleryJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
-import { resolveImageUrl } from "@/lib/image-url";
+import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
 import { AlbumHero } from "@/components/sections/AlbumHero";
 import { AlbumNav } from "@/components/sections/AlbumNav";
 import { FolioGallery } from "@/components/sections/FolioGallery";
@@ -44,7 +44,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
   if (!album) notFound();
 
   const heroUrl = resolveImageUrl(album.heroImage);
-  const heroBlurDataURL = heroUrl?.startsWith("https://cdn.sanity.io")
+  const heroBlurDataURL = isSanityCdnUrl(heroUrl)
     ? await generateLqipDataUrl(heroUrl)
     : await generateLocalLqipDataUrl(heroUrl);
 
@@ -65,7 +65,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
   const galleryWithBlur = await Promise.all(
     galleryImages.map(async (img) => {
       const url = resolveImageUrl(img);
-      const blurDataURL = url?.startsWith("https://cdn.sanity.io")
+      const blurDataURL = isSanityCdnUrl(url)
         ? await generateLqipDataUrl(url)
         : url?.startsWith("/")
           ? await generateLocalLqipDataUrl(url)
