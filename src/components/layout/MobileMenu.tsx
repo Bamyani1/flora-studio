@@ -211,7 +211,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
                 className={`menu-item-text group relative font-display text-4xl uppercase tracking-[0.06em] transition-colors ${
                   isNavItemActive(pathname, item.href)
                     ? "text-[var(--color-header-link-active)]"
-                    : "text-[var(--color-header-link-muted)] hover:text-[var(--color-header-cta-bg)]"
+                    : "text-[var(--color-header-link-muted)] can-hover:hover:text-[var(--color-header-cta-bg)]"
                 }`}
               >
                 {item.label}
@@ -219,7 +219,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
                   className={`absolute -bottom-2 left-0 h-[1px] w-full origin-left bg-[var(--color-header-cta-bg)] transition-transform duration-500 ease-out ${
                     isNavItemActive(pathname, item.href)
                       ? "scale-x-100"
-                      : "scale-x-0 group-hover:scale-x-100"
+                      : "scale-x-0 can-hover:group-hover:scale-x-100"
                   }`}
                 />
               </TransitionLink>
@@ -229,7 +229,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
           <HeaderContactAction
             label={NAV_CTA.label}
             onBeforeAction={handleLinkClick}
-            className="mt-12 inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-8 py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--color-header-cta-text)] transition-transform hover:scale-[1.02]"
+            className="mt-12 inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded bg-gradient-to-br from-[var(--color-header-cta-bg)] to-[var(--color-header-cta-bg-hover)] px-8 py-4 font-label text-xs uppercase tracking-[0.2em] text-[var(--color-header-cta-text)] transition-transform can-hover:hover:scale-[1.02]"
           />
         </div>
 
@@ -243,7 +243,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
               rel="noopener noreferrer"
               aria-label={link.label}
               onClick={handleLinkClick}
-              className="eyebrow text-[var(--color-header-link-muted)] transition-colors hover:text-[var(--color-header-link-active)]"
+              className="eyebrow text-[var(--color-header-link-muted)] transition-colors can-hover:hover:text-[var(--color-header-link-active)]"
             >
               {link.label}
             </a>

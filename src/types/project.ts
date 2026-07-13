@@ -29,4 +29,5 @@ export interface Album extends AlbumMeta {
   narrative?: string;
   featured?: boolean;
   videoUrl?: string;
+  videoPosterUrl?: string;
 }

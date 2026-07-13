@@ -449,19 +449,18 @@ export function CinematicContactForm() {
 
           <div data-form-animate data-form-submit style={{ opacity: 0 }}>
             {/* Solid ember at rest (the /80 tint measured 3.9:1 — below AA); the
-                shimmer only spins while hovered on fine pointers so touch devices
-                don't run two conic gradients forever */}
-            <button
+                shimmer is a white tint here so it stays visible against the
+                ember frame, and only spins while hovered on fine pointers */}
+            <Button
               type="submit"
+              variant="primary"
+              size="lg"
+              glow
               disabled={isPending}
-              className="group relative w-full overflow-hidden p-[3px] bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full bg-primary font-label text-sm font-semibold uppercase tracking-wider disabled:cursor-not-allowed [--glow-hi:color-mix(in_srgb,white_40%,transparent)] [--glow-lo:color-mix(in_srgb,white_65%,transparent)]"
             >
-              <span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_75%,color-mix(in_srgb,white_40%,transparent)_95%,color-mix(in_srgb,white_70%,transparent)_100%)] opacity-0 can-hover:group-hover:opacity-100 can-hover:group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-500 blur-md" />
-              <span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_85%,color-mix(in_srgb,white_30%,transparent)_95%,color-mix(in_srgb,white_60%,transparent)_100%)] opacity-0 can-hover:group-hover:opacity-100 can-hover:group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-500" />
-              <span className="relative z-10 flex w-full items-center justify-center bg-primary py-4 font-label text-sm uppercase tracking-wider font-semibold text-surface-deep transition-colors duration-500 can-hover:group-hover:bg-primary-muted">
-                {isPending ? "Sending..." : "Send inquiry"}
-              </span>
-            </button>
+              {isPending ? "Sending..." : "Send inquiry"}
+            </Button>
           </div>
         </form>
       </div>

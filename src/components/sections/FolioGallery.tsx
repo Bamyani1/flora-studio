@@ -34,12 +34,14 @@ interface FolioPage {
   imageIndex: number;
   pageNumber: number;
   videoUrl?: string;
+  videoPosterUrl?: string;
 }
 
 interface FolioGalleryProps {
   images: ImageType[];
   title: string;
   videoUrl?: string;
+  videoPosterUrl?: string;
 }
 
 /* ──────────────────────────────────────────────
@@ -99,7 +101,12 @@ function getSrc(image?: ImageType | null) {
    Layout algorithm — orientation-aware editorial sequencing
    ────────────────────────────────────────────── */
 
-function buildFolioPages(images: ImageType[], videoUrl?: string, seed?: string): FolioPage[] {
+function buildFolioPages(
+  images: ImageType[],
+  videoUrl?: string,
+  seed?: string,
+  videoPosterUrl?: string,
+): FolioPage[] {
   const pages: FolioPage[] = [];
   let pageNum = 1;
   let idx = 0;
@@ -206,6 +213,7 @@ function buildFolioPages(images: ImageType[], videoUrl?: string, seed?: string):
       if (videoUrl && !videoInserted && idx >= images.length * 0.6) {
         pushPage("video", [], 0);
         pages[pages.length - 1].videoUrl = videoUrl;
+        pages[pages.length - 1].videoPosterUrl = videoPosterUrl;
         videoInserted = true;
         lastLayout = "video";
       }
@@ -215,6 +223,7 @@ function buildFolioPages(images: ImageType[], videoUrl?: string, seed?: string):
   if (videoUrl && !videoInserted) {
     pushPage("video", [], 0);
     pages[pages.length - 1].videoUrl = videoUrl;
+    pages[pages.length - 1].videoPosterUrl = videoPosterUrl;
   }
 
   pages.push({ layout: "colophon", images: [], imageIndex: 0, pageNumber: pageNum });
@@ -544,7 +553,7 @@ function DetailCropContent({ image, index }: { image: ImageType; index: number }
 
 /* ── Video ── */
 
-function VideoContent({ videoUrl }: { videoUrl: string }) {
+function VideoContent({ videoUrl, posterUrl }: { videoUrl: string; posterUrl?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduced = useReducedMotion();
   const [playing, setPlaying] = useState(false);
@@ -579,6 +588,7 @@ function VideoContent({ videoUrl }: { videoUrl: string }) {
         <video
           ref={videoRef}
           src={videoUrl}
+          poster={posterUrl}
           muted
           loop
           playsInline
@@ -628,7 +638,7 @@ function ColophonContent() {
    Main component
    ────────────────────────────────────────────── */
 
-export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
+export function FolioGallery({ images, title, videoUrl, videoPosterUrl }: FolioGalleryProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const counterRef = useRef<HTMLDivElement>(null);
   const plateRef = useRef<HTMLSpanElement>(null);
@@ -638,7 +648,7 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
   const describedImages = images.map((img, i) =>
     img.alt ? img : { ...img, alt: `${title}, photograph ${i + 1}` },
   );
-  const pages = buildFolioPages(describedImages, videoUrl, title);
+  const pages = buildFolioPages(describedImages, videoUrl, title, videoPosterUrl);
 
   useGSAP(
     () => {
@@ -860,7 +870,9 @@ export function FolioGallery({ images, title, videoUrl }: FolioGalleryProps) {
           {page.layout === "detail-crop" && (
             <DetailCropContent image={page.images[0]} index={page.imageIndex} />
           )}
-          {page.layout === "video" && page.videoUrl && <VideoContent videoUrl={page.videoUrl} />}
+          {page.layout === "video" && page.videoUrl && (
+            <VideoContent videoUrl={page.videoUrl} posterUrl={page.videoPosterUrl} />
+          )}
           {page.layout === "colophon" && <ColophonContent />}
         </div>
       ))}

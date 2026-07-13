@@ -28,10 +28,10 @@ const panelClass =
   "fixed inset-x-4 bottom-4 z-cookie-overlay border border-border bg-surface-lowest p-5 shadow-[0_20px_60px_color-mix(in_srgb,black_35%,transparent)] md:left-1/2 md:max-w-3xl md:-translate-x-1/2";
 
 const actionClass =
-  "inline-flex min-h-[44px] items-center justify-center border border-border px-4 py-2 font-label text-xs uppercase tracking-[0.15em] text-text transition-colors duration-300 hover:border-primary hover:text-primary";
+  "inline-flex min-h-[44px] items-center justify-center border border-border px-4 py-2 font-label text-xs uppercase tracking-[0.15em] text-text transition-colors duration-300 can-hover:hover:border-primary can-hover:hover:text-primary";
 
 const primaryActionClass =
-  "inline-flex min-h-[44px] items-center justify-center bg-primary px-4 py-2 font-label text-xs uppercase tracking-[0.15em] text-background transition-colors duration-300 hover:bg-primary-muted";
+  "inline-flex min-h-[44px] items-center justify-center bg-primary px-4 py-2 font-label text-xs uppercase tracking-[0.15em] text-background transition-colors duration-300 can-hover:hover:bg-primary-muted";
 
 const DEFAULT_DRAFT: ConsentDraft = {
   analytics: false,
@@ -337,7 +337,7 @@ export function CookieConsentManager() {
         <button
           ref={triggerRef}
           type="button"
-          className="fixed right-4 bottom-20 z-cookie-trigger border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 hover:border-primary hover:text-primary md:right-8 md:bottom-24"
+          className="fixed right-4 bottom-20 z-cookie-trigger border border-border bg-surface-lowest px-4 py-3 font-label text-[11px] uppercase tracking-[0.18em] text-text transition-colors duration-300 can-hover:hover:border-primary can-hover:hover:text-primary md:right-8 md:bottom-24"
           onClick={() => openPreferences("trigger")}
         >
           Cookie Preferences

@@ -65,10 +65,13 @@ export function AlbumHero({
 
       {/* Content overlay */}
       <div className="absolute inset-x-0 bottom-0 px-[var(--container-padding-x)] pb-[var(--space-16)]">
+        {/* immediate: the title must reveal on mount — on short viewports it can
+            sit below the scroll-trigger line and would otherwise never fire */}
         <TextReveal
           variant="lines"
           as="h1"
           delay={0.3}
+          immediate
           className="font-display text-[length:var(--text-3xl)] leading-tight text-text-heading md:text-[length:var(--text-5xl)]"
         >
           {title}

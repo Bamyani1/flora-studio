@@ -146,15 +146,6 @@ export const scrollIndicatorPulse = {
 };
 
 // --------------------------------------------------
-// exhibitionParallax — Scroll-driven image scale for exhibition section
-// --------------------------------------------------
-export const exhibitionParallax = {
-  from: { scale: 1.1 },
-  to: { scale: 1, ease: "none" },
-  scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
-};
-
-// --------------------------------------------------
 // timelinePhaseReveal — Process page timeline phase entrance
 // --------------------------------------------------
 export const timelinePhaseReveal = {
@@ -271,10 +262,6 @@ export const chapterReveal = {
 };
 
 // --------------------------------------------------
-// bentoSplitReveal — Gallery bento: grayscale→color crossfade + parallax + text
-// Two-layer approach: static grayscale base + GPU-compositable opacity reveal.
-// --------------------------------------------------
-// --------------------------------------------------
 // contactFormReveal — Contact form entrance (~2s)
 // --------------------------------------------------
 export const contactFormReveal = {
@@ -302,60 +289,6 @@ export const contactFormReveal = {
     submit: 0.9,
   },
   totalDuration: 1.6,
-};
-
-export const bentoSplitReveal = {
-  /** Wrapper: GPU-compositable scale + parallax */
-  imageWrapper: {
-    from: { scale: 1.1, yPercent: -10 },
-    to: { scale: 1, yPercent: 10, ease: "none" },
-  },
-  /** Color layer fades in over static grayscale base */
-  colorReveal: {
-    from: { opacity: 0 },
-    to: { opacity: 1, ease: "none" },
-  },
-  /** Static filter applied once via CSS — never animated */
-  grayFilter: "grayscale(100%) brightness(0.5)",
-  /** Shared ScrollTrigger config for the timeline */
-  scrollTrigger: { start: "top 80%", end: "bottom top", scrub: true },
-  text: {
-    from: { y: 40, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, stagger: 0.15, duration: 1.2, ease: easings.smooth },
-    scrollTrigger: { start: "top 60%", toggleActions: "play none none none" },
-  },
-};
-
-// --------------------------------------------------
-// fullBleedShowcase — Gallery full-bleed: centered image parallax + text
-// --------------------------------------------------
-export const fullBleedShowcase = {
-  image: {
-    from: { scale: 1.1, yPercent: -10 },
-    to: { scale: 1, yPercent: 10, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
-  },
-  text: {
-    from: { y: 50, autoAlpha: 0, scale: 0.9 },
-    to: { y: 0, autoAlpha: 1, scale: 1, duration: 1.5, ease: easings.smooth },
-    scrollTrigger: { start: "top 50%", toggleActions: "play none none none" },
-  },
-};
-
-// --------------------------------------------------
-// textureCardReveal — Gallery texture cards: entrance + inner parallax
-// --------------------------------------------------
-export const textureCardReveal = {
-  card: {
-    from: { y: 100, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 1.5, ease: easings.smooth },
-    scrollTrigger: { start: "top 85%", toggleActions: "play none none none" },
-  },
-  image: {
-    from: { scale: 1.15, yPercent: -5 },
-    to: { scale: 1, yPercent: 5, ease: "none" },
-    scrollTrigger: { start: "top bottom", end: "bottom top", scrub: true },
-  },
 };
 
 // --------------------------------------------------
@@ -600,17 +533,12 @@ export const reducedMotionFallbacks = {
   navOverlayOpen: "instant visibility toggle, no stagger",
   navOverlayClose: "instant visibility toggle",
   scrollIndicatorPulse: "visible but static, no pulse animation",
-  exhibitionParallax: "disabled — no scroll-driven scale",
   timelinePhaseReveal:
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
   folioReveal:
     "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
   chapterReveal:
     "cover at scale 1, all text visible immediately, chapter rail still tracks position",
-  bentoSplitReveal:
-    "image at full color, no grayscale transition, no parallax, no filter, text visible immediately",
-  fullBleedShowcase: "image visible at scale 1, no parallax, text visible immediately",
-  textureCardReveal: "cards visible immediately, no parallax, no stagger",
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",

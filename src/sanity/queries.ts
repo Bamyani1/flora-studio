@@ -16,7 +16,7 @@ export const FEATURED_ALBUMS_QUERY = defineQuery(
 export const ALBUM_BY_SLUG_QUERY = defineQuery(
   `*[_type == "album" && slug.current == $slug][0] {
     _id, title, slug, category, year, location, description,
-    coverImage, heroImage, images[], narrative, featured, order, videoUrl
+    coverImage, heroImage, images[], narrative, featured, order, videoUrl, videoPosterUrl
   }`,
 );
 
