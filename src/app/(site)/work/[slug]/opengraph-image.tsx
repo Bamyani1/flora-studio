@@ -1,12 +1,19 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
-import { getAlbumBySlug } from "@/lib/albums";
+import { getAlbumBySlug, getAlbumSlugs } from "@/lib/albums";
 import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
 import { loadOgBrandFonts } from "@/lib/og-fonts";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// Enumerate the album slugs for this metadata route, mirroring the page segment,
+// so each card is statically generated with a real slug.
+export async function generateStaticParams() {
+  const slugs = await getAlbumSlugs();
+  return slugs.map((s) => ({ slug: s.slug }));
+}
 
 // Per-album alt text on the share card ("The Graduate — Flora Studio")
 export async function generateImageMetadata({ params }: { params: Promise<{ slug: string }> }) {
