@@ -23,15 +23,13 @@ function padIndex(n: number): string {
 
 function metaLine(album: AlbumMeta): string {
   const categoryLabel = CATEGORY_META[album.category]?.label ?? album.category;
-  return [
-    categoryLabel,
-    album.year,
-    album.imageCount
-      ? `${album.imageCount} photograph${album.imageCount === 1 ? "" : "s"}`
-      : undefined,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  return [categoryLabel, album.year].filter(Boolean).join(" · ");
+}
+
+function countLabel(album: AlbumMeta): string | undefined {
+  return album.imageCount
+    ? `${album.imageCount} photograph${album.imageCount === 1 ? "" : "s"}`
+    : undefined;
 }
 
 export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
@@ -177,9 +175,11 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                     alignRight ? "items-end text-right" : "items-start"
                   }`}
                 >
+                  {/* Phones already carry the counter in the fixed position tag —
+                      showing it per-card too read as noise */}
                   <span
                     data-chapter-text
-                    className="eyebrow text-primary"
+                    className="hidden eyebrow text-primary md:inline"
                   >
                     {padIndex(i + 1)} / {padIndex(total)}
                   </span>
@@ -198,19 +198,18 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                       </span>
                     </span>
                   </h2>
+                  {/* On phones the meta leads as the eyebrow (order-first) so the
+                      card ends on the title + arrow — the actionable element;
+                      the photograph count stays a desktop detail */}
                   <p
                     data-chapter-text
-                    className="mt-4 eyebrow text-text/80"
+                    className="order-first eyebrow text-text/80 md:order-none md:mt-4"
                   >
                     {metaLine(album)}
+                    {countLabel(album) && (
+                      <span className="hidden md:inline"> &middot; {countLabel(album)}</span>
+                    )}
                   </p>
-                  {/* Touch affordance — every other "this opens" cue is hover-gated */}
-                  <span
-                    data-chapter-text
-                    className="mt-5 inline-flex items-center gap-2 eyebrow text-primary can-hover:hidden"
-                  >
-                    View album <span aria-hidden="true">&rarr;</span>
-                  </span>
                 </div>
               </TransitionLink>
 
