@@ -170,10 +170,12 @@ export function WorkChapters({ albums, heroBlurDataURL }: WorkChaptersProps) {
                   }}
                 />
 
+                {/* The first panel keeps its bottom band clear for the centered
+                    scroll cue — a long title otherwise collides with it on phones */}
                 <div
-                  className={`absolute inset-x-0 bottom-0 flex flex-col px-7 pt-6 pb-10 md:p-16 ${
-                    alignRight ? "items-end text-right" : "items-start"
-                  }`}
+                  className={`absolute inset-x-0 bottom-0 flex flex-col px-7 pt-6 ${
+                    i === 0 ? "pb-28 md:pb-24" : "pb-10"
+                  } md:p-16 ${alignRight ? "items-end text-right" : "items-start"}`}
                 >
                   {/* Phones already carry the counter in the fixed position tag —
                       showing it per-card too read as noise */}
