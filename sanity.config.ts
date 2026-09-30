@@ -23,4 +23,15 @@ export default defineConfig({
     templates: (templates) =>
       templates.filter((template) => !SINGLETON_TYPES.has(template.schemaType ?? "")),
   },
+  document: {
+    // The site reads these singletons on every build; unpublishing or deleting one
+    // makes production content fetches throw and takes every page down with it
+    actions: (actions, { schemaType }) =>
+      SINGLETON_TYPES.has(schemaType)
+        ? actions.filter(
+            ({ action }) =>
+              action === "publish" || action === "discardChanges" || action === "restore",
+          )
+        : actions,
+  },
 });

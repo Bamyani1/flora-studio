@@ -35,7 +35,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io data: blob:; font-src 'self' data:; connect-src 'self' *.api.sanity.io *.apicdn.sanity.io; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'self'; frame-ancestors 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io public.sanity.io lh3.googleusercontent.com avatars.githubusercontent.com data: blob:; font-src 'self' data:; connect-src 'self' api.sanity.io *.api.sanity.io *.apicdn.sanity.io; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'self'; frame-ancestors 'self'"
         },
         {
           "key": "X-Frame-Options",
@@ -48,7 +48,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io data: blob:; font-src 'self' data:; connect-src 'self' *.api.sanity.io *.apicdn.sanity.io; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'self'; frame-ancestors 'self'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' cdn.sanity.io public.sanity.io lh3.googleusercontent.com avatars.githubusercontent.com data: blob:; font-src 'self' data:; connect-src 'self' api.sanity.io *.api.sanity.io *.apicdn.sanity.io; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'self'; frame-ancestors 'self'"
         },
         {
           "key": "X-Frame-Options",

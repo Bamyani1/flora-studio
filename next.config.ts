@@ -12,9 +12,16 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     qualities: [85, 90, 95],
     minimumCacheTTL: 60 * 60 * 24 * 365,
+    // Only this project's Sanity assets: an open host lets anyone spend the
+    // deployment's image-optimization quota on arbitrary images
     remotePatterns: [
-      { protocol: "https", hostname: "cdn.sanity.io" },
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        pathname: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+          ? `/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/**`
+          : "/images/**",
+      },
     ],
   },
 };
