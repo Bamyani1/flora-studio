@@ -6,6 +6,8 @@ export interface LegalSection {
 }
 
 export const LEGAL_LAST_UPDATED = "April 13, 2026";
+// Privacy moves on its own: the analytics disclosure changed without touching the terms
+export const PRIVACY_LAST_UPDATED = "September 30, 2026";
 
 export const PRIVACY_SECTIONS: LegalSection[] = [
   {
@@ -20,7 +22,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "information-we-collect",
     title: "Information We Collect",
     paragraphs: [
-      "Flora Studio keeps data collection deliberately limited. Through the website, Flora Studio currently collects only the information a visitor chooses to submit through the contact form, along with a hidden anti-spam field used to help detect automated abuse.",
+      "Flora Studio keeps data collection deliberately limited. Through the website, Flora Studio collects the information a visitor chooses to submit through the contact form, along with a hidden anti-spam field used to help detect automated abuse, and aggregate, cookieless usage and performance measurements described under Cookies and Similar Technologies.",
       "Outside the website, Flora Studio may also maintain manual business records needed to communicate with clients and run photography projects.",
     ],
     bullets: [
@@ -36,6 +38,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     paragraphs: [
       "Flora Studio uses personal information to respond to inquiries, evaluate availability, discuss requested services, prepare and perform booked photography work, deliver finished work, maintain project and business records, and comply with legal obligations.",
       "Information may also be used to help protect the website, email workflows, and inquiry process against spam, fraud, misuse, or other abusive activity.",
+      "Aggregate usage and performance measurements are used only to understand which pages are visited and how quickly they load, so the site can be maintained and improved.",
     ],
   },
   {
@@ -56,7 +59,7 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
       "Apple/iCloud Mail is used for inquiry delivery, mailbox operations, and related email communications.",
       "Apple ecosystem storage and sync tools may be used to store or synchronize business records, contracts, project communications, and related files.",
       "Sanity is used for website content and media infrastructure only. Based on the current site implementation, website inquiry submissions are not stored in Sanity.",
-      "Vercel is used for website hosting and infrastructure.",
+      "Vercel is used for website hosting and infrastructure, and provides the cookieless Web Analytics and Speed Insights measurements described below.",
     ],
   },
   {
@@ -83,8 +86,9 @@ export const PRIVACY_SECTIONS: LegalSection[] = [
     id: "cookies-and-similar-technologies",
     title: "Cookies and Similar Technologies",
     paragraphs: [
-      "At the time of this policy, Flora Studio uses only essential or operational technologies needed to run the site and support the contact workflow. Flora Studio does not currently use analytics cookies, advertising pixels, session-replay tools, or other non-essential tracking technologies on this website.",
-      "If Flora Studio adds non-essential analytics, advertising, or similar tools in the future, this Privacy Policy and the site's consent choices will be updated before or when those tools are activated.",
+      "Flora Studio uses essential or operational technologies needed to run the site and support the contact workflow, such as a short-lived cookie that limits repeated inquiry submissions.",
+      "Flora Studio also uses Vercel Web Analytics and Vercel Speed Insights to understand, in aggregate, how the site is used and how quickly its pages load. These tools do not set cookies and are not used to identify individual visitors. They record information such as the page visited, the referring site, country-level location, device, browser, and operating system type, and page-load performance measurements.",
+      "Flora Studio does not use advertising pixels, session-replay tools, or cross-site tracking on this website. If Flora Studio adds advertising or similar tools in the future, this Privacy Policy and the site's consent choices will be updated before or when those tools are activated.",
     ],
   },
   {

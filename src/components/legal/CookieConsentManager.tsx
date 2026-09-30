@@ -264,7 +264,7 @@ export function CookieConsentManager() {
                       Analytics
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-muted">
-                      Controls future site-measurement tools if Flora Studio adds them later.
+                      Controls Vercel Web Analytics and Speed Insights (cookieless, aggregate).
                     </p>
                   </div>
                   <input

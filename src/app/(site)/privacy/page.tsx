@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { LegalDocument } from "@/components/legal/LegalDocument";
-import { LEGAL_LAST_UPDATED, PRIVACY_SECTIONS } from "@/lib/legal-content";
+import { PRIVACY_LAST_UPDATED, PRIVACY_SECTIONS } from "@/lib/legal-content";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy Policy for Flora Studio covering website inquiries, manual business records, client work records, and future cookie or tracking disclosures.",
+    "Privacy Policy for Flora Studio covering website inquiries, manual business records, client work records, and cookieless site analytics.",
 };
 
 export default function PrivacyPage() {
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
             materially change.
           </p>
           <p className="mt-4 font-label text-xs uppercase tracking-[0.2em] text-muted">
-            Last updated {LEGAL_LAST_UPDATED}
+            Last updated {PRIVACY_LAST_UPDATED}
           </p>
         </div>
       </section>

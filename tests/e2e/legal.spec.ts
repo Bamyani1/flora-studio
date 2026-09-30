@@ -6,7 +6,7 @@ test("privacy and terms pages render production copy", async ({ page }) => {
   await expect(page).toHaveTitle(/Privacy Policy/);
   await expect(page.getByRole("heading", { name: "Privacy Policy" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Who This Policy Covers" })).toBeVisible();
-  await expect(page.getByRole("main").getByText("Last updated April 13, 2026")).toBeVisible();
+  await expect(page.getByRole("main").getByText("Last updated September 30, 2026")).toBeVisible();
   await expect(page.getByRole("main").getByText("Interim Policy")).toHaveCount(0);
   await expect(page.getByRole("main").getByText("placeholder policy")).toHaveCount(0);
 
