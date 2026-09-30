@@ -5,12 +5,18 @@ import type { Album, SanityImage } from "@/types/project";
 
 vi.mock("server-only", () => ({}));
 
-// Mirrors folioImageCount in @/lib/albums: gallery images excluding the page hero
+// Mirrors getFolioImages in @/lib/albums: gallery images minus the page hero and duplicates
 function expectedFolioCount(album: Album): number {
   const key = (img: SanityImage) => img.url ?? img.asset?._ref;
   const heroKey = album.heroImage ? key(album.heroImage) : undefined;
-  return album.images.filter((img) => Boolean(key(img)) && key(img) !== heroKey).length;
+  const keys = album.images.map(key).filter((k) => Boolean(k) && k !== heroKey);
+  return new Set(keys).size;
 }
+
+// Production sorts by `order asc`; the placeholder fallback must match
+const ORDERED_ALBUMS = [...PLACEHOLDER_ALL_ALBUMS].sort(
+  (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER),
+);
 
 const originalEnv = { ...process.env };
 
@@ -29,7 +35,7 @@ describe("album loaders", () => {
     const { getAllAlbums } = await import("@/lib/albums");
 
     await expect(getAllAlbums()).resolves.toEqual(
-      PLACEHOLDER_ALL_ALBUMS.map((a) => ({ ...a, imageCount: expectedFolioCount(a) })),
+      ORDERED_ALBUMS.map((a) => ({ ...a, imageCount: expectedFolioCount(a) })),
     );
   });
 
@@ -38,7 +44,7 @@ describe("album loaders", () => {
 
     const slugs = await getAlbumSlugs();
 
-    expect(slugs).toEqual(PLACEHOLDER_ALL_ALBUMS.map((a) => ({ slug: a.slug.current })));
+    expect(slugs).toEqual(ORDERED_ALBUMS.map((a) => ({ slug: a.slug.current })));
   });
 
   it("returns placeholder album detail by slug", async () => {
@@ -54,6 +60,15 @@ describe("album loaders", () => {
 
     await expect(getAlbumBySlug("nonexistent")).resolves.toBeNull();
   });
+
+  it.each(["constructor", "toString", "__proto__"])(
+    "returns null for the prototype key %s instead of a truthy non-album",
+    async (slug) => {
+      const { getAlbumBySlug } = await import("@/lib/albums");
+
+      await expect(getAlbumBySlug(slug)).resolves.toBeNull();
+    },
+  );
 
   it("returns deterministic fixture content in e2e mode", async () => {
     process.env.CONTENT_RUNTIME_MODE = "e2e";
@@ -76,7 +91,7 @@ describe("album loaders", () => {
   });
 
   it("builds previous and next navigation", async () => {
-    const targetSlug = PLACEHOLDER_ALL_ALBUMS[1].slug.current;
+    const targetSlug = ORDERED_ALBUMS[1].slug.current;
 
     const { getAlbumWithNavigation } = await import("@/lib/albums");
 
@@ -84,23 +99,23 @@ describe("album loaders", () => {
 
     expect(result.album).toEqual(PLACEHOLDER_ALBUM_MAP[targetSlug]);
     expect(result.previous).toMatchObject({
-      title: PLACEHOLDER_ALL_ALBUMS[0].title,
-      slug: PLACEHOLDER_ALL_ALBUMS[0].slug.current,
+      title: ORDERED_ALBUMS[0].title,
+      slug: ORDERED_ALBUMS[0].slug.current,
       position: 1,
-      total: PLACEHOLDER_ALL_ALBUMS.length,
+      total: ORDERED_ALBUMS.length,
       wraps: false,
     });
     expect(result.next).toMatchObject({
-      title: PLACEHOLDER_ALL_ALBUMS[2].title,
-      slug: PLACEHOLDER_ALL_ALBUMS[2].slug.current,
+      title: ORDERED_ALBUMS[2].title,
+      slug: ORDERED_ALBUMS[2].slug.current,
       position: 3,
       wraps: false,
     });
   });
 
   it("marks the hand-off as wrapping at the archive boundaries", async () => {
-    const firstSlug = PLACEHOLDER_ALL_ALBUMS[0].slug.current;
-    const lastSlug = PLACEHOLDER_ALL_ALBUMS[PLACEHOLDER_ALL_ALBUMS.length - 1].slug.current;
+    const firstSlug = ORDERED_ALBUMS[0].slug.current;
+    const lastSlug = ORDERED_ALBUMS[ORDERED_ALBUMS.length - 1].slug.current;
 
     const { getAlbumWithNavigation } = await import("@/lib/albums");
 

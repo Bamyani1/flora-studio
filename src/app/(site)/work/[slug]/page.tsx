@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation } from "@/lib/albums";
+import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation, getFolioImages } from "@/lib/albums";
 import { breadcrumbJsonLd, imageGalleryJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
@@ -49,17 +49,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
     : await generateLocalLqipDataUrl(heroUrl);
 
   // The hero has pride of place at the top of the page — keep it out of the folio
-  const imageKey = (img: { url?: string; asset?: { _ref: string } }) =>
-    img.url ?? img.asset?._ref;
-  const heroKey = album.heroImage ? imageKey(album.heroImage) : undefined;
-  const seen = new Set<string>();
-  const galleryImages = (album.images ?? []).filter((img) => {
-    const key = imageKey(img);
-    if (!key || key === heroKey) return false;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const galleryImages = getFolioImages(album);
 
   // Per-plate LQIP so slow connections see a blur-up instead of empty panels
   const galleryWithBlur = await Promise.all(

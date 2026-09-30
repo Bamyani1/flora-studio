@@ -115,14 +115,39 @@ function detectAlbumSeries(albums: AlbumMeta[], slug: string): AlbumSeries | nul
   };
 }
 
-// Folio plate count: gallery images excluding the hero (which renders at the page top)
+const imageKey = (img: { url?: string; asset?: { _ref: string } }) => img.url ?? img.asset?._ref;
+
+/** Folio plates: gallery images minus the hero (it renders at the page top) and duplicates */
+export function getFolioImages(album: Album): Album["images"] {
+  const heroKey = album.heroImage ? imageKey(album.heroImage) : undefined;
+  const seen = new Set<string>();
+  return (album.images ?? []).filter((img) => {
+    const key = imageKey(img);
+    if (!key || key === heroKey || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function folioImageCount(album: Album): number {
-  const key = (img: Album["heroImage"]) => img.url ?? img.asset?._ref;
-  const heroKey = album.heroImage ? key(album.heroImage) : undefined;
-  return album.images.filter((img) => {
-    const k = key(img);
-    return Boolean(k) && k !== heroKey;
-  }).length;
+  return getFolioImages(album).length;
+}
+
+// Placeholder albums are authored out of order; match production's `order asc`
+const PLACEHOLDER_ALBUMS_IN_ORDER = [...PLACEHOLDER_ALL_ALBUMS].sort(
+  (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER),
+);
+
+function placeholderAlbumMetas(): AlbumMeta[] {
+  return PLACEHOLDER_ALBUMS_IN_ORDER.map((album) => ({
+    ...album,
+    imageCount: folioImageCount(album),
+  }));
+}
+
+// Own-property lookup: a slug such as "constructor" must not resolve to Object.prototype
+function placeholderAlbumBySlug(slug: string): Album | null {
+  return Object.hasOwn(PLACEHOLDER_ALBUM_MAP, slug) ? PLACEHOLDER_ALBUM_MAP[slug] : null;
 }
 
 function normalizeAlbumMeta(album: AlbumMeta): AlbumMeta {
@@ -138,18 +163,13 @@ export async function getAllAlbums(): Promise<AlbumMeta[]> {
       normalizeAlbumMeta({ ...album, imageCount: folioImageCount(album) }),
     );
   }
-  if (!shouldFetchFromSanity()) {
-    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({
-      ...album,
-      imageCount: folioImageCount(album),
-    }));
-  }
+  if (!shouldFetchFromSanity()) return placeholderAlbumMetas();
 
   try {
     const albums = await sanityFetch<AlbumMeta[]>({ query: ALBUMS_QUERY });
     return albums.map(normalizeAlbumMeta);
   } catch (error) {
-    return resolveContentAvailabilityFailure("albums", error, () => PLACEHOLDER_ALL_ALBUMS);
+    return resolveContentAvailabilityFailure("albums", error, placeholderAlbumMetas);
   }
 }
 
@@ -158,14 +178,14 @@ export async function getAlbumSlugs(): Promise<{ slug: string }[]> {
     return E2E_ALBUMS.map((album) => ({ slug: album.slug.current }));
   }
   if (!shouldFetchFromSanity()) {
-    return PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current }));
+    return PLACEHOLDER_ALBUMS_IN_ORDER.map((album) => ({ slug: album.slug.current }));
   }
 
   try {
     return await sanityFetch<{ slug: string }[]>({ query: ALBUM_SLUGS_QUERY });
   } catch (error) {
     return resolveContentAvailabilityFailure("albumSlugs", error, () =>
-      PLACEHOLDER_ALL_ALBUMS.map((album) => ({ slug: album.slug.current })),
+      PLACEHOLDER_ALBUMS_IN_ORDER.map((album) => ({ slug: album.slug.current })),
     );
   }
 }
@@ -179,7 +199,7 @@ export async function getAlbumBySlug(slug: string | undefined): Promise<Album | 
   if (isE2EContentRuntime()) {
     return getE2EAlbumBySlug(slug);
   }
-  if (!shouldFetchFromSanity()) return PLACEHOLDER_ALBUM_MAP[slug] ?? null;
+  if (!shouldFetchFromSanity()) return placeholderAlbumBySlug(slug);
 
   try {
     return await sanityFetch<Album | null>({
@@ -187,9 +207,7 @@ export async function getAlbumBySlug(slug: string | undefined): Promise<Album | 
       params: { slug },
     });
   } catch (error) {
-    return resolveContentAvailabilityFailure("album", error, () =>
-      PLACEHOLDER_ALBUM_MAP[slug] ?? null,
-    );
+    return resolveContentAvailabilityFailure("album", error, () => placeholderAlbumBySlug(slug));
   }
 }
 
