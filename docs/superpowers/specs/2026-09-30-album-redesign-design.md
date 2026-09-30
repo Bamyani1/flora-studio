@@ -62,15 +62,15 @@ Component: lightbox keys, counter, close, focus restore. E2E: index â†’ album â†
 
 ## Checklist
 
-- [ ] Types + helpers + unit tests
-- [ ] `justifyRows` + unit tests
-- [ ] `AlbumHero` rewrite
-- [ ] `AlbumStory`
-- [ ] `AlbumGallery` + `AlbumFilm`
-- [ ] `AlbumLightbox` + component test
-- [ ] `AlbumNav` restyle
-- [ ] Album page wiring (video-only albums)
-- [ ] `WorkIndex` + page wiring
-- [ ] Remove old components + CSS
-- [ ] E2E updates
-- [ ] Lint, types, unit, e2e, build; screenshot review desktop + phone
+- [x] Types + helpers + unit tests
+- [x] `justifyRows` + unit tests
+- [x] `AlbumHero` rewrite
+- [x] `AlbumStory`
+- [x] `AlbumGallery` + `AlbumFilm`
+- [x] `AlbumLightbox` + component test
+- [x] `AlbumNav` restyle
+- [x] Album page wiring (video-only albums)
+- [x] `WorkIndex` + page wiring
+- [x] Remove old components + CSS
+- [x] E2E updates
+- [x] Lint, types, unit, e2e, build; screenshot review desktop + phone

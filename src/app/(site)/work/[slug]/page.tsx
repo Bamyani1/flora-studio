@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAlbumBySlug, getAlbumSlugs, getAlbumWithNavigation, getFolioImages } from "@/lib/albums";
+import {
+  getAlbumBySlug,
+  getAlbumHeroImage,
+  getAlbumSlugs,
+  getAlbumWithNavigation,
+  getFolioImages,
+} from "@/lib/albums";
 import { breadcrumbJsonLd, imageGalleryJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
-import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
-import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
+import { generateBlurDataUrl } from "@/lib/lqip";
+import { resolveImageUrl } from "@/lib/image-url";
+import { CATEGORY_META } from "@/lib/categories";
 import { AlbumHero } from "@/components/sections/AlbumHero";
+import { AlbumStory, type AlbumDetail } from "@/components/sections/AlbumStory";
+import { AlbumGallery } from "@/components/sections/AlbumGallery";
 import { AlbumNav } from "@/components/sections/AlbumNav";
-import { FolioGallery } from "@/components/sections/FolioGallery";
-import { TextReveal } from "@/components/animations/TextReveal";
 export async function generateStaticParams() {
   const slugs = await getAlbumSlugs();
   return slugs.map((s) => ({ slug: s.slug }));
@@ -43,33 +50,37 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
 
   if (!album) notFound();
 
-  const heroUrl = resolveImageUrl(album.heroImage);
-  const heroBlurDataURL = isSanityCdnUrl(heroUrl)
-    ? await generateLqipDataUrl(heroUrl)
-    : await generateLocalLqipDataUrl(heroUrl);
+  const heroImage = getAlbumHeroImage(album);
+  const heroBlurDataURL = await generateBlurDataUrl(resolveImageUrl(heroImage));
 
-  // The hero has pride of place at the top of the page — keep it out of the folio
+  // The opening frame has pride of place at the top of the page — keep it out of the gallery
   const galleryImages = getFolioImages(album);
 
-  // Per-plate LQIP so slow connections see a blur-up instead of empty panels
+  // Per-photo LQIP so slow connections see a blur-up instead of empty tiles
   const galleryWithBlur = await Promise.all(
     galleryImages.map(async (img) => {
-      const url = resolveImageUrl(img);
-      const blurDataURL = isSanityCdnUrl(url)
-        ? await generateLqipDataUrl(url)
-        : url?.startsWith("/")
-          ? await generateLocalLqipDataUrl(url)
-          : undefined;
+      const blurDataURL = await generateBlurDataUrl(resolveImageUrl(img));
       return blurDataURL ? { ...img, blurDataURL } : img;
     }),
   );
+
+  const details: AlbumDetail[] = [
+    album.category && {
+      label: "Category",
+      value: CATEGORY_META[album.category]?.label ?? album.category,
+    },
+    album.year && { label: "Year", value: String(album.year) },
+    album.location && { label: "Location", value: album.location },
+    galleryImages.length > 0 && { label: "Photographs", value: String(galleryImages.length) },
+    album.videoUrl && { label: "Film", value: "1" },
+  ].filter((detail): detail is AlbumDetail => Boolean(detail));
 
   const SITE_URL = publicEnv.siteUrl;
   const jsonLd = imageGalleryJsonLd({
     title: album.title,
     description: album.description,
     slug,
-    // numberOfItems matches the folio plate count shown on the page
+    // numberOfItems matches the photo count shown on the page
     imageCount: galleryImages.length,
     images: galleryImages
       .map((img) => ({ url: resolveImageUrl(img) ?? "", caption: img.alt }))
@@ -96,29 +107,18 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
         category={album.category}
         year={album.year}
         location={album.location}
-        heroImage={album.heroImage}
+        image={heroImage}
         blurDataURL={heroBlurDataURL}
         series={series ?? undefined}
       />
 
-      {album.narrative && (
-        <section className="px-[var(--container-padding-x)] py-[var(--section-padding-y)]">
-          <div className="mx-auto max-w-[var(--max-width-narrow)]">
-            <TextReveal
-              variant="words"
-              scrub
-              className="font-body text-xl leading-relaxed text-text md:text-2xl"
-            >
-              {album.narrative}
-            </TextReveal>
-          </div>
-        </section>
-      )}
+      <AlbumStory text={album.narrative || album.description} details={details} />
 
-      {galleryWithBlur.length > 0 && (
-        <FolioGallery
-          images={galleryWithBlur}
+      {/* A film-only album still gets its film */}
+      {(galleryWithBlur.length > 0 || album.videoUrl) && (
+        <AlbumGallery
           title={album.title}
+          images={galleryWithBlur}
           videoUrl={album.videoUrl}
           videoPosterUrl={album.videoPosterUrl}
         />

@@ -8,6 +8,11 @@ export interface SanityImage {
   alt?: string;
   caption?: string;
   url?: string;
+  /** CSS object-position set in Studio, e.g. "50% 30%" */
+  objectPosition?: string;
+  mobileObjectPosition?: string;
+  /** Studio focal point, 0–1 from the top-left */
+  hotspot?: { x: number; y: number; width?: number; height?: number };
 }
 
 export interface AlbumMeta {

@@ -222,46 +222,6 @@ export function withWillChange(props = "transform, opacity") {
 }
 
 // --------------------------------------------------
-// folioReveal — Folio gallery page entrance animations
-// --------------------------------------------------
-export const folioReveal = {
-  image: {
-    from: { autoAlpha: 0 },
-    to: { autoAlpha: 1, duration: 0.6, ease: easings.smooth },
-  },
-  label: {
-    from: { autoAlpha: 0 },
-    to: { autoAlpha: 1, duration: 0.4, ease: easings.smooth },
-    delay: 0.2,
-  },
-  titleClip: {
-    from: { clipPath: "inset(0 100% 0 0)" },
-    to: { clipPath: "inset(0 0 0 0)", duration: 0.8, ease: easings.sharp },
-  },
-  pageNumber: {
-    from: { autoAlpha: 0 },
-    to: { autoAlpha: 0.06, duration: 0.6, ease: easings.smooth },
-    delay: 0.3,
-  },
-  scrollTrigger: { start: "top 80%", toggleActions: "play none none none" },
-};
-
-// --------------------------------------------------
-// chapterReveal — Work chapters: per-panel title-card entrance
-// --------------------------------------------------
-export const chapterReveal = {
-  cover: {
-    from: { scale: 1.06 },
-    to: { scale: 1, duration: 1.6, ease: "power3.out" },
-  },
-  text: {
-    from: { y: 24, autoAlpha: 0 },
-    to: { y: 0, autoAlpha: 1, duration: 0.8, ease: easings.smooth, stagger: 0.1 },
-  },
-  scrollTrigger: { start: "top 70%", toggleActions: "play none none none" },
-};
-
-// --------------------------------------------------
 // contactFormReveal — Contact form entrance (~2s)
 // --------------------------------------------------
 export const contactFormReveal = {
@@ -546,10 +506,6 @@ export const reducedMotionFallbacks = {
   scrollIndicatorPulse: "visible but static, no pulse animation",
   timelinePhaseReveal:
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
-  folioReveal:
-    "all images and labels visible immediately, no clip-path reveal on title, page numbers at final opacity",
-  chapterReveal:
-    "cover at scale 1, all text visible immediately, chapter rail still tracks position",
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",

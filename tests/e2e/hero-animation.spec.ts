@@ -52,16 +52,17 @@ test("anti-FOUC CSS rule hides data-animate elements initially", async ({ page }
   expect(hasRule).toBe(true);
 });
 
-test("scroll-triggered gallery elements become visible when scrolled to", async ({ page }) => {
+test("album hero and gallery photos are visible without waiting on animations", async ({
+  page,
+}) => {
   await page.goto("/work/march-madness", { waitUntil: "networkidle" });
 
-  // Scroll down to trigger gallery section animations
-  await page.evaluate(() => {
-    window.scrollTo({ top: window.innerHeight * 2, behavior: "instant" });
-  });
-  await page.waitForTimeout(1000);
+  // The hero photo is the LCP: never hidden behind an entrance animation
+  const hero = page.locator("main section").first().locator("img").first();
+  await expect(hero).toBeVisible();
+  expect(parseFloat(await hero.evaluate((el) => getComputedStyle(el).opacity))).toBe(1);
 
-  // Gallery hero title should be visible after scroll and animation
-  const heroTitle = page.locator("h2").first();
-  await expect(heroTitle).toBeVisible();
+  const firstTile = page.getByRole("button", { name: /photo 1 of \d+\. View full screen/ });
+  await firstTile.scrollIntoViewIfNeeded();
+  await expect(firstTile).toBeVisible();
 });

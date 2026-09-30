@@ -198,6 +198,7 @@
   --z-header: 50;
   --z-skip-link: 60;
   --z-cookie-trigger: 60;
+  --z-lightbox: 65;
   --z-cookie-overlay: 70;
   --z-cookie-modal: 80;
   --z-cursor: 100;
@@ -221,6 +222,10 @@
 
 @utility z-cookie-trigger {
   z-index: var(--z-cookie-trigger);
+}
+
+@utility z-lightbox {
+  z-index: var(--z-lightbox);
 }
 
 @utility z-cookie-overlay {
@@ -306,27 +311,6 @@
   contain: layout style paint;
 }
 
-/* Deferred below-fold rendering. Intrinsic-size hints approximate real page
-   heights per breakpoint so the scrollbar stays stable while pages realize;
-   FolioGallery additionally refreshes ScrollTrigger when realized pages change
-   the document height, so triggers below the folio never go stale. */
-.folio-page-deferred {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 78svh;
-}
-.chapter-panel-deferred {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 78svh;
-}
-@media (min-width: 768px) {
-  .folio-page-deferred {
-    contain-intrinsic-size: auto 98vh;
-  }
-  .chapter-panel-deferred {
-    contain-intrinsic-size: auto 92vh;
-  }
-}
-
 /* --- Reduced Motion Preferences --- */
 /* Anti-FOUC: hide elements before GSAP initializes. Every selector here must be
    revealed by its component's GSAP code, including its reduced-motion branch. */
@@ -335,9 +319,7 @@
 [data-hero-child],
 [data-timeline-animate],
 [data-contact-animate],
-[data-form-animate],
-.folio-reveal,
-.folio-reveal-label {
+[data-form-animate] {
   opacity: 0;
 }
 
@@ -347,9 +329,7 @@
   [data-hero-child],
   [data-timeline-animate],
   [data-contact-animate],
-  [data-form-animate],
-  .folio-reveal,
-  .folio-reveal-label {
+  [data-form-animate] {
     opacity: 1;
   }
 

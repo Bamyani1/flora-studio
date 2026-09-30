@@ -1,4 +1,4 @@
-import { normalizeImage } from "@/lib/image-url";
+import { normalizeImage, resolveImageUrl } from "@/lib/image-url";
 import { PLACEHOLDER_ALL_ALBUMS, PLACEHOLDER_ALBUM_MAP } from "@/lib/placeholder-data";
 import { E2E_ALBUMS, getE2EAlbumBySlug } from "@/lib/e2e-content";
 import {
@@ -117,9 +117,15 @@ function detectAlbumSeries(albums: AlbumMeta[], slug: string): AlbumSeries | nul
 
 const imageKey = (img: { url?: string; asset?: { _ref: string } }) => img.url ?? img.asset?._ref;
 
-/** Folio plates: gallery images minus the hero (it renders at the page top) and duplicates */
+/** The album page's opening frame: the hero when it has a source, else the cover */
+export function getAlbumHeroImage(album: Album): SanityImage {
+  return album.heroImage && resolveImageUrl(album.heroImage) ? album.heroImage : album.coverImage;
+}
+
+/** Gallery photos: album images minus the opening frame (it renders at the page top) and duplicates */
 export function getFolioImages(album: Album): Album["images"] {
-  const heroKey = album.heroImage ? imageKey(album.heroImage) : undefined;
+  const hero = getAlbumHeroImage(album);
+  const heroKey = hero ? imageKey(hero) : undefined;
   const seen = new Set<string>();
   return (album.images ?? []).filter((img) => {
     const key = imageKey(img);

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { getAllAlbums } from "@/lib/albums";
-import { generateLqipDataUrl, generateLocalLqipDataUrl } from "@/lib/lqip";
-import { resolveImageUrl, isSanityCdnUrl } from "@/lib/image-url";
+import { generateBlurDataUrl } from "@/lib/lqip";
+import { resolveImageUrl } from "@/lib/image-url";
 import { breadcrumbJsonLd, jsonLdString } from "@/lib/metadata";
 import { publicEnv } from "@/lib/public-env";
 import { TransitionLink } from "@/components/layout/TransitionLink";
 import { Button } from "@/components/ui/Button";
-import { WorkChapters } from "@/components/sections/WorkChapters";
+import { WorkIndex } from "@/components/sections/WorkIndex";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
 export default async function WorkPage() {
   const albums = await getAllAlbums();
 
-  const firstCoverUrl = albums[0] ? resolveImageUrl(albums[0].coverImage) : null;
-  const heroBlurDataURL = isSanityCdnUrl(firstCoverUrl)
-    ? await generateLqipDataUrl(firstCoverUrl)
-    : firstCoverUrl?.startsWith("/")
-      ? await generateLocalLqipDataUrl(firstCoverUrl)
-      : undefined;
+  const albumsWithBlur = await Promise.all(
+    albums.map(async (album) => ({
+      ...album,
+      blurDataURL: await generateBlurDataUrl(resolveImageUrl(album.coverImage)),
+    })),
+  );
 
   const SITE_URL = publicEnv.siteUrl;
   const breadcrumb = breadcrumbJsonLd([
@@ -72,8 +72,7 @@ export default async function WorkPage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(breadcrumb) }}
       />
       <main id="main-content">
-        <h1 className="sr-only">Work</h1>
-        <WorkChapters albums={albums} heroBlurDataURL={heroBlurDataURL} />
+        <WorkIndex albums={albumsWithBlur} />
       </main>
     </>
   );

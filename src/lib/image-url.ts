@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { buildSanityImageUrlFromRef } from "@/lib/public-env";
 import type { SanityImage } from "@/types/project";
 
@@ -5,6 +6,43 @@ export function getImageDimensions(img?: SanityImage | null) {
   const match = img?.asset?._ref?.match(/-(\d+)x(\d+)-/);
   return match ? { width: +match[1], height: +match[2] } : null;
 }
+
+/** width / height from the asset ref; `fallback` when the ref carries no usable size */
+export function imageAspectRatio(img?: SanityImage | null, fallback = 3 / 2): number {
+  const dims = getImageDimensions(img);
+  return dims && dims.width > 0 && dims.height > 0 ? dims.width / dims.height : fallback;
+}
+
+// Keywords, numbers and units only: the value lands in an inline style attribute
+const SAFE_POSITION = /^[a-z0-9.%\s-]+$/i;
+
+function cleanPosition(value?: string): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed && SAFE_POSITION.test(trimmed) ? trimmed : undefined;
+}
+
+function roundPercent(fraction: number): string {
+  return `${Math.round(Math.min(1, Math.max(0, fraction)) * 1000) / 10}%`;
+}
+
+/** Crop focus for object-cover images: explicit Studio value, then hotspot, then center */
+export function imagePositions(img?: SanityImage | null): { desktop: string; mobile: string } {
+  const hotspot = img?.hotspot;
+  const fromHotspot =
+    hotspot && Number.isFinite(hotspot.x) && Number.isFinite(hotspot.y)
+      ? `${roundPercent(hotspot.x)} ${roundPercent(hotspot.y)}`
+      : undefined;
+  const desktop = cleanPosition(img?.objectPosition) ?? fromHotspot ?? "50% 50%";
+  return { desktop, mobile: cleanPosition(img?.mobileObjectPosition) ?? desktop };
+}
+
+/** Pair with IMAGE_POSITION_CLASS on the <img> */
+export function imagePositionStyle(img?: SanityImage | null): CSSProperties {
+  const { desktop, mobile } = imagePositions(img);
+  return { "--pos": desktop, "--pos-mobile": mobile } as CSSProperties;
+}
+
+export const IMAGE_POSITION_CLASS = "object-[var(--pos-mobile)] md:object-[var(--pos)]";
 
 /**
  * True only for genuine https://cdn.sanity.io URLs. This parses the URL and

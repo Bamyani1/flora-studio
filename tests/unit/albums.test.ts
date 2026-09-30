@@ -5,10 +5,11 @@ import type { Album, SanityImage } from "@/types/project";
 
 vi.mock("server-only", () => ({}));
 
-// Mirrors getFolioImages in @/lib/albums: gallery images minus the page hero and duplicates
+// Mirrors getFolioImages in @/lib/albums: gallery images minus the opening frame and duplicates
 function expectedFolioCount(album: Album): number {
   const key = (img: SanityImage) => img.url ?? img.asset?._ref;
-  const heroKey = album.heroImage ? key(album.heroImage) : undefined;
+  const hero = album.heroImage && key(album.heroImage) ? album.heroImage : album.coverImage;
+  const heroKey = key(hero);
   const keys = album.images.map(key).filter((k) => Boolean(k) && k !== heroKey);
   return new Set(keys).size;
 }
@@ -152,5 +153,35 @@ describe("album loaders", () => {
     expect(PLACEHOLDER_ALBUM_MAP["the-graduate"]).not.toHaveProperty("heroBlur");
     expect(PLACEHOLDER_ALBUM_MAP["the-graduate"].coverImage.url).toContain("/images/");
     expect(PLACEHOLDER_ALBUM_MAP["milestone"].videoUrl).toBe("/videos/milestone.mp4");
+  });
+});
+
+describe("album opening frame", () => {
+  const img = (ref: string): SanityImage => ({
+    _type: "image",
+    asset: { _type: "reference", _ref: `image-${ref}-600x900-jpg` },
+    url: `/images/${ref}.jpg`,
+  });
+  const base = PLACEHOLDER_ALBUM_MAP["game-day"];
+
+  it("uses the hero when it has a source", async () => {
+    const { getAlbumHeroImage, getFolioImages } = await import("@/lib/albums");
+    const album: Album = { ...base, heroImage: img("hero"), images: [img("hero"), img("a")] };
+
+    expect(getAlbumHeroImage(album)).toBe(album.heroImage);
+    expect(getFolioImages(album)).toEqual([img("a")]);
+  });
+
+  it("falls back to the cover and keeps it out of the gallery", async () => {
+    const { getAlbumHeroImage, getFolioImages } = await import("@/lib/albums");
+    const album = {
+      ...base,
+      coverImage: img("cover"),
+      heroImage: { _type: "image", alt: "no asset" } as unknown as SanityImage,
+      images: [img("cover"), img("a"), img("a")],
+    } as Album;
+
+    expect(getAlbumHeroImage(album)).toBe(album.coverImage);
+    expect(getFolioImages(album)).toEqual([img("a")]);
   });
 });

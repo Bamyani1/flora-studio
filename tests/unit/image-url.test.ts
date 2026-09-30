@@ -112,3 +112,47 @@ describe("image url helpers", () => {
     ]);
   });
 });
+
+describe("image layout helpers", () => {
+  const withRef = (ref: string) =>
+    ({ _type: "image", asset: { _type: "reference", _ref: ref } }) as const;
+
+  it("reads the aspect ratio from the asset ref", async () => {
+    const { imageAspectRatio } = await import("@/lib/image-url");
+
+    expect(imageAspectRatio(withRef("image-abc-600x900-jpg"))).toBeCloseTo(2 / 3);
+    expect(imageAspectRatio(withRef("image-abc-jpg"))).toBe(1.5);
+    expect(imageAspectRatio(withRef("image-abc-0x900-jpg"), 1)).toBe(1);
+    expect(imageAspectRatio(null)).toBe(1.5);
+  });
+
+  it("prefers the explicit position, then the hotspot, then center", async () => {
+    const { imagePositions } = await import("@/lib/image-url");
+    const img = withRef("image-abc-600x900-jpg");
+
+    expect(imagePositions(img)).toEqual({ desktop: "50% 50%", mobile: "50% 50%" });
+    expect(imagePositions({ ...img, hotspot: { x: 0.25, y: 0.333 } })).toEqual({
+      desktop: "25% 33.3%",
+      mobile: "25% 33.3%",
+    });
+    expect(
+      imagePositions({
+        ...img,
+        hotspot: { x: 0.25, y: 0.5 },
+        objectPosition: "50% 20%",
+        mobileObjectPosition: "left top",
+      }),
+    ).toEqual({ desktop: "50% 20%", mobile: "left top" });
+  });
+
+  it("drops position values that could break out of the style attribute", async () => {
+    const { imagePositions } = await import("@/lib/image-url");
+
+    expect(
+      imagePositions({
+        ...withRef("image-abc-600x900-jpg"),
+        objectPosition: "50%; background: url(x)",
+      }).desktop,
+    ).toBe("50% 50%");
+  });
+});

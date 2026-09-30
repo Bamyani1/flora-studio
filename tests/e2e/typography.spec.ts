@@ -74,11 +74,13 @@ test("about, work, and process headings match the GitHub runtime", async ({ page
       element ? getComputedStyle(element as HTMLElement).fontFamily.toLowerCase() : null;
 
     return {
-      heroHeading: pick(document.querySelector("h2.font-headline")),
+      pageHeading: pick(document.querySelector("main h1.font-display")),
+      albumTitle: pick(document.querySelector("main h2.font-display")),
     };
   });
 
-  expect(work.heroHeading).toContain("cormorant garamond");
+  expect(work.pageHeading).toContain("cormorant garamond");
+  expect(work.albumTitle).toContain("cormorant garamond");
 
   await page.goto("/process", { waitUntil: "networkidle" });
   const process = await page.evaluate(() => {

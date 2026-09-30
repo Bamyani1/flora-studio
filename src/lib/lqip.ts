@@ -1,7 +1,7 @@
 import "server-only";
 
 import { existsSync } from "fs";
-import { join } from "path";
+import { join, sep } from "path";
 import { isSanityCdnUrl } from "@/lib/image-url";
 
 export async function generateLqipDataUrl(
@@ -24,13 +24,24 @@ export async function generateLqipDataUrl(
   }
 }
 
+/** Blur placeholder for a Sanity CDN url or a local /public path */
+export async function generateBlurDataUrl(
+  imageUrl: string | null | undefined,
+): Promise<string | undefined> {
+  if (isSanityCdnUrl(imageUrl)) return generateLqipDataUrl(imageUrl);
+  if (imageUrl?.startsWith("/")) return generateLocalLqipDataUrl(imageUrl);
+  return undefined;
+}
+
 export async function generateLocalLqipDataUrl(
   publicPath: string | null | undefined,
 ): Promise<string | undefined> {
   if (!publicPath) return undefined;
 
-  const absolutePath = join(process.cwd(), "public", publicPath.replace(/^\//, ""));
-  if (!existsSync(absolutePath)) return undefined;
+  const publicDir = join(process.cwd(), "public");
+  const absolutePath = join(publicDir, publicPath.replace(/^\//, ""));
+  // A CMS-supplied "/../" path must not read files outside public/
+  if (!absolutePath.startsWith(publicDir + sep) || !existsSync(absolutePath)) return undefined;
 
   try {
     const sharp = (await import("sharp")).default;
