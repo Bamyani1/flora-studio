@@ -168,6 +168,20 @@ describe("mapAboutPageContent", () => {
       mapAboutPageContent(buildRawAboutPage({ processImage: brokenImage() })),
     ).toThrow("aboutPage.processImage missing image asset");
   });
+
+  it("maps the optional hero image and drops one without a source", () => {
+    const heroImage: SanityImage = {
+      _type: "image",
+      asset: { _ref: "image-about-hero", _type: "reference" },
+      alt: "Opening frame",
+    };
+
+    expect(mapAboutPageContent(buildRawAboutPage({ heroImage })).hero.image).toEqual(heroImage);
+    expect(
+      mapAboutPageContent(buildRawAboutPage({ heroImage: brokenImage() })).hero.image,
+    ).toBeUndefined();
+    expect(mapAboutPageContent(buildRawAboutPage()).hero.image).toBeUndefined();
+  });
 });
 
 describe("mapProcessPageContent", () => {

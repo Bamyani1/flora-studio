@@ -112,7 +112,7 @@ export function mapAboutPageContent(doc: RawAboutPage): AboutPageContent {
       titleLine1: doc.heroTitleLine1,
       titleLine2: doc.heroTitleLine2,
       description: doc.heroDescription,
-      image: doc.heroImage ?? undefined,
+      image: hasImageSource(doc.heroImage) ? (doc.heroImage ?? undefined) : undefined,
     },
     manifesto: {
       eyebrow: doc.manifestoEyebrow,

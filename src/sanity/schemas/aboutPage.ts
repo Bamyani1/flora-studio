@@ -24,6 +24,13 @@ export const aboutPage = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "heroImage",
+      title: "Hero Image",
+      description:
+        "Full-bleed opening photo behind the title. Leave empty to use the default Nature series frame.",
+      type: "imageWithAlt",
+    }),
+    defineField({
       name: "manifestoEyebrow",
       title: "Manifesto Eyebrow",
       type: "string",

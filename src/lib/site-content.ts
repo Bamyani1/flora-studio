@@ -79,7 +79,11 @@ export async function getAboutPageContent(): Promise<AboutPageContent> {
   try {
     const doc = await sanityFetch<RawAboutPage | null>({ query: ABOUT_PAGE_QUERY });
     if (!doc) throw new Error("aboutPage document not found");
-    return mapAboutPageContent(doc);
+    const content = mapAboutPageContent(doc);
+    // The page is designed around an opening photo; keep the default until an editor sets one
+    return content.hero.image
+      ? content
+      : { ...content, hero: { ...content.hero, image: PLACEHOLDER_ABOUT_PAGE.hero.image } };
   } catch (error) {
     return resolveContentAvailabilityFailure("aboutPage", error, () => PLACEHOLDER_ABOUT_PAGE);
   }

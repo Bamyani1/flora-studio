@@ -63,6 +63,7 @@ export const ABOUT_PAGE_QUERY = defineQuery(
     heroTitleLine1,
     heroTitleLine2,
     heroDescription,
+    heroImage,
     manifestoEyebrow,
     manifestoQuotePrefix,
     manifestoQuoteAccent,
