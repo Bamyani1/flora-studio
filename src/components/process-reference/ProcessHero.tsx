@@ -136,7 +136,7 @@ export function ProcessHero({ image, titleLine1, titleLine2 }: ProcessHeroProps)
                 event.preventDefault();
                 document
                   .getElementById("process")
-                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
               }}
               className="interactive cursor-pointer flex items-center justify-center"
             >

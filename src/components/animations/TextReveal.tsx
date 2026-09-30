@@ -46,19 +46,24 @@ export function TextReveal({
       gsap.set(ref.current, { autoAlpha: 1 });
 
       if (variant === "lines") {
-        const split = new SplitText(ref.current, textRevealLines.splitConfig);
-
-        gsap.fromTo(split.lines, textRevealLines.from, {
-          ...textRevealLines.to,
-          ...withWillChange(),
-          ...(stagger !== undefined && { stagger }),
-          ...(delay !== undefined && { delay }),
-          ...(!immediate && {
-            scrollTrigger: {
-              trigger: ref.current,
-              ...textRevealLines.scrollTrigger,
-            },
-          }),
+        const el = ref.current;
+        // autoSplit re-splits on font load and resize; the tween must be built in
+        // onSplit (and returned) so it follows the new line elements
+        const split = new SplitText(el, {
+          ...textRevealLines.splitConfig,
+          onSplit: (self) =>
+            gsap.fromTo(self.lines, textRevealLines.from, {
+              ...textRevealLines.to,
+              ...withWillChange(),
+              ...(stagger !== undefined && { stagger }),
+              ...(delay !== undefined && { delay }),
+              ...(!immediate && {
+                scrollTrigger: {
+                  trigger: el,
+                  ...textRevealLines.scrollTrigger,
+                },
+              }),
+            }),
         });
 
         return () => split.revert();

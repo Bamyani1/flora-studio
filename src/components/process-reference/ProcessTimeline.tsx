@@ -217,9 +217,9 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
               >
                 {step.layout === "grid" ? (
                   <div className="grid grid-cols-2 gap-4">
-                    {step.images.map((img) => (
+                    {step.images.map((img, imageIndex) => (
                       <div
-                        key={`${step.id}-${img.alt}`}
+                        key={`${step.id}-${imageIndex}`}
                         className="group relative aspect-square overflow-hidden rounded"
                       >
                         <ProcessParallaxImage
@@ -231,7 +231,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                       </div>
                     ))}
                   </div>
-                ) : (
+                ) : step.images[0] ? (
                   <div
                     className={`group relative overflow-hidden rounded ${
                       step.layout === "bordered"
@@ -256,7 +256,7 @@ export function ProcessTimeline({ title, description, steps }: ProcessTimelinePr
                       />
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
 
               <div className="absolute right-0 top-0 -translate-y-full bg-[var(--process-primary)] px-3 py-1 lg:hidden">

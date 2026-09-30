@@ -242,7 +242,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative mt-[5rem] min-h-[calc(100vh-5rem)] overflow-hidden bg-background"
+      className="relative mt-[5rem] min-h-[calc(100svh-5rem)] overflow-hidden bg-background"
     >
       {/* Grain overlay */}
       <div className="grain-medium absolute inset-0 z-grain opacity-[0.02]" aria-hidden="true" />
@@ -321,10 +321,11 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
           {/* Display scale: the thesis must outrank the editorial H2 (60px)
               on desktop — only the exhibition's showpiece numeral tops it */}
           <h1 className="font-display font-light leading-[1.15] tracking-[0.02em] text-[clamp(1.9rem,4.75vw,4.25rem)] text-white/90 mb-2">
-            <span ref={line1Ref} data-animate>
-              {content.titleLine1}{" "}
-            </span>
-            <span ref={line2Ref} data-animate className="text-hero-gold italic">
+            {/* inline-block: transforms (entrance rise, scroll parallax) are ignored on inline boxes */}
+            <span ref={line1Ref} data-animate className="inline-block">
+              {content.titleLine1}
+            </span>{" "}
+            <span ref={line2Ref} data-animate className="inline-block text-hero-gold italic">
               {content.titleLine2}
             </span>
           </h1>

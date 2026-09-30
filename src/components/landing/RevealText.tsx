@@ -26,19 +26,21 @@ export function RevealText({ text, className = "", delay = 0 }: RevealTextProps)
         return;
       }
 
-      const split = new SplitText(el, landingWordReveal.splitConfig);
-
       gsap.set(el, { autoAlpha: 1 }); // Clear CSS [data-animate] opacity; words handle their own visibility
-      gsap.set(split.words, landingWordReveal.from);
 
-      gsap.to(split.words, {
-        ...landingWordReveal.to,
-        delay,
-        scrollTrigger: {
-          trigger: el,
-          ...landingWordReveal.scrollTrigger,
-        },
-        ...withWillChange(),
+      // Built in onSplit so autoSplit's re-splits (font load, resize) keep the reveal
+      const split = new SplitText(el, {
+        ...landingWordReveal.splitConfig,
+        onSplit: (self) =>
+          gsap.fromTo(self.words, landingWordReveal.from, {
+            ...landingWordReveal.to,
+            delay,
+            scrollTrigger: {
+              trigger: el,
+              ...landingWordReveal.scrollTrigger,
+            },
+            ...withWillChange(),
+          }),
       });
 
       return () => {

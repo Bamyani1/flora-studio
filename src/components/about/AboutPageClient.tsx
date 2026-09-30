@@ -25,25 +25,34 @@ function StaggeredText({ text, className }: { text: string; className?: string }
         return;
       }
 
-      const split = new SplitText(ref.current, { type: "lines", mask: "lines" });
-
-      gsap.fromTo(
-        split.lines,
-        { yPercent: 100, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "expo.out",
-          stagger: 0.12,
-          ...withWillChange(),
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
+      const el = ref.current;
+      // Clear the CSS [data-animate] opacity; the lines carry the reveal
+      gsap.set(el, { autoAlpha: 1 });
+      // autoSplit re-splits after font load and on resize/rotation; the tween
+      // lives in onSplit so it always targets the current lines
+      const split = new SplitText(el, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit: (self) =>
+          gsap.fromTo(
+            self.lines,
+            { yPercent: 100, opacity: 0 },
+            {
+              yPercent: 0,
+              opacity: 1,
+              duration: 1,
+              ease: "expo.out",
+              stagger: 0.12,
+              ...withWillChange(),
+              scrollTrigger: {
+                trigger: el,
+                start: "top 90%",
+                toggleActions: "play none none none",
+              },
+            },
+          ),
+      });
 
       return () => {
         split.revert();
@@ -53,7 +62,7 @@ function StaggeredText({ text, className }: { text: string; className?: string }
   );
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} data-animate className={className}>
       {text}
     </div>
   );
@@ -95,12 +104,15 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
       return;
     }
 
+    // overwrite: a fast sweep across names must not let an older fade-in finish
+    // after a newer fade-out and leave two portraits stacked
     if (imageRefs.current[prevMember.current]) {
       gsap.to(imageRefs.current[prevMember.current], {
         opacity: 0,
         scale: 1.03,
         duration: 0.4,
         ease: "power2.inOut",
+        overwrite: true,
       });
     }
 
@@ -108,7 +120,7 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
       gsap.fromTo(
         imageRefs.current[activeMember],
         { opacity: 0, scale: 1.03 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out", overwrite: true },
       );
     }
 
@@ -120,8 +132,18 @@ export function AboutPageClient({ content }: AboutPageClientProps) {
       if (!pageRef.current) return;
 
       if (reduced) {
-        const allElements = pageRef.current.querySelectorAll("[data-about-animate]");
-        gsap.set(allElements, { autoAlpha: 1, y: 0, x: 0, scale: 1, filter: "none" });
+        const allElements = pageRef.current.querySelectorAll<HTMLElement>("[data-about-animate]");
+        allElements.forEach((el) => {
+          // Background words are watermarks: settle at their faint target, never full opacity
+          const isBgText = el.dataset.aboutAnimate === "bg-text";
+          gsap.set(el, {
+            autoAlpha: isBgText ? parseFloat(el.dataset.targetOpacity ?? "0.03") : 1,
+            y: 0,
+            x: 0,
+            scale: 1,
+            filter: "none",
+          });
+        });
         return;
       }
 

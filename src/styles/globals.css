@@ -328,8 +328,14 @@
 }
 
 /* --- Reduced Motion Preferences --- */
-/* Anti-FOUC: hide elements before GSAP initializes */
+/* Anti-FOUC: hide elements before GSAP initializes. Every selector here must be
+   revealed by its component's GSAP code, including its reduced-motion branch. */
 [data-animate],
+[data-about-animate],
+[data-hero-child],
+[data-timeline-animate],
+[data-contact-animate],
+[data-form-animate],
 .folio-reveal,
 .folio-reveal-label {
   opacity: 0;
@@ -337,6 +343,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
+  [data-about-animate]:not([data-about-animate="bg-text"]),
+  [data-hero-child],
+  [data-timeline-animate],
+  [data-contact-animate],
+  [data-form-animate],
   .folio-reveal,
   .folio-reveal-label {
     opacity: 1;
