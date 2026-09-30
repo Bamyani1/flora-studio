@@ -58,20 +58,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timer);
   }, [pathname, useNativeScroll]);
 
-  if (useNativeScroll) {
-    return (
-      <>
-        {cursor}
-        {children}
-      </>
-    );
-  }
-
+  // Lenis sits beside the page, never around it: toggling a wrapper would remount the
+  // whole app on every native-scroll route change. Children read the root instance
+  // through lenis/react's root store.
   return (
-    <ReactLenis root options={lenisOptions}>
-      <LenisGsapSync />
+    <>
+      {useNativeScroll ? null : (
+        <ReactLenis root options={lenisOptions}>
+          <LenisGsapSync />
+        </ReactLenis>
+      )}
       {cursor}
       {children}
-    </ReactLenis>
+    </>
   );
 }

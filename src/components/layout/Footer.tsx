@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TransitionLink } from "./TransitionLink";
 import { LEGAL_NAV_ITEMS, PRIMARY_NAV_ITEMS } from "@/lib/navigation";
 import { FloraStudioLogo } from "@/components/ui/FloraStudioLogo";
 import type { SocialLink } from "@/types/content";
@@ -33,20 +33,20 @@ export function Footer({
       <div className="flex flex-col items-start gap-8 md:items-end">
         <nav aria-label="Footer navigation" className="flex flex-wrap gap-10">
           {PRIMARY_NAV_ITEMS.map((item) => (
-            <Link
+            <TransitionLink
               key={item.href}
               href={item.href}
               className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {item.label}
-            </Link>
+            </TransitionLink>
           ))}
-          <Link
+          <TransitionLink
             href="/contact"
             className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
           >
             Contact
-          </Link>
+          </TransitionLink>
           {socialLinks.map((link) => (
             <a
               key={link.label}
@@ -61,13 +61,13 @@ export function Footer({
         </nav>
         <nav aria-label="Legal links" className="flex flex-wrap gap-6">
           {LEGAL_NAV_ITEMS.map((link) => (
-            <Link
+            <TransitionLink
               key={link.href}
               href={link.href}
               className="relative inline-block py-3 -my-3 eyebrow text-muted transition-colors duration-300 can-hover:hover:text-text before:absolute before:-inset-x-2 before:-inset-y-1.5 before:content-['']"
             >
               {link.label}
-            </Link>
+            </TransitionLink>
           ))}
         </nav>
       </div>

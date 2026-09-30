@@ -32,7 +32,7 @@ vi.mock("@/lib/gsap", () => {
       set: vi.fn(),
       to: vi.fn(),
       fromTo: vi.fn(),
-      timeline: vi.fn(() => ({ fromTo: vi.fn(), to: vi.fn() })),
+      timeline: vi.fn(() => ({ fromTo: vi.fn(), to: vi.fn(), kill: vi.fn() })),
       quickTo: vi.fn(() => vi.fn()),
       killTweensOf: vi.fn(),
       registerPlugin: vi.fn(),

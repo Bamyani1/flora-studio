@@ -38,19 +38,20 @@ export function TransitionLink({
       if (e.defaultPrevented) return;
 
       const isPlainLeftClick =
-        e.button === 0 &&
-        !e.metaKey &&
-        !e.ctrlKey &&
-        !e.shiftKey &&
-        !e.altKey;
+        e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
       const target = e.currentTarget.target;
       const bypassTransition =
-        !isPlainLeftClick || (target !== "" && target !== "_self") || e.currentTarget.hasAttribute("download");
+        !isPlainLeftClick ||
+        (target !== "" && target !== "_self") ||
+        e.currentTarget.hasAttribute("download");
 
       if (bypassTransition) return;
 
-      // Don't transition to current page
-      if (href === pathname) return;
+      // Only same-origin page changes get the shutter; external, mailto/tel and
+      // hash/query-only links on the current page navigate natively
+      const url = new URL(href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === pathname) return;
 
       // No overlay mounted (e.g. root error/not-found pages) — let native navigation proceed
       if (!useUIStore.getState().overlayMounted) return;

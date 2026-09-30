@@ -80,4 +80,22 @@ describe("TransitionLink", () => {
       pendingHref: null,
     });
   });
+
+  it.each([
+    "/work#chapter-2",
+    "/work?view=grid",
+    "https://instagram.com/flora",
+    "mailto:hi@floraohio.com",
+  ])("navigates natively for %s instead of starting a transition", (href) => {
+    setMockPathname("/work");
+
+    render(<TransitionLink href={href}>Link</TransitionLink>);
+
+    const link = screen.getByRole("link", { name: "Link" });
+    const clickEvent = createEvent.click(link);
+    fireEvent(link, clickEvent);
+
+    expect(clickEvent.defaultPrevented).toBe(false);
+    expect(useUIStore.getState().transitionPhase).toBe("idle");
+  });
 });

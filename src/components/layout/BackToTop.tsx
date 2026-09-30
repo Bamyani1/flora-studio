@@ -17,7 +17,8 @@ export function BackToTop() {
 
       ScrollTrigger.create({
         trigger: document.documentElement,
-        start: "100vh top",
+        // One viewport down; ScrollTrigger reads a bare "100vh" as 100px
+        start: () => window.innerHeight,
         onEnter: () => gsap.to(buttonRef.current, { autoAlpha: 1, duration: 0.3 }),
         onLeaveBack: () => gsap.to(buttonRef.current, { autoAlpha: 0, duration: 0.3 }),
       });

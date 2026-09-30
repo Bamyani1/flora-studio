@@ -87,62 +87,57 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     };
   }, [menuOpen, lenis]);
 
-  // Open / close animations
+  // Close on any route change, including browser back/forward and swipe-back
   useEffect(() => {
-    if (!containerRef.current || !backdropRef.current) return;
+    setMenuOpen(false);
+  }, [pathname, setMenuOpen]);
 
-    const ctx = gsap.context(() => {
-      if (menuOpen) {
-        // Show container
-        gsap.set(containerRef.current, { autoAlpha: 1, pointerEvents: "auto" });
+  // Open / close animations. Kill (not revert) the running timeline on toggle:
+  // reverting the open state would hide the menu before the close could play.
+  const menuTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
-        // Enable will-change for animation performance
-        if (backdropRef.current) backdropRef.current.style.willChange = "transform, opacity";
+  useEffect(() => () => void menuTimelineRef.current?.kill(), []);
 
-        const tl = gsap.timeline();
+  useEffect(() => {
+    const container = containerRef.current;
+    const backdrop = backdropRef.current;
+    if (!container || !backdrop) return;
 
-        // Backdrop fade in
-        tl.fromTo(backdropRef.current, navOverlayOpen.backdrop.from, navOverlayOpen.backdrop.to);
+    menuTimelineRef.current?.kill();
 
-        // Menu items reveal
-        splitInstancesRef.current.forEach((split, i) => {
-          tl.to(
-            split.lines,
-            {
-              ...navOverlayOpen.menuItems.to,
-            },
-            navOverlayOpen.menuItems.delay! + i * 0.08,
-          );
-        });
-      } else {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            if (containerRef.current) {
-              gsap.set(containerRef.current, { autoAlpha: 0, pointerEvents: "none" });
-            }
-            // Reset will-change
-            if (backdropRef.current) backdropRef.current.style.willChange = "auto";
-          },
-        });
+    if (menuOpen) {
+      gsap.set(container, { autoAlpha: 1, pointerEvents: "auto" });
+      backdrop.style.willChange = "transform, opacity";
 
-        // Menu items slide up
-        splitInstancesRef.current.forEach((split, i) => {
-          tl.to(
-            split.lines,
-            {
-              ...navOverlayClose.menuItems.to,
-            },
-            i * 0.04,
-          );
-        });
+      const tl = gsap.timeline();
+      tl.fromTo(backdrop, navOverlayOpen.backdrop.from, navOverlayOpen.backdrop.to);
+      splitInstancesRef.current.forEach((split, i) => {
+        tl.to(
+          split.lines,
+          { ...navOverlayOpen.menuItems.to },
+          navOverlayOpen.menuItems.delay! + i * 0.08,
+        );
+      });
+      menuTimelineRef.current = tl;
+      return;
+    }
 
-        // Backdrop fade out — extract delay as timeline position, not tween delay
-        const { delay: backdropPosition, ...backdropTo } = navOverlayClose.backdrop.to;
-        tl.to(backdropRef.current, backdropTo, backdropPosition);
-      }
-    }, containerRef);
+    // Already hidden (first mount, or a route change with the menu closed)
+    if (container.style.visibility === "hidden") return;
 
-    return () => ctx.revert();
+    const tl = gsap.timeline({
+      onComplete: () => {
+        gsap.set(container, { autoAlpha: 0, pointerEvents: "none" });
+        backdrop.style.willChange = "auto";
+      },
+    });
+    splitInstancesRef.current.forEach((split, i) => {
+      tl.to(split.lines, { ...navOverlayClose.menuItems.to }, i * 0.04);
+    });
+    // Backdrop fade out — extract delay as timeline position, not tween delay
+    const { delay: backdropPosition, ...backdropTo } = navOverlayClose.backdrop.to;
+    tl.to(backdrop, backdropTo, backdropPosition);
+    menuTimelineRef.current = tl;
   }, [menuOpen]);
 
   // Escape key
@@ -169,6 +164,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
+      data-lenis-prevent
       className="fixed inset-0 z-50"
       style={{ opacity: 0, visibility: "hidden", pointerEvents: "none" }}
     >
@@ -176,7 +172,7 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
       <div ref={backdropRef} className="absolute inset-0 bg-background" style={{ opacity: 0 }} />
 
       {/* Content */}
-      <div className="relative flex h-full flex-col justify-between px-[var(--container-padding-x)] py-[var(--header-height)]">
+      <div className="relative flex h-full flex-col justify-between overflow-y-auto overscroll-contain px-[var(--container-padding-x)] py-[var(--header-height)]">
         <div className="flex items-center justify-between">
           <TransitionLink
             href="/"

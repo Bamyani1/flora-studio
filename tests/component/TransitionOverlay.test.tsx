@@ -59,4 +59,29 @@ describe("TransitionOverlay", () => {
     });
     expect(mockRouter.push).not.toHaveBeenCalled();
   });
+
+  it("ignores hash-only history entries such as the skip link", () => {
+    setMockPathname("/");
+    window.history.replaceState(null, "", "/");
+    render(<TransitionOverlay />);
+
+    window.history.pushState(null, "", "/#main-content");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+
+    expect(useUIStore.getState().transitionPhase).toBe("idle");
+  });
+
+  it("starts a history transition when back/forward changes the page", () => {
+    setMockPathname("/");
+    window.history.replaceState(null, "", "/");
+    render(<TransitionOverlay />);
+
+    window.history.pushState(null, "", "/work");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+
+    expect(useUIStore.getState()).toMatchObject({
+      transitionPhase: "leaving",
+      transitionSource: "history",
+    });
+  });
 });

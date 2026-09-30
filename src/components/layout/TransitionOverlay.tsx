@@ -8,6 +8,8 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useUIStore } from "@/stores/ui-store";
 import { IrisTransition, type IrisTransitionHandle } from "./IrisTransition";
 
+const NAVIGATION_BUDGET_SEC = 6;
+
 export function TransitionOverlay() {
   const pathname = usePathname();
   const router = useRouter();
@@ -66,15 +68,20 @@ export function TransitionOverlay() {
     scheduleRefresh();
   }, [clearFallback, finishTransition, scheduleRefresh, setHiddenState]);
 
-  const scheduleFailsafe = useCallback(() => {
-    clearFallback();
-    fallbackTimeoutRef.current = window.setTimeout(
-      () => {
+  const scheduleFailsafe = useCallback(
+    (phase: "leaving" | "entering") => {
+      clearFallback();
+      // "leaving" also covers the route fetch, so a cold render mustn't trip it
+      const budgetMs =
+        phase === "leaving"
+          ? (irisTransition.totalDuration + NAVIGATION_BUDGET_SEC) * 1000
+          : (irisTransition.totalDuration + 0.5) * 1000;
+      fallbackTimeoutRef.current = window.setTimeout(() => {
         hardReset();
-      },
-      (irisTransition.totalDuration + 0.5) * 1000,
-    );
-  }, [clearFallback, hardReset]);
+      }, budgetMs);
+    },
+    [clearFallback, hardReset],
+  );
 
   useEffect(() => {
     setHiddenState();
@@ -106,6 +113,8 @@ export function TransitionOverlay() {
   useEffect(() => {
     const handlePopState = () => {
       if (useUIStore.getState().transitionPhase !== "idle") return;
+      // Hash-only entries (skip link, in-page anchors) stay on the same page
+      if (window.location.pathname === previousPathnameRef.current) return;
       startHistoryTransition();
     };
 
@@ -134,7 +143,7 @@ export function TransitionOverlay() {
       return;
     }
 
-    scheduleFailsafe();
+    scheduleFailsafe(transitionPhase);
 
     // Reduced motion: use simple opacity fade on fallback div
     if (reduced) {
