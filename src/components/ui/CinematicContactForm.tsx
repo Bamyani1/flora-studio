@@ -38,7 +38,7 @@ function extractFormData(formData: FormData): ContactFormData {
   return {
     name: (formData.get("sender") as string) || "",
     email: (formData.get("reply_to") as string) || "",
-    website: ((formData.get("website") as string) || "").trim() || undefined,
+    website: ((formData.get("fs_hp_field") as string) || "").trim() || undefined,
     photographyType: formData.get("photographyType") as ContactFormData["photographyType"],
     preferredDate: (formData.get("preferredDate") as string) || "",
     alternateDates: alternateDates.length > 0 ? alternateDates : undefined,
@@ -72,6 +72,15 @@ export function CinematicContactForm() {
       hasCompletedSubmissionRef.current = true;
     }
   }, [submitted]);
+
+  // The alert renders above the fields; on a phone the submit button is a screen
+  // away, so a delivery failure would otherwise look like nothing happened
+  const formErrorRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!formError) return;
+    formErrorRef.current?.focus({ preventScroll: true });
+    formErrorRef.current?.scrollIntoView({ block: "center" });
+  }, [formError]);
 
   useGSAP(
     () => {
@@ -206,10 +215,12 @@ export function CinematicContactForm() {
             aria-hidden="true"
             className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
           >
-            <label htmlFor="website">Website</label>
+            {/* Opaque name: "website" invites browser/password-manager autofill,
+                which would silently drop a real inquiry */}
+            <label htmlFor="fs-hp-field">Leave this field empty</label>
             <input
-              id="website"
-              name="website"
+              id="fs-hp-field"
+              name="fs_hp_field"
               type="text"
               tabIndex={-1}
               autoComplete="off"
@@ -219,7 +230,9 @@ export function CinematicContactForm() {
 
           {formError && (
             <div
-              className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error"
+              ref={formErrorRef}
+              tabIndex={-1}
+              className="border border-error/30 bg-error/5 px-4 py-3 text-sm text-error outline-none"
               role="alert"
             >
               {formError}
@@ -387,9 +400,23 @@ export function CinematicContactForm() {
                     Remove
                   </button>
                 </div>
-                <input id={id} name="alternateDates" type="date" ref={setMinToday} className={`${inputClass} [color-scheme:dark]`} />
+                <input
+                  id={id}
+                  name="alternateDates"
+                  type="date"
+                  ref={setMinToday}
+                  data-field={index === 0 ? "alternateDates" : undefined}
+                  className={`${inputClass} [color-scheme:dark]`}
+                  aria-invalid={!!fieldErrors.alternateDates}
+                  aria-describedby={fieldErrors.alternateDates ? "alternate-dates-error" : undefined}
+                />
               </div>
             ))}
+            {fieldErrors.alternateDates && alternateDateIds.length > 0 && (
+              <p id="alternate-dates-error" className="-mt-4 text-xs text-error" role="alert">
+                {fieldErrors.alternateDates}
+              </p>
+            )}
 
             <div className="group">
               <label htmlFor="location" className={labelClass}>

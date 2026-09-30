@@ -1,10 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 const CONTACT_TEST_FAILURE_COOKIE = "__contact_delivery_test";
+// Session dates must be bookable (today onward)
+const FUTURE_DATE = new Date(Date.now() + 60 * 86_400_000).toISOString().slice(0, 10);
 
 async function fillValidContactForm(page: import("@playwright/test").Page) {
   await page.locator("#photographyType").selectOption("milestones");
-  await page.locator("#preferredDate").fill("2026-06-14");
+  await page.locator("#preferredDate").fill(FUTURE_DATE);
   await page.locator("#location").fill("Dayton, Ohio");
   await page.locator("#sender").fill("Ava Reed");
   await page.locator("#reply_to").fill("ava@example.com");

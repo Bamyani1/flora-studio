@@ -23,7 +23,9 @@ function SocialIcon({ icon }: Pick<SocialLink, "icon">) {
 }
 
 function StudioInfo({ siteSettings }: { siteSettings: SiteSettings }) {
-  const phoneHref = `tel:+1${siteSettings.phone.replace(/\D/g, "")}`;
+  const phoneDigits = siteSettings.phone.replace(/\D/g, "");
+  // Tolerate a CMS value that already carries the +1 country code
+  const phoneHref = `tel:+${phoneDigits.length === 11 && phoneDigits.startsWith("1") ? phoneDigits : `1${phoneDigits}`}`;
 
   return (
     // Mount reveal: the studio's contact details must never wait on a scroll trigger

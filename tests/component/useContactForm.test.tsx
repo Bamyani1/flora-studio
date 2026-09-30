@@ -68,6 +68,9 @@ function ContactFormHarness() {
   );
 }
 
+// Session dates must be bookable (today onward)
+const futureDate = new Date(Date.now() + 60 * 86_400_000).toISOString().slice(0, 10);
+
 describe("useContactForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -101,7 +104,7 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
-    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: futureDate } });
     fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },
@@ -123,7 +126,7 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
-    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: futureDate } });
     fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },
@@ -158,7 +161,7 @@ describe("useContactForm", () => {
     fireEvent.change(screen.getByLabelText("Photography Type"), {
       target: { value: "milestones" },
     });
-    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: "2026-06-14" } });
+    fireEvent.change(screen.getByLabelText("Preferred Date"), { target: { value: futureDate } });
     fireEvent.change(screen.getByLabelText("Location"), { target: { value: "Dayton, Ohio" } });
     fireEvent.change(screen.getByLabelText("Message"), {
       target: { value: "I would love to book a portrait session this spring." },

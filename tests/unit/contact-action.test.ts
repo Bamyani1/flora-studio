@@ -32,11 +32,16 @@ vi.mock("nodemailer", () => ({
 const smtpUser = "studio-mailbox@icloud.com";
 const contactEmail = "info@floraohio.com";
 
+// Session dates must be bookable (today onward), so fixtures are relative to now
+const daysFromNow = (days: number) =>
+  new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
+const preferredDate = daysFromNow(60);
+
 const validPayload = {
   name: "Ava Reed",
   email: "ava@example.com",
   photographyType: "milestones" as const,
-  preferredDate: "2026-06-14",
+  preferredDate,
   location: "Dayton, Ohio",
   message: "I would love to book a graduation session this spring.",
 };
@@ -153,7 +158,7 @@ describe("submitContactForm", () => {
         from: `Flora Studio <${contactEmail}>`,
         to: contactEmail,
         replyTo: "ava@example.com",
-        text: expect.stringContaining("Preferred date: 2026-06-14"),
+        text: expect.stringContaining(`Preferred date: ${preferredDate}`),
       }),
     );
     expect(mockSendMail).toHaveBeenNthCalledWith(
@@ -188,8 +193,7 @@ describe("submitContactForm", () => {
         ...validPayload,
         name: "Accounts Payable",
         location: "Re-confirm your deposit at http://flora-billing.example/verify",
-        preferredDate: "URGENT act within 24h",
-        alternateDates: ["click http://evil.example now"],
+        message: "URGENT act within 24h: click http://evil.example now",
       }),
     ).resolves.toEqual({ success: true });
 
@@ -201,7 +205,46 @@ describe("submitContactForm", () => {
     expect(body).not.toContain("URGENT");
   });
 
-  it("collapses CR/LF in location and preferred date before they reach any email", async () => {
+  it.each([
+    ["free text", "URGENT act within 24h"],
+    ["a past date", daysFromNow(-30)],
+    ["a six-digit year", "20266-06-14"],
+    ["an impossible day", "2027-02-31"],
+    ["a CR/LF-smuggled suffix", `${preferredDate}\nExtra`],
+  ])("rejects %s as the preferred date", async (_label, badDate) => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(submitContactForm({ ...validPayload, preferredDate: badDate })).resolves.toEqual({
+      success: false,
+      error: "Invalid form data. Please check your inputs.",
+    });
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("rejects a past alternate date", async () => {
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(
+      submitContactForm({ ...validPayload, alternateDates: [daysFromNow(-3)] }),
+    ).resolves.toMatchObject({ success: false });
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("collapses CR/LF in location before it reaches any email", async () => {
     mockGetContactServerConfig.mockReturnValue({
       smtpUser,
       smtpPass: "app-specific-password",
@@ -216,13 +259,12 @@ describe("submitContactForm", () => {
       submitContactForm({
         ...validPayload,
         location: "Dayton\r\nInjected: line",
-        preferredDate: "2026-06-14\nExtra",
       }),
     ).resolves.toEqual({ success: true });
 
     const studioBody = mockSendMail.mock.calls[0][0].text as string;
     expect(studioBody).toContain("Location: Dayton Injected: line");
-    expect(studioBody).toContain("Preferred date: 2026-06-14 Extra");
+    expect(studioBody).toContain(`Preferred date: ${preferredDate}`);
   });
 
   it("includes alternate dates in the email when provided", async () => {
@@ -239,14 +281,14 @@ describe("submitContactForm", () => {
     await expect(
       submitContactForm({
         ...validPayload,
-        alternateDates: ["2026-06-21", "2026-06-28"],
+        alternateDates: [daysFromNow(67), daysFromNow(74)],
       }),
     ).resolves.toEqual({ success: true });
 
     expect(mockSendMail).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        text: expect.stringContaining("Alternate dates: 2026-06-21, 2026-06-28"),
+        text: expect.stringContaining(`Alternate dates: ${daysFromNow(67)}, ${daysFromNow(74)}`),
       }),
     );
   });
@@ -396,6 +438,33 @@ describe("submitContactForm", () => {
       error: "Failed to send message. Please try again later.",
     });
     expect(mockSendMail).toHaveBeenCalledTimes(1);
+  });
+
+  it("leaves the visitor free to retry when the primary send fails in production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("CONTENT_RUNTIME_MODE", "");
+    const mockCookieSet = vi.fn();
+    mockCookies.mockResolvedValue({ get: mockCookieGet, set: mockCookieSet });
+    mockGetContactServerConfig.mockReturnValue({
+      smtpUser,
+      smtpPass: "app-specific-password",
+      contactEmail,
+      deliveryMode: "live",
+    });
+    mockSendMail.mockRejectedValueOnce(new Error("SMTP timeout"));
+
+    const { submitContactForm } = await import("@/app/(site)/contact/action");
+
+    await expect(submitContactForm(validPayload)).resolves.toMatchObject({ success: false });
+    expect(mockCookieSet).not.toHaveBeenCalled();
+
+    mockSendMail.mockResolvedValue({});
+    await expect(submitContactForm(validPayload)).resolves.toEqual({ success: true });
+    expect(mockCookieSet).toHaveBeenCalledWith(
+      "__contact_throttle",
+      expect.any(String),
+      expect.any(Object),
+    );
   });
 
   it("returns success when the auto-reply fails after the inquiry was delivered", async () => {

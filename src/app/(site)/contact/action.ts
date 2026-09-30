@@ -148,7 +148,6 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
   }
 
   try {
-    await markSubmitted();
     const nodemailer = await import("nodemailer");
     const transporter = nodemailer.createTransport({
       host: "smtp.mail.me.com",
@@ -171,6 +170,8 @@ export async function submitContactForm(data: ContactFormData): Promise<ContactA
       subject: `New inquiry from ${parsed.data.name}: ${photographyTypeLabel(parsed.data.photographyType)}`,
       text: buildNotificationEmailText(parsed.data),
     });
+    // Only after the studio copy lands: a failed send must leave the visitor free to retry
+    await markSubmitted();
 
     try {
       if (deliveryTestFailureMode === "auto-reply") {
