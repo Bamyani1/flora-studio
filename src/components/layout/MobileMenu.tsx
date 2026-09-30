@@ -87,8 +87,13 @@ export function MobileMenu({ socialLinks }: { socialLinks: SocialLink[] }) {
     };
   }, [menuOpen, lenis]);
 
-  // Close on any route change, including browser back/forward and swipe-back
+  // Close on any route change, including browser back/forward and swipe-back.
+  // Only on a real change: a tap during hydration can open the menu before this
+  // effect first runs, and closing on mount would swallow it.
+  const lastPathnameRef = useRef(pathname);
   useEffect(() => {
+    if (lastPathnameRef.current === pathname) return;
+    lastPathnameRef.current = pathname;
     setMenuOpen(false);
   }, [pathname, setMenuOpen]);
 
