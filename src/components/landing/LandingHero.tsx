@@ -242,7 +242,7 @@ export function LandingHero({ content, blurDataURL }: LandingHeroProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative mt-[5rem] min-h-[calc(100svh-5rem)] overflow-hidden bg-background"
+      className="relative min-h-svh overflow-hidden bg-background"
     >
       {/* Grain overlay */}
       <div className="grain-medium absolute inset-0 z-grain opacity-[0.02]" aria-hidden="true" />

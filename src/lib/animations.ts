@@ -48,14 +48,6 @@ export const clipRevealLeft = {
 };
 
 // --------------------------------------------------
-// branchReveal — Clip-path bloom from center outward
-// --------------------------------------------------
-export const branchReveal = {
-  from: { clipPath: "inset(0% 50% 0% 50%)", autoAlpha: 0.3 },
-  to: { clipPath: "inset(0% 0% 0% 0%)", autoAlpha: 1 },
-};
-
-// --------------------------------------------------
 // imageReveal — Darkroom fade: the photograph resolves up from near-black
 // with a slight exposure ramp, like a print developing
 // --------------------------------------------------
@@ -260,7 +252,7 @@ export const landingHeaderEntrance = {
 };
 
 // --------------------------------------------------
-// headerShrink — Scroll-scrub header morphing (continuous interpolation)
+// headerShrink — Scroll-scrub viewfinder compaction (continuous interpolation)
 // --------------------------------------------------
 export const headerShrink = {
   scrollTrigger: {
@@ -268,31 +260,25 @@ export const headerShrink = {
     end: 150,
     scrub: true,
   },
-  from: {
-    height: "5rem",
-    paddingTop: "1.25rem",
-    paddingBottom: "1.25rem",
-    backgroundColor: "#161a12",
-    borderColor: "rgba(255,255,255,0.15)",
-    borderRadius: "0px",
-    backdropFilter: "blur(0px)",
-  },
-  to: {
-    height: "3.5rem",
-    paddingTop: "0.625rem",
-    paddingBottom: "0.625rem",
-    // Opaque enough that light imagery scrolling underneath can't wash out the nav
-    backgroundColor: "rgba(17,18,16,0.85)",
-    borderColor: "rgba(255,255,255,0.2)",
-    borderRadius: "2px",
-    backdropFilter: "blur(16px)",
-  },
-  /** Shadow is now on overlay element — animate its opacity instead */
-  shadow: { from: { opacity: 0 }, to: { opacity: 1 } },
+  from: { height: "5rem" },
+  to: { height: "3.5rem" },
+  /** The scrim deepens once the page leaves the hero photograph */
+  scrim: { from: { opacity: 0.75 }, to: { opacity: 1 } },
   logo: {
-    from: { scale: 1, transformOrigin: "center center" },
-    to: { scale: 0.778, transformOrigin: "center center" },
+    from: { scale: 1, transformOrigin: "left center" },
+    to: { scale: 0.85, transformOrigin: "left center" },
   },
+};
+
+// --------------------------------------------------
+// focusBracket — The nav's AF point: overshoots wide, snaps onto the
+// target, blinks to confirm a new page; the label racks into focus
+// --------------------------------------------------
+export const focusBracket = {
+  overshoot: { x: 7, y: 6, hunt: 0.2, settle: 0.3, ease: "power2.out" },
+  lock: { duration: 0.26, ease: "back.out(2.4)" },
+  confirm: { autoAlpha: 0.2, duration: 0.05, repeat: 3, yoyo: true, ease: "none" },
+  rackFocus: { blur: 1.6, duration: 300, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
 };
 
 // --------------------------------------------------
@@ -508,6 +494,7 @@ export const reducedMotionFallbacks = {
     "all elements visible immediately, no fade/rise stagger, no elastic badge, no x-slide images",
   landingHeaderEntrance: "header visible immediately, no slide-down",
   headerShrink: "header at compact height immediately, no animation",
+  focusBracket: "bracket jumps straight to its target, no overshoot, blink or rack-focus blur",
   landingHeroGridSequence: "all hero elements visible immediately, no choreography",
   landingHeroEditorialSequence:
     "all elements visible immediately, no choreography, no clip-path, no parallax",
